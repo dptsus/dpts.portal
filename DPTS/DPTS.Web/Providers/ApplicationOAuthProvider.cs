@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -40,7 +37,7 @@ namespace DPTS.Web.Providers
             }
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
+                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
@@ -90,7 +87,7 @@ namespace DPTS.Web.Providers
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                {"userName", userName}
             };
             return new AuthenticationProperties(data);
         }

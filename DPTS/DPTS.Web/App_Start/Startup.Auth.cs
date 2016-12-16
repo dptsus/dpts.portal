@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
@@ -63,7 +60,16 @@ namespace DPTS.Web
             //{
             //    ClientId = "",
             //    ClientSecret = ""
-            //});
+            //}); 
+            app.UseFacebookAuthentication(
+            appId: "1698518233795712",
+                appSecret: "ac5de39fd15deeb05cd932f169340df4");
+
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions
+            {
+                ClientId = "1000194196660-vjf4r1lj6kl242t90d8rosri9scfvers.apps.googleusercontent.com",
+                ClientSecret = "zjT0fw-kknMVQdM5EMpPcEoo"
+            });
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -39,14 +38,8 @@ namespace DPTS.Web.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get { return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
@@ -125,7 +118,7 @@ namespace DPTS.Web.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -167,8 +160,9 @@ namespace DPTS.Web.Controllers
             AuthenticationTicket ticket = AccessTokenFormat.Unprotect(model.ExternalAccessToken);
 
             if (ticket == null || ticket.Identity == null || (ticket.Properties != null
-                && ticket.Properties.ExpiresUtc.HasValue
-                && ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
+                                                              && ticket.Properties.ExpiresUtc.HasValue
+                                                              &&
+                                                              ticket.Properties.ExpiresUtc.Value < DateTimeOffset.UtcNow))
             {
                 return BadRequest("External login failure.");
             }
@@ -258,8 +252,8 @@ namespace DPTS.Web.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
@@ -328,7 +322,7 @@ namespace DPTS.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() {UserName = model.Email, Email = model.Email};
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
@@ -357,7 +351,7 @@ namespace DPTS.Web.Controllers
                 return InternalServerError();
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() {UserName = model.Email, Email = model.Email};
 
             IdentityResult result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)
@@ -368,7 +362,7 @@ namespace DPTS.Web.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }
@@ -476,12 +470,12 @@ namespace DPTS.Web.Controllers
             {
                 const int bitsPerByte = 8;
 
-                if (strengthInBits % bitsPerByte != 0)
+                if (strengthInBits%bitsPerByte != 0)
                 {
                     throw new ArgumentException("strengthInBits must be evenly divisible by 8.", "strengthInBits");
                 }
 
-                int strengthInBytes = strengthInBits / bitsPerByte;
+                int strengthInBytes = strengthInBits/bitsPerByte;
 
                 byte[] data = new byte[strengthInBytes];
                 _random.GetBytes(data);
