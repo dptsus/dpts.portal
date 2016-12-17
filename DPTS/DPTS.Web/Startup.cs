@@ -1,8 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof (DPTS.Web.Startup))]
-
+[assembly: OwinStartupAttribute(typeof(DPTS.Web.Startup))]
 namespace DPTS.Web
 {
     public partial class Startup

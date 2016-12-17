@@ -7,7 +7,7 @@
         <div class="jumbotron">
             <h1>@ViewBag.ErrorCode - @ViewBag.ErrorHeading</h1>
             <p class="lead">@ViewBag.ErrorContent</p>
-            <p>@Html.ActionLink("Go to Home", "Index", "Home", new { @class = "btn btn-primary btn-lg" })</p>
+            <p><a href="@Url.RouteUrl("HomePage")" class="btn btn-primary btn-lg">Go to Home</a></p>
         </div>
     </div> 
 </div>

@@ -8,10 +8,10 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="home page page-id-2 page-template-default home  sample-page mec-home ">
-    <div class="preloader-outer">
+    @*<div class="preloader-outer">
         <div class="pin"></div>
         <div class="pulse"></div>
-    </div>
+    </div>*@
     <div id="wrapper" class="tg-haslayout">
         <header id="header" class="tg-haslayout tg-inner-header">
             <div class="container">
@@ -19,7 +19,7 @@
                     <div class="col-xs-12">
                         <div class="tg-navigationarea">
                             <strong class="logo">
-                                <a class="" href="index.html"><img class="" src="~/Content/wp-content/themes/docdirect/images/logo.png" alt="DocDirect"></a>
+                                <a class="" href="@Url.RouteUrl("HomePage")"><img class="" src="~/Content/wp-content/themes/docdirect/images/logo.png" alt="DocDirect"></a>
                             </strong>
                             <nav id="tg-nav" class="tg-nav">
                                 <div class="navbar-header">
@@ -33,55 +33,48 @@
                                 <div class="collapse navbar-collapse" id="tg-navigation">
                                     <ul id="menu-main-menu" class="">
                                         <li id="menu-item-654" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-654">
-                                            <a href="#">Home</a>
-                                            <ul class="">
+                                            <a href="@Url.RouteUrl("HomePage")">Home</a>
+                                            @*<ul class="">
                                                 <li id="menu-item-14" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-2 current_page_item menu-item-14"><a href="index.html">Home 1</a></li>
                                                 <li id="menu-item-151" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-151"><a href="home-2/index.html">Home 2</a></li>
                                                 <li id="menu-item-639" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-639"><a href="home-3/index.html">Home 3</a></li>
-                                            </ul>
+                                            </ul>*@
                                         </li>
                                         <li id="menu-item-333" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-333">
                                             <a href="#">Categories</a>
                                             <ul class="">
-                                                <li id="menu-item-334" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-334"><a href="dir-search/indexf480.html?directory_type=doctor">Doctors</a></li>
-                                                <li id="menu-item-339" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-339"><a href="dir-search/index905a.html?directory_type=hospital">Hospitals</a></li>
-                                                <li id="menu-item-338" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-338"><a href="dir-search/index3a88.html?directory_type=clinic">Clinics</a></li>
-                                                <li id="menu-item-337" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-337"><a href="dir-search/index679e.html?directory_type=pharmacy">Pharmacies</a></li>
-                                                <li id="menu-item-523" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-523"><a href="dir-search/index0565.html?directory_type=blood-bank">Blood Banks</a></li>
-                                                <li id="menu-item-335" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-335"><a href="dir-search/index2e50.html?directory_type=fitness-center">Fitness Centers</a></li>
+                                                <li id="menu-item-334" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-334"><a href="#">Doctors</a></li>
+                                                <li id="menu-item-339" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-339"><a href="#">Hospitals</a></li>
+                                                <li id="menu-item-338" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-338"><a href="#">Clinics</a></li>
+                                                <li id="menu-item-337" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-337"><a href="#">Pharmacies</a></li>
+                                                <li id="menu-item-523" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-523"><a href="#">Blood Banks</a></li>
+                                                <li id="menu-item-335" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-335"><a href="#">Fitness Centers</a></li>
                                             </ul>
                                         </li>
-                                        <li id="menu-item-340" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-340">
+                                        @*<li id="menu-item-340" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-340">
                                             <a href="#">Listing</a>
                                             <ul class="">
-                                                <li id="menu-item-341" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-341"><a href="dir-search/indexd1fd.html?view=list">List View</a></li>
-                                                <li id="menu-item-342" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-342"><a href="dir-search/indexb92a.html?view=grid">Grid View</a></li>
-                                                <li id="menu-item-343" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-343"><a href="dir-search/indexfab8.html?view=grid-left">Grid With Left Map</a></li>
-                                                <li id="menu-item-344" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-344"><a href="dir-search/indexb4de.html?view=list-left">List With Left Map</a></li>
+                                                <li id="menu-item-341" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-341"><a href="#">List View</a></li>
+                                                <li id="menu-item-342" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-342"><a href="#">Grid View</a></li>
+                                                <li id="menu-item-343" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-343"><a href="#">Grid With Left Map</a></li>
+                                                <li id="menu-item-344" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-344"><a href="#">List With Left Map</a></li>
                                             </ul>
-                                        </li>
+                                        </li>*@
                                         <li id="menu-item-13" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13">
                                             <a href="#">Blogs</a>
-                                            <ul class="">
-                                                <li id="menu-item-220" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-220"><a href="blog-list/index.html">Blog List</a></li>
-                                                <li id="menu-item-219" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-219"><a href="blog-grid/index.html">Blog Grid</a></li>
-                                                <li id="menu-item-224" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-224"><a href="family-clinic/index.html">Detail Blog</a></li>
-                                            </ul>
+                                            @*<ul class="">
+                                                <li id="menu-item-220" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-220"><a href="#">Blog List</a></li>
+                                                <li id="menu-item-219" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-219"><a href="#">Blog Grid</a></li>
+                                                <li id="menu-item-224" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-224"><a href="#">Detail Blog</a></li>
+                                            </ul>*@
                                         </li>
-                                        <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="packages/index.html">Packages</a></li>
-                                        <li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="contact-us/index.html">Contact Us</a></li>
+                                        <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="#">Packages</a></li>
+                                        <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="@Url.RouteUrl("AboutUs")">About</a></li>
+                                        <li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="@Url.RouteUrl("ContactUs")">Contact Us</a></li>
+                                        @Html.Partial("_LoginPartial")
                                     </ul>
                                 </div>
                             </nav>
-                            <div class="doc-menu">
-                                <ul class="tg-login-logout">
-                                    <li class="session-user-info">
-                                        <a href="javascript:;" data-toggle="modal" data-target=".tg-user-modal"><span class="s-user">Login/Register</span><img alt="Login" src="~/Content/wp-content/themes/docdirect/images/singin_icon.png"></a>
-                                        <span><a href="javascript:;" data-toggle="modal" data-target=".tg-user-modal"></a></span>
-                                    </li>
-                                </ul>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -116,7 +109,7 @@
 
                                         <li>
                                             <i class="fa fa-envelope"></i>
-                                            <em><a href="info%40domain.html">info@domain.com</a></em>
+                                            <em><a href="#">info@domain.com</a></em>
                                         </li>
                                         <li>
                                             <i class="fa fa-phone"></i>
@@ -134,11 +127,11 @@
                                             <figure class="tg-imgdoc">
                                                 <img src="~/Content/wp-content/themes/docdirect/images/user150x150.jpg" alt="User">
                                                 <div class="tg-img-hover">
-                                                    <a href="user/professional/index.html"><i class="icon-zoom"></i></a>
+                                                    <a href="#"><i class="icon-zoom"></i></a>
                                                 </div>
                                             </figure>
                                             <div class="tg-docinfo">
-                                                <span class="tg-docname"><a href="user/professional/index.html">alex alex</a></span>
+                                                <span class="tg-docname"><a href="#">alex alex</a></span>
                                                 <span class="tg-stars">
                                                     <em>Ranking:</em>
                                                     <span class="tg-stars star-rating">
@@ -149,11 +142,11 @@
                                             <figure class="tg-imgdoc">
                                                 <img src="~/Content/wp-content/uploads/2016/04/img-01-1-150x150.jpg" alt="User">
                                                 <div class="tg-img-hover">
-                                                    <a href="user/steve/index.html"><i class="icon-zoom"></i></a>
+                                                    <a href="#"><i class="icon-zoom"></i></a>
                                                 </div>
                                             </figure>
                                             <div class="tg-docinfo">
-                                                <span class="tg-docname"><a href="user/steve/index.html">Dr Steve</a></span>
+                                                <span class="tg-docname"><a href="#">Dr Steve</a></span>
                                                 <span class="tg-stars">
                                                     <em>Ranking:</em>
                                                     <span class="tg-stars star-rating">
@@ -174,12 +167,12 @@
                                 <div id="nav_menu-2" class="widget_nav_menu tg-widget">
                                     <div class="tg-heading-border tg-small"><h4>USEFUL LINKS</h4></div><div class="menu-userfull-links-container">
                                         <ul id="menu-userfull-links" class="menu">
-                                            <li id="menu-item-144" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-144"><a href="packages/index.html">Packages</a></li>
-                                            <li id="menu-item-214" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-214"><a href="blog-list/index.html">Latest Blogs</a></li>
-                                            <li id="menu-item-143" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-143"><a href="contact-us/index.html">Contact Us</a></li>
-                                            <li id="menu-item-450" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-450"><a href="yoga-centers/index.html">Yoga Centers</a></li>
-                                            <li id="menu-item-451" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-451"><a href="family-clinic/index.html">Family clinic</a></li>
-                                            <li id="menu-item-628" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-628"><a href="home-3/index.html">Home 3</a></li>
+                                            <li id="menu-item-144" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-144"><a href="#">Packages</a></li>
+                                            <li id="menu-item-214" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-214"><a href="#">Latest Blogs</a></li>
+                                            <li id="menu-item-143" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-143"><a href="#">Contact Us</a></li>
+                                            <li id="menu-item-450" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-450"><a href="#">Yoga Centers</a></li>
+                                            <li id="menu-item-451" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-451"><a href="#">Family clinic</a></li>
+                                            <li id="menu-item-628" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-628"><a href="#">Home 3</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -195,8 +188,6 @@
             </div>
         </footer>
     </div>
-
-
         @*@Scripts.Render("~/bundles/jquery")*@
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)
