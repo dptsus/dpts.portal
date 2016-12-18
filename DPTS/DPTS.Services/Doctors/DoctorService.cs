@@ -1,11 +1,8 @@
 ﻿using DPTS.Domain.Core;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DPTS.Services.Doctors
 {
@@ -25,8 +22,8 @@ namespace DPTS.Services.Doctors
         #region Methods
         public void AddDoctor(Doctor doctor)
         {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
+           /* if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));*/
 
             _doctorRepository.Insert(doctor);
         }
@@ -34,7 +31,7 @@ namespace DPTS.Services.Doctors
         public void DeleteDoctor(Doctor doctor)
         {
             if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
+               // throw new ArgumentNullException(nameof(doctor));
 
             _doctorRepository.Delete(doctor);
         }
@@ -48,7 +45,7 @@ namespace DPTS.Services.Doctors
         public void UpdateDoctor(Doctor data)
         {
             if (data == null)
-                throw new ArgumentNullException(nameof(data));
+                //throw new ArgumentNullException(nameof(data));
 
              _doctorRepository.Update(data);
         }

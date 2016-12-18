@@ -1,6 +1,4 @@
-﻿using DPTS.Data.IdentityEntities;
-using DPTS.Domain.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DPTS.Domain.Entities;
 using System.Data.Entity;
 
 namespace DPTS.Data.Context

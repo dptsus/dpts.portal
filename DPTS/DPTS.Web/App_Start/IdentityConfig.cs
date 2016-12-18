@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
+using DPTS.Web.ASPSMSX2;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -92,14 +89,14 @@ namespace DPTS.Web
             //Trace.TraceInformation(result.Status);
 
             //ASPSMS Begin
-            //var soapSms = new ASPSMSX2SoapClient("ASPSMSX2Soap");
-            //soapSms.SendSimpleTextSMS(
-            //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"],
-            //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"],
-            //    message.Destination,
-            //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"],
-            //    message.Body);
-            //soapSms.Close();
+            var soapSms = new ASPSMSX2SoapClient("ASPSMSX2Soap");
+            soapSms.SendSimpleTextSMS(
+                System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"],
+                System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"],
+                message.Destination,
+                System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"],
+                message.Body);
+            soapSms.Close();
             //ASPSMS End
             return Task.FromResult(0);
         }

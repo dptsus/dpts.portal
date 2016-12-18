@@ -1,6 +1,5 @@
 ﻿using DPTS.Domain.Entities;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DPTS.Domain.Core.Doctors
 {

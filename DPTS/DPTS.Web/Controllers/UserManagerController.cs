@@ -1,14 +1,11 @@
-﻿using System.Data.Entity;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace DPTS.Web.Controllers
 {
     [BaseController.Roles("SuperAdmin", "Admin")]
     public class UserManagerController : Controller
     {
-        /* private Entities db = new Entities();
+        /*private DPTSDbContext db = new DPTSDbContext();
 
         public async Task<ActionResult> Index()
         {
