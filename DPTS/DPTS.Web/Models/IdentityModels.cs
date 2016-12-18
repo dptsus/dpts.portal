@@ -25,7 +25,7 @@ namespace DPTS.Web.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DPTS", throwIfV1Schema: false)
         {
         }
 

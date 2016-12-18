@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace DPTS.Data.Context
 {
-    public class DPTSDbContext : IdentityDbContext<User>
+    public class DPTSDbContext : DbContext
     {
         public DPTSDbContext() : base("DPTS")
         {
