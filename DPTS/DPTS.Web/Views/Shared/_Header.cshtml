@@ -1,0 +1,82 @@
+﻿ <header id="header" class="tg-haslayout tg-inner-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tg-navigationarea">
+                    <strong class="logo">
+                        <a class="" href="@Url.RouteUrl("HomePage")"><img class="" src="~/Content/wp-content/themes/docdirect/images/logo.png" alt="DocDirect"></a>
+                    </strong>
+                    <nav id="tg-nav" class="tg-nav">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#tg-navigation" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="tg-navigation">
+                            <ul id="menu-main-menu" class="">
+                                <li id="menu-item-654" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-654">
+                                    <a href="@Url.RouteUrl("HomePage")">Home</a>
+                                    @*<ul class="">
+                                            <li id="menu-item-14" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-2 current_page_item menu-item-14"><a href="index.html">Home 1</a></li>
+                                            <li id="menu-item-151" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-151"><a href="home-2/index.html">Home 2</a></li>
+                                            <li id="menu-item-639" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-639"><a href="home-3/index.html">Home 3</a></li>
+                                        </ul>*@
+                                </li>
+                                <li id="menu-item-333" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-333">
+                                    <a href="#">Categories</a>
+                                    <ul class="">
+                                        <li id="menu-item-334" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-334"><a href="#">Doctors</a></li>
+                                        <li id="menu-item-339" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-339"><a href="#">Hospitals</a></li>
+                                        <li id="menu-item-338" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-338"><a href="#">Clinics</a></li>
+                                        <li id="menu-item-337" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-337"><a href="#">Pharmacies</a></li>
+                                        <li id="menu-item-523" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-523"><a href="#">Blood Banks</a></li>
+                                        <li id="menu-item-335" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-335"><a href="#">Fitness Centers</a></li>
+                                    </ul>
+                                </li>
+                                @*<li id="menu-item-340" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-340">
+                                        <a href="#">Listing</a>
+                                        <ul class="">
+                                            <li id="menu-item-341" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-341"><a href="#">List View</a></li>
+                                            <li id="menu-item-342" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-342"><a href="#">Grid View</a></li>
+                                            <li id="menu-item-343" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-343"><a href="#">Grid With Left Map</a></li>
+                                            <li id="menu-item-344" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-344"><a href="#">List With Left Map</a></li>
+                                        </ul>
+                                    </li>*@
+                                <li id="menu-item-13" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13">
+                                    <a href="#">Blogs</a>
+                                    @*<ul class="">
+                                            <li id="menu-item-220" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-220"><a href="#">Blog List</a></li>
+                                            <li id="menu-item-219" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-219"><a href="#">Blog Grid</a></li>
+                                            <li id="menu-item-224" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-224"><a href="#">Detail Blog</a></li>
+                                        </ul>*@
+                                </li>
+                                <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="#">Packages</a></li>
+                                <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="@Url.RouteUrl("AboutUs")">About</a></li>
+                                <li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="@Url.RouteUrl("ContactUs")">Contact Us</a></li>
+
+
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                                {
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            @if (User.IsInRole("SuperAdmin"))
+                                            {
+                                                <li>@Html.ActionLink("Roles", "Index", "Role")</li>
+                                            }
+                                            <li>@Html.ActionLink("Users", "Index", "UserManager")</li>
+                                        </ul>
+                                    </li>
+                                }
+                                @Html.Partial("_LoginPartial")
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
