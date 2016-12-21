@@ -139,6 +139,12 @@ namespace DPTS.Web.Controllers
         public IList<SelectListItem> GetUserTypeList()
         {
             List<SelectListItem> typelst = new List<SelectListItem>();
+            typelst.Add(
+                     new SelectListItem
+                     {
+                         Text = "Select",
+                         Value = "0"
+                     });
             foreach (var _type in context.Roles.ToList())
             {
                 typelst.Add(
@@ -167,9 +173,20 @@ namespace DPTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if (model.UserType == "0")
+                ModelState.AddModelError("", "Select user type");
+                
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LastName = model.LastName,FirstName = model.FirstName,LastIpAddress ="192.168.225.1", LastLoginDateUtc = DateTime.UtcNow,CreatedOnUtc = DateTime.UtcNow};
+                var user = new ApplicationUser { UserName = model.Email,
+                    Email = model.Email,
+                    LastName = model.LastName,
+                    FirstName = model.FirstName,
+                    LastIpAddress ="192.168.225.1",
+                    LastLoginDateUtc = DateTime.UtcNow,
+                    CreatedOnUtc = DateTime.UtcNow,
+                    PhoneNumber = model.PhoneNumber};
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

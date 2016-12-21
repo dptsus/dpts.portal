@@ -86,6 +86,12 @@ namespace DPTS.Web.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = "Your must provide a PhoneNumber")]
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
+        public string PhoneNumber { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
