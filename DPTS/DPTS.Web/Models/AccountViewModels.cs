@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace DPTS.Web.Models
 {
@@ -65,6 +66,13 @@ namespace DPTS.Web.Models
 
     public class RegisterViewModel
     {
+        public RegisterViewModel()
+        { UserTypeList = new List<SelectListItem>(); }
+
+        [Display(Name = "User Type")]
+        public string UserType { get; set; }
+        public IList<SelectListItem> UserTypeList { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -86,7 +94,7 @@ namespace DPTS.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string LastIpAddress { get; set; }
@@ -112,7 +120,7 @@ namespace DPTS.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

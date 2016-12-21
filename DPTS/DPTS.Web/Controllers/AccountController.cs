@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DPTS.Web.Models;
+using System.Collections.Generic;
 
 namespace DPTS.Web.Controllers
 {
@@ -17,9 +18,11 @@ namespace DPTS.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext context;
 
         public AccountController()
         {
+            context = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -34,9 +37,9 @@ namespace DPTS.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -116,9 +119,9 @@ namespace DPTS.Web.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
+            // The following code protects for brute force attacks against the two factor codes.
+            // If a user enters incorrect codes for a specified amount of time then the user account
+            // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
@@ -133,14 +136,28 @@ namespace DPTS.Web.Controllers
                     return View(model);
             }
         }
-
+        public IList<SelectListItem> GetUserTypeList()
+        {
+            List<SelectListItem> typelst = new List<SelectListItem>();
+            foreach (var _type in context.Roles.ToList())
+            {
+                typelst.Add(
+                     new SelectListItem
+                     {
+                         Text = _type.Name,
+                         Value = _type.Name
+                     });
+            }
+            return typelst;
+        }
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            //ViewBag.CurrentUserIP = Request.UserHostAddress;
-            return View();
+            var model = new RegisterViewModel();
+            model.UserTypeList = GetUserTypeList();
+            return View(model);
         }
 
         //
@@ -156,8 +173,9 @@ namespace DPTS.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await this.UserManager.AddToRoleAsync(user.Id, model.UserType);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -168,7 +186,7 @@ namespace DPTS.Web.Controllers
                 }
                 AddErrors(result);
             }
-
+            model.UserTypeList = GetUserTypeList();
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -213,7 +231,7 @@ namespace DPTS.Web.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
