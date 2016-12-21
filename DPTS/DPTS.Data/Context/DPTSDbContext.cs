@@ -7,7 +7,7 @@ namespace DPTS.Data.Context
 {
     public class DPTSDbContext : IdentityDbContext<User>
     {
-        public DPTSDbContext() : base("DPTSDbContext")
+        public DPTSDbContext() : base("DPTS")
         {
         }
         public virtual DbSet<Doctor> Doctor { get; set; }
