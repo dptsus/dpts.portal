@@ -432,3 +432,8 @@ table.dataTable thead .sorting:after {
     border-left-width: 0;
   }
 }
+
+.pull-right-button{
+    float:right;
+    padding-top:45px;
+}

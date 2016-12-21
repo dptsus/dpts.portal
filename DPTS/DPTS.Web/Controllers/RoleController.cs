@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace dpts.portal.Controllers
 {
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "SuperAdmin")]
     //[RequireHttps]
     public class RoleController : Controller
     {

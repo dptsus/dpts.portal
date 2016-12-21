@@ -8,14 +8,14 @@ namespace DPTS.Web.Controllers
     [BaseController.Roles("SuperAdmin", "Admin")]
     public class UserManagerController : Controller
     {
-        /* private Entities db = new Entities();
+        /*private Entities db = new Entities();
 
         public async Task<ActionResult> Index()
         {
-            ////var aspNetUsers = db.AspNetUsers.ToList();
-            //var Roles = new SelectList(db.AspNetRoles.ToList().Where(e => e.Name != "SuperAdmin"), "Name", "Name");
-            ////return View(aspNetUsers);
-            //return System.Web.UI.WebControls.View(await db.AspNetUsers.ToListAsync());
+            var aspNetUsers = db.AspNetUsers.ToList();
+            var Roles = new SelectList(db.AspNetRoles.ToList().Where(e => e.Name != "SuperAdmin"), "Name", "Name");
+            return View(aspNetUsers);
+            return System.Web.UI.WebControls.View(await db.AspNetUsers.ToListAsync());
 
             return View(await db.AspNetUsers.ToListAsync());
         }
