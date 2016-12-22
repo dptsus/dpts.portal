@@ -67,11 +67,13 @@ namespace DPTS.Web.Models
     public class RegisterViewModel
     {
         public RegisterViewModel()
-        { UserTypeList = new List<SelectListItem>(); }
+        { UserRoleList = new List<SelectListItem>(); }
 
         [Display(Name = "User Type")]
+        public string Role { get; set; }
+        public IList<SelectListItem> UserRoleList { get; set; }
+
         public string UserType { get; set; }
-        public IList<SelectListItem> UserTypeList { get; set; }
 
         [Required]
         [EmailAddress]

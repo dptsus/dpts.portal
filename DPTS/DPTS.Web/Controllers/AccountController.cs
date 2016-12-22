@@ -162,7 +162,7 @@ namespace DPTS.Web.Controllers
         public ActionResult Register()
         {
             var model = new RegisterViewModel();
-            model.UserTypeList = GetUserTypeList();
+            model.UserRoleList = GetUserTypeList();
             return View(model);
         }
 
@@ -173,25 +173,29 @@ namespace DPTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (model.UserType == "0")
+            if (model.Role == "0" && model.UserType == "professional")
                 ModelState.AddModelError("", "Select user type");
-                
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email,
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
                     Email = model.Email,
                     LastName = model.LastName,
                     FirstName = model.FirstName,
-                    LastIpAddress ="192.168.225.1",
+                    LastIpAddress = "192.168.225.1",
                     LastLoginDateUtc = DateTime.UtcNow,
                     CreatedOnUtc = DateTime.UtcNow,
-                    PhoneNumber = model.PhoneNumber};
-
+                    PhoneNumber = model.PhoneNumber
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await this.UserManager.AddToRoleAsync(user.Id, model.UserType);
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    if(model.UserType == "professional")
+                        await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -203,7 +207,7 @@ namespace DPTS.Web.Controllers
                 }
                 AddErrors(result);
             }
-            model.UserTypeList = GetUserTypeList();
+            model.UserRoleList = GetUserTypeList();
             // If we got this far, something failed, redisplay form
             return View(model);
         }

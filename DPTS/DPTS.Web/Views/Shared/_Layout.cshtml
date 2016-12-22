@@ -71,10 +71,12 @@
                                         <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="#">Packages</a></li>
                                         <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="@Url.Action("About","Home")">About</a></li>
                                         <li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="@Url.Action("Contact","Home")">Contact Us</a></li>
+
                                         @Html.Partial("_LoginPartial")
                                     </ul>
                                 </div>
                             </nav>
+
                         </div>
                     </div>
                 </div>
@@ -188,8 +190,7 @@
             </div>
         </footer>
     </div>
-        @*@Scripts.Render("~/bundles/jquery")*@
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

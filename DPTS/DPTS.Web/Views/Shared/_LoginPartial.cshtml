@@ -15,6 +15,31 @@
 }
 else
 {
+    @*<a href="@"><span class="s-user">Login/Register</span><img alt="Login" src="~/Content/wp-content/uploads/2016/12/ComingSoon-150x150.jpg"></a>*@
     <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 }
+
+@*<div class="doc-menu">
+    <ul class="tg-login-logout">
+        <li class="session-user-info">
+ <a href="javascript:;"><span class="s-user" style="display:block">alex</span><img alt="Welcome" src="~/Content/wp-content/uploads/2016/12/ComingSoon-150x150.jpg"></a>
+ <a href="javascript:;" data-toggle="modal" data-target=".tg-user-modal"><span class="s-user">Login/Register</span><img alt="Login" src="~/Content/wp-content/uploads/2016/12/ComingSoon-150x150.jpg"></a>
+            <ul>
+                <li class="active"><a href="#"><i class="fa fa-line-chart"></i>Profile</a></li>
+                <li class=""><a href="#"><i class="fa fa-gears"></i>Profile Settings</a></li>
+                <li class=""><a href="#"><i class="fa fa-heart"></i>Favourites</a></li>
+
+                <li class=""><a href="#"><i class="fa fa-money"></i>Invoices &amp; Packages</a></li>
+                <li class=""><a href="#"><i class="fa fa-list"></i>My Schedules</a></li>
+
+                <li class=""><a href="#"><i class="fa fa-book"></i>Booking Listings</a></li>
+                <li class=""><a href="#"><i class="fa fa-calendar-check-o"></i>Booking Schedules</a></li>
+                <li class=""><a href="#"><i class="fa fa-cog"></i>Booking Settings</a></li>
+                <li class=""><a href="#"><i class="fa fa-lock"></i>Security Settings</a></li>
+                <li class=""><a href="#"><i class="fa fa-eye"></i>Privacy Settings</a></li>
+                <li><a href="#"><i class="fa fa-sign-in"></i>Logout</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>*@

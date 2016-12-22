@@ -10,19 +10,19 @@
         <hr />
         <div class="form-group">
             <div class="tg-radiobox user-selection active-user-type active">
-                <input type="radio" checked="checked" name="user_type" value="professional" id="professional">
+                <input type="radio" checked="checked" name="UserType" value="professional" id="professional">
                 <label for="professional">Professional</label>
             </div>
             <div class="tg-radiobox user-selection active-user-type visitor-type active">
-                <input type="radio" name="user_type" value="visitor" id="visitor">
+                <input type="radio" name="UserType" value="visitor" id="visitor">
                 <label for="visitor">Visitor</label>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="user-role" style="display: none">
             @Html.Label("Select User Type", new { @class = "col-md-2 control-label" })
             <div class="col-md-6">
-                @Html.DropDownListFor(model => model.UserType, Model.UserTypeList)
-                @Html.ValidationMessageFor(model => model.UserType,"", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Role, Model.UserRoleList)
+                @Html.ValidationMessageFor(model => model.Role,"", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -75,7 +75,19 @@
         </div>
     }
 </div>
+@Scripts.Render("~/bundles/jquery")
+<script type='text/javascript'>
+    if ($("#professional").is(":checked")) {
+        $("#user-role").show();
+    }
+    $(function () {
+        $("input[name='UserType']").click(function () {
+            if ($("#professional").is(":checked")) {
+                $("#user-role").show();
+            } else {
+                $("#user-role").hide();
+            }
+        });
+    });
+</script>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
