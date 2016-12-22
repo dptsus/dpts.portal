@@ -788,6 +788,7 @@
     <Content Include="Views\Speciality\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Speciality\Create.cshtml" />
     <Content Include="Views\Speciality\Edit.cshtml" />
+    <Content Include="Views\Account\CallLoginRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />
