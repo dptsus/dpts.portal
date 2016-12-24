@@ -197,6 +197,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -788,7 +789,8 @@
     <Content Include="Views\Speciality\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Speciality\Create.cshtml" />
     <Content Include="Views\Speciality\Edit.cshtml" />
-    <Content Include="Views\Account\CallLoginRegister.cshtml" />
+    <Content Include="Views\Shared\AccountNavigation.cshtml" />
+    <Content Include="Views\Customer\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

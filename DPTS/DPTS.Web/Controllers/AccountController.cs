@@ -63,12 +63,7 @@ namespace DPTS.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        [AllowAnonymous]
-        public ActionResult CallLoginRegister()
-        {
-            return View();
-        }
-
+        
         //
         // POST: /Account/Login
         [HttpPost]
@@ -526,5 +521,7 @@ namespace DPTS.Web.Controllers
             }
         }
         #endregion
+
+
     }
 }
