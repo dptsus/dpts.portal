@@ -1,6 +1,6 @@
 ﻿@using DPTS.Web.Models;
 @using Microsoft.AspNet.Identity
-@{ 
+@{
     string FirstName = string.Empty;
     var context = new ApplicationDbContext();
     if (!string.IsNullOrEmpty(User.Identity.Name))
@@ -16,8 +16,8 @@
                     <li class="session-user-info">
                         <a href="javascript:;"><span class="s-user">@FirstName</span><img alt="Welcome" src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/12/ComingSoon-150x150.jpg"></a>
                         <ul>
-                            <li class="active"><a href="@Url.Action("Info","Customer")"><i class="fa fa-line-chart"></i>Profile</a></li>
-                            <li class=""><a href="@Url.Action("Info","Customer")"><i class="fa fa-gears"></i>Profile Settings</a></li>
+                            <li class="active"><a href="@Url.Action("Info","Doctor")"><i class="fa fa-line-chart"></i>Profile</a></li>
+                            <li class=""><a href="@Url.Action("ProfileSetting","Doctor")"><i class="fa fa-gears"></i>Profile Settings</a></li>
                             <li class=""><a href="#"><i class="fa fa-money"></i>Invoices &amp; Packages</a></li>
                             <li class=""><a href="#"><i class="fa fa-list"></i>My Schedules</a></li>
                             <li class=""><a href="#"><i class="fa fa-book"></i>Booking Listings</a></li>

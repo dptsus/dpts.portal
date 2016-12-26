@@ -50,7 +50,8 @@ namespace DPTS.Web
                 "~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
+                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js",
+               "~/Content/Admin/js/bootstrap-datetimepicker.js"));
 
             bundles.Add(new StyleBundle("~/Content/wp-content/themes").Include(
                 "~/Content/wp-content/themes/docdirect/css/bootstrap.min1bba.css",
@@ -74,7 +75,8 @@ namespace DPTS.Web
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/css/jquery.fs.wallpaper1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/css/styles1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/button/static/css/styles1c9b.css",
-                "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/call-to-action/static/css/styles1c9b.css"
+                "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/call-to-action/static/css/styles1c9b.css",
+                 "~/Content/Admin/vendor/bootstrap-datetimepicker.css"
                 ));
         }
     }

@@ -197,7 +197,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -215,6 +215,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin\vendor\bootstrap-datetimepicker.css" />
+    <Content Include="Content\Admin\js\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\AdminHelper.js" />
     <Content Include="Content\Admin\data\flot-data.js" />
     <Content Include="Content\Admin\data\morris-data.js" />
@@ -359,7 +361,6 @@
     <Content Include="Content\wp-content\themes\docdirect\images\header_bg.jpg" />
     <Content Include="Content\wp-content\themes\docdirect\images\icon-01.png" />
     <Content Include="Content\wp-content\themes\docdirect\images\icon-02.png" />
-    <Content Include="Content\wp-content\themes\docdirect\images\ie.html" />
     <Content Include="Content\wp-content\themes\docdirect\images\logo.png" />
     <Content Include="Content\wp-content\themes\docdirect\images\map_loader.gif" />
     <Content Include="Content\wp-content\themes\docdirect\images\pattern.jpg" />
@@ -790,7 +791,9 @@
     <Content Include="Views\Speciality\Create.cshtml" />
     <Content Include="Views\Speciality\Edit.cshtml" />
     <Content Include="Views\Shared\AccountNavigation.cshtml" />
-    <Content Include="Views\Customer\Info.cshtml" />
+    <Content Include="Views\Doctor\Info.cshtml" />
+    <Content Include="Views\Doctor\ProfileSetting.cshtml" />
+    <Content Include="Views\Shared\Account_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

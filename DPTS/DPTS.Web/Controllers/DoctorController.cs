@@ -6,10 +6,15 @@ using System.Web.Mvc;
 
 namespace DPTS.Web.Controllers
 {
-    public class CustomerController : Controller
+    public class DoctorController : Controller
     {
         // GET: Customer
         public ActionResult Info()
+        {
+            return View();
+        }
+
+        public ActionResult ProfileSetting()
         {
             return View();
         }
