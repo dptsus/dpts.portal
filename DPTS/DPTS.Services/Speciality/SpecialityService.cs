@@ -12,60 +12,51 @@ namespace DPTS.Services
     public class SpecialityService : ISpecialityService
     {
         #region Fields
-        private DPTSDbContext _specialityRepository;
+        private IRepository<Speciality> _specialityRepository;
         #endregion
 
         #region Constructor
-        public SpecialityService(DPTSDbContext specialityRepository)
+        public SpecialityService(IRepository<Speciality> specialityRepository)
         {
             _specialityRepository = specialityRepository;
         }
         #endregion
 
-        public void AddSpeciality(Speciality speciality)
+        public void AddSpecialityAsync(Speciality speciality)
         {
             if (speciality == null)
                 throw new ArgumentNullException(nameof(speciality));
 
-            _specialityRepository.Speciality.Add(speciality);
-
-            _specialityRepository.SaveChanges();
+            _specialityRepository.AddAsync(speciality);
         }
 
-        public void DeleteSpeciality(Speciality speciality)
+        public async Task DeleteSpecialityAsync(Speciality Speciality)
         {
-            if (speciality == null)
-                throw new ArgumentNullException(nameof(speciality));
+            if (Speciality == null)
+                throw new ArgumentNullException(nameof(Speciality));
 
-            _specialityRepository.Speciality.Remove(speciality);
-
+            await _specialityRepository.RemoveAsync(Speciality);
         }
 
-        public Speciality GetSpecialitybyId(int Id)
+        public async Task<IEnumerable<Speciality>> GetAllSpecialityAsync(bool showhidden, bool enableTracking = false)
         {
-            return _specialityRepository.Speciality.Find(Id);
+            return showhidden ? await _specialityRepository.GetAllAsync(enableTracking)
+                : await _specialityRepository.FindAsync(c => c.IsActive);
         }
 
-        public IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false)
+        public async Task<Speciality> GetSpecialitybyIdAsync(int Id)
         {
-            //var query = enableTracking ? _specialityRepository.Table : _specialityRepository.TableNoTracking;
-
-            //if (!showhidden)
-            //    query = query.Where(c => c.IsActive);
-
-            //query = query.OrderBy(c => c.DisplayOrder);
-
-            return _specialityRepository.Speciality.ToList();
+            return await _specialityRepository.GetByIdAsync(Id);
         }
 
-        public void UpdateSpeciality(Speciality data)
+        public void UpdateSpecialityAsync(Speciality data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            _specialityRepository.SaveChanges();
+            _specialityRepository.UpdateAsync(data);
         }
-        
+
     }
 }
 

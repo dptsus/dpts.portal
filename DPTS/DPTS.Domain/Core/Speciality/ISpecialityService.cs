@@ -12,26 +12,24 @@ namespace DPTS.Domain.Core
         /// <summary>
         /// Inserts an Speciality
         /// </summary>
-        void AddSpeciality(Speciality speciality);
-
-        /// <summary>
-        /// Get Speciality by Id
-        /// </summary>
-        Speciality GetSpecialitybyId(int Id);
-
-        /// <summary>
-        /// Delete Specialityr by Id
-        /// </summary>
-        void DeleteSpeciality(Speciality speciality);
+        void AddSpecialityAsync(Speciality speciality);
 
         /// <summary>
         /// update Speciality
         /// </summary>
-        void UpdateSpeciality(Speciality data);
+        void UpdateSpecialityAsync(Speciality data);
 
         /// <summary>
-        /// get list of Speciality
+        /// Get all Speciality
         /// </summary>
-        IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false);
+        Task<IEnumerable<Speciality>> GetAllSpecialityAsync(bool showhidden, bool enableTracking = false);
+        /// <summary>
+        /// Get Speciality by Id
+        /// </summary>
+        Task<Speciality> GetSpecialitybyIdAsync(int Id);
+        /// <summary>
+        /// Delete Doctor by Id
+        /// </summary>
+        Task DeleteSpecialityAsync(Speciality Doctor);
     }
 }
