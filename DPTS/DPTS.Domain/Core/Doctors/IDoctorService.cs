@@ -6,29 +6,22 @@ namespace DPTS.Domain.Core
 {
     public interface IDoctorService
     {
+        void AddDoctorAsync(Doctor Doctor);
         /// <summary>
-        /// Inserts an Doctor account
+        /// Get all Doctor
         /// </summary>
-        void AddDoctor(Doctor doctor);
-
+        Task<IEnumerable<Doctor>> GetAllDoctorAsync(bool showhidden, bool enableTracking = false);
         /// <summary>
         /// Get Doctor by Id
         /// </summary>
-        Doctor GetDoctorbyId(int Id);
-
+        Task<Doctor> GetDoctorbyIdAsync(int Id);
         /// <summary>
         /// Delete Doctor by Id
         /// </summary>
-        void DeleteDoctor(Doctor Doctor);
-
+        Task DeleteDoctorAsync(Doctor Doctor);
         /// <summary>
-        /// update catDoctoregory
+        /// update Doctor
         /// </summary>
-        void UpdateDoctor(Doctor data);
-
-        /// <summary>
-        /// get list of Doctor Name
-        /// </summary>
-        IList<string> GetDoctorsName(bool showhidden);
+        void UpdateDoctorAsync(Doctor data);
     }
 }

@@ -9,47 +9,29 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using System.Reflection;
+
 
 namespace DPTS.Services
 {
-    public partial class Repository<T> : IRepository<T> where T : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         #region Fields
-
-        private readonly DPTSDbContext _context;
-        private IDbSet<T> _entities;
-
+        protected readonly DPTSDbContext _context;
+        private DbSet<TEntity> _entities;
         #endregion
 
-        #region Ctor
-
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="context">Object context</param>
+        #region Constructor
         public Repository(DPTSDbContext context)
         {
-            this._context = context;
+            _context = context;
+            _entities = context.Set<TEntity>();
         }
 
         #endregion
 
-        #region Utilities
-
-        /// <summary>
-        /// Get full error
-        /// </summary>
-        /// <param name="exc">Exception</param>
-        /// <returns>Error</returns>
-        protected string GetFullErrorText(DbEntityValidationException exc)
-        {
-            var msg = string.Empty;
-            foreach (var validationErrors in exc.EntityValidationErrors)
-                foreach (var error in validationErrors.ValidationErrors)
-                    msg += string.Format("Property: {0} Error: {1}", error.PropertyName, error.ErrorMessage) + Environment.NewLine;
-            return msg;
-        }
-        private void SetDateTimePropertiesIfAny(T entity, bool isAddOperation = true)
+        #region Utility Methods
+        private void SetDateTimePropertiesIfAny(TEntity entity, bool isAddOperation = true)
         {
             var typeInfo = entity.GetType();
             if (isAddOperation)
@@ -68,150 +50,6 @@ namespace DPTS.Services
             }
 
         }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Get entity by identifier
-        /// </summary>
-        /// <param name="id">Identifier</param>
-        /// <returns>Entity</returns>
-        public virtual T GetById(object id)
-        {
-            //see some suggested performance optimization (not tested)
-            //http://stackoverflow.com/questions/11686225/dbset-find-method-ridiculously-slow-compared-to-singleordefault-on-id/11688189#comment34876113_11688189
-            return this.Entities.Find(id);
-        }
-
-        /// <summary>
-        /// Insert entity
-        /// </summary>
-        /// <param name="entity">Entity</param>
-        public virtual void Insert(T entity)
-        {
-            try
-            {
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
-
-                SetDateTimePropertiesIfAny(entity);
-
-                this.Entities.Add(entity);
-
-                this._context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(GetFullErrorText(dbEx), dbEx);
-            }
-        }
-
-        /// <summary>
-        /// Insert entities
-        /// </summary>
-        /// <param name="entities">Entities</param>
-        public virtual void Insert(IEnumerable<T> entities)
-        {
-            try
-            {
-                if (entities == null)
-                    throw new ArgumentNullException("entities");
-
-                foreach (var entity in entities)
-                    this.Entities.Add(entity);
-
-                this._context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(GetFullErrorText(dbEx), dbEx);
-            }
-        }
-
-        /// <summary>
-        /// Update entity
-        /// </summary>
-        /// <param name="entity">Entity</param>
-        public virtual void Update(T entity)
-        {
-            try
-            {
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
-
-                SetDateTimePropertiesIfAny(entity);
-                this._context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(GetFullErrorText(dbEx), dbEx);
-            }
-        }
-
-        /// <summary>
-        /// Update entities
-        /// </summary>
-        /// <param name="entities">Entities</param>
-        public virtual void Update(IEnumerable<T> entities)
-        {
-            try
-            {
-                if (entities == null)
-                    throw new ArgumentNullException("entities");
-
-                this._context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(GetFullErrorText(dbEx), dbEx);
-            }
-        }
-
-        /// <summary>
-        /// Delete entity
-        /// </summary>
-        /// <param name="entity">Entity</param>
-        public virtual void Delete(T entity)
-        {
-            try
-            {
-                if (entity == null)
-                    throw new ArgumentNullException("entity");
-
-                this.Entities.Remove(entity);
-
-                this._context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(GetFullErrorText(dbEx), dbEx);
-            }
-        }
-
-        /// <summary>
-        /// Delete entities
-        /// </summary>
-        /// <param name="entities">Entities</param>
-        public virtual void Delete(IEnumerable<T> entities)
-        {
-            try
-            {
-                if (entities == null)
-                    throw new ArgumentNullException("entities");
-
-                foreach (var entity in entities)
-                    this.Entities.Remove(entity);
-
-                this._context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                throw new Exception(GetFullErrorText(dbEx), dbEx);
-            }
-        }
-
         #endregion
 
         #region Properties
@@ -219,38 +57,119 @@ namespace DPTS.Services
         /// <summary>
         /// Gets a table
         /// </summary>
-        public virtual IQueryable<T> Table
+        public virtual IQueryable<TEntity> Table
         {
             get
             {
-                return this.Entities;
+                return _entities;
             }
         }
 
         /// <summary>
         /// Gets a table with "no tracking" enabled (EF feature) Use it only when you load record(s) only for read-only operations
         /// </summary>
-        public virtual IQueryable<T> TableNoTracking
+        public virtual IQueryable<TEntity> TableNoTracking
         {
             get
             {
-                return this.Entities.AsNoTracking();
+                return _entities.AsNoTracking();
             }
+        }
+
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Add new entity
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        /// <returns>Task</returns>
+        public virtual void AddAsync(TEntity entity)
+        {
+            SetDateTimePropertiesIfAny(entity);
+
+             _entities.Add(entity);
+
+             _context.SaveChangesAsync();
+
         }
 
         /// <summary>
-        /// Entities
+        /// Update existing entity
         /// </summary>
-        protected virtual IDbSet<T> Entities
+        /// <param name="entity">Entity</param>
+        /// <returns>Task</returns>
+        public virtual void UpdateAsync(TEntity entity)
         {
-            get
-            {
-                if (_entities == null)
-                    _entities = _context.Set<T>();
-                return _entities;
-            }
+            SetDateTimePropertiesIfAny(entity, isAddOperation: false);
+
+          //  _entities.update(entity);
+
+            _context.SaveChangesAsync();
+
         }
 
+        /// <summary>
+        /// Remove entity
+        /// </summary>
+        /// <param name="entity">Entity</param>
+        public async Task RemoveAsync(TEntity entity)
+        {
+            _entities.Remove(entity);
+
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Get entity by id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>Task<Entity></returns>
+        public async Task<TEntity> GetByIdAsync(int id)
+        {
+            return await _entities.FindAsync(id);
+        }
+
+        /// <summary>
+        /// Get all entities
+        /// </summary>
+        /// <param name="enableTracking">Enable Entity Tracking. Default is true</param>
+        /// <returns>Task<IEnumerable<TEntity>></returns>
+        public async Task<IEnumerable<TEntity>> GetAllAsync(bool enableTracking = false)
+        {
+            return enableTracking ? await _entities.ToListAsync()
+                : await _entities.AsNoTracking().ToListAsync();
+        }
+
+        /// <summary>
+        /// Find entities matching the specified condition
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns>Task<IEnumerable<TEntity>></returns>
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _entities.Where(predicate).ToListAsync();
+        }
+
+        /// <summary>
+        /// Find only single record matching the specified condition
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns>Task<TEntity></returns>
+        public Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _entities.FirstOrDefaultAsync(predicate);
+        }
+
+        /// <summary>
+        /// Return true if records for the specified condition exists
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns>Task<Bool></returns>
+        public Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _entities.AnyAsync(predicate);
+        }
         #endregion
     }
 }

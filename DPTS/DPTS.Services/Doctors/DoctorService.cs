@@ -11,55 +11,51 @@ namespace DPTS.Services
     public class DoctorService : IDoctorService
     {
         #region Fields
-        private readonly IRepository<Doctor> _doctorRepository;
+        private readonly IRepository<Doctor> _DoctorRepository;
         #endregion
 
         #region Constructor
-        public DoctorService(IRepository<Doctor> doctorRepository)
+        public DoctorService(IRepository<Doctor> DoctorRepository)
         {
-            _doctorRepository = doctorRepository;
+            _DoctorRepository = DoctorRepository;
         }
         #endregion
 
         #region Methods
-        public void AddDoctor(Doctor doctor)
+        public void AddDoctorAsync(Doctor Doctor)
         {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
+            if (Doctor == null)
+                throw new ArgumentNullException(nameof(Doctor));
 
-            _doctorRepository.Insert(doctor);
+             _DoctorRepository.AddAsync(Doctor);
         }
 
-        public void DeleteDoctor(Doctor doctor)
+        public async Task DeleteDoctorAsync(Doctor Doctor)
         {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
+            if (Doctor == null)
+                throw new ArgumentNullException(nameof(Doctor));
 
-            _doctorRepository.Delete(doctor);
+            await _DoctorRepository.RemoveAsync(Doctor);
         }
 
-
-        public Doctor GetDoctorbyId(int Id)
+        public async Task<IEnumerable<Doctor>> GetAllDoctorAsync(bool showhidden, bool enableTracking = false)
         {
-            return _doctorRepository.GetById(Id);
+            return showhidden ? await _DoctorRepository.GetAllAsync(enableTracking)
+                : await _DoctorRepository.FindAsync(c => c.IsActive);
         }
 
-        public void UpdateDoctor(Doctor data)
+        public async Task<Doctor> GetDoctorbyIdAsync(int Id)
+        {
+            return await _DoctorRepository.GetByIdAsync(Id);
+        }
+
+        public void UpdateDoctorAsync(Doctor data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-             _doctorRepository.Update(data);
+             _DoctorRepository.UpdateAsync(data);
         }
-        public IList<string> GetDoctorsName(bool showhidden)
-        {
-            //var query = _doctorRepository.Table;
-            //if (!showhidden)
-            //    query = query.Where(c => c.IsActive);
-            //return query.Select(c => c.Name).ToList();
-            return null;
-        }
-
         #endregion
     }
 }
