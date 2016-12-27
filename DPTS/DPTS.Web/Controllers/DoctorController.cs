@@ -1,5 +1,6 @@
 ﻿using DPTS.Domain.Core;
 using DPTS.Domain.Entities;
+using DPTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,16 @@ namespace DPTS.Web.Controllers
     public class DoctorController : Controller
     {
         #region Fields
-        private IDoctorService _doctorService;
+        private readonly IDoctorService _doctorService;
+        private ApplicationDbContext context;
+
         #endregion
 
         #region Contructor
         public DoctorController(IDoctorService doctorService)
         {
             _doctorService = doctorService;
+            context = new ApplicationDbContext();
         }
         #endregion
 
@@ -49,8 +53,35 @@ namespace DPTS.Web.Controllers
 
         public ActionResult ProfileSetting()
         {
+            var model = new DoctorProfileSettingViewModel();
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+            {
+                var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                model.Email = user.Email;
+                model.FirstName = user.FirstName;
+                model.LastName = user.LastName;
+                model.Id = user.Id;
+                model.PhoneNumber = user.PhoneNumber;
+            }
             ViewBag.GenderList = GetGender();
-            return View();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult> ProfileSetting(DoctorProfileSettingViewModel model)
+        {
+            var data = await _doctorService.GetDoctorbyIdAsync(model.Id);
+            if (data == null)
+                return null;
+
+            var doctor = new Doctor();
+            doctor.Gender = model.Gender;
+            doctor.DoctorId = model.Id;
+            doctor.ShortProfile = model.ShortProfile;
+            doctor.DateOfBirth = model.DateOfBirth;
+
+            _doctorService.AddDoctorAsync(doctor);
+
+           return RedirectToAction("Info");
         }
         #endregion
 

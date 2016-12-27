@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DPTS.Domain.Entities
 {
@@ -11,9 +13,14 @@ namespace DPTS.Domain.Entities
         {
             this.DoctorGuid = Guid.NewGuid();
         }
+        [Required]
+        public string DoctorId { get; set; }
+
         public Guid DoctorGuid { get; set; }
 
         public string Gender { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
 
         public string Qualifications { get; set; }
 

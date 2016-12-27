@@ -44,9 +44,9 @@ namespace DPTS.Services
                 : await _DoctorRepository.FindAsync(c => c.IsActive);
         }
 
-        public async Task<Doctor> GetDoctorbyIdAsync(int Id)
+        public async Task<Doctor> GetDoctorbyIdAsync(string Id)
         {
-            return await _DoctorRepository.GetByIdAsync(Id);
+            return await _DoctorRepository.Table.FirstOrDefaultAsync(c => c.DoctorId == Id);
         }
 
         public void UpdateDoctorAsync(Doctor data)

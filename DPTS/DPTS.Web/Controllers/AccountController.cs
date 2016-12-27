@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DPTS.Web.Models;
 using System.Collections.Generic;
+using DPTS.Domain.Core;
+using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {
@@ -19,10 +21,12 @@ namespace DPTS.Web.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
+        private IDoctorService _doctorService;
 
-        public AccountController()
+        public AccountController(IDoctorService doctorService)
         {
             context = new ApplicationDbContext();
+            _doctorService = doctorService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -63,7 +67,7 @@ namespace DPTS.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-        
+
         //
         // POST: /Account/Login
         [HttpPost]
@@ -192,8 +196,13 @@ namespace DPTS.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    if(model.UserType == "professional")
+                    if (model.UserType == "professional")
+                    {
                         await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+                        var doctor = new Doctor();
+                        doctor.DoctorId = user.Id;
+                        _doctorService.AddDoctorAsync(doctor);
+                    }
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 

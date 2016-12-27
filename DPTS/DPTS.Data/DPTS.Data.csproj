@@ -75,6 +75,14 @@
     <Compile Include="Migrations\201612201850451_updateSpecialitytbl.Designer.cs">
       <DependentUpon>201612201850451_updateSpecialitytbl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612271029213_UpdateDoctortoDoctorId.cs" />
+    <Compile Include="Migrations\201612271029213_UpdateDoctortoDoctorId.Designer.cs">
+      <DependentUpon>201612271029213_UpdateDoctortoDoctorId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612271054057_UpdateDoctortoDoctorDOB.cs" />
+    <Compile Include="Migrations\201612271054057_UpdateDoctortoDoctorDOB.Designer.cs">
+      <DependentUpon>201612271054057_UpdateDoctortoDoctorDOB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -99,6 +107,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612201850451_updateSpecialitytbl.resx">
       <DependentUpon>201612201850451_updateSpecialitytbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612271029213_UpdateDoctortoDoctorId.resx">
+      <DependentUpon>201612271029213_UpdateDoctortoDoctorId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612271054057_UpdateDoctortoDoctorDOB.resx">
+      <DependentUpon>201612271054057_UpdateDoctortoDoctorDOB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

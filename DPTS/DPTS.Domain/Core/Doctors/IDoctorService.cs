@@ -14,7 +14,7 @@ namespace DPTS.Domain.Core
         /// <summary>
         /// Get Doctor by Id
         /// </summary>
-        Task<Doctor> GetDoctorbyIdAsync(int Id);
+        Task<Doctor> GetDoctorbyIdAsync(string Id);
         /// <summary>
         /// Delete Doctor by Id
         /// </summary>

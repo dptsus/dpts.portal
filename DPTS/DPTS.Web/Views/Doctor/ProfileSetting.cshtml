@@ -6,7 +6,11 @@
 }
 @Html.Partial("AccountNavigation")
 <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
-    <form class="tg-formeditprofile tg-haslayout do-account-setitngs">
+@using (Html.BeginForm("ProfileSetting", "Doctor",
+                        new { },
+                        FormMethod.Post, new { @class = "tg-formeditprofile tg-haslayout do-account-setitngs" }))
+{
+    @Html.AntiForgeryToken()
         <fieldset>
             <div class="tg-bordertop tg-haslayout">
                 <div class="tg-formsection">
@@ -17,7 +21,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.FirstName)
-                                @Html.EditorFor(model => model.FirstName,new { @class= "form-control" })
+                                @Html.EditorFor(model => model.FirstName, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.FirstName)
                             </div>
                         </div>
@@ -38,13 +42,6 @@
                                     </span>
                                   </div>
                                     @Html.ValidationMessageFor(model => model.DateOfBirth)
-                                    @*<label>Date of Birth</label>
-                                        <div class='input-group date' id='dateofBirth'>
-                                            <input type='text' class="form-control" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>*@
                                 </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -82,7 +79,7 @@
             </div>
             <button type="submit" class="tg-btn process-account-settings">update</button>
         </fieldset>
-    </form>
+}
 </div>
 @Scripts.Render("~/bundles/jquery")
 <script type="text/javascript">
@@ -91,6 +88,11 @@
                     format: 'DD/MM/YYYY',
                     viewMode: 'years'
                     });
-            });
+    });
+    var dob = "@Model.DateOfBirth";
+    if (dob == "01-01-0001 12:00:00")
+    {
+        $('#DateOfBirth').val(" ");
+    }
 </script>
 
