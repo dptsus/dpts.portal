@@ -1,0 +1,664 @@
+﻿
+@{
+    ViewBag.Title = "Booking Listings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Partial("AccountNavigation")
+<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
+
+    <div class="doc-booking-listings dr-bookings">
+        <div class="tg-dashboard tg-docappointmentlisting tg-haslayout">
+            <div class="tg-heading-border tg-small">
+                <h3>Appointments</h3>
+            </div>
+            <form class="tg-formappointmentsearch" action="https://themographics.com/wordpress/docdirect/dashboard/?ref=bookings&amp;identity=340" method="get">
+                <fieldset>
+                    <h4>Search Here:</h4>
+                    <div class="form-group">
+                        <input type="hidden" class="" value="bookings" name="ref">
+                        <input type="hidden" class="" value="340" name="identity">
+                        <input type="text" class="form-control booking-search-date" value="" name="by_date" placeholder="Search by date">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="tg-appointmenttable">
+                <table class="table">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>id.</th>
+                            <th>Subject</th>
+                            <th>Phone</th>
+                            <th>More Detail</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="booking-odd booking-1883">
+                            <td data-name="id">Do-9Y2UP</td>
+                            <td data-name="subject">test</td>
+                            <td data-name="phone">454-323-2322</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-9Y2UP</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            <span>عففر</span>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                            <span>Serice Kill me</span>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>454-323-2322</span> </li>
+                                        <li> <strong>User Name:</strong> <span>test</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>December 27, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>10:10 am&nbsp;-&nbsp;10:40 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>INR256</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>n</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-even booking-1694">
+                            <td data-name="id">Do-rFuFT</td>
+                            <td data-name="subject">aaa</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-rFuFT</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>December 14, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>9:00 am&nbsp;-&nbsp;9:30 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>EUR25</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>aaa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-odd booking-1677">
+                            <td data-name="id">Do-xGOBu</td>
+                            <td data-name="subject">iuhuih</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-xGOBu</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>December 23, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>2:15 pm&nbsp;-&nbsp;2:45 pm</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>EUR56</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>iiuhi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-even booking-1555">
+                            <td data-name="id">Do-WthBO</td>
+                            <td data-name="subject">testee</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-WthBO</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            <span>2</span>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor testee</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>November 29, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>10:10 am&nbsp;-&nbsp;10:40 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>IRR100</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>testeee</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-odd booking-1524">
+                            <td data-name="id">Do-3C2vH</td>
+                            <td data-name="subject">56yuu</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-3C2vH</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                            <span>2</span>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>November 29, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>9:00 am&nbsp;-&nbsp;9:30 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>IRR100</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>t5uui tyui</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-even booking-1368">
+                            <td data-name="id">Do-DuRkK</td>
+                            <td data-name="subject">dsfdssdfsdf</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-DuRkK</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>November 23, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>5:10 pm&nbsp;-&nbsp;5:40 pm</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>EUR50</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>sdfsdfdsfsf</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-odd booking-1347">
+                            <td data-name="id">Do-ixgsx</td>
+                            <td data-name="subject">Assunto</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-ixgsx</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                            <span>ะำหะ</span>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>November 9, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>10:10 am&nbsp;-&nbsp;10:40 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>INR2</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>For </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-even booking-1062">
+                            <td data-name="id">Do-Jxboa</td>
+                            <td data-name="subject">Treatment Needed</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-Jxboa</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>November 2, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>9:35 am&nbsp;-&nbsp;10:05 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>INR100</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>ssdda</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-odd booking-1016">
+                            <td data-name="id">Do-64QxF</td>
+                            <td data-name="subject">gg</td>
+                            <td data-name="phone">63 235 856843</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-64QxF</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>63 235 856843</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>September 24, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>9:35 am&nbsp;-&nbsp;10:05 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>INR50</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>g</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="booking-even booking-1009">
+                            <td data-name="id">Do-sWy2S</td>
+                            <td data-name="subject">Angel</td>
+                            <td data-name="phone">8114444</td>
+                            <td data-name="notes"><a class="get-detail" href="javascript:;"><i class="fa fa-sticky-note-o"></i></a></td>
+                            <td>
+                                <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+
+                            </td>
+                        </tr>
+                        <tr class="tg-appointmentdetail bk-elm-hide">
+                            <td colspan="6">
+                                <div class="appointment-data-wrap">
+                                    <ul class="tg-leftcol">
+                                        <li>
+                                            <strong>tracking id:</strong>
+                                            <span>Do-sWy2S</span>
+                                        </li>
+                                        <li>
+                                            <strong>Category:</strong>
+                                        </li>
+                                        <li>
+                                            <strong>Service:</strong>
+                                        </li>
+                                        <li> <strong>Phone:</strong> <span>8114444</span> </li>
+                                        <li> <strong>User Name:</strong> <span>Demo Visitor</span> </li>
+                                        <li> <strong>Email:</strong> <span>visitor@docdirect.com</span> </li>
+                                        <li>
+                                            <strong>Appointment date:</strong>
+                                            <span>September 30, 2016</span>
+                                        </li>
+                                        <li>
+                                            <strong>Meeting Time:</strong>
+                                            <span>9:00 am&nbsp;-&nbsp;9:30 am</span>
+                                        </li>
+                                        <li>
+                                            <strong>status:</strong>
+                                            <span>approved</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Type:</strong>
+                                            <span>Payment On Arival</span>
+                                        </li>
+                                        <li>
+                                            <strong>Appointment Fee:</strong>
+                                            <span>INR25</span>
+                                        </li>
+                                        <li>
+                                            <strong>Payment Status:</strong>
+                                            <span>Pending</span>
+                                        </li>
+                                    </ul>
+                                    <div class="tg-rightcol">
+                                        <strong>notes:</strong>
+                                        <div class="tg-description">
+                                            <p>Doctor me podrá ver este día </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-xs-12">
+                    <div class="tg-pagination"><ul><li><a class="active" href="javascript:;">1</a></li><li><a href="https://themographics.com/wordpress/docdirect/dashboard/page/2/?ref=bookings&amp;identity=340" class="inactive">2</a></li><li class="tg-next"><a class="" href="https://themographics.com/wordpress/docdirect/dashboard/page/2/?ref=bookings&amp;identity=340"><i class="fa fa-angle-right"></i></a></li></ul></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/template" id="tmpl-status-approved">
+        <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Approved</a>
+    </script>
+</div>
+

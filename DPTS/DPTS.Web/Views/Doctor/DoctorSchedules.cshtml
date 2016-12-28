@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewBag.Title = "My Schedules";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Partial("AccountNavigation")
+<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
+    <div class="tg-docschedule tg-haslayout">
+        <div class="tg-heading-border tg-small">
+            <h3>update Schedule</h3>
+        </div>
+        <p><strong>Note: Leave fields empty to show  day closed.</strong></p>
+
+        <form class="form-docschedule" id="form-docschedule">
+            <fieldset class="row">
+
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Sunday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[sun_start]" value="12:00" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[sun_end]" value="20:00" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Monday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[mon_start]" value="" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[mon_end]" value="" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Tuesday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[tue_start]" value="08:00" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[tue_end]" value="21:00" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Wednesday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[wed_start]" value="06:00" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[wed_end]" value="03:00" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Thursday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[thu_start]" value="" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[thu_end]" value="" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Friday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[fri_start]" value="16:00" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[fri_end]" value="23:45" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Saturday</label>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[sat_start]" value="22:00" class="form-control schedule-pickr" placeholder="start time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <input type="text" name="schedules[sat_end]" value="07:00" class="form-control schedule-pickr" placeholder="end time">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+
+                    <div class="form-group">
+                        <select name="time_format" class="form-control">
+                            <option value="12hour">Show Time in 12-hour clock</option>
+                            <option value="24hour">Show Time in 24-hour clock</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="tg-btn pull-left update-schedules">update</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script>
+	jQuery(document).ready(function(e) {
+        //Time Picker
+		jQuery('.schedule-pickr').datetimepicker({
+		  datepicker:false,
+		  format:'H:i'
+		});
+    });
+    </script>
+</div>

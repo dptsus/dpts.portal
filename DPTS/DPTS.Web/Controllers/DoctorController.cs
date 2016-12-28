@@ -113,6 +113,38 @@ namespace DPTS.Web.Controllers
             return RedirectToAction("Info");
         }
 
+        public ActionResult Favourites()
+        {
+            return View();
+        }
+        public ActionResult InvoicesPackages()
+        {
+            return View();
+        }
+        public ActionResult DoctorSchedules()
+        {
+            return View();
+        }
+        public ActionResult BookingListings()
+        {
+            return View();
+        }
+        public ActionResult BookingSchedules()
+        {
+            return View();
+        }
+        public ActionResult SecuritySettings()
+        {
+            return View();
+        }
+        public ActionResult PrivacySettings()
+        {
+            return View();
+        }
+        public ActionResult BookingSettings()
+        {
+            return View();
+        }
         #endregion
 
     }

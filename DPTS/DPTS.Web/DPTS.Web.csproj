@@ -797,6 +797,14 @@
     <Content Include="Views\Doctor\Info.cshtml" />
     <Content Include="Views\Doctor\ProfileSetting.cshtml" />
     <Content Include="Views\Shared\Account_Layout.cshtml" />
+    <Content Include="Views\Doctor\Favourites.cshtml" />
+    <Content Include="Views\Doctor\InvoicesPackages.cshtml" />
+    <Content Include="Views\Doctor\DoctorSchedules.cshtml" />
+    <Content Include="Views\Doctor\BookingListings.cshtml" />
+    <Content Include="Views\Doctor\BookingSchedules.cshtml" />
+    <Content Include="Views\Doctor\PrivacySettings.cshtml" />
+    <Content Include="Views\Doctor\SecuritySettings.cshtml" />
+    <Content Include="Views\Doctor\BookingSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />
