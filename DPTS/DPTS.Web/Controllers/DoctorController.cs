@@ -77,6 +77,7 @@ namespace DPTS.Web.Controllers
 
             return models;
         }
+
         #endregion
 
         #region Methods
@@ -116,10 +117,11 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
+           // var doctorSpec = GetAllSpecialities(model.Id).Select(c => c.Selected == true);
+
             var Specilities = string.Join(",", model.SelectedSpeciality);
             foreach (var item in Specilities.Split(',').ToList())
             {
-                
                 var specilityMap = new Doctor_Speciality_Mapping
                 {
                     Speciality_Id = int.Parse(item),
@@ -132,7 +134,6 @@ namespace DPTS.Web.Controllers
                     _specialityService.AddSpecialityByDoctor(specilityMap);
                 }
             }
-
 
             var doctor =  _doctorService.GetDoctorbyId(model.Id);
             if (doctor == null)
