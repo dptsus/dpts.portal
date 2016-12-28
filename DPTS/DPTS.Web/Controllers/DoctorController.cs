@@ -44,24 +44,38 @@ namespace DPTS.Web.Controllers
             }
             return items;
         }
-        public IList<Speciality> GetAllSpecialities()
+        public IList<SelectListItem> GetAllSpecialities(string docterId)
         {
-            List<Speciality> lstSpecilaity = new List<Speciality>();
+            var models = new List<SelectListItem>();
             var data = _specialityService.GetAllSpeciality(false);
-            if (data == null)
-                return null;
 
             foreach(var speciality in data)
             {
-                Speciality spec = new Speciality();
-                spec.Title = speciality.Title;
-                spec.Id = speciality.Id;
-                spec.IsActive = speciality.IsActive;
-                spec.DisplayOrder = speciality.DisplayOrder;
-                lstSpecilaity.Add(spec);
+                var specilityMap = new Doctor_Speciality_Mapping
+                {
+                    Speciality_Id = speciality.Id,
+                    Doctor_Id = docterId
+                };
+                if (_specialityService.IsDoctorSpecialityExists(specilityMap))
+                {
+                    models.Add(new SelectListItem
+                    {
+                        Text = speciality.Title,
+                        Value = speciality.Id.ToString(),
+                        Selected=true
+                    });
+                }
+                else
+                {
+                    models.Add(new SelectListItem
+                    {
+                        Text = speciality.Title,
+                        Value = speciality.Id.ToString()
+                    });
+                }
             }
 
-            return lstSpecilaity;
+            return models;
         }
         #endregion
 
@@ -91,7 +105,9 @@ namespace DPTS.Web.Controllers
                 model.LastName = user.LastName;
                 model.Id = user.Id;
                 model.PhoneNumber = user.PhoneNumber;
-                model.Speciality = GetAllSpecialities();
+                // model.Speciality = GetAllSpecialities();
+                model.AvailableSpeciality = GetAllSpecialities(user.Id);
+
 
             }
             ViewBag.GenderList = GetGender();
@@ -100,6 +116,24 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
+            var Specilities = string.Join(",", model.SelectedSpeciality);
+            foreach (var item in Specilities.Split(',').ToList())
+            {
+                
+                var specilityMap = new Doctor_Speciality_Mapping
+                {
+                    Speciality_Id = int.Parse(item),
+                    Doctor_Id = model.Id,
+                    DateCreated=DateTime.UtcNow,
+                    DateUpdated=DateTime.UtcNow,
+                };
+                if (!_specialityService.IsDoctorSpecialityExists(specilityMap))
+                {
+                    _specialityService.AddSpecialityByDoctor(specilityMap);
+                }
+            }
+
+
             var doctor =  _doctorService.GetDoctorbyId(model.Id);
             if (doctor == null)
                 return null;

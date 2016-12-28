@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace DPTS.Web.Models
 {
@@ -11,7 +12,10 @@ namespace DPTS.Web.Models
     {
         public DoctorProfileSettingViewModel()
         {
-            Speciality = new List<Speciality>();
+            // Speciality = new List<Speciality>();
+            AvailableSpeciality = new List<SelectListItem>();
+             SelectedSpeciality = new List<string>();
+
         }
 
         public string Id { get; set; }
@@ -60,8 +64,10 @@ namespace DPTS.Web.Models
 
         public DateTime DateCreated { get; set; }
 
+        public IList<string> SelectedSpeciality { get; set; }
+        //public IList<Speciality> Speciality { get; set;
+        public IList<SelectListItem> AvailableSpeciality { get; set; }
 
-        public IList<Speciality> Speciality { get; set; }
 
     }
 

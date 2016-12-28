@@ -22,16 +22,30 @@
                     <div class="row">
                         <div class="specialities-list">
                             <ul>
-                                @foreach (var item in Model.Speciality)
+                                @foreach (var item in Model.AvailableSpeciality)
                                 {
-                                    <li>
-                                        <div class="tg-checkbox user-selection">
-                                            <div class="tg-packages active-user-type specialities-type">
-                                                <input type="checkbox" name="specialities[@item.Id]" value="@item.Title" id="@item.Title">
-                                                <label for="@item.Title">@item.Title</label>
+                                    if (item.Selected == true)
+                                    {
+                                        <li>
+                                            <div class="tg-checkbox user-selection">
+                                                <div class="tg-packages active-user-type specialities-type">
+                                                    <input type="checkbox" checked="" name="SelectedSpeciality" value="@item.Value" id="@item.Text">
+                                                    <label for="@item.Text">@item.Text</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <div class="tg-checkbox user-selection">
+                                                <div class="tg-packages active-user-type specialities-type">
+                                                    <input type="checkbox" name="SelectedSpeciality" value="@item.Value" id="@item.Text">
+                                                    <label for="@item.Text">@item.Text</label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
                                 }
 
                             </ul>

@@ -29,5 +29,9 @@ namespace DPTS.Domain.Core
         /// get list of Speciality
         /// </summary>
         IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false);
+
+        void AddSpecialityByDoctor(Doctor_Speciality_Mapping doctorSpecilities);
+
+        bool IsDoctorSpecialityExists(Doctor_Speciality_Mapping doctorSpecilities);
     }
 }

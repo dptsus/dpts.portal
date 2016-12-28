@@ -64,6 +64,27 @@ namespace DPTS.Services
             _specialityRepository.SaveChanges();
         }
 
+        public void AddSpecialityByDoctor(Doctor_Speciality_Mapping doctorSpeciality)
+        {
+            if (doctorSpeciality == null)
+                throw new ArgumentNullException(nameof(doctorSpeciality));
+
+            _specialityRepository.DoctorSpecialityMapping.Add(doctorSpeciality);
+
+            _specialityRepository.SaveChanges();
+        }
+        public bool IsDoctorSpecialityExists(Doctor_Speciality_Mapping doctorSpeciality)
+        {
+            if (doctorSpeciality == null)
+                throw new ArgumentNullException(nameof(doctorSpeciality));
+
+           var data = _specialityRepository.DoctorSpecialityMapping.FirstOrDefault(c => c.Doctor_Id == doctorSpeciality.Doctor_Id && c.Speciality_Id == doctorSpeciality.Speciality_Id);
+            if (data != null)
+                return true;
+
+            return false;
+        }
+
     }
 }
 
