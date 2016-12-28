@@ -1,14 +1,13 @@
 ﻿using DPTS.Domain.Core;
 using DPTS.Domain.Entities;
 using System;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace DPTS.Web.Controllers
 {
     public class SpecialityController : Controller
     {
-        #region Fields
+        #region Field
         private readonly ISpecialityService _specialityService;
         #endregion
 
@@ -28,9 +27,9 @@ namespace DPTS.Web.Controllers
         #endregion
         // GET: Speciality
         #region Methods
-        public async Task<ActionResult> List()
+        public ActionResult List()
         {
-           var model = await _specialityService.GetAllSpecialityAsync(true);
+            var model = _specialityService.GetAllSpeciality(true);
             return View(model);
         }
 
@@ -50,21 +49,21 @@ namespace DPTS.Web.Controllers
                     Title = model.Title,
                     DisplayOrder = model.DisplayOrder,
                     IsActive = model.IsActive,
-                    DateCreated=DateTime.UtcNow,
-                    DateUpdated=DateTime.UtcNow
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
                 };
-                _specialityService.AddSpecialityAsync(speciality);
+                _specialityService.AddSpeciality(speciality);
                 return RedirectToAction("List");
             }
             return View(model);
         }
 
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
             if (!IsValidateId(id))
                 return null;
 
-            var speciality = await _specialityService.GetSpecialitybyIdAsync(id);
+            var speciality = _specialityService.GetSpecialitybyId(id);
             if (speciality == null)
                 return null;
 
@@ -74,33 +73,34 @@ namespace DPTS.Web.Controllers
                 Title = speciality.Title,
                 IsActive = speciality.IsActive,
                 DisplayOrder = speciality.DisplayOrder,
-                DateUpdated=speciality.DateUpdated
+                DateUpdated = DateTime.UtcNow
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(Speciality model)
+        public ActionResult Edit(Speciality model)
         {
             if (ModelState.IsValid)
             {
-                var speciality = await _specialityService.GetSpecialitybyIdAsync(model.Id);
+                var speciality = _specialityService.GetSpecialitybyId(model.Id);
                 speciality.Title = model.Title;
                 speciality.DisplayOrder = model.DisplayOrder;
                 speciality.IsActive = model.IsActive;
                 speciality.DateCreated = DateTime.UtcNow;
                 speciality.DateUpdated = DateTime.UtcNow;
-                _specialityService.UpdateSpecialityAsync(speciality);
+                _specialityService.UpdateSpeciality(speciality);
                 return RedirectToAction("List");
             }
             return View(model);
         }
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            var speciality = await _specialityService.GetSpecialitybyIdAsync(id);
+            var speciality = _specialityService.GetSpecialitybyId(id);
             if (speciality != null)
-               await _specialityService.DeleteSpecialityAsync(speciality);
+                _specialityService.DeleteSpeciality(speciality);
+
 
             return Content("Deleted");
         }

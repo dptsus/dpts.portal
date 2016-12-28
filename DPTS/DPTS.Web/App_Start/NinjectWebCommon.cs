@@ -13,20 +13,20 @@ namespace DPTS.Web.App_Start
     using Domain.Core;
     using Domain.Entities;
     using Services;
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -34,7 +34,7 @@ namespace DPTS.Web.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -64,7 +64,7 @@ namespace DPTS.Web.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
-            kernel.Bind<IDoctorService>().To<DoctorService>().InRequestScope();
+            kernel.Bind<IDoctorService>().To<DoctorService>();
             kernel.Bind<ISpecialityService>().To<SpecialityService>();
 
         }

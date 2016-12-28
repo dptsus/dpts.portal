@@ -14,15 +14,17 @@ namespace DPTS.Web.Controllers
     {
         #region Fields
         private readonly IDoctorService _doctorService;
+        private readonly ISpecialityService _specialityService;
         private ApplicationDbContext context;
 
         #endregion
 
         #region Contructor
-        public DoctorController(IDoctorService doctorService)
+        public DoctorController(IDoctorService doctorService, ISpecialityService specialityService)
         {
             _doctorService = doctorService;
             context = new ApplicationDbContext();
+            _specialityService = specialityService;
         }
         #endregion
 
@@ -42,12 +44,31 @@ namespace DPTS.Web.Controllers
             }
             return items;
         }
+        public IList<Speciality> GetAllSpecialities()
+        {
+            List<Speciality> lstSpecilaity = new List<Speciality>();
+            var data = _specialityService.GetAllSpeciality(false);
+            if (data == null)
+                return null;
+
+            foreach(var speciality in data)
+            {
+                Speciality spec = new Speciality();
+                spec.Title = speciality.Title;
+                spec.Id = speciality.Id;
+                spec.IsActive = speciality.IsActive;
+                spec.DisplayOrder = speciality.DisplayOrder;
+                lstSpecilaity.Add(spec);
+            }
+
+            return lstSpecilaity;
+        }
         #endregion
 
         #region Methods
         public async Task<ActionResult> Info()
         {
-            var data = await _doctorService.GetAllDoctorAsync(showhidden: true, enableTracking: true);
+           // var data = await _doctorService.ge(showhidden: true, enableTracking: true);
             return View();
         }
 
@@ -57,32 +78,41 @@ namespace DPTS.Web.Controllers
             if (!string.IsNullOrEmpty(User.Identity.Name))
             {
                 var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                var doctor = _doctorService.GetDoctorbyId(user.Id);
+                if(doctor != null)
+                {
+                    model.DateCreated = doctor.DateCreated;
+                    model.DateOfBirth = doctor.DateOfBirth;
+                    model.Gender = doctor.Gender;
+                    model.ShortProfile = doctor.ShortProfile;
+                }
                 model.Email = user.Email;
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
                 model.Id = user.Id;
                 model.PhoneNumber = user.PhoneNumber;
+                model.Speciality = GetAllSpecialities();
+
             }
             ViewBag.GenderList = GetGender();
             return View(model);
         }
         [HttpPost]
-        public async Task<ActionResult> ProfileSetting(DoctorProfileSettingViewModel model)
+        public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
-            var data = await _doctorService.GetDoctorbyIdAsync(model.Id);
-            if (data == null)
+            var doctor =  _doctorService.GetDoctorbyId(model.Id);
+            if (doctor == null)
                 return null;
 
-            var doctor = new Doctor();
             doctor.Gender = model.Gender;
-            doctor.DoctorId = model.Id;
             doctor.ShortProfile = model.ShortProfile;
             doctor.DateOfBirth = model.DateOfBirth;
+            doctor.DateUpdated = DateTime.UtcNow;
+            _doctorService.UpdateDoctor(doctor);
 
-            _doctorService.AddDoctorAsync(doctor);
-
-           return RedirectToAction("Info");
+            return RedirectToAction("Info");
         }
+
         #endregion
 
     }

@@ -1,9 +1,5 @@
 ﻿using DPTS.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DPTS.Domain.Core
 {
@@ -12,24 +8,26 @@ namespace DPTS.Domain.Core
         /// <summary>
         /// Inserts an Speciality
         /// </summary>
-        void AddSpecialityAsync(Speciality speciality);
+        void AddSpeciality(Speciality speciality);
+
+        /// <summary>
+        /// Get Speciality by Id
+        /// </summary>
+        Speciality GetSpecialitybyId(int Id);
+
+        /// <summary>
+        /// Delete Specialityr by Id
+        /// </summary>
+        void DeleteSpeciality(Speciality speciality);
 
         /// <summary>
         /// update Speciality
         /// </summary>
-        void UpdateSpecialityAsync(Speciality data);
+        void UpdateSpeciality(Speciality data);
 
         /// <summary>
-        /// Get all Speciality
+        /// get list of Speciality
         /// </summary>
-        Task<IEnumerable<Speciality>> GetAllSpecialityAsync(bool showhidden, bool enableTracking = false);
-        /// <summary>
-        /// Get Speciality by Id
-        /// </summary>
-        Task<Speciality> GetSpecialitybyIdAsync(int Id);
-        /// <summary>
-        /// Delete Doctor by Id
-        /// </summary>
-        Task DeleteSpecialityAsync(Speciality Doctor);
+        IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false);
     }
 }

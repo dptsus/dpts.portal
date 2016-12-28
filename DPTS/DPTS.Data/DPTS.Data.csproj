@@ -83,6 +83,18 @@
     <Compile Include="Migrations\201612271054057_UpdateDoctortoDoctorDOB.Designer.cs">
       <DependentUpon>201612271054057_UpdateDoctortoDoctorDOB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612280536108_updateDoctor3.cs" />
+    <Compile Include="Migrations\201612280536108_updateDoctor3.Designer.cs">
+      <DependentUpon>201612280536108_updateDoctor3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612280658475_updateDoctor4.cs" />
+    <Compile Include="Migrations\201612280658475_updateDoctor4.Designer.cs">
+      <DependentUpon>201612280658475_updateDoctor4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612280830513_CreateDoctor_Speciality_Mapping.cs" />
+    <Compile Include="Migrations\201612280830513_CreateDoctor_Speciality_Mapping.Designer.cs">
+      <DependentUpon>201612280830513_CreateDoctor_Speciality_Mapping.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +125,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612271054057_UpdateDoctortoDoctorDOB.resx">
       <DependentUpon>201612271054057_UpdateDoctortoDoctorDOB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612280536108_updateDoctor3.resx">
+      <DependentUpon>201612280536108_updateDoctor3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612280658475_updateDoctor4.resx">
+      <DependentUpon>201612280658475_updateDoctor4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612280830513_CreateDoctor_Speciality_Mapping.resx">
+      <DependentUpon>201612280830513_CreateDoctor_Speciality_Mapping.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

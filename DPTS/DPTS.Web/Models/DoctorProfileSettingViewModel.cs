@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DPTS.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +9,11 @@ namespace DPTS.Web.Models
 {
     public class DoctorProfileSettingViewModel
     {
+        public DoctorProfileSettingViewModel()
+        {
+            Speciality = new List<Speciality>();
+        }
+
         public string Id { get; set; }
 
         /// <summary>
@@ -51,5 +57,12 @@ namespace DPTS.Web.Models
         /// </summary>
         [Display(Name ="Short Description")]
         public string ShortProfile { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+
+        public IList<Speciality> Speciality { get; set; }
+
     }
+
 }

@@ -201,7 +201,8 @@ namespace DPTS.Web.Controllers
                         await this.UserManager.AddToRoleAsync(user.Id, model.Role);
                         var doctor = new Doctor();
                         doctor.DoctorId = user.Id;
-                        _doctorService.AddDoctorAsync(doctor);
+                        doctor.DateOfBirth = DateTime.UtcNow;
+                        _doctorService.AddDoctor(doctor);
                     }
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);

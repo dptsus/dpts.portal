@@ -1,61 +1,66 @@
-﻿using DPTS.Domain.Core;
+﻿using DPTS.Data.Context;
+using DPTS.Domain.Core;
 using DPTS.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DPTS.Services
 {
     public class DoctorService : IDoctorService
     {
         #region Fields
-        private readonly IRepository<Doctor> _DoctorRepository;
+        private readonly IRepository<Doctor> _doctorRepository;
+        private DPTSDbContext _specialityRepository;
         #endregion
 
         #region Constructor
-        public DoctorService(IRepository<Doctor> DoctorRepository)
+        public DoctorService(IRepository<Doctor> doctorRepository, DPTSDbContext specialityRepository)
         {
-            _DoctorRepository = DoctorRepository;
+            _doctorRepository = doctorRepository;
+            _specialityRepository = specialityRepository;
         }
         #endregion
 
         #region Methods
-        public void AddDoctorAsync(Doctor Doctor)
+        public void AddDoctor(Doctor doctor)
         {
-            if (Doctor == null)
-                throw new ArgumentNullException(nameof(Doctor));
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
 
-             _DoctorRepository.AddAsync(Doctor);
+            _doctorRepository.Insert(doctor);
         }
 
-        public async Task DeleteDoctorAsync(Doctor Doctor)
+        public void DeleteDoctor(Doctor doctor)
         {
-            if (Doctor == null)
-                throw new ArgumentNullException(nameof(Doctor));
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
 
-            await _DoctorRepository.RemoveAsync(Doctor);
+            _doctorRepository.Delete(doctor);
         }
 
-        public async Task<IEnumerable<Doctor>> GetAllDoctorAsync(bool showhidden, bool enableTracking = false)
+
+        public Doctor GetDoctorbyId(string DoctorId)
         {
-            return showhidden ? await _DoctorRepository.GetAllAsync(enableTracking)
-                : await _DoctorRepository.FindAsync(c => c.IsActive);
+            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == DoctorId);
         }
 
-        public async Task<Doctor> GetDoctorbyIdAsync(string Id)
-        {
-            return await _DoctorRepository.Table.FirstOrDefaultAsync(c => c.DoctorId == Id);
-        }
-
-        public void UpdateDoctorAsync(Doctor data)
+        public void UpdateDoctor(Doctor data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-             _DoctorRepository.UpdateAsync(data);
+            _doctorRepository.Update(data);
         }
+        public IList<string> GetDoctorsName(bool showhidden)
+        {
+            //var query = _doctorRepository.Table;
+            //if (!showhidden)
+            //    query = query.Where(c => c.IsActive);
+            //return query.Select(c => c.Name).ToList();
+            return null;
+        }
+
         #endregion
     }
 }

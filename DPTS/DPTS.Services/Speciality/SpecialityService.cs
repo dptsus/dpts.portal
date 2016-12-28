@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DPTS.Domain.Entities;
 using DPTS.Data.Context;
 
@@ -12,49 +10,58 @@ namespace DPTS.Services
     public class SpecialityService : ISpecialityService
     {
         #region Fields
-        private IRepository<Speciality> _specialityRepository;
+        private DPTSDbContext _specialityRepository;
         #endregion
 
         #region Constructor
-        public SpecialityService(IRepository<Speciality> specialityRepository)
+        public SpecialityService(DPTSDbContext specialityRepository)
         {
             _specialityRepository = specialityRepository;
         }
         #endregion
 
-        public void AddSpecialityAsync(Speciality speciality)
+        public void AddSpeciality(Speciality speciality)
         {
             if (speciality == null)
                 throw new ArgumentNullException(nameof(speciality));
 
-            _specialityRepository.AddAsync(speciality);
+            _specialityRepository.Speciality.Add(speciality);
+
+            _specialityRepository.SaveChanges();
         }
 
-        public async Task DeleteSpecialityAsync(Speciality Speciality)
+        public void DeleteSpeciality(Speciality speciality)
         {
-            if (Speciality == null)
-                throw new ArgumentNullException(nameof(Speciality));
+            if (speciality == null)
+                throw new ArgumentNullException(nameof(speciality));
 
-            await _specialityRepository.RemoveAsync(Speciality);
+            _specialityRepository.Speciality.Remove(speciality);
+
         }
 
-        public async Task<IEnumerable<Speciality>> GetAllSpecialityAsync(bool showhidden, bool enableTracking = false)
+        public Speciality GetSpecialitybyId(int Id)
         {
-            return showhidden ? await _specialityRepository.GetAllAsync(enableTracking)
-                : await _specialityRepository.FindAsync(c => c.IsActive);
+            return _specialityRepository.Speciality.Find(Id);
         }
 
-        public async Task<Speciality> GetSpecialitybyIdAsync(int Id)
+        public IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false)
         {
-            return await _specialityRepository.GetByIdAsync(Id);
+            //var query = enableTracking ? _specialityRepository.Table : _specialityRepository.TableNoTracking;
+
+            //if (!showhidden)
+            //    query = query.Where(c => c.IsActive);
+
+            //query = query.OrderBy(c => c.DisplayOrder);
+
+            return _specialityRepository.Speciality.ToList();
         }
 
-        public void UpdateSpecialityAsync(Speciality data)
+        public void UpdateSpeciality(Speciality data)
         {
             if (data == null)
                 throw new ArgumentNullException(nameof(data));
 
-            _specialityRepository.UpdateAsync(data);
+            _specialityRepository.SaveChanges();
         }
 
     }

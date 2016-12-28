@@ -49,6 +49,7 @@
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Doctor.cs" />
+    <Compile Include="Entities\Doctor_Speciality_Mapping.cs" />
     <Compile Include="Entities\Gender.cs" />
     <Compile Include="Entities\Speciality.cs" />
     <Compile Include="Entities\StateProvince.cs" />
