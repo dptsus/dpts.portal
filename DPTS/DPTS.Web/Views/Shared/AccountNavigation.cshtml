@@ -1,9 +1,9 @@
 ﻿@using DPTS.Web.Models;
 @using Microsoft.AspNet.Identity
-@{
 
-}
-<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 ">
+@if (Request.IsAuthenticated)
+{
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 ">
     <aside id="tg-sidebar" class="dashboard-sidebar">
         <div class="tg-widget tg-widget-doctor">
             <figure class="tg-docprofile-img">
@@ -16,16 +16,16 @@
         <div class="tg-widget tg-widget-accordions">
             <h3>Dashboard</h3>
             <ul class="docdirect-menu">
-                <li class="active"><a href="@Url.Action("Info","Doctor")">My Profile</a></li>
-                <li class=""><a href="@Url.Action("ProfileSetting","Doctor")">Profile Settings</a></li>
-                <li class=""><a href="@Url.Action("Favourites","Doctor")">Favourites</a></li>
-                <li class=""><a href="@Url.Action("InvoicesPackages","Doctor")">Invoices &amp; Packages</a></li>
-                <li class=""><a href="@Url.Action("DoctorSchedules","Doctor")">My Schedules</a></li>
-                <li class=""><a href="@Url.Action("BookingListings","Doctor")">Booking Listings</a></li>
-                <li class=""><a href="@Url.Action("BookingSchedules","Doctor")">Booking Schedules</a></li>
-                <li class=""><a href="@Url.Action("BookingSettings","Doctor")">Booking Settings</a></li>
-                <li class=""><a href="@Url.Action("SecuritySettings","Doctor")">Security Settings</a></li>
-                <li class=""><a href="@Url.Action("PrivacySettings","Doctor")">Privacy Settings</a></li>
+                <li class="active"><a href="@Url.Action("Info", "Doctor")">My Profile</a></li>
+                <li class=""><a href="@Url.Action("ProfileSetting", "Doctor")">Profile Settings</a></li>
+                <li class=""><a href="@Url.Action("Favourites", "Doctor")">Favourites</a></li>
+                <li class=""><a href="@Url.Action("InvoicesPackages", "Doctor")">Invoices &amp; Packages</a></li>
+                <li class=""><a href="@Url.Action("DoctorSchedules", "Doctor")">My Schedules</a></li>
+                <li class=""><a href="@Url.Action("BookingListings", "Doctor")">Booking Listings</a></li>
+                <li class=""><a href="@Url.Action("BookingSchedules", "Doctor")">Booking Schedules</a></li>
+                <li class=""><a href="@Url.Action("BookingSettings", "Doctor")">Booking Settings</a></li>
+                <li class=""><a href="@Url.Action("SecuritySettings", "Doctor")">Security Settings</a></li>
+                <li class=""><a href="@Url.Action("PrivacySettings", "Doctor")">Privacy Settings</a></li>
                 <li>
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                     {
@@ -37,3 +37,21 @@
         </div>
     </aside>
 </div>
+}
+
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(function () {
+        // profile pic
+        var ProfilePicId = "@User.Identity.GetUserId()" + "_profile";
+        $.get('../../Uploads/' + ProfilePicId + '.jpg')
+            .done(function () {
+                $("#user-profile").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
+                $("#profile-picture").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
+            }).fail(function () {
+                $("#user-profile").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
+                $("#profile-picture").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
+            })
+    });
+
+</script>
