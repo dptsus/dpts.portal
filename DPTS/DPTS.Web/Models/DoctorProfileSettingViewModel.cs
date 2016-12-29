@@ -62,11 +62,19 @@ namespace DPTS.Web.Models
         [Display(Name ="Short Description")]
         public string ShortProfile { get; set; }
 
+        /// <summary>
+        /// Qualifications
+        /// </summary>
+        [Display(Name = "Qualifications")]
+        public string Qualifications { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public IList<string> SelectedSpeciality { get; set; }
         //public IList<Speciality> Speciality { get; set;
         public IList<SelectListItem> AvailableSpeciality { get; set; }
+
+        public string Tags { get; set; }
 
 
     }

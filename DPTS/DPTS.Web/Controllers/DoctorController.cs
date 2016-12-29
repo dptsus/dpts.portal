@@ -102,6 +102,7 @@ namespace DPTS.Web.Controllers
                     model.DateOfBirth = doctor.DateOfBirth;
                     model.Gender = doctor.Gender;
                     model.ShortProfile = doctor.ShortProfile;
+                    model.Qualifications = doctor.Qualifications;
                 }
                 model.Email = user.Email;
                 model.FirstName = user.FirstName;
@@ -145,6 +146,7 @@ namespace DPTS.Web.Controllers
             doctor.ShortProfile = model.ShortProfile;
             doctor.DateOfBirth = model.DateOfBirth;
             doctor.DateUpdated = DateTime.UtcNow;
+            doctor.Qualifications = model.Qualifications;
             _doctorService.UpdateDoctor(doctor);
 
             return RedirectToAction("Info");
