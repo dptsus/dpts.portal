@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SQS_Shopee.Entites;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;

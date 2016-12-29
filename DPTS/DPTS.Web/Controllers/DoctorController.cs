@@ -1,8 +1,10 @@
 ﻿using DPTS.Domain.Core;
 using DPTS.Domain.Entities;
 using DPTS.Web.Models;
+using SQS_Shopee.Entites;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -179,6 +181,43 @@ namespace DPTS.Web.Controllers
         public ActionResult BookingSettings()
         {
             return View();
+        }
+        public ContentResult UploadFiles()
+        {
+            try
+            {
+                var r = new List<UploadFilesResult>();
+                string prodId = string.Empty;
+                foreach (string file in Request.Files)
+                {
+                    HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
+                    if (hpf.ContentLength == 0)
+                        continue;
+                    prodId = Request.QueryString["pid"].ToString() + Path.GetExtension(hpf.FileName);
+                    var folderPath = Server.MapPath("~/Uploads");
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+                    string savedFileName = Path.Combine(folderPath, prodId);
+                    hpf.SaveAs(savedFileName);
+
+                    r.Add(new UploadFilesResult()
+                    {
+                        Name = hpf.FileName,
+                        Length = hpf.ContentLength,
+                        Type = hpf.ContentType
+                    });
+                }
+
+                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" + string.Format("{0} bytes", r[0].Length) + "\"}", "application/json");
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
         }
         #endregion
 

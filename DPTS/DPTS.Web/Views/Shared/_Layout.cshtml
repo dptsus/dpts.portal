@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     @Styles.Render("~/Content/wp-content/themes")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -192,5 +193,7 @@
     </div>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("Scripts", required: false)
+    <script src="~/Scripts/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/jquery.fileupload.js"></script>
 </body>
 </html>
