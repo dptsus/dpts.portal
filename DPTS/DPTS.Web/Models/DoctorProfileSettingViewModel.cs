@@ -15,11 +15,8 @@ namespace DPTS.Web.Models
             // Speciality = new List<Speciality>();
             AvailableSpeciality = new List<SelectListItem>();
              SelectedSpeciality = new List<string>();
-
         }
-
         public string Id { get; set; }
-
         /// <summary>
         /// set & Get first name
         /// </summary>
@@ -68,14 +65,23 @@ namespace DPTS.Web.Models
         [Display(Name = "Qualifications")]
         public string Qualifications { get; set; }
 
+        /// <summary>
+        /// Registration Number
+        /// </summary>
+        [Display(Name = "Registration Number")]
+        public string RegistrationNumber { get; set; }
+
+        /// <summary>
+        /// NoOfYearExperience
+        /// </summary>
+        [Display(Name = "Experience [/yrs]")]
+        public int NoOfYearExperience { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public IList<string> SelectedSpeciality { get; set; }
         //public IList<Speciality> Speciality { get; set;
         public IList<SelectListItem> AvailableSpeciality { get; set; }
-
-        public string Tags { get; set; }
-
 
     }
 

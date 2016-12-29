@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201612280830513_CreateDoctor_Speciality_Mapping.Designer.cs">
       <DependentUpon>201612280830513_CreateDoctor_Speciality_Mapping.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612291055284_updateDoctorToYrsofExpr.cs" />
+    <Compile Include="Migrations\201612291055284_updateDoctorToYrsofExpr.Designer.cs">
+      <DependentUpon>201612291055284_updateDoctorToYrsofExpr.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -134,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612280830513_CreateDoctor_Speciality_Mapping.resx">
       <DependentUpon>201612280830513_CreateDoctor_Speciality_Mapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612291055284_updateDoctorToYrsofExpr.resx">
+      <DependentUpon>201612291055284_updateDoctorToYrsofExpr.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

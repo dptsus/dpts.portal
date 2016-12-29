@@ -46,10 +46,8 @@
         var ProfilePicId = "@User.Identity.GetUserId()" + "_profile";
         $.get('../../Uploads/' + ProfilePicId + '.jpg')
             .done(function () {
-                $("#user-profile").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
                 $("#profile-picture").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
             }).fail(function () {
-                $("#user-profile").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
                 $("#profile-picture").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
             })
     });

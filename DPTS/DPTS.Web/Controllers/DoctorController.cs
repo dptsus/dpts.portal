@@ -103,16 +103,15 @@ namespace DPTS.Web.Controllers
                     model.Gender = doctor.Gender;
                     model.ShortProfile = doctor.ShortProfile;
                     model.Qualifications = doctor.Qualifications;
+                    model.NoOfYearExperience = doctor.YearsOfExperience;
+                    model.RegistrationNumber = doctor.RegistrationNumber;
                 }
                 model.Email = user.Email;
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
                 model.Id = user.Id;
                 model.PhoneNumber = user.PhoneNumber;
-                // model.Speciality = GetAllSpecialities();
                 model.AvailableSpeciality = GetAllSpecialities(user.Id);
-
-
             }
             ViewBag.GenderList = GetGender();
             return View(model);
@@ -147,6 +146,8 @@ namespace DPTS.Web.Controllers
             doctor.DateOfBirth = model.DateOfBirth;
             doctor.DateUpdated = DateTime.UtcNow;
             doctor.Qualifications = model.Qualifications;
+            doctor.RegistrationNumber = model.RegistrationNumber;
+            doctor.YearsOfExperience = model.NoOfYearExperience;
             _doctorService.UpdateDoctor(doctor);
 
             return RedirectToAction("Info");

@@ -199,27 +199,40 @@
                         <h3>EDUCATION</h3>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-8 col-sm-6 col-xs-12">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Qualifications)
                                 @Html.EditorFor(model => model.Qualifications, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Qualifications)
                             </div>
                         </div>
-                        @*<div class="form-group" id="social-tag">
-                            <div class="col-md-3">
-                                @Html.LabelFor(model => model.Tags)
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Tags)
-                                @Html.ValidationMessageFor(model => model.Tags)
-                            </div>
-                        </div>*@
-
                         <br />
                      </div>
                  </div>
             </div>
+        <div class="tg-bordertop tg-haslayout">
+            <div class="tg-formsection">
+                <div class="tg-heading-border tg-small">
+                    <h3>Experience &Aacute; Registration Number</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NoOfYearExperience)
+                            @Html.EditorFor(model => model.NoOfYearExperience, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NoOfYearExperience)
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RegistrationNumber)
+                            @Html.EditorFor(model => model.RegistrationNumber, new { @class = "form-control", @palceholder= "G-56707" })
+                            @Html.ValidationMessageFor(model => model.RegistrationNumber)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
        <button type="submit" class="tg-btn process-account-settings">update</button>
     </fieldset>
 }

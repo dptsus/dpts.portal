@@ -28,7 +28,7 @@ namespace DPTS.Domain.Entities
 
         public string RegistrationNumber { get; set; }
 
-        public string YearsOfExperience { get; set; }
+        public int YearsOfExperience { get; set; }
 
         public string ShortProfile { get; set; }
 
