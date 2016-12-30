@@ -25,7 +25,7 @@ namespace DPTS.Web.Controllers
             return id != 0;
         }
         #endregion
-        // GET: Speciality
+
         #region Methods
         public ActionResult List()
         {

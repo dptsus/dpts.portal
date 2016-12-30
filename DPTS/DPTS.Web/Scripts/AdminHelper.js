@@ -2,7 +2,7 @@
     alertify.confirm("Do you want to Delete Permanently ?", function (e) {
         if (e) {
            $.ajax({
-               url: '/' + cntrname + '/DeleteConfirmed/'+delid,
+               url: '/' + cntrname + '/DeleteConfirmed?id='+delid,
                 type: 'POST',
 
                 success: function (data) {

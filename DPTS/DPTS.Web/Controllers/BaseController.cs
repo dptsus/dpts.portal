@@ -31,6 +31,11 @@ namespace DPTS.Web.Controllers
                 return false;
             }
         }
+        [NonAction]
+        protected bool IsValidateId(int id)
+        {
+            return id != 0;
+        }
 
 
     }

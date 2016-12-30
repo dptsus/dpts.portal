@@ -45,6 +45,7 @@
     <Compile Include="Core\Doctors\IDoctorService.cs" />
     <Compile Include="Core\Speciality\ISpecialityService.cs" />
     <Compile Include="Core\IRepository.cs" />
+    <Compile Include="Core\StateProvince\IStateProvinceService.cs" />
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />

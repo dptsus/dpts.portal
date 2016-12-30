@@ -66,6 +66,8 @@ namespace DPTS.Web.App_Start
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
             kernel.Bind<IDoctorService>().To<DoctorService>();
             kernel.Bind<ISpecialityService>().To<SpecialityService>();
+            kernel.Bind<ICountryService>().To<CountryService>();
+            kernel.Bind<IStateProvinceService>().To<StateProvinceService>();
 
         }
     }
