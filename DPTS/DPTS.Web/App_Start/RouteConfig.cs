@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace DPTS.Web  
+namespace DPTS.Web
 {
     public class RouteConfig
     {
@@ -18,10 +18,15 @@ namespace DPTS.Web
                 "{controller}/{action}",
                 new { controller = "Home", action = "Index" }
             );
+            //get state list by country ID  (AJAX link)
+            routes.MapRoute("GetStatesByCountryId",
+                            "Doctor/GetStatesByCountryId/",
+                            new { controller = "Doctor", action = "GetStatesByCountryId" }
+                           );
             //routes.MapRoute(
             //    "ContactUs",
-            //    "contact",                          
-            //    new { controller = "Home", action = "Contact" } 
+            //    "contact",
+            //    new { controller = "Home", action = "Contact" }
             //);
             //routes.MapRoute(
             //    "AboutUs",

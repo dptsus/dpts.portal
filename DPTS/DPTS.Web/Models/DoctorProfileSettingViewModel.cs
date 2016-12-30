@@ -12,9 +12,10 @@ namespace DPTS.Web.Models
     {
         public DoctorProfileSettingViewModel()
         {
-            // Speciality = new List<Speciality>();
             AvailableSpeciality = new List<SelectListItem>();
-             SelectedSpeciality = new List<string>();
+            AvailableCountry = new List<SelectListItem>();
+            AvailableStateProvince = new List<SelectListItem>();
+            SelectedSpeciality = new List<string>();
         }
         public string Id { get; set; }
         /// <summary>
@@ -77,11 +78,45 @@ namespace DPTS.Web.Models
         [Display(Name = "Experience [/yrs]")]
         public int NoOfYearExperience { get; set; }
 
+        //Address
+        [Display(Name = "Hospital Name")]
+        public string Hospital { get; set; }
+
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+
+        [Display(Name = "State")]
+        public int StateProvinceId { get; set; }
+
+        [Display(Name = "City")]
+        public string City { get; set; }
+
+        [Display(Name = "Address Line 1")]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Address Line 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "Zip /Postal Code")]
+        public string ZipPostalCode { get; set; }
+
+        [Display(Name = "Landline Number")]
+        public string LandlineNumber { get; set; }
+
+        [Display(Name = "Website")]
+        public string Website { get; set; }
+
+        [Display(Name = "Fax")]
+        public string FaxNumber { get; set; }
+        //end of address
+
         public DateTime DateCreated { get; set; }
 
         public IList<string> SelectedSpeciality { get; set; }
-        //public IList<Speciality> Speciality { get; set;
         public IList<SelectListItem> AvailableSpeciality { get; set; }
+        public IList<SelectListItem> AvailableCountry { get; set; }
+        public IList<SelectListItem> AvailableStateProvince { get; set; }
+
 
     }
 
