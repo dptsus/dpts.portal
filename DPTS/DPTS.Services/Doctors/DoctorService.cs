@@ -26,7 +26,7 @@ namespace DPTS.Services
         public void AddDoctor(Doctor doctor)
         {
             if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
+                throw new ArgumentNullException("doctor");
 
             _doctorRepository.Insert(doctor);
         }
@@ -34,7 +34,7 @@ namespace DPTS.Services
         public void DeleteDoctor(Doctor doctor)
         {
             if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
+                throw new ArgumentNullException("doctor");
 
             _doctorRepository.Delete(doctor);
         }
@@ -48,7 +48,7 @@ namespace DPTS.Services
         public void UpdateDoctor(Doctor data)
         {
             if (data == null)
-                throw new ArgumentNullException(nameof(data));
+                throw new ArgumentNullException("data");
 
             _doctorRepository.Update(data);
         }

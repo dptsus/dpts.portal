@@ -219,7 +219,7 @@ namespace DPTS.Web.Controllers
 
             doctor.Gender = model.Gender;
             doctor.ShortProfile = model.ShortProfile;
-            doctor.DateOfBirth = model.DateOfBirth;
+            doctor.DateOfBirth = model.DateOfBirth.ToString() == "1/1/0001 12:00:00 AM" ? doctor.DateOfBirth : model.DateOfBirth;
             doctor.DateUpdated = DateTime.UtcNow;
             doctor.Qualifications = model.Qualifications;
             doctor.RegistrationNumber = model.RegistrationNumber;

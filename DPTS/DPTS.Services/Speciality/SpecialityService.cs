@@ -10,79 +10,88 @@ namespace DPTS.Services
     public class SpecialityService : ISpecialityService
     {
         #region Fields
-        private DPTSDbContext _specialityRepository;
+        private readonly IRepository<Speciality> _specialityRepository;
+        private readonly IRepository<Doctor_Speciality_Mapping> _specalityMappingRepos;
         #endregion
 
         #region Constructor
-        public SpecialityService(DPTSDbContext specialityRepository)
+        public SpecialityService(IRepository<Speciality> specialityRepository, IRepository<Doctor_Speciality_Mapping> specalityMappingRepos)
         {
             _specialityRepository = specialityRepository;
+            _specalityMappingRepos = specalityMappingRepos;
         }
         #endregion
 
         public void AddSpeciality(Speciality speciality)
         {
             if (speciality == null)
-                throw new ArgumentNullException(nameof(speciality));
+                throw new ArgumentNullException("speciality");
 
-            _specialityRepository.Speciality.Add(speciality);
+            _specialityRepository.Insert(speciality);
 
-            _specialityRepository.SaveChanges();
         }
 
         public void DeleteSpeciality(Speciality speciality)
         {
             if (speciality == null)
-                throw new ArgumentNullException(nameof(speciality));
+                throw new ArgumentNullException("speciality");
 
-            _specialityRepository.Speciality.Remove(speciality);
+            _specialityRepository.Delete(speciality);
 
         }
 
         public Speciality GetSpecialitybyId(int Id)
         {
-            return _specialityRepository.Speciality.Find(Id);
+            if (Id == 0)
+                return null;
+
+            return _specialityRepository.GetById(Id);
         }
 
         public IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false)
         {
-            //var query = enableTracking ? _specialityRepository.Table : _specialityRepository.TableNoTracking;
+            var query = _specialityRepository.Table;
+            if (!showhidden)
+                query = query.Where(c => c.IsActive);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Title);
 
-            //if (!showhidden)
-            //    query = query.Where(c => c.IsActive);
-
-            //query = query.OrderBy(c => c.DisplayOrder);
-
-            return _specialityRepository.Speciality.ToList();
+            var Specilities = query.ToList();
+            return Specilities;
         }
 
         public void UpdateSpeciality(Speciality data)
         {
             if (data == null)
-                throw new ArgumentNullException(nameof(data));
+                throw new ArgumentNullException("data");
 
-            _specialityRepository.SaveChanges();
+
+            _specialityRepository.Update(data);
         }
 
         public void AddSpecialityByDoctor(Doctor_Speciality_Mapping doctorSpeciality)
         {
             if (doctorSpeciality == null)
-                throw new ArgumentNullException(nameof(doctorSpeciality));
+                throw new ArgumentNullException("doctorSpeciality");
 
-            _specialityRepository.DoctorSpecialityMapping.Add(doctorSpeciality);
+            doctorSpeciality.DateCreated = DateTime.UtcNow;
+            doctorSpeciality.DateUpdated = DateTime.UtcNow;
+            _specalityMappingRepos.Insert(doctorSpeciality);
 
-            _specialityRepository.SaveChanges();
         }
         public bool IsDoctorSpecialityExists(Doctor_Speciality_Mapping doctorSpeciality)
         {
             if (doctorSpeciality == null)
-                throw new ArgumentNullException(nameof(doctorSpeciality));
+                throw new ArgumentNullException("doctorSpeciality");
+            try
+            {
 
-           var data = _specialityRepository.DoctorSpecialityMapping.FirstOrDefault(c => c.Doctor_Id == doctorSpeciality.Doctor_Id && c.Speciality_Id == doctorSpeciality.Speciality_Id);
-            if (data != null)
-                return true;
-
+                var data = _specalityMappingRepos.Table.FirstOrDefault(c => c.Doctor_Id == doctorSpeciality.Doctor_Id && c.Speciality_Id == doctorSpeciality.Speciality_Id);
+                if (data != null)
+                    return true;
+            }
+            catch { return false; }
             return false;
+
         }
 
     }

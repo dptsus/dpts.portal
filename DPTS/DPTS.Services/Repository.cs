@@ -52,14 +52,14 @@ namespace DPTS.Services
             var typeInfo = entity.GetType();
             if (isAddOperation)
             {
-                var dateCreatedProperty = typeInfo.GetProperty(nameof(BaseEntityWithDateTime.DateCreated));
+                var dateCreatedProperty = typeInfo.GetProperty("DateCreated");
                 if (dateCreatedProperty != null)
                 {
                     (entity as BaseEntityWithDateTime).DateCreated = DateTime.UtcNow;
                 }
             }
 
-            var dateUpdatedProperty = typeInfo.GetProperty(nameof(BaseEntityWithDateTime.DateUpdated));
+            var dateUpdatedProperty = typeInfo.GetProperty("DateUpdated");
             if (dateUpdatedProperty != null)
             {
                 (entity as BaseEntityWithDateTime).DateUpdated = DateTime.UtcNow;
