@@ -17,9 +17,10 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Constructor
-        public SubSpecialityController(ISubSpecialityService subSpecialityService)
+        public SubSpecialityController(ISubSpecialityService subSpecialityService, ISpecialityService specialityService)
         {
             _subSpecialityService = subSpecialityService;
+            _specialityService = specialityService;
         }
         #endregion
 
@@ -79,8 +80,7 @@ namespace DPTS.Web.Controllers
                     Name = model.Name,
                     DisplayOrder = model.DisplayOrder,
                     IsActive = model.IsActive,
-                    DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
+                    SpecialityId=model.SpecialityId
                 };
                 _subSpecialityService.AddSubSpeciality(subSpeciality);
                 return RedirectToAction("List");
@@ -102,9 +102,14 @@ namespace DPTS.Web.Controllers
             {
                 Id = subSpeciality.Id,
                 Name = subSpeciality.Name,
+                SpecialityName=_specialityService.GetSpecialitybyId(subSpeciality.SpecialityId).Title,
                 IsActive = subSpeciality.IsActive,
                 DisplayOrder = subSpeciality.DisplayOrder,
-                AvailableSpeciality =GetSpecialityList()
+                SpecialityId=subSpeciality.SpecialityId,
+                DateUpdated=subSpeciality.DateCreated,
+                DateCreated=subSpeciality.DateCreated,
+                AvailableSpeciality = GetSpecialityList()
+
             };
 
             return View(model);
@@ -119,8 +124,7 @@ namespace DPTS.Web.Controllers
                 subSpeciality.Name = model.Name;
                 subSpeciality.DisplayOrder = model.DisplayOrder;
                 subSpeciality.IsActive = model.IsActive;
-                subSpeciality.DateCreated = DateTime.UtcNow;
-                subSpeciality.DateUpdated = DateTime.UtcNow;
+                subSpeciality.SpecialityId = model.SpecialityId;
                 _subSpecialityService.UpdateSubSpeciality(subSpeciality);
                 return RedirectToAction("List");
             }

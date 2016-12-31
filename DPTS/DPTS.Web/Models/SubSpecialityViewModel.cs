@@ -20,8 +20,8 @@ namespace DPTS.Web.Models
 
         public string SpecialityName { get; set; }
 
-        [Required(ErrorMessage = "Please enter {0}")]
-        [MaxLength(256, ErrorMessage = "Maximum allowed character length for {0} is {1}")]
+         [Required(ErrorMessage = "Please enter {0}")]
+        //[MaxLength(256, ErrorMessage = "Maximum allowed character length   for {0} is {1}")]
         public string Name { get; set; }
 
         [Display(Name = "Display Order")]

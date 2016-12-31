@@ -18,6 +18,8 @@ namespace DPTS.Web.Models
         [Display(Name = "Country")]
         public int CountryId { get; set; }
 
+        public string CountryName { get; set; }
+
         [Required]
         [Display(Name = "Name")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]

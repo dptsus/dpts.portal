@@ -22,7 +22,7 @@ namespace DPTS.Web.Controllers
         #region Methods
         public ActionResult List()
         {
-            var countries = _countryService.GetAllCountries();
+            var countries = _countryService.GetAllCountries(true);
             var model = countries.Select(c => new CountryViewModel()
             {
                 Id=c.Id,

@@ -55,6 +55,7 @@ namespace DPTS.Web.Controllers
             {
                 Id = c.Id,
                 Name = c.Name,
+                CountryName = _countryService.GetCountryById(c.Id).Name,
                 DisplayOrder = c.DisplayOrder,
                 Abbreviation = c.Abbreviation,
                 Published = c.Published,
@@ -103,6 +104,7 @@ namespace DPTS.Web.Controllers
             {
                 Id = stateProvince.Id,
                 Name = stateProvince.Name,
+                CountryName=_countryService.GetCountryById(stateProvince.Id).Name,
                 DisplayOrder = stateProvince.DisplayOrder,
                 Published = stateProvince.Published,
                 CountryId= stateProvince.CountryId,
