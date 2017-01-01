@@ -233,85 +233,7 @@
                 </div>
             </div>
         </div>
-        <div class="tg-bordertop tg-haslayout">
-            <div class="tg-formsection">
-                <div class="tg-heading-border tg-small">
-                    <h3>Address</h3>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Hospital)
-                            @Html.EditorFor(model => model.Hospital, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Hospital)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.CountryId)
-                            @Html.DropDownListFor(model => model.CountryId, Model.AvailableCountry, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.LastName)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.StateProvinceId)
-                            @Html.DropDownListFor(model => model.StateProvinceId, Model.AvailableStateProvince, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.LastName)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.City)
-                            @Html.EditorFor(model => model.City, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.City)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Address1)
-                            @Html.EditorFor(model => model.Address1, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Address1)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Address2)
-                            @Html.EditorFor(model => model.Address2, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Address2)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ZipPostalCode)
-                            @Html.EditorFor(model => model.ZipPostalCode, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ZipPostalCode)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.LandlineNumber)
-                            @Html.EditorFor(model => model.LandlineNumber, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.LandlineNumber)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Website)
-                            @Html.EditorFor(model => model.Website, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Website)
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FaxNumber)
-                            @Html.EditorFor(model => model.FaxNumber, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.FaxNumber)
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
        <button type="submit" class="tg-btn process-account-settings">update</button>
     </fieldset>
 }
@@ -330,8 +252,8 @@
             })
 
         $('#DateOfBirth').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                    viewMode: 'years'
+                    viewMode: 'years',
+                    format: 'DD/MM/YYYY'
         });
         $('#fileuploadfront').fileupload({
             dataType: 'json',

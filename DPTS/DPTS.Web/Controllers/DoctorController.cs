@@ -187,7 +187,6 @@ namespace DPTS.Web.Controllers
                 model.Id = user.Id;
                 model.PhoneNumber = user.PhoneNumber;
                 model.AvailableSpeciality = GetAllSpecialities(user.Id);
-                model.AvailableCountry = GetCountryList();
             }
             ViewBag.GenderList = GetGender();
             return View(model);
@@ -195,21 +194,24 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
-           // var doctorSpec = GetAllSpecialities(model.Id).Select(c => c.Selected == true);
-
-            var Specilities = string.Join(",", model.SelectedSpeciality);
-            foreach (var item in Specilities.Split(',').ToList())
+            var dob = model.DateOfBirth;
+            // var doctorSpec = GetAllSpecialities(model.Id).Select(c => c.Selected == true);
+            if (model.SelectedSpeciality.Count > 0)
             {
-                var specilityMap = new Doctor_Speciality_Mapping
+                var Specilities = string.Join(",", model.SelectedSpeciality);
+                foreach (var item in Specilities.Split(',').ToList())
                 {
-                    Speciality_Id = int.Parse(item),
-                    Doctor_Id = model.Id,
-                    DateCreated=DateTime.UtcNow,
-                    DateUpdated=DateTime.UtcNow,
-                };
-                if (!_specialityService.IsDoctorSpecialityExists(specilityMap))
-                {
-                    _specialityService.AddSpecialityByDoctor(specilityMap);
+                    var specilityMap = new Doctor_Speciality_Mapping
+                    {
+                        Speciality_Id = int.Parse(item),
+                        Doctor_Id = model.Id,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow,
+                    };
+                    if (!_specialityService.IsDoctorSpecialityExists(specilityMap))
+                    {
+                        _specialityService.AddSpecialityByDoctor(specilityMap);
+                    }
                 }
             }
 
@@ -219,7 +221,7 @@ namespace DPTS.Web.Controllers
 
             doctor.Gender = model.Gender;
             doctor.ShortProfile = model.ShortProfile;
-            doctor.DateOfBirth = model.DateOfBirth.ToString() == "1/1/0001 12:00:00 AM" ? doctor.DateOfBirth : model.DateOfBirth;
+            doctor.DateOfBirth = model.DateOfBirth.Equals(DateTime.MinValue) ? doctor.DateOfBirth : model.DateOfBirth;
             doctor.DateUpdated = DateTime.UtcNow;
             doctor.Qualifications = model.Qualifications;
             doctor.RegistrationNumber = model.RegistrationNumber;
@@ -227,6 +229,45 @@ namespace DPTS.Web.Controllers
             _doctorService.UpdateDoctor(doctor);
 
             return RedirectToAction("Info");
+        }
+
+        public ActionResult AddressAdd()
+        {
+            var model = new AddressViewModel();
+            model.AvailableCountry = GetCountryList();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AddressAdd(AddressViewModel model)
+        {
+            if (string.IsNullOrEmpty(User.Identity.Name))
+                return new HttpUnauthorizedResult();
+
+            if(ModelState.IsValid)
+            {
+                var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+
+                var address = new Address
+                {
+                    StateProvinceId=model.StateProvinceId,
+                    CountryId =model.CountryId,
+                    Address1=model.Address1,
+                    Address2=model.Address2,
+                    Hospital=model.Hospital,
+                    FaxNumber=model.FaxNumber,
+                    PhoneNumber=model.LandlineNumber,
+                    Website=model.Website,
+                    ZipPostalCode=model.ZipPostalCode
+                };
+                if (address.CountryId == 0)
+                    address.CountryId = null;
+                if (address.StateProvinceId == 0)
+                    address.StateProvinceId = null;
+
+                
+            }
+
+            return View(model);
         }
 
         public ActionResult Favourites()

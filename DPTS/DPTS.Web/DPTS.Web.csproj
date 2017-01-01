@@ -213,6 +213,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\DoctorProfileSettingViewModel.cs" />
     <Compile Include="Models\DoctorSpecialityViewModel.cs" />
@@ -833,6 +834,7 @@
     <Content Include="Views\SubSpeciality\Create.cshtml" />
     <Content Include="Views\SubSpeciality\Edit.cshtml" />
     <Content Include="Views\SubSpeciality\List.cshtml" />
+    <Content Include="Views\Doctor\AddressAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

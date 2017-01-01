@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Address\IAddressService.cs" />
     <Compile Include="Core\Country\ICountryService.cs" />
     <Compile Include="Core\Doctors\IDoctorService.cs" />
     <Compile Include="Core\Speciality\ISpecialityService.cs" />
