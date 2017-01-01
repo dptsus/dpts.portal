@@ -22,6 +22,8 @@ namespace DPTS.Data.Context
 
         public virtual DbSet<Doctor_Speciality_Mapping>  DoctorSpecialityMapping{ get; set; }
 
+        public virtual DbSet<SubSpeciality> SubSpeciality { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

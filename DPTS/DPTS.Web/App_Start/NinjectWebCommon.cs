@@ -68,6 +68,7 @@ namespace DPTS.Web.App_Start
             kernel.Bind<ISpecialityService>().To<SpecialityService>();
             kernel.Bind<ICountryService>().To<CountryService>();
             kernel.Bind<IStateProvinceService>().To<StateProvinceService>();
+            kernel.Bind<ISubSpecialityService>().To<SubSpecialityService>();
 
         }
     }

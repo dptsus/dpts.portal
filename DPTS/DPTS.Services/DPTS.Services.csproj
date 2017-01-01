@@ -63,6 +63,7 @@
     <Compile Include="Repository.cs" />
     <Compile Include="Speciality\SpecialityService.cs" />
     <Compile Include="StateProvince\StateProvinceService.cs" />
+    <Compile Include="SubSpeciality\SubSpecialityService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DPTS.Data\DPTS.Data.csproj">
