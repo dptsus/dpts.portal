@@ -19,6 +19,7 @@ namespace DPTS.Web.Controllers
         private readonly ISpecialityService _specialityService;
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
+        private readonly IAddressService _addressService;
         private ApplicationDbContext context;
 
         #endregion
@@ -26,13 +27,15 @@ namespace DPTS.Web.Controllers
         #region Contructor
         public DoctorController(IDoctorService doctorService, ISpecialityService specialityService,
             ICountryService countryService,
-            IStateProvinceService stateProvinceService)
+            IStateProvinceService stateProvinceService,
+            IAddressService addressService)
         {
             _doctorService = doctorService;
             context = new ApplicationDbContext();
             _specialityService = specialityService;
             _countryService = countryService;
             _stateProvinceService = stateProvinceService;
+            _addressService = addressService;
         }
         #endregion
 
@@ -233,6 +236,9 @@ namespace DPTS.Web.Controllers
 
         public ActionResult AddressAdd()
         {
+            if (string.IsNullOrEmpty(User.Identity.Name))
+                return new HttpUnauthorizedResult();
+
             var model = new AddressViewModel();
             model.AvailableCountry = GetCountryList();
             return View(model);
@@ -257,17 +263,160 @@ namespace DPTS.Web.Controllers
                     FaxNumber=model.FaxNumber,
                     PhoneNumber=model.LandlineNumber,
                     Website=model.Website,
-                    ZipPostalCode=model.ZipPostalCode
+                    ZipPostalCode=model.ZipPostalCode,
+                    City=model.City
                 };
                 if (address.CountryId == 0)
                     address.CountryId = null;
                 if (address.StateProvinceId == 0)
                     address.StateProvinceId = null;
 
-                
+                 _addressService.AddAddress(address);
+                var addrMap = new AddressMapping
+                {
+                    AddressId = address.Id,
+                    UserId = user.Id
+                };
+                _addressService.AddAddressMapping(addrMap);
+
+                return RedirectToAction("Addresses");
+            }
+            model.AvailableCountry = GetCountryList();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddressDelete(int addressId)
+        {
+            if (string.IsNullOrEmpty(User.Identity.Name))
+                return new HttpUnauthorizedResult();
+
+            var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var address = _addressService.GetAddressbyId(addressId);
+            if (address != null)
+            {
+                _addressService.DeleteAddress(address);
+                var addrMapping = _addressService.GetAddressMappingbuUserIdAddrId(UserId: user.Id, AddressId: addressId);
+                if (addrMapping == null)
+                    return Content("No Customer found with the specified id");
+
+                _addressService.DeleteAddressMapping(addrMapping);
             }
 
+            return Json(new
+            {
+                redirect = Url.Action("Addresses","Doctor"),
+            });
+        }
+
+        public ActionResult Addresses()
+        {
+            if (string.IsNullOrEmpty(User.Identity.Name))
+                return new HttpUnauthorizedResult();
+
+
+            var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var model = new List<AddressViewModel>();
+
+            model.AddRange(_addressService.GetAllAddressByUser(user.Id).Select(c => new AddressViewModel
+            {
+                Id = c.Id,
+                Address1 = c.Address1,
+                Address2 = c.Address2,
+                City = c.City,
+                CountryName = (c.CountryId.GetValueOrDefault() > 0) ? _countryService.GetCountryById(c.CountryId.GetValueOrDefault()).Name : " ",
+                StateName = (c.StateProvinceId.GetValueOrDefault() > 0) ? _stateProvinceService.GetStateProvinceById(c.StateProvinceId.GetValueOrDefault()) .Name : " ",
+                FaxNumber=c.FaxNumber,
+                Hospital=c.Hospital,
+                LandlineNumber=c.PhoneNumber,
+                Website=c.Website,
+                ZipPostalCode=c.ZipPostalCode,
+
+            }).ToList());
+
             return View(model);
+
+        }
+
+        public ActionResult AddressEdit(int Id)
+        {
+            if (string.IsNullOrEmpty(User.Identity.Name))
+                return new HttpUnauthorizedResult();
+
+            var address = _addressService.GetAddressbyId(Id);
+            if (address == null)
+                return null;
+
+            var model = new AddressViewModel
+            {
+                Id=address.Id,
+                Address1=address.Address1,
+                Address2=address.Address2,
+                City=address.City,
+                CountryId=address.CountryId.GetValueOrDefault(),
+                FaxNumber=address.FaxNumber,
+                Hospital=address.Hospital,
+                LandlineNumber=address.PhoneNumber,
+                StateProvinceId=address.StateProvinceId.GetValueOrDefault(),
+                Website=address.Website,
+                ZipPostalCode=address.ZipPostalCode,
+                AvailableCountry=GetCountryList(),
+              //  AvailableStateProvince= GetStatesByCountryId(address.CountryId)
+
+            };
+
+                //states
+
+                var states = _stateProvinceService
+                    .GetStateProvincesByCountryId(model.CountryId)
+                    .ToList();
+                if (states.Any())
+                {
+                    model.AvailableStateProvince.Add(new SelectListItem { Text = "Select state", Value = "0" });
+
+                    foreach (var s in states)
+                    {
+                        model.AvailableStateProvince.Add(new SelectListItem
+                        {
+                            Text = s.Name,
+                            Value = s.Id.ToString(),
+                            Selected = (s.Id == model.StateProvinceId)
+                        });
+                    }
+                }
+                else
+                {
+                    bool anyCountrySelected = model.AvailableCountry.Any(x => x.Selected);
+                    model.AvailableStateProvince.Add(new SelectListItem
+                    {
+                        Text = (anyCountrySelected ? "None" : "Select State"),
+                        Value = "0"
+                    });
+                }
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddressEdit(AddressViewModel model)
+        {
+            if (string.IsNullOrEmpty(User.Identity.Name))
+                return new HttpUnauthorizedResult();
+
+            var address = _addressService.GetAddressbyId(model.Id);
+            address.Id = model.Id;
+            address.Address1 = model.Address1;
+            address.Address2 = model.Address2;
+            address.City = model.City;
+            address.CountryId = model.CountryId;
+            address.FaxNumber = model.FaxNumber;
+            address.Hospital = model.Hospital;
+            address.PhoneNumber = model.LandlineNumber;
+            address.StateProvinceId = model.StateProvinceId;
+            address.Website = model.Website;
+            address.ZipPostalCode = model.ZipPostalCode;
+
+            _addressService.UpdateAddress(address);
+            return RedirectToAction("Addresses");
         }
 
         public ActionResult Favourites()

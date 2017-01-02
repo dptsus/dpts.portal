@@ -33,5 +33,22 @@ namespace DPTS.Domain.Core
         /// get list of Address
         /// </summary>
         IList<Address> GetAllAddress();
+
+        /// <summary>
+        /// Get all address by userId
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        IList<Address> GetAllAddressByUser(string UserId);
+
+        /// <summary>
+        /// Inserts an Address Mapping
+        /// </summary>
+        void AddAddressMapping(AddressMapping addressMapping);
+
+        void DeleteAddressMapping(AddressMapping addressMapping);
+
+        AddressMapping GetAddressMappingbuUserIdAddrId(string UserId, int AddressId);
+
     }
 }

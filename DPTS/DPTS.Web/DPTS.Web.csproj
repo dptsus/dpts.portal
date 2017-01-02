@@ -835,6 +835,9 @@
     <Content Include="Views\SubSpeciality\Edit.cshtml" />
     <Content Include="Views\SubSpeciality\List.cshtml" />
     <Content Include="Views\Doctor\AddressAdd.cshtml" />
+    <Content Include="Views\Doctor\Addresses.cshtml" />
+    <Content Include="Views\Doctor\_CreateUpdateAddress.cshtml" />
+    <Content Include="Views\Doctor\AddressEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

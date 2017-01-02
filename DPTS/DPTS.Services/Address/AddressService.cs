@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DPTS.Domain.Entities;
 
 namespace DPTS.Services
@@ -12,15 +10,16 @@ namespace DPTS.Services
     {
         #region Fields
         private readonly IRepository<Address> _addressRepository;
+        private readonly IRepository<AddressMapping> _addressMappingRepository;
         #endregion
 
         #region Constructor
-        public AddressService(IRepository<Address> addressRepository)
+        public AddressService(IRepository<Address> addressRepository, IRepository<AddressMapping> addressMappingRepository)
         {
             _addressRepository = addressRepository;
+            _addressMappingRepository = addressMappingRepository;
         }
         #endregion
-
 
         #region Methods
 
@@ -55,18 +54,23 @@ namespace DPTS.Services
             return query.ToList(); ;
         }
 
-        //public IList<Address> GetAllAddressByUser(int Id)
-        //{
-        //    if (Id == 0)
-        //        return null;
+        public IList<Address> GetAllAddressByUser(string UserId)
+        {
+            if (string.IsNullOrWhiteSpace(UserId))
+                return null;
 
-        //    var query = _addressRepository.Table;
-        //        query = query.Where(c => c.);
-        //    query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Title);
+            var query = _addressMappingRepository.Table;
+                query = query.Where(c => c.UserId == UserId);
 
-        //    var Specilities = query.ToList();
-        //    return Specilities;
-        //}
+            var lstAddr = new List<Address>();
+            foreach (var addrMap in query.ToList())
+            {
+                var addr = _addressRepository.GetById(addrMap.AddressId);
+                if (addr != null)
+                    lstAddr.Add(addr);
+            }
+            return lstAddr;
+        }
 
         public void UpdateAddress(Address address)
         {
@@ -75,6 +79,34 @@ namespace DPTS.Services
 
             _addressRepository.Update(address);
         }
+
+        public void AddAddressMapping(AddressMapping addressMapping)
+        {
+            if (addressMapping == null)
+                throw new ArgumentNullException("addressMapping");
+
+            _addressMappingRepository.Insert(addressMapping);
+        }
+
+        public void DeleteAddressMapping(AddressMapping addressMapping)
+        {
+            if (addressMapping == null)
+                throw new ArgumentNullException("addressMapping");
+
+            _addressMappingRepository.Delete(addressMapping); //AddressMapping GetAddressMappingbId(int Id)
+        }
+
+        public AddressMapping GetAddressMappingbuUserIdAddrId(string UserId,int AddressId)
+        {
+            if (string.IsNullOrWhiteSpace(UserId) && AddressId == 0)
+                return null;
+
+            var query = _addressMappingRepository.Table;
+                query = query.Where(c => c.UserId == UserId && c.AddressId == AddressId);
+
+            return query.FirstOrDefault();
+        }
+
         #endregion
 
     }

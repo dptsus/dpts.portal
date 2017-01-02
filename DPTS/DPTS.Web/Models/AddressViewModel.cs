@@ -19,26 +19,33 @@ namespace DPTS.Web.Models
 
         public int Id { get; set; }
         //Address
+        [Required]
         [Display(Name = "Hospital Name")]
         public string Hospital { get; set; }
 
+        [Required]
         [Display(Name = "Country")]
         public int CountryId { get; set; }
 
+        [Required]
         [Display(Name = "State")]
         public int StateProvinceId { get; set; }
 
+        [Required]
         [Display(Name = "City")]
         public string City { get; set; }
 
+        [Required]
         [Display(Name = "Address Line 1")]
         public string Address1 { get; set; }
 
         [Display(Name = "Address Line 2")]
         public string Address2 { get; set; }
 
+        [Required]
         [Display(Name = "Zip /Postal Code")]
         public string ZipPostalCode { get; set; }
+
 
         [Display(Name = "Landline Number")]
         public string LandlineNumber { get; set; }
@@ -48,6 +55,9 @@ namespace DPTS.Web.Models
 
         [Display(Name = "Fax")]
         public string FaxNumber { get; set; }
-        //end of address
+
+        public string CountryName { get; set; }
+
+        public string StateName { get; set; }
     }
 }
