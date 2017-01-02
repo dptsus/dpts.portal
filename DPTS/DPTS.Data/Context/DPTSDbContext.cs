@@ -24,6 +24,8 @@ namespace DPTS.Data.Context
 
         public virtual DbSet<SubSpeciality> SubSpeciality { get; set; }
 
+        public virtual DbSet<AddressMapping> Address_Mapping { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

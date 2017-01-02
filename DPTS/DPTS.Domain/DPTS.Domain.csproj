@@ -49,6 +49,7 @@
     <Compile Include="Core\StateProvince\IStateProvinceService.cs" />
     <Compile Include="Core\SubSpeciality\ISubSpecialityService.cs" />
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\AddressMapping.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
     <Compile Include="Entities\Country.cs" />

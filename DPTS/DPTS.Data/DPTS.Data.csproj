@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201701010306499_CreateSubSpecialityTable.Designer.cs">
       <DependentUpon>201701010306499_CreateSubSpecialityTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701020345248_CreateAddressMappingTable.cs" />
+    <Compile Include="Migrations\201701020345248_CreateAddressMappingTable.Designer.cs">
+      <DependentUpon>201701020345248_CreateAddressMappingTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -148,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701010306499_CreateSubSpecialityTable.resx">
       <DependentUpon>201701010306499_CreateSubSpecialityTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701020345248_CreateAddressMappingTable.resx">
+      <DependentUpon>201701020345248_CreateAddressMappingTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
