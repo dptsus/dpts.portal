@@ -219,6 +219,7 @@
     <Compile Include="Models\DoctorSpecialityViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SpecialityViewModel.cs" />
     <Compile Include="Models\StateProvinceViewModel.cs" />
     <Compile Include="Models\SubSpecialityViewModel.cs" />
@@ -838,6 +839,7 @@
     <Content Include="Views\Doctor\Addresses.cshtml" />
     <Content Include="Views\Doctor\_CreateUpdateAddress.cshtml" />
     <Content Include="Views\Doctor\AddressEdit.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

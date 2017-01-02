@@ -11,14 +11,18 @@ namespace DPTS.Services
     {
         #region Fields
         private readonly IRepository<Doctor> _doctorRepository;
-        private DPTSDbContext _specialityRepository;
+        private readonly IRepository<Speciality> _specialityRepository;
+        private readonly IRepository<Doctor_Speciality_Mapping> _specialityMappingRepository;
         #endregion
 
         #region Constructor
-        public DoctorService(IRepository<Doctor> doctorRepository, DPTSDbContext specialityRepository)
+        public DoctorService(IRepository<Doctor> doctorRepository, 
+            IRepository<Speciality> specialityRepository,
+            IRepository<Doctor_Speciality_Mapping> specialityMappingRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
+            _specialityMappingRepository = specialityMappingRepository;
         }
         #endregion
 
@@ -60,7 +64,24 @@ namespace DPTS.Services
             //return query.Select(c => c.Name).ToList();
             return null;
         }
+        //public virtual IList<Doctor> SearchDoctor(string keywords)
+        //{
+        //    if (!String.IsNullOrWhiteSpace(keywords))
+        //    {
+        //        var query = _doctorRepository.Table;
+        //        query = query.Where(p => !p.Deleted && p.IsActive);
 
+        //        if(!string.IsNullOrWhiteSpace(keywords))
+        //        {
+        //            query = from p in query
+        //                    where (p.Expertise.Contains(keywords) ||
+        //                    p.RegistrationNumber.Contains(keywords) ||
+        //                    p.ShortProfile.Contains(keywords) ||
+        //                    p.Subscription.Contains(keywords))
+        //                    select p;
+        //        }
+        //    }
+        //}
         #endregion
     }
 }

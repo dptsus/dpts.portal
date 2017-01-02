@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DPTS.Domain.Core;
+using DPTS.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,45 @@ namespace DPTS.Web.Controllers
 {
     public class HomeController : Controller
     {
+        #region Field
+        private readonly ISpecialityService _specialityService;
+        #endregion
+
+        #region Utilities
+        public IList<SelectListItem> GetSpecialityList()
+        {
+            var specialitys = _specialityService.GetAllSpeciality(false);
+            List<SelectListItem> typelst = new List<SelectListItem>();
+            typelst.Add(
+                     new SelectListItem
+                     {
+                         Text = "Select Speciality",
+                         Value = "0"
+                     });
+            foreach (var _type in specialitys.ToList())
+            {
+                typelst.Add(
+                     new SelectListItem
+                     {
+                         Text = _type.Title,
+                         Value = _type.Id.ToString()
+                     });
+            }
+            return typelst;
+        }
+        #endregion
+
+        #region Constructor
+        public HomeController(ISpecialityService specialityService)
+        {
+            _specialityService = specialityService;
+        }
+        #endregion
         public ActionResult Index()
         {
-            return View();
+            var model = new SearchModel();
+            model.AvailableSpeciality = GetSpecialityList();
+            return View(model);
         }
 
         public ActionResult About()
@@ -23,6 +61,21 @@ namespace DPTS.Web.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page is here.";
+
+            return View();
+        }
+
+        [ValidateInput(false)]
+        public ActionResult Search(SearchModel model)
+        {
+            if (model == null)
+                model = new SearchModel();
+
+            var searchTerms = model.keyword;
+            if (searchTerms == null)
+                searchTerms = "";
+            searchTerms = searchTerms.Trim();
+
 
             return View();
         }
