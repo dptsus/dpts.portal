@@ -16,7 +16,7 @@ namespace DPTS.Services
         #endregion
 
         #region Constructor
-        public DoctorService(IRepository<Doctor> doctorRepository, 
+        public DoctorService(IRepository<Doctor> doctorRepository,
             IRepository<Speciality> specialityRepository,
             IRepository<Doctor_Speciality_Mapping> specialityMappingRepository)
         {
@@ -64,24 +64,39 @@ namespace DPTS.Services
             //return query.Select(c => c.Name).ToList();
             return null;
         }
-        //public virtual IList<Doctor> SearchDoctor(string keywords)
-        //{
-        //    if (!String.IsNullOrWhiteSpace(keywords))
-        //    {
-        //        var query = _doctorRepository.Table;
-        //        query = query.Where(p => !p.Deleted && p.IsActive);
+        public IList<Doctor> SearchDoctor(string keywords,int SpecialityId)
+        {
+                var lst = new List<Doctor>();
 
-        //        if(!string.IsNullOrWhiteSpace(keywords))
-        //        {
-        //            query = from p in query
-        //                    where (p.Expertise.Contains(keywords) ||
-        //                    p.RegistrationNumber.Contains(keywords) ||
-        //                    p.ShortProfile.Contains(keywords) ||
-        //                    p.Subscription.Contains(keywords))
-        //                    select p;
-        //        }
-        //    }
-        //}
+                var query = _doctorRepository.Table;
+                    query = query.Where(p => !p.Deleted && p.IsActive);
+
+                if (!string.IsNullOrWhiteSpace(keywords))
+                {
+                    query = from p in query
+                            where (p.Expertise.Contains(keywords) ||
+                            p.RegistrationNumber.Contains(keywords) ||
+                            p.ShortProfile.Contains(keywords) ||
+                            p.Subscription.Contains(keywords))
+                            select p;
+                }
+                if(SpecialityId != 0)
+                {
+                     var td =
+                             from s in _specialityMappingRepository.Table.Where(c => c.Speciality_Id == SpecialityId)
+                             select s;
+
+                    foreach(var a in td.ToList())
+                    {
+                            var doc = GetDoctorbyId(a.Doctor_Id);
+                            if (doc != null)
+                                lst.Add(doc);
+                    }
+               }
+
+                return lst;
+
+        }
         #endregion
     }
 }

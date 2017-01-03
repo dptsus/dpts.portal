@@ -30,5 +30,7 @@ namespace DPTS.Domain.Core
         /// get list of Doctor Name
         /// </summary>
         IList<string> GetDoctorsName(bool showhidden);
+
+        IList<Doctor> SearchDoctor(string keywords, int SpecialityId);
     }
 }

@@ -840,6 +840,7 @@
     <Content Include="Views\Doctor\_CreateUpdateAddress.cshtml" />
     <Content Include="Views\Doctor\AddressEdit.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\SearchResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

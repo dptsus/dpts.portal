@@ -1,4 +1,5 @@
 ﻿using DPTS.Domain.Core;
+using DPTS.Domain.Entities;
 using DPTS.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace DPTS.Web.Controllers
     {
         #region Field
         private readonly ISpecialityService _specialityService;
+        private readonly IDoctorService _doctorService;
         #endregion
 
         #region Utilities
@@ -39,9 +41,11 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Constructor
-        public HomeController(ISpecialityService specialityService)
+        public HomeController(ISpecialityService specialityService,
+            IDoctorService doctorService)
         {
             _specialityService = specialityService;
+            _doctorService = doctorService;
         }
         #endregion
         public ActionResult Index()
@@ -76,8 +80,18 @@ namespace DPTS.Web.Controllers
                 searchTerms = "";
             searchTerms = searchTerms.Trim();
 
+            var data = _doctorService.SearchDoctor(model.keyword, model.SpecialityId);
 
-            return View();
+            TempData["DoctorSearchResult"] = data.ToList();
+
+            return RedirectToAction("SearchResult");
+        }
+
+
+        public ActionResult SearchResult()
+        {
+            IList<Doctor> doctor = (IList<Doctor>)TempData["DoctorSearchResult"];
+            return View(doctor);
         }
     }
 }
