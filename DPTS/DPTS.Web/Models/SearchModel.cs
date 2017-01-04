@@ -24,5 +24,7 @@ namespace DPTS.Web.Models
 
         public string keyword { get; set; }
 
+        public string directory_type { get; set; }
+
     }
 }

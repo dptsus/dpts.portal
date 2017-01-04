@@ -23,6 +23,10 @@ namespace DPTS.Web
                             "Doctor/GetStatesByCountryId/",
                             new { controller = "Doctor", action = "GetStatesByCountryId" }
                            );
+            routes.MapRoute("DPTSSearch",
+                         "search/",
+                         new { controller = "Home", action = "Search" });
+
             //routes.MapRoute(
             //    "ContactUs",
             //    "contact",

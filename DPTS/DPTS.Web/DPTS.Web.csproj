@@ -217,6 +217,7 @@
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\DoctorProfileSettingViewModel.cs" />
     <Compile Include="Models\DoctorSpecialityViewModel.cs" />
+    <Compile Include="Models\DoctorViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SearchModel.cs" />
@@ -840,7 +841,7 @@
     <Content Include="Views\Doctor\_CreateUpdateAddress.cshtml" />
     <Content Include="Views\Doctor\AddressEdit.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
-    <Content Include="Views\Home\SearchResult.cshtml" />
+    <Content Include="Views\Home\SearchBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

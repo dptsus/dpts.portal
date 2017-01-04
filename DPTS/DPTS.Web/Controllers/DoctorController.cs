@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -21,7 +20,6 @@ namespace DPTS.Web.Controllers
         private readonly IStateProvinceService _stateProvinceService;
         private readonly IAddressService _addressService;
         private ApplicationDbContext context;
-
         #endregion
 
         #region Contructor
@@ -160,9 +158,8 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Methods
-        public async Task<ActionResult> Info()
+        public ActionResult Info()
         {
-           // var data = await _doctorService.ge(showhidden: true, enableTracking: true);
             return View();
         }
 

@@ -13,16 +13,19 @@ namespace DPTS.Services
         private readonly IRepository<Doctor> _doctorRepository;
         private readonly IRepository<Speciality> _specialityRepository;
         private readonly IRepository<Doctor_Speciality_Mapping> _specialityMappingRepository;
+        private readonly IAddressService _addressService;
         #endregion
 
         #region Constructor
         public DoctorService(IRepository<Doctor> doctorRepository,
             IRepository<Speciality> specialityRepository,
-            IRepository<Doctor_Speciality_Mapping> specialityMappingRepository)
+            IRepository<Doctor_Speciality_Mapping> specialityMappingRepository,
+            IAddressService addressService)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
             _specialityMappingRepository = specialityMappingRepository;
+            _addressService = addressService;
         }
         #endregion
 
@@ -64,37 +67,44 @@ namespace DPTS.Services
             //return query.Select(c => c.Name).ToList();
             return null;
         }
-        public IList<Doctor> SearchDoctor(string keywords,int SpecialityId)
+        public IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null)
         {
-                var lst = new List<Doctor>();
+            var lst = new List<Doctor>();
 
-                var query = _doctorRepository.Table;
-                    query = query.Where(p => !p.Deleted && p.IsActive);
-
-                if (!string.IsNullOrWhiteSpace(keywords))
-                {
-                    query = from p in query
-                            where (p.Expertise.Contains(keywords) ||
-                            p.RegistrationNumber.Contains(keywords) ||
-                            p.ShortProfile.Contains(keywords) ||
-                            p.Subscription.Contains(keywords))
-                            select p;
-                }
-                if(SpecialityId != 0)
-                {
-                     var td =
-                             from s in _specialityMappingRepository.Table.Where(c => c.Speciality_Id == SpecialityId)
-                             select s;
-
-                    foreach(var a in td.ToList())
-                    {
-                            var doc = GetDoctorbyId(a.Doctor_Id);
-                            if (doc != null)
-                                lst.Add(doc);
-                    }
-               }
-
+            if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "127")
                 return lst;
+
+            var query = _doctorRepository.Table;
+            query = query.Where(p => !p.Deleted && p.IsActive);
+
+            if (!string.IsNullOrWhiteSpace(keywords))
+            {
+                query = from p in query
+                        where (p.Expertise.Contains(keywords) ||
+                        p.RegistrationNumber.Contains(keywords) ||
+                        p.ShortProfile.Contains(keywords) ||
+                        p.Subscription.Contains(keywords))
+                        select p;
+            }
+            if (SpecialityId != 0)
+            {
+                var td =
+                        from s in _specialityMappingRepository.Table.Where(c => c.Speciality_Id == SpecialityId)
+                        select s;
+
+                foreach (var a in td.ToList())
+                {
+                    var doc = GetDoctorbyId(a.Doctor_Id);
+                    if (doc != null)
+                    {
+                        var addr = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault();
+                        doc.Addresses.Add(addr);
+                        lst.Add(doc);
+                    }
+                }
+            }
+
+            return lst;
 
         }
         #endregion

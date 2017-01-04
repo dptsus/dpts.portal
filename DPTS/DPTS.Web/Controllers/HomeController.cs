@@ -1,9 +1,11 @@
 ﻿using DPTS.Domain.Core;
 using DPTS.Domain.Entities;
 using DPTS.Web.Models;
-using System;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,6 +16,17 @@ namespace DPTS.Web.Controllers
         #region Field
         private readonly ISpecialityService _specialityService;
         private readonly IDoctorService _doctorService;
+        private ApplicationUserManager _userManager;
+        #endregion
+
+        #region Constructor
+        public HomeController(ISpecialityService specialityService,
+            IDoctorService doctorService)
+        {
+            _specialityService = specialityService;
+            _doctorService = doctorService;
+            UserManager = _userManager;
+        }
         #endregion
 
         #region Utilities
@@ -38,21 +51,39 @@ namespace DPTS.Web.Controllers
             }
             return typelst;
         }
-        #endregion
 
-        #region Constructor
-        public HomeController(ISpecialityService specialityService,
-            IDoctorService doctorService)
+        public ApplicationUserManager UserManager
         {
-            _specialityService = specialityService;
-            _doctorService = doctorService;
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+
+        public async Task<ApplicationUser> GetUserById(string userId)
+        {
+            return await UserManager.FindByIdAsync(userId);
         }
         #endregion
+
         public ActionResult Index()
         {
-            var model = new SearchModel();
-            model.AvailableSpeciality = GetSpecialityList();
-            return View(model);
+            return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult SearchBox()
+        {
+            var model = new SearchModel
+            {
+                AvailableSpeciality = GetSpecialityList()
+            };
+            return PartialView(model);
         }
 
         public ActionResult About()
@@ -64,7 +95,7 @@ namespace DPTS.Web.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page is here.";
+           ViewBag.Message = "Your contact page is here.";
 
             return View();
         }
@@ -80,18 +111,35 @@ namespace DPTS.Web.Controllers
                 searchTerms = "";
             searchTerms = searchTerms.Trim();
 
-            var data = _doctorService.SearchDoctor(model.keyword, model.SpecialityId);
+            var data = _doctorService.SearchDoctor(searchTerms,
+                model.SpecialityId,
+                model.directory_type);
 
-            TempData["DoctorSearchResult"] = data.ToList();
+            if (data == null)
+                return null;
 
-            return RedirectToAction("SearchResult");
+            var doctors = new List<DoctorViewModel>();
+            foreach (var doc in data.ToList())
+            {
+                var _user = GetUserById(doc.DoctorId);
+                if (_user.Result == null)
+                    return null;
+
+                var doctor = new DoctorViewModel
+                {
+                    Id=_user.Result.Id,
+                    Email = _user.Result.Email,
+                    FirstName = _user.Result.FirstName,
+                    LastName = _user.Result.LastName,
+                    MobileNumber = _user.Result.PhoneNumber,
+                    doctor = doc
+                };
+
+                doctors.Add(doctor);
+            }
+
+            return View(doctors);
         }
 
-
-        public ActionResult SearchResult()
-        {
-            IList<Doctor> doctor = (IList<Doctor>)TempData["DoctorSearchResult"];
-            return View(doctor);
-        }
     }
 }

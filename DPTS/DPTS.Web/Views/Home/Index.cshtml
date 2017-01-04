@@ -18,9 +18,9 @@
                                 <div class="tg-displaytable">
                                     <div class="tg-displaytablecell">
                                         <div class="container">
-                                            
-                                            @Html.Partial("Search",Model)
 
+                                            @*@Html.Partial("SearchBox")*@
+                                            @Html.Action("SearchBox", "Home")
                                         </div>
                                     </div>
                                 </div>
