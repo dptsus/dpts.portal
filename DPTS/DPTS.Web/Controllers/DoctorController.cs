@@ -4,6 +4,7 @@ using DPTS.Web.Models;
 using SQS_Shopee.Entites;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -168,6 +169,8 @@ namespace DPTS.Web.Controllers
             var model = new DoctorProfileSettingViewModel();
             if (!string.IsNullOrEmpty(User.Identity.Name))
             {
+               // var user = context.Users.a(u => u.Id).Where(u => u.Id == id).FirstOrDefault();
+
                 var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
                 var doctor = _doctorService.GetDoctorbyId(user.Id);
                 if(doctor != null)
