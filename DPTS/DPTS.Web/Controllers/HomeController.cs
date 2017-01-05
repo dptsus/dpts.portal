@@ -17,6 +17,7 @@ namespace DPTS.Web.Controllers
         private readonly ISpecialityService _specialityService;
         private readonly IDoctorService _doctorService;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext context;
         #endregion
 
         #region Constructor
@@ -26,6 +27,7 @@ namespace DPTS.Web.Controllers
             _specialityService = specialityService;
             _doctorService = doctorService;
             UserManager = _userManager;
+            context = new ApplicationDbContext();
         }
         #endregion
 
@@ -65,9 +67,9 @@ namespace DPTS.Web.Controllers
         }
 
 
-        public async Task<ApplicationUser> GetUserById(string userId)
+        public ApplicationUser GetUserById(string userId)
         {
-            return await UserManager.FindByIdAsync(userId);
+            return context.Users.SingleOrDefault(u => u.Id == userId);
         }
         #endregion
 
@@ -121,17 +123,17 @@ namespace DPTS.Web.Controllers
             var doctors = new List<DoctorViewModel>();
             foreach (var doc in data.ToList())
             {
-                var _user = GetUserById(doc.DoctorId);
-                if (_user.Result == null)
+                var user = GetUserById(doc.DoctorId);
+                if (user == null)
                     return null;
 
                 var doctor = new DoctorViewModel
                 {
-                    Id=_user.Result.Id,
-                    Email = _user.Result.Email,
-                    FirstName = _user.Result.FirstName,
-                    LastName = _user.Result.LastName,
-                    MobileNumber = _user.Result.PhoneNumber,
+                    Id= user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    MobileNumber = user.PhoneNumber,
                     doctor = doc
                 };
 
