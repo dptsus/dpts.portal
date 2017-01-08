@@ -123,7 +123,8 @@ namespace DPTS.Web.Controllers
             if (data == null)
                 return null;
 
-            var doctors = new List<DoctorViewModel>();
+            var searchVmodel = new SearchViewModel();
+            
             foreach (var doc in data)
             {
                 var user = GetUserById(doc.DoctorId);
@@ -141,10 +142,19 @@ namespace DPTS.Web.Controllers
                 };
                 var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
                 doctor.Addresses = addr;
-                doctors.Add(doctor);
+                searchVmodel.doctorsModel.Add(doctor);
             }
 
-            return View(doctors);
+            searchVmodel.SearchModel = new SearchModel
+            {
+                AvailableSpeciality = GetSpecialityList(),
+                directory_type=model.directory_type,
+                keyword=model.keyword,
+                SpecialityId=model.SpecialityId,
+                ZipCode=model.ZipCode
+            };
+
+            return View(searchVmodel);
         }
 
     }

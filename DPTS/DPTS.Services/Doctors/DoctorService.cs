@@ -70,10 +70,6 @@ namespace DPTS.Services
         }
         public IList<string> GetDoctorsName(bool showhidden)
         {
-            //var query = _doctorRepository.Table;
-            //if (!showhidden)
-            //    query = query.Where(c => c.IsActive);
-            //return query.Select(c => c.Name).ToList();
             return null;
         }
         public IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null,string zipcode = null)
@@ -83,24 +79,26 @@ namespace DPTS.Services
 
           //  query = query.Where(p => !p.Deleted && p.IsActive);
 
-            if (string.IsNullOrWhiteSpace(directory_type))
+            if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "127")
                 return null;
 
-            if(SpecialityId > 0)
-            {
-                //SELECT AspNetUsers.*, Doctors.*
-                //FROM AspNetUsers INNER JOIN Doctors ON AspNetUsers.Id = Doctors.DoctorId INNER JOIN
-                //SpecialityMappings ON Doctors.DoctorId = SpecialityMappings.Doctor_Id WHERE SpecialityMappings.Speciality_Id = 2
-
-                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(SpecialityId)), (d, s) => d);
-            }
+            
             if(!string.IsNullOrWhiteSpace(zipcode))
             {
-                query = from d in query
+                query = from d in _context.Doctors
                         join a in _context.AddressMappings on d.DoctorId equals a.UserId
                         join m in _context.Addresses on a.AddressId equals m.Id
                         where m.ZipPostalCode == zipcode
                         select d;
+             }
+            if (SpecialityId > 0)
+            {
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(SpecialityId)), (d, s) => d);
+            }
+            if (!string.IsNullOrWhiteSpace(keywords))
+            {
+                query = query.Where(d => d.ShortProfile.Contains(keywords)
+                         || d.Subscription.Contains(keywords) || d.Qualifications.Contains(keywords));
             }
 
             return query.ToList();

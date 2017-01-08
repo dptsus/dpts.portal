@@ -53,6 +53,12 @@ namespace DPTS.Services
 
             return query.ToList(); ;
         }
+        public IList<AddressMapping> GetAllAddressMapping()
+        {
+            var query = _addressMappingRepository.Table;
+
+            return query.ToList(); ;
+        }
 
         public IList<Address> GetAllAddressByUser(string UserId)
         {

@@ -221,6 +221,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SearchModel.cs" />
+    <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Models\SpecialityViewModel.cs" />
     <Compile Include="Models\StateProvinceViewModel.cs" />
     <Compile Include="Models\SubSpecialityViewModel.cs" />
@@ -842,6 +843,7 @@
     <Content Include="Views\Doctor\AddressEdit.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\SearchBox.cshtml" />
+    <Content Include="Views\Home\_DoctorBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />
