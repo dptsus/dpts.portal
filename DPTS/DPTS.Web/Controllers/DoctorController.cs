@@ -1,5 +1,6 @@
-﻿using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+﻿using DPTS.Domain;
+using DPTS.Domain.Core;
+using DPTS.Domain;
 using DPTS.Web.Models;
 using SQS_Shopee.Entites;
 using System;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {
@@ -61,7 +63,7 @@ namespace DPTS.Web.Controllers
 
             foreach(var speciality in data)
             {
-                var specilityMap = new Doctor_Speciality_Mapping
+                var specilityMap = new SpecialityMapping
                 {
                     Speciality_Id = speciality.Id,
                     Doctor_Id = docterId
@@ -176,11 +178,17 @@ namespace DPTS.Web.Controllers
                 if(doctor != null)
                 {
                     model.DateCreated = doctor.DateCreated;
-                    model.DateOfBirth = doctor.DateOfBirth;
+                    var dateOfBirth = string.IsNullOrWhiteSpace(doctor.DateOfBirth) ? (DateTime?)null : DateTime.Parse(doctor.DateOfBirth);
+                    if (dateOfBirth.HasValue)
+                    {
+                        model.DateOfBirthDay = dateOfBirth.Value.Day;
+                        model.DateOfBirthMonth = dateOfBirth.Value.Month;
+                        model.DateOfBirthYear = dateOfBirth.Value.Year;
+                    }
                     model.Gender = doctor.Gender;
                     model.ShortProfile = doctor.ShortProfile;
                     model.Qualifications = doctor.Qualifications;
-                    model.NoOfYearExperience = doctor.YearsOfExperience;
+                //    model.NoOfYearExperience = doctor.YearsOfExperience;
                     model.RegistrationNumber = doctor.RegistrationNumber;
 
                 }
@@ -204,7 +212,7 @@ namespace DPTS.Web.Controllers
                 var Specilities = string.Join(",", model.SelectedSpeciality);
                 foreach (var item in Specilities.Split(',').ToList())
                 {
-                    var specilityMap = new Doctor_Speciality_Mapping
+                    var specilityMap = new SpecialityMapping
                     {
                         Speciality_Id = int.Parse(item),
                         Doctor_Id = model.Id,
@@ -224,7 +232,8 @@ namespace DPTS.Web.Controllers
 
             doctor.Gender = model.Gender;
             doctor.ShortProfile = model.ShortProfile;
-            doctor.DateOfBirth = model.DateOfBirth.Equals(DateTime.MinValue) ? doctor.DateOfBirth : model.DateOfBirth;
+            DateTime? dateOfBirth = model.ParseDateOfBirth();
+            doctor.DateOfBirth = dateOfBirth.ToString();
             doctor.DateUpdated = DateTime.UtcNow;
             doctor.Qualifications = model.Qualifications;
             doctor.RegistrationNumber = model.RegistrationNumber;

@@ -11,7 +11,7 @@ using Microsoft.Owin.Security;
 using DPTS.Web.Models;
 using System.Collections.Generic;
 using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 
 namespace DPTS.Web.Controllers
 {
@@ -201,7 +201,6 @@ namespace DPTS.Web.Controllers
                         await this.UserManager.AddToRoleAsync(user.Id, model.Role);
                         var doctor = new Doctor();
                         doctor.DoctorId = user.Id;
-                        doctor.DateOfBirth = DateTime.UtcNow;
                         _doctorService.AddDoctor(doctor);
                     }
 

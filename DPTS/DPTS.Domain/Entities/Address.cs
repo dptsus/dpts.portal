@@ -1,7 +1,14 @@
-﻿namespace DPTS.Domain.Entities
+namespace DPTS.Domain
 {
-    public class Address : BaseEntityWithDateTime
+    using System.Collections.Generic;
+
+    public partial class Address :BaseEntityWithDateTime
     {
+        public Address()
+        {
+            AddressMappings = new HashSet<AddressMapping>();
+        }
+
         public string Hospital { get; set; }
 
         public int? CountryId { get; set; }
@@ -22,9 +29,12 @@
 
         public string FaxNumber { get; set; }
 
+        public int? Doctor_Id { get; set; }
+
+        public virtual ICollection<AddressMapping> AddressMappings { get; set; }
+
         public virtual Country Country { get; set; }
 
         public virtual StateProvince StateProvince { get; set; }
-
     }
 }

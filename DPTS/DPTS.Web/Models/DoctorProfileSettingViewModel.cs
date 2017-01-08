@@ -1,4 +1,4 @@
-﻿using DPTS.Domain.Entities;
+﻿using DPTS.Domain;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -78,14 +78,34 @@ namespace DPTS.Web.Models
         [Display(Name = "Experience [/yrs]")]
         public int NoOfYearExperience { get; set; }
 
-        
+
 
         public DateTime DateCreated { get; set; }
 
         public IList<string> SelectedSpeciality { get; set; }
         public IList<SelectListItem> AvailableSpeciality { get; set; }
-       // public IList<SelectListItem> AvailableCountry { get; set; }
-        //public IList<SelectListItem> AvailableStateProvince { get; set; }
+
+        // DOB
+
+        [Display(Name ="Day")]
+        public int? DateOfBirthDay { get; set; }
+        [Display(Name = "Month")]
+        public int? DateOfBirthMonth { get; set; }
+        [Display(Name = "Year")]
+        public int? DateOfBirthYear { get; set; }
+        public DateTime? ParseDateOfBirth()
+        {
+            if (!DateOfBirthYear.HasValue || !DateOfBirthMonth.HasValue || !DateOfBirthDay.HasValue)
+                return null;
+
+            DateTime? dateOfBirth = null;
+            try
+            {
+                dateOfBirth = new DateTime(DateOfBirthYear.Value, DateOfBirthMonth.Value, DateOfBirthDay.Value);
+            }
+            catch { }
+            return dateOfBirth;
+        }
 
 
     }

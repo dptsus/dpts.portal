@@ -1,4 +1,4 @@
-﻿using DPTS.Domain.Entities;
+﻿using DPTS.Domain;
 using System.Collections.Generic;
 
 namespace DPTS.Domain.Core
@@ -30,8 +30,8 @@ namespace DPTS.Domain.Core
         /// </summary>
         IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false);
 
-        void AddSpecialityByDoctor(Doctor_Speciality_Mapping doctorSpecilities);
+        void AddSpecialityByDoctor(SpecialityMapping doctorSpecilities);
 
-        bool IsDoctorSpecialityExists(Doctor_Speciality_Mapping doctorSpecilities);
+        bool IsDoctorSpecialityExists(SpecialityMapping doctorSpecilities);
     }
 }

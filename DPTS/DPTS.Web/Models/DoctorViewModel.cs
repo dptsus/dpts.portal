@@ -1,4 +1,4 @@
-﻿using DPTS.Domain.Entities;
+﻿using DPTS.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,14 @@ namespace DPTS.Web.Models
         public DoctorViewModel()
         {
             doctor = new Doctor();
+            Addresses = new List<Address>();
+
         }
         public string Id { get; set; }
 
         public virtual Doctor doctor { get; set; }
+
+        public virtual IList<Address> Addresses { get; set; }
 
         public string Email { get; set; }
 

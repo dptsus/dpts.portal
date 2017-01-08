@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DPTS.Domain.Entities
+namespace DPTS.Domain
 {
-    public class Country : BaseEntityWithDateTime
+    using System.Collections.Generic;
+
+    public partial class Country :BaseEntityWithDateTime
     {
+        public Country()
+        {
+            Addresses = new HashSet<Address>();
+            StateProvinces = new HashSet<StateProvince>();
+        }
+
         public string Name { get; set; }
 
         public string TwoLetterIsoCode { get; set; }
@@ -22,5 +24,8 @@ namespace DPTS.Domain.Entities
 
         public int DisplayOrder { get; set; }
 
+        public virtual ICollection<Address> Addresses { get; set; }
+
+        public virtual ICollection<StateProvince> StateProvinces { get; set; }
     }
 }

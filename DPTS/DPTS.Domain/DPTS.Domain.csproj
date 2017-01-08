@@ -50,11 +50,15 @@
     <Compile Include="Core\SubSpeciality\ISubSpecialityService.cs" />
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\AddressMapping.cs" />
+    <Compile Include="Entities\AspNetRole.cs" />
+    <Compile Include="Entities\AspNetUser.cs" />
+    <Compile Include="Entities\AspNetUserClaim.cs" />
+    <Compile Include="Entities\AspNetUserLogin.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Doctor.cs" />
-    <Compile Include="Entities\Doctor_Speciality_Mapping.cs" />
+    <Compile Include="Entities\SpecialityMapping.cs" />
     <Compile Include="Entities\Gender.cs" />
     <Compile Include="Entities\Speciality.cs" />
     <Compile Include="Entities\StateProvince.cs" />

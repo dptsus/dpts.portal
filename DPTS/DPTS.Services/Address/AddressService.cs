@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 
 namespace DPTS.Services
 {
@@ -70,6 +70,14 @@ namespace DPTS.Services
                     lstAddr.Add(addr);
             }
             return lstAddr;
+        }
+        public IList<Address> GetAllAddressByZipcode(string zipcode)
+        {
+            if (string.IsNullOrWhiteSpace(zipcode))
+                return null;
+
+            var addrs = _addressRepository.Table.Where(a => a.ZipPostalCode == zipcode).ToList();
+            return addrs;
         }
 
         public void UpdateAddress(Address address)

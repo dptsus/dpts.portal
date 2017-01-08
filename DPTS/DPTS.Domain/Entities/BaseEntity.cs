@@ -1,4 +1,4 @@
-﻿namespace DPTS.Domain.Entities
+﻿namespace DPTS.Domain
 {
     public class BaseEntity
     {

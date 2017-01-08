@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 
 namespace DPTS.Domain.Core
 {
@@ -22,7 +22,7 @@ namespace DPTS.Domain.Core
         IList<Country> GetAllCountries(bool showHidden = false);
 
         /// <summary>
-        /// Gets a country 
+        /// Gets a country
         /// </summary>
         /// <param name="countryId">Country identifier</param>
         /// <returns>Country</returns>

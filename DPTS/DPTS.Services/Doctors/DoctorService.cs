@@ -1,6 +1,6 @@
 ﻿using DPTS.Data.Context;
 using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +12,29 @@ namespace DPTS.Services
         #region Fields
         private readonly IRepository<Doctor> _doctorRepository;
         private readonly IRepository<Speciality> _specialityRepository;
-        private readonly IRepository<Doctor_Speciality_Mapping> _specialityMappingRepository;
+        private readonly IRepository<SpecialityMapping> _specialityMappingRepository;
+        private readonly IRepository<AddressMapping> _addressMapping;
+        private readonly IRepository<Address> _address;
         private readonly IAddressService _addressService;
+        private readonly DPTSDbContext _context;
+
         #endregion
 
         #region Constructor
         public DoctorService(IRepository<Doctor> doctorRepository,
             IRepository<Speciality> specialityRepository,
-            IRepository<Doctor_Speciality_Mapping> specialityMappingRepository,
-            IAddressService addressService)
+            IRepository<SpecialityMapping> specialityMappingRepository,
+            IAddressService addressService,
+            IRepository<AddressMapping> addressMapping,
+            IRepository<Address> address)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
             _specialityMappingRepository = specialityMappingRepository;
             _addressService = addressService;
+            _addressMapping = addressMapping;
+            _address = address;
+            _context = new DPTSDbContext();
         }
         #endregion
 
@@ -67,44 +76,34 @@ namespace DPTS.Services
             //return query.Select(c => c.Name).ToList();
             return null;
         }
-        public IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null)
+        public IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null,string zipcode = null)
         {
-            var lst = new List<Doctor>();
+            var query = from d in _doctorRepository.Table
+                        select d;
 
-            if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "127")
-                return lst;
+          //  query = query.Where(p => !p.Deleted && p.IsActive);
 
-            var query = _doctorRepository.Table;
-            query = query.Where(p => !p.Deleted && p.IsActive);
+            if (string.IsNullOrWhiteSpace(directory_type))
+                return null;
 
-            if (!string.IsNullOrWhiteSpace(keywords))
+            if(SpecialityId > 0)
             {
-                query = from p in query
-                        where (p.Expertise.Contains(keywords) ||
-                        p.RegistrationNumber.Contains(keywords) ||
-                        p.ShortProfile.Contains(keywords) ||
-                        p.Subscription.Contains(keywords))
-                        select p;
+                //SELECT AspNetUsers.*, Doctors.*
+                //FROM AspNetUsers INNER JOIN Doctors ON AspNetUsers.Id = Doctors.DoctorId INNER JOIN
+                //SpecialityMappings ON Doctors.DoctorId = SpecialityMappings.Doctor_Id WHERE SpecialityMappings.Speciality_Id = 2
+
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(SpecialityId)), (d, s) => d);
             }
-            if (SpecialityId != 0)
+            if(!string.IsNullOrWhiteSpace(zipcode))
             {
-                var td =
-                        from s in _specialityMappingRepository.Table.Where(c => c.Speciality_Id == SpecialityId)
-                        select s;
-
-                foreach (var a in td.ToList())
-                {
-                    var doc = GetDoctorbyId(a.Doctor_Id);
-                    if (doc != null)
-                    {
-                        var addr = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault();
-                        doc.Addresses.Add(addr);
-                        lst.Add(doc);
-                    }
-                }
+                query = from d in query
+                        join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                        join m in _context.Addresses on a.AddressId equals m.Id
+                        where m.ZipPostalCode == zipcode
+                        select d;
             }
 
-            return lst;
+            return query.ToList();
 
         }
         #endregion

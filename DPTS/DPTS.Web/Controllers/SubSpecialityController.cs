@@ -1,5 +1,5 @@
 ﻿using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 using DPTS.Web.Models;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+﻿using DPTS.Domain;
+using DPTS.Domain.Core;
 using System;
 using System.Web.Mvc;
 

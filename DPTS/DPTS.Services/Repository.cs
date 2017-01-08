@@ -1,6 +1,6 @@
 ﻿using DPTS.Data.Context;
 using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

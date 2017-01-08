@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DPTS.Data.IdentityEntities
 {
-    public class User : IdentityUser
+    public class User
     {
         [Required, MaxLength(256)]
         public string FirstName { get; set; }

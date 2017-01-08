@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 
 namespace DPTS.Services
 {
@@ -54,13 +54,13 @@ namespace DPTS.Services
                 if (!showHidden)
                     query = query.Where(c => c.Published);
                 query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
-                
+
                 var countries = query.ToList();
                 return countries;
         }
 
         /// <summary>
-        /// Gets a country 
+        /// Gets a country
         /// </summary>
         /// <param name="countryId">Country identifier</param>
         /// <returns>Country</returns>

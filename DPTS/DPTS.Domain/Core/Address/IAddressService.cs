@@ -1,4 +1,4 @@
-﻿using DPTS.Domain.Entities;
+﻿using DPTS.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +49,8 @@ namespace DPTS.Domain.Core
         void DeleteAddressMapping(AddressMapping addressMapping);
 
         AddressMapping GetAddressMappingbuUserIdAddrId(string UserId, int AddressId);
+
+        IList<Address> GetAllAddressByZipcode(string zipcode);
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DPTS.Domain.Core;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 using DPTS.Web.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -16,18 +16,21 @@ namespace DPTS.Web.Controllers
         #region Field
         private readonly ISpecialityService _specialityService;
         private readonly IDoctorService _doctorService;
+        private readonly IAddressService _addressService;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
         #endregion
 
         #region Constructor
         public HomeController(ISpecialityService specialityService,
-            IDoctorService doctorService)
+            IDoctorService doctorService,
+            IAddressService addressService)
         {
             _specialityService = specialityService;
             _doctorService = doctorService;
             UserManager = _userManager;
             context = new ApplicationDbContext();
+            _addressService = addressService;
         }
         #endregion
 
@@ -115,13 +118,13 @@ namespace DPTS.Web.Controllers
 
             var data = _doctorService.SearchDoctor(searchTerms,
                 model.SpecialityId,
-                model.directory_type);
+                model.directory_type,model.ZipCode);
 
             if (data == null)
                 return null;
 
             var doctors = new List<DoctorViewModel>();
-            foreach (var doc in data.ToList())
+            foreach (var doc in data)
             {
                 var user = GetUserById(doc.DoctorId);
                 if (user == null)
@@ -136,7 +139,8 @@ namespace DPTS.Web.Controllers
                     MobileNumber = user.PhoneNumber,
                     doctor = doc
                 };
-
+                var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
+                doctor.Addresses = addr;
                 doctors.Add(doctor);
             }
 

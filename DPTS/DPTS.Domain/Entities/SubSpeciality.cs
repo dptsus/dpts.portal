@@ -1,16 +1,15 @@
-﻿namespace DPTS.Domain.Entities
+namespace DPTS.Domain
 {
-    public class SubSpeciality :BaseEntityWithDateTime
+    public partial class SubSpeciality : BaseEntityWithDateTime
     {
         public int SpecialityId { get; set; }
 
         public string Name { get; set; }
 
-        public int DisplayOrder { get; set; } = 0;
+        public int DisplayOrder { get; set; }
 
         public bool IsActive { get; set; }
 
         public virtual Speciality Speciality { get; set; }
-
     }
 }

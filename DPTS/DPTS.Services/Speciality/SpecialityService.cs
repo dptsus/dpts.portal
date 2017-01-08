@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DPTS.Domain.Entities;
+using DPTS.Domain;
 using DPTS.Data.Context;
 
 namespace DPTS.Services
@@ -11,11 +11,11 @@ namespace DPTS.Services
     {
         #region Fields
         private readonly IRepository<Speciality> _specialityRepository;
-        private readonly IRepository<Doctor_Speciality_Mapping> _specalityMappingRepos;
+        private readonly IRepository<SpecialityMapping> _specalityMappingRepos;
         #endregion
 
         #region Constructor
-        public SpecialityService(IRepository<Speciality> specialityRepository, IRepository<Doctor_Speciality_Mapping> specalityMappingRepos)
+        public SpecialityService(IRepository<Speciality> specialityRepository, IRepository<SpecialityMapping> specalityMappingRepos)
         {
             _specialityRepository = specialityRepository;
             _specalityMappingRepos = specalityMappingRepos;
@@ -68,7 +68,7 @@ namespace DPTS.Services
             _specialityRepository.Update(data);
         }
 
-        public void AddSpecialityByDoctor(Doctor_Speciality_Mapping doctorSpeciality)
+        public void AddSpecialityByDoctor(SpecialityMapping doctorSpeciality)
         {
             if (doctorSpeciality == null)
                 throw new ArgumentNullException("doctorSpeciality");
@@ -78,7 +78,7 @@ namespace DPTS.Services
             _specalityMappingRepos.Insert(doctorSpeciality);
 
         }
-        public bool IsDoctorSpecialityExists(Doctor_Speciality_Mapping doctorSpeciality)
+        public bool IsDoctorSpecialityExists(SpecialityMapping doctorSpeciality)
         {
             if (doctorSpeciality == null)
                 throw new ArgumentNullException("doctorSpeciality");

@@ -1,19 +1,21 @@
 namespace DPTS.Domain
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
-    public partial class AddressMapping
+    public partial class AspNetUserClaim
     {
-        [Key]
         public int Id { get; set; }
+
         [Required]
         [StringLength(128)]
         public string UserId { get; set; }
 
-        [Required]
-        public int AddressId { get; set; }
+        public string ClaimType { get; set; }
 
-        public virtual Address Address { get; set; }
+        public string ClaimValue { get; set; }
 
         public virtual AspNetUser AspNetUser { get; set; }
     }

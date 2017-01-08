@@ -1,34 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DPTS.Domain.Entities
+namespace DPTS.Domain
 {
-    public class Doctor : BaseEntityWithDateTime
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    public partial class Doctor :BaseEntityWithDateTime
     {
-        private ICollection<Address> _addresses;
-        private ICollection<Speciality> _speciality;
         public Doctor()
         {
-            this.DoctorGuid = Guid.NewGuid();
+            SpecialityMapping = new HashSet<SpecialityMapping>();
+            AddresseMapping = new HashSet<AddressMapping>();
         }
-
-        [Required]
-        public string DoctorId { get; set; }
 
         public Guid DoctorGuid { get; set; }
 
         public string Gender { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-
         public string Qualifications { get; set; }
 
         public string RegistrationNumber { get; set; }
 
-        public int YearsOfExperience { get; set; }
+        public int? YearsOfExperience { get; set; }
 
         public string ShortProfile { get; set; }
 
@@ -42,15 +34,16 @@ namespace DPTS.Domain.Entities
 
         public int DisplayOrder { get; set; }
 
-        public virtual ICollection<Address> Addresses
-        {
-            get { return _addresses ?? (_addresses = new List<Address>()); }
-            protected set { _addresses = value; }
-        }
-        public virtual ICollection<Speciality> Speciality
-        {
-            get { return _speciality ?? (_speciality = new List<Speciality>()); }
-            protected set { _speciality = value; }
-        }
+        [Key]
+        public string DoctorId { get; set; }
+
+        public string DateOfBirth { get; set; }
+
+        public virtual AspNetUser AspNetUser { get; set; }
+
+        public virtual ICollection<SpecialityMapping> SpecialityMapping { get; set; }
+
+        public virtual ICollection<AddressMapping> AddresseMapping { get; set; }
+
     }
 }
