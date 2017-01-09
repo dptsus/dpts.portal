@@ -79,7 +79,7 @@ namespace DPTS.Services
 
           //  query = query.Where(p => !p.Deleted && p.IsActive);
 
-            if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "127")
+            if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "doctor")
                 return null;
 
             

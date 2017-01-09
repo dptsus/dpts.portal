@@ -844,6 +844,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\SearchBox.cshtml" />
     <Content Include="Views\Home\_DoctorBox.cshtml" />
+    <Content Include="Views\Home\_SearchNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

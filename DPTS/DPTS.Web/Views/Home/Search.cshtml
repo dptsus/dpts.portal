@@ -7,78 +7,14 @@
 
 <div class="container">
     <div class="row">
-        <form class="form-refinesearch tg-haslayout">
+        <form">
             <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
                 <div class="tg-doctors-list tg-haslayout">
                     <div class="tg-refinesearcharea">
                         <div class="tg-heading-border tg-small">
                             <h2>refine search</h2>
                         </div>
-@using (Html.BeginForm("Search", "Home", FormMethod.Get, new { id = "small-search-box-form"}))
-{
-                        <fieldset>
-                            <div class="row">
-                                <div class="col-md-12 col-sm-6 col-xs-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" value="" name="keyword" id="keyword" placeholder="Type Keyword...">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 col-sm-6 col-xs-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" value="" name="ZipCode" id="ZipCode" placeholder="Search users by zip code">
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-sm-6 col-xs-6">
-                                    <div class="form-group">
-                                        <span class="select">
-                                            <select class="directory_type" name="directory_type">
-                                                <option value="">Category</option>
-                                                <option selected="" data-dir_name="Doctor" id="127" value="doctor">Doctor</option>
-                                                <option data-dir_name="hospital" id="126" value="hospital">Hospital</option>
-                                                <option data-dir_name="clinic" id="125" value="clinic">Clinic</option>
-                                                <option data-dir_name="Pharmacy" id="123" value="pharmacy">Pharmacy</option>
-                                                <option data-dir_name="Blood Bank" id="122" value="blood-bank">Blood Bank</option>
-                                                <option data-dir_name="Fitness Center" id="121" value="fitness-center">Fitness Center</option>
-
-                                            </select>
-                                        </span>
-                                        <script>
-                                jQuery(document).ready(function() {
-                                    var Z_Editor = {};
-                                    Z_Editor.elements = {};
-                                    window.Z_Editor = Z_Editor;
-                                    Z_Editor.elements = jQuery.parseJSON( '{\"127\":{\"cardiologist\":\"Cardiologist\",\"colorectal-surgeon\":\"Colorectal surgeon\",\"dentist\":\"Dentist\",\"dermatologist\":\"Dermatologist\",\"dietician\":\"Dietician\",\"eye-doctor\":\"Eye Doctor\",\"eye-nose-ear-ent-specialist\":\"Eye, Nose, Ear (ENT) specialist\",\"nephrologist\":\"Nephrologist\",\"neurosurgeon\":\"Neurosurgeon\",\"nutritionist\":\"Nutritionist\",\"oncologist\":\"Oncologist\",\"ophthalmologist\":\"Ophthalmologist\",\"orthodontist\":\"Orthodontist\",\"orthopedic-surgeon\":\"Orthopedic Surgeon\",\"pediatrician\":\"Pediatrician\",\"physiotherapist\":\"Physiotherapist\",\"plastic-surgeon\":\"Plastic surgeon\",\"primary-care-doctor\":\"Primary care doctor\",\"psychiatrist\":\"Psychiatrist\",\"psychologist\":\"Psychologist\"},\"126\":{\"cancer-hospital\":\"Cancer Hospital\",\"children-hospital\":\"Children Hospital\",\"psychiatric-hospital\":\"Psychiatric Hospital\",\"rehabilitation-hospital\":\"Rehabilitation Hospital\",\"trauma-centre\":\"Trauma Centre\"},\"125\":{\"cardiology-clinic\":\"Cardiology clinic\",\"children-clinic\":\"Children clinic\",\"dermatology-clinic\":\"Dermatology clinic\",\"ent-clinic\":\"ENT clinic\",\"family-clinic\":\"Family clinic\"},\"123\":{\"clinical-pharmacy\":\"Clinical pharmacy\",\"community-pharmacy\":\"Community pharmacy\",\"compliance-medicine\":\"Compliance (medicine)\",\"distribution-pharmacology\":\"Distribution (pharmacology)\",\"drug-reaction-testing\":\"Drug reaction testing\",\"drug-therapy-problems\":\"Drug therapy problems\"},\"122\":{\"associazione-volontari-italiani-sangue\":\"Associazione Volontari\",\"blood-services\":\"Blood Services\",\"blood-services-center-for-biologics-evaluation-and-research\":\"Blood Services Center\",\"community-blood-services\":\"Community Blood Services\",\"cord-blood-registry\":\"Cord Blood Registry\",\"general-blood-bank\":\"General Blood Bank\",\"international-society-of-blood-transfusion\":\"International Society of Blood Transfusion\"},\"121\":{\"aerobic-centers\":\"Aerobic Centers\",\"athletic-clubs\":\"Athletic Clubs\",\"country-clubs\":\"Country Clubs\",\"dance-centers\":\"Dance Centers\",\"gyms\":\"Gyms\",\"pilates-centers\":\"Pilates Centers\",\"yoga-centers\":\"Yoga Centers\"}}' );
-
-                                });
-                                        </script>
-                                        <script type="text/template" id="tmpl-load-subcategories">
-                                            <option value="">{{data['parent']}} - Specialities</option>
-                                            <# var _option='' ;
-                                               if( !_.isEmpty(data['childrens']) ) {
-                                               _.each( data['childrens'] , function(element, index, attr) { #>
-                                                <option value="{{index}}">{{element}}</option>
-                                                <# });
-                                                   }
-                                                   #>
-                                        </script>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-sm-6 col-xs-6">
-                                    <div class="form-group">
-                                        @Html.DropDownListFor(model => model.SearchModel.SpecialityId, Model.SearchModel.AvailableSpeciality, new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-xs-6">
-                                    <button type="submit" class="tg-btn pull-left">Search</button>
-                                    <input type="hidden" name="view" value="">
-                                </div>
-                                <div class="col-sm-6 col-xs-6">
-                                    <button type="reset" class="tg-btn tg-btn-reset pull-right"> <i class="fa fa-rotate-left"></i> <span>Reset</span> </button>
-                                </div>
-                            </div>
-                        </fieldset>
-}
+                        @Html.Partial("_SearchNavigation",Model.SearchModel)
                     </div>
                 </div>
             </div>
@@ -115,8 +51,10 @@
                                 </ul>
                             </div>
                         </div>
-                        @Html.Partial("_DoctorBox", Model.doctorsModel)
                     </div>
+                    @Html.Partial("_DoctorBox", Model.doctorsModel)
+
+
                 </div>
             </div>
         </form>
