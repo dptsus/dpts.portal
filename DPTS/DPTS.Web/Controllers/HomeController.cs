@@ -124,7 +124,7 @@ namespace DPTS.Web.Controllers
                 return null;
 
             var searchVmodel = new SearchViewModel();
-            
+
             foreach (var doc in data)
             {
                 var user = GetUserById(doc.DoctorId);

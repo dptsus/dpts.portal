@@ -1,11 +1,9 @@
 ﻿using DPTS.Domain;
 using DPTS.Domain.Core;
-using DPTS.Domain;
 using DPTS.Web.Models;
 using SQS_Shopee.Entites;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -41,6 +39,11 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Utilities
+        [NonAction]
+        public ApplicationUser GetUserById(string userId)
+        {
+            return context.Users.SingleOrDefault(u => u.Id == userId);
+        }
         [NonAction]
         private List<SelectListItem> GetGender()
         {
@@ -497,6 +500,34 @@ namespace DPTS.Web.Controllers
             }
 
         }
+
+        public ActionResult DoctorDetails(string doctorId)
+        {
+            var model = new DoctorViewModel();
+            if (!string.IsNullOrWhiteSpace(doctorId))
+            {
+                var doctor = _doctorService.GetDoctorbyId(doctorId);
+                if (doctor == null)
+                    return null;
+
+                var user = GetUserById(doctor.DoctorId);
+                if (user == null)
+                    return null;
+
+                model.Id = user.Id;
+                model.Email = user.Email;
+                model.FirstName = user.FirstName;
+                model.LastName = user.LastName;
+                model.MobileNumber = user.PhoneNumber;
+                model.doctor = doctor;
+                model.Addresses = _addressService.GetAllAddressByUser(doctor.DoctorId);
+                model.Specialitys = _specialityService.GetDoctorSpecilities(doctor.DoctorId);
+
+                return View(model);
+            }
+            return View();
+        }
+
         #endregion
 
     }

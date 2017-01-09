@@ -12,6 +12,7 @@ namespace DPTS.Services
         #region Fields
         private readonly IRepository<Speciality> _specialityRepository;
         private readonly IRepository<SpecialityMapping> _specalityMappingRepos;
+        private readonly DPTSDbContext _context;
         #endregion
 
         #region Constructor
@@ -19,6 +20,7 @@ namespace DPTS.Services
         {
             _specialityRepository = specialityRepository;
             _specalityMappingRepos = specalityMappingRepos;
+            _context = new DPTSDbContext();
         }
         #endregion
 
@@ -92,6 +94,19 @@ namespace DPTS.Services
             catch { return false; }
             return false;
 
+        }
+        public IList<Speciality> GetDoctorSpecilities(string doctorId)
+        {
+            if (!string.IsNullOrWhiteSpace(doctorId))
+            {
+                var query = from s in _context.Specialities
+                            join m in _context.SpecialityMapping on s.Id equals m.Speciality_Id
+                            where m.Doctor_Id == doctorId
+                            select s;
+
+                return query.ToList();
+            }
+            return null;
         }
 
     }

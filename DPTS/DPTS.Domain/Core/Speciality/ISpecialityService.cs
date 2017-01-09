@@ -33,5 +33,11 @@ namespace DPTS.Domain.Core
         void AddSpecialityByDoctor(SpecialityMapping doctorSpecilities);
 
         bool IsDoctorSpecialityExists(SpecialityMapping doctorSpecilities);
+        /// <summary>
+        /// Get specilities by doctor
+        /// </summary>
+        /// <param name="doctorId"></param>
+        /// <returns></returns>
+        IList<Speciality> GetDoctorSpecilities(string doctorId);
     }
 }

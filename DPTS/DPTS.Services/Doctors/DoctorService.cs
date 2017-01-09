@@ -72,6 +72,7 @@ namespace DPTS.Services
         {
             return null;
         }
+
         public IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null,string zipcode = null)
         {
             var query = from d in _doctorRepository.Table
@@ -82,7 +83,7 @@ namespace DPTS.Services
             if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "doctor")
                 return null;
 
-            
+
             if(!string.IsNullOrWhiteSpace(zipcode))
             {
                 query = from d in _context.Doctors

@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<DoctorViewModel>
 @using DPTS.Web.Models
-<div class="tg-view tg-list-view">
+@if (Model.Count() > 0)
+{
+<div class="tg-view tg-list-view" style="border-bottom:none">
     <div class="row">
         @foreach (var item in Model)
         {
-            string picturePath = string.Empty;
+            string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
             string profilePicPath = Server.MapPath("~/Uploads/" + item.Id + "_profile.jpg");
             if (File.Exists(profilePicPath))
             {
                 picturePath = "../../Uploads/" + item.Id + "_profile.jpg";
-            }else
-            {
-                picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
             }
+
             <article class="tg-doctor-profile user-330">
                 <div class="tg-box">
                     <figure class="tg-docprofile-img">
-                        <a href="#" class="list-avatar"><img src="@picturePath" alt="Dr Steve"></a>
+                        <a href="@Url.Action("DoctorDetails","Doctor",new { doctorId = item.doctor.DoctorId})" class="list-avatar"><img src="@picturePath" alt="Dr Steve"></a>
                         <a class="tg-dislike" href="javascript:;"><i class="fa fa-heart"></i></a>                                                                                    <span class="tg-featuredtags">
                             <a class="tg-featured" href="javascript:;">featured</a>
                         </span>
@@ -62,13 +62,13 @@
                     <div class="tg-docprofile-content">
 
                         <div class="tg-heading-border tg-small">
-                            <h3><a href="#">Dr @item.FirstName @item.LastName</a></h3>
+                            <h3><a href="@Url.Action("DoctorDetails","Doctor",new { doctorId = item.doctor.DoctorId})">Dr @item.FirstName @item.LastName</a></h3>
                         </div>
                         <div class="tg-description">
                             <p>@item.doctor.ShortProfile </p>
                         </div>
                         <ul class="tg-doccontactinfo">
-                                
+
 
                                     @{
                                         var addr = item.Addresses.FirstOrDefault();
@@ -82,14 +82,14 @@
                                                     </p>
                                                 </address>
                                             </li>
-                                                if(!string.IsNullOrWhiteSpace(addr.FaxNumber))
-                                                {
+                                            if (!string.IsNullOrWhiteSpace(addr.FaxNumber))
+                                            {
                                                     <li><i class="fa fa-fax"></i><span>@addr.FaxNumber</span></li>
-                                                }
-                                                if (!string.IsNullOrWhiteSpace(addr.Website))
-                                                {
+                                            }
+                                            if (!string.IsNullOrWhiteSpace(addr.Website))
+                                            {
                                                     <li><i class="fa fa-link"></i><a href="@addr.Website">@addr.Website</a></li>
-                                                }
+                                            }
                                         }
                                     }
                             @if (!string.IsNullOrWhiteSpace(item.MobileNumber))
@@ -101,7 +101,7 @@
                             {
                                 <li><i class="fa fa-envelope-o"></i><a href="#">@item.Email</a></li>
                             }
-                           
+
                         </ul>
 
                     </div>
@@ -110,6 +110,11 @@
            }
     </div>
 </div>
+                                        }else
+                                        {
+                                            <p>No Record Found !!</p>
+                                        }
+
 
 
 
