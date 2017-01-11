@@ -50,6 +50,8 @@
     <Compile Include="Core\SubSpeciality\ISubSpecialityService.cs" />
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\AddressMapping.cs" />
+    <Compile Include="Entities\AppointmentSchedule.cs" />
+    <Compile Include="Entities\AppointmentStatus.cs" />
     <Compile Include="Entities\AspNetRole.cs" />
     <Compile Include="Entities\AspNetUser.cs" />
     <Compile Include="Entities\AspNetUserClaim.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Doctor.cs" />
+    <Compile Include="Entities\Schedule.cs" />
     <Compile Include="Entities\SpecialityMapping.cs" />
     <Compile Include="Entities\Gender.cs" />
     <Compile Include="Entities\Speciality.cs" />

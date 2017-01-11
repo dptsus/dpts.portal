@@ -20,6 +20,10 @@ namespace DPTS.Data.Context
         public virtual DbSet<Speciality> Specialities { get; set; }
         public virtual DbSet<StateProvince> StateProvinces { get; set; }
         public virtual DbSet<SubSpeciality> SubSpecialities { get; set; }
+        public virtual DbSet<AppointmentSchedule> AppointmentSchedules { get; set; }
+        public virtual DbSet<AppointmentStatus> AppointmentStatus { get; set; }
+        public virtual DbSet<Schedule> Schedules { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -64,6 +68,28 @@ namespace DPTS.Data.Context
                 .WithRequired(e => e.Speciality)
                 .HasForeignKey(e => e.Speciality_Id)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AppointmentStatus>()
+               .HasMany(e => e.AppointmentSchedules)
+               .WithRequired(e => e.AppointmentStatus)
+               .HasForeignKey(e => e.StatusId)
+               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AspNetUser>()
+              .HasMany(e => e.AppointmentSchedules)
+              .WithRequired(e => e.AspNetUser)
+              .HasForeignKey(e => e.PatientId)
+              .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Doctor>()
+               .HasMany(e => e.AppointmentSchedules)
+               .WithRequired(e => e.Doctor)
+               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Doctor>()
+              .HasMany(e => e.Schedules)
+              .WithRequired(e => e.Doctor)
+              .WillCascadeOnDelete(false);
         }
     }
 }

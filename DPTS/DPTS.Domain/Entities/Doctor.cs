@@ -10,6 +10,8 @@ namespace DPTS.Domain
         {
             SpecialityMapping = new HashSet<SpecialityMapping>();
             AddresseMapping = new HashSet<AddressMapping>();
+            AppointmentSchedules = new HashSet<AppointmentSchedule>();
+            Schedules = new HashSet<Schedule>();
         }
 
         public Guid DoctorGuid { get; set; }
@@ -44,6 +46,10 @@ namespace DPTS.Domain
         public virtual ICollection<SpecialityMapping> SpecialityMapping { get; set; }
 
         public virtual ICollection<AddressMapping> AddresseMapping { get; set; }
+
+        public virtual ICollection<AppointmentSchedule> AppointmentSchedules { get; set; }
+
+        public virtual ICollection<Schedule> Schedules { get; set; }
 
     }
 }

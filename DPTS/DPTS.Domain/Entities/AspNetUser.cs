@@ -3,7 +3,6 @@ namespace DPTS.Domain
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class AspNetUser
     {
@@ -12,6 +11,7 @@ namespace DPTS.Domain
             AddressMappings = new HashSet<AddressMapping>();
             AspNetUserClaims = new HashSet<AspNetUserClaim>();
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
+            AppointmentSchedules = new HashSet<AppointmentSchedule>();
             AspNetRoles = new HashSet<AspNetRole>();
         }
 
@@ -19,11 +19,11 @@ namespace DPTS.Domain
 
         [Required]
         [StringLength(256)]
-        public string FirstName { get; set; } = "Tushar";
+        public string FirstName { get; set; }
 
         [Required]
         [StringLength(256)]
-        public string LastName { get; set; } = "Khairnar";
+        public string LastName { get; set; }
 
         [StringLength(256)]
         public string Email { get; set; }
@@ -65,5 +65,7 @@ namespace DPTS.Domain
         public virtual Doctor Doctor { get; set; }
 
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+
+        public virtual ICollection<AppointmentSchedule> AppointmentSchedules { get; set; }
     }
 }
