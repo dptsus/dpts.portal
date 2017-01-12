@@ -1,9 +1,9 @@
-namespace DPTS.Domain
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
+namespace DPTS.Domain.Entities
+{
     public partial class Doctor :BaseEntityWithDateTime
     {
         public Doctor()

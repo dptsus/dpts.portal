@@ -1,10 +1,7 @@
-namespace DPTS.Domain
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
+namespace DPTS.Domain.Entities
+{
     public partial class AspNetUserClaim
     {
         public int Id { get; set; }

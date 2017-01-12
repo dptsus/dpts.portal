@@ -1,12 +1,15 @@
-﻿using DPTS.Domain;
-using DPTS.Domain.Core;
-using DPTS.Web.Models;
+﻿using DPTS.Web.Models;
 using SQS_Shopee.Entites;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.Doctors;
+using DPTS.Domain.Core.Speciality;
+using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Entities;
 using Microsoft.AspNet.Identity;
 using static System.DateTime;
@@ -52,7 +55,7 @@ namespace DPTS.Web.Controllers
             items.Add(new SelectListItem { Text = "Select Gender", Value = "0" });
             foreach (var gender in Enum.GetValues(typeof(Gender)))
             {
-                items.Add(new SelectListItem()
+                items.Add(new SelectListItem
                 {
                     Text = Enum.GetName(typeof(Gender), gender),
                     Value = Enum.GetName(typeof(Gender), gender)
@@ -488,7 +491,7 @@ namespace DPTS.Web.Controllers
                     var savedFileName = Path.Combine(folderPath, prodId);
                     hpf.SaveAs(savedFileName);
 
-                    r.Add(new UploadFilesResult()
+                    r.Add(new UploadFilesResult
                     {
                         Name = hpf.FileName,
                         Length = hpf.ContentLength,

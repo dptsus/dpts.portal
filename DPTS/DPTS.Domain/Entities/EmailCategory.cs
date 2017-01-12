@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace DPTS.Domain.Entities
 {
-    public partial class Country :BaseEntityWithDateTime
+    public partial class EmailCategory :BaseEntityWithDateTime
     {
-        public Country()
+        public EmailCategory()
         {
-            Addresses = new HashSet<Address>();
-            StateProvinces = new HashSet<StateProvince>();
+            //Addresses = new HashSet<Address>();
+            //StateProvinces = new HashSet<StateProvince>();
         }
 
         public string Name { get; set; }
@@ -24,8 +24,8 @@ namespace DPTS.Domain.Entities
 
         public int DisplayOrder { get; set; }
 
-        public virtual ICollection<Address> Addresses { get; set; }
+        //public virtual ICollection<Address> Addresses { get; set; }
 
-        public virtual ICollection<StateProvince> StateProvinces { get; set; }
+        //public virtual ICollection<StateProvince> StateProvinces { get; set; }
     }
 }

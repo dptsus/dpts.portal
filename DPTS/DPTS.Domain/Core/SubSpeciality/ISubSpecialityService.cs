@@ -1,11 +1,6 @@
-﻿using DPTS.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace DPTS.Domain.Core
+namespace DPTS.Domain.Core.SubSpeciality
 {
     /// <summary>
     /// Sub Speciality Service
@@ -15,27 +10,27 @@ namespace DPTS.Domain.Core
         /// <summary>
         /// Inserts an sub Speciality
         /// </summary>
-        void AddSubSpeciality(SubSpeciality subSpeciality);
+        void AddSubSpeciality(Entities.SubSpeciality subSpeciality);
 
         /// <summary>
         /// Get sub Speciality by Id
         /// </summary>
-        SubSpeciality GetSubSpecialitybyId(int Id);
+        Entities.SubSpeciality GetSubSpecialitybyId(int Id);
 
         /// <summary>
         /// Delete sub Speciality by Id
         /// </summary>
-        void DeleteSubSpeciality(SubSpeciality subSpeciality);
+        void DeleteSubSpeciality(Entities.SubSpeciality subSpeciality);
 
         /// <summary>
         /// update sub Speciality
         /// </summary>
-        void UpdateSubSpeciality(SubSpeciality subSpeciality);
+        void UpdateSubSpeciality(Entities.SubSpeciality subSpeciality);
 
         /// <summary>
         /// get list of sub Speciality
         /// </summary>
-        IList<SubSpeciality> GetAllSubSpeciality(bool showhidden, bool enableTracking = false);
+        IList<Entities.SubSpeciality> GetAllSubSpeciality(bool showhidden, bool enableTracking = false);
 
     }
 }

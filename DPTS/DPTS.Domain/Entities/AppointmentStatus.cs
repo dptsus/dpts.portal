@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DPTS.Domain
+namespace DPTS.Domain.Entities
 {
     public partial class AppointmentStatus
     {

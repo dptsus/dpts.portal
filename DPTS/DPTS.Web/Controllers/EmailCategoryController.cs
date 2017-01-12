@@ -1,29 +1,29 @@
 ﻿using DPTS.Web.Models;
 using System.Linq;
 using System.Web.Mvc;
-using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.EmailCategory;
 using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {
-    public class CountryController : BaseController
+    public class EmailCategoryController : BaseController
     {
         #region Fields
-        private readonly ICountryService _countryService;
+        private readonly IEmailCategoryService _emailCategory;
         #endregion
 
         #region Contructor
-        public CountryController(ICountryService countryService)
+        public EmailCategoryController(IEmailCategoryService emailCategoryService)
         {
-            _countryService = countryService;
+            _emailCategory = emailCategoryService;
         }
         #endregion
 
         #region Methods
         public ActionResult List()
         {
-            var countries = _countryService.GetAllCountries(true);
-            var model = countries.Select(c => new CountryViewModel()
+            var countries = _emailCategory.GetAllEmailCategories(true);
+            var model = countries.Select(c => new CountryViewModel
             {
                 Id=c.Id,
                 Name=c.Name,
@@ -39,15 +39,15 @@ namespace DPTS.Web.Controllers
         }
         public ActionResult Create()
         {
-            var model = new CountryViewModel();
+            var model = new EmailCategoryViewModel();
             return View(model);
         }
         [HttpPost]
-        public ActionResult Create(CountryViewModel model)
+        public ActionResult Create(EmailCategoryViewModel model)
         {
             if(ModelState.IsValid)
             {
-                var country = new Country
+                var country = new EmailCategory
                 {
                     Name=model.Name,
                     TwoLetterIsoCode=model.TwoLetterIsoCode,
@@ -57,7 +57,7 @@ namespace DPTS.Web.Controllers
                     Published=model.Published,
                     DisplayOrder=model.DisplayOrder
                 };
-                _countryService.InsertCountry(country);
+                _emailCategory.InsertEmailCategory(country);
                 return RedirectToAction("List");
             }
             return View(model);
@@ -67,11 +67,11 @@ namespace DPTS.Web.Controllers
             if (!IsValidateId(Id))
                 return HttpNotFound();
 
-            var country = _countryService.GetCountryById(Id);
+            var country = _emailCategory.GetEmailCategoryById(Id);
             if (country == null)
                 return HttpNotFound();
 
-            var model = new CountryViewModel
+            var model = new EmailCategoryViewModel
             {
                 Id = country.Id,
                 Name = country.Name,
@@ -90,7 +90,7 @@ namespace DPTS.Web.Controllers
         {
             if(ModelState.IsValid)
             {
-                var country = _countryService.GetCountryById(model.Id);
+                var country = _emailCategory.GetEmailCategoryById(model.Id);
                 country.Id = model.Id;
                 country.Name = model.Name;
                 country.DisplayOrder = model.DisplayOrder;
@@ -99,7 +99,7 @@ namespace DPTS.Web.Controllers
                 country.SubjectToVat = model.SubjectToVat;
                 country.ThreeLetterIsoCode = model.ThreeLetterIsoCode;
                 country.TwoLetterIsoCode = model.TwoLetterIsoCode;
-                _countryService.UpdateCountry(country);
+                _emailCategory.UpdateEmailCategory(country);
                 return RedirectToAction("List");
             }
             return View();
@@ -108,9 +108,9 @@ namespace DPTS.Web.Controllers
 
         public ActionResult DeleteConfirmed(int id)
         {
-            var country = _countryService.GetCountryById(id);
+            var country = _emailCategory.GetEmailCategoryById(id);
             if (country != null)
-                _countryService.DeleteCountry(country);
+                _emailCategory.DeleteEmailCategory(country);
 
 
             return Content("Deleted");

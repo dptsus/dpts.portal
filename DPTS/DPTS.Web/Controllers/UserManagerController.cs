@@ -1,7 +1,4 @@
-﻿using System.Data.Entity;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace DPTS.Web.Controllers
 {

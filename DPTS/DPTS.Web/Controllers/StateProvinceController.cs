@@ -1,9 +1,10 @@
-﻿using DPTS.Domain.Core;
-using DPTS.Domain;
-using DPTS.Web.Models;
+﻿using DPTS.Web.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.StateProvince;
+using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {
@@ -51,7 +52,7 @@ namespace DPTS.Web.Controllers
         public ActionResult List()
         {
             var countries = _stateProvinceService.GetAllStateProvince(true);
-            var model = countries.Select(c => new StateProvinceViewModel()
+            var model = countries.Select(c => new StateProvinceViewModel
             {
                 Id = c.Id,
                 Name = c.Name,

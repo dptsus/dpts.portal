@@ -1,7 +1,7 @@
-namespace DPTS.Domain
-{
-    using System.Collections.Generic;
+using System.Collections.Generic;
 
+namespace DPTS.Domain.Entities
+{
     public partial class StateProvince :BaseEntityWithDateTime
     {
         public StateProvince()

@@ -1,4 +1,4 @@
-namespace DPTS.Domain
+namespace DPTS.Domain.Entities
 {
     public partial class SubSpeciality : BaseEntityWithDateTime
     {

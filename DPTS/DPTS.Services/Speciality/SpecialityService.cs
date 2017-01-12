@@ -1,22 +1,23 @@
-﻿using DPTS.Domain.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DPTS.Domain;
 using DPTS.Data.Context;
+using DPTS.Domain.Core;
+using DPTS.Domain.Core.Speciality;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Services
+namespace DPTS.Services.Speciality
 {
     public class SpecialityService : ISpecialityService
     {
         #region Fields
-        private readonly IRepository<Speciality> _specialityRepository;
+        private readonly IRepository<Domain.Entities.Speciality> _specialityRepository;
         private readonly IRepository<SpecialityMapping> _specalityMappingRepos;
         private readonly DPTSDbContext _context;
         #endregion
 
         #region Constructor
-        public SpecialityService(IRepository<Speciality> specialityRepository, IRepository<SpecialityMapping> specalityMappingRepos)
+        public SpecialityService(IRepository<Domain.Entities.Speciality> specialityRepository, IRepository<SpecialityMapping> specalityMappingRepos)
         {
             _specialityRepository = specialityRepository;
             _specalityMappingRepos = specalityMappingRepos;
@@ -24,7 +25,7 @@ namespace DPTS.Services
         }
         #endregion
 
-        public void AddSpeciality(Speciality speciality)
+        public void AddSpeciality(Domain.Entities.Speciality speciality)
         {
             if (speciality == null)
                 throw new ArgumentNullException("speciality");
@@ -33,7 +34,7 @@ namespace DPTS.Services
 
         }
 
-        public void DeleteSpeciality(Speciality speciality)
+        public void DeleteSpeciality(Domain.Entities.Speciality speciality)
         {
             if (speciality == null)
                 throw new ArgumentNullException("speciality");
@@ -42,7 +43,7 @@ namespace DPTS.Services
 
         }
 
-        public Speciality GetSpecialitybyId(int Id)
+        public Domain.Entities.Speciality GetSpecialitybyId(int Id)
         {
             if (Id == 0)
                 return null;
@@ -50,7 +51,7 @@ namespace DPTS.Services
             return _specialityRepository.GetById(Id);
         }
 
-        public IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false)
+        public IList<Domain.Entities.Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false)
         {
             var query = _specialityRepository.Table;
             if (!showhidden)
@@ -61,7 +62,7 @@ namespace DPTS.Services
             return Specilities;
         }
 
-        public void UpdateSpeciality(Speciality data)
+        public void UpdateSpeciality(Domain.Entities.Speciality data)
         {
             if (data == null)
                 throw new ArgumentNullException("data");
@@ -95,7 +96,7 @@ namespace DPTS.Services
             return false;
 
         }
-        public IList<Speciality> GetDoctorSpecilities(string doctorId)
+        public IList<Domain.Entities.Speciality> GetDoctorSpecilities(string doctorId)
         {
             if (!string.IsNullOrWhiteSpace(doctorId))
             {

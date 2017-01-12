@@ -195,9 +195,11 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EmailCategoryController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -214,6 +216,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
+    <Compile Include="Models\EmailCategoryViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\DoctorProfileSettingViewModel.cs" />
     <Compile Include="Models\DoctorSpecialityViewModel.cs" />
@@ -746,6 +749,7 @@
     <Content Include="Content\Admin\vendor\font-awesome\scss\_spinning.scss" />
     <Content Include="Content\Admin\vendor\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\Admin\vendor\font-awesome\scss\_variables.scss" />
+    <Content Include="Areas\Admin\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -846,10 +850,17 @@
     <Content Include="Views\Home\_DoctorBox.cshtml" />
     <Content Include="Views\Home\_SearchNavigation.cshtml" />
     <Content Include="Views\Doctor\DoctorDetails.cshtml" />
+    <Content Include="Views\EmailCategory\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\EmailCategory\Create.cshtml" />
+    <Content Include="Views\EmailCategory\Edit.cshtml" />
+    <Content Include="Views\EmailCategory\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

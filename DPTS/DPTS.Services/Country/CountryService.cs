@@ -1,12 +1,10 @@
-﻿using DPTS.Domain.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DPTS.Domain;
+using DPTS.Domain.Core;
+using DPTS.Domain.Core.Country;
 
-namespace DPTS.Services
+namespace DPTS.Services.Country
 {
     /// <summary>
     /// Country service
@@ -15,13 +13,13 @@ namespace DPTS.Services
     {
         #region Fields
 
-        private readonly IRepository<Country> _countryRepository;
+        private readonly IRepository<Domain.Entities.Country> _countryRepository;
 
         #endregion
 
         #region Ctor
 
-        public CountryService(IRepository<Country> countryRepository)
+        public CountryService(IRepository<Domain.Entities.Country> countryRepository)
         {
             _countryRepository = countryRepository;
         }
@@ -34,7 +32,7 @@ namespace DPTS.Services
         /// Deletes a country
         /// </summary>
         /// <param name="country">Country</param>
-        public virtual void DeleteCountry(Country country)
+        public virtual void DeleteCountry(Domain.Entities.Country country)
         {
             if (country == null)
                 throw new ArgumentNullException("country");
@@ -48,7 +46,7 @@ namespace DPTS.Services
         /// <param name="languageId">Language identifier. It's used to sort countries by localized names (if specified); pass 0 to skip it</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Countries</returns>
-        public virtual IList<Country> GetAllCountries(bool showHidden = false)
+        public virtual IList<Domain.Entities.Country> GetAllCountries(bool showHidden = false)
         {
                 var query = _countryRepository.Table;
                 if (!showHidden)
@@ -64,7 +62,7 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="countryId">Country identifier</param>
         /// <returns>Country</returns>
-        public virtual Country GetCountryById(int countryId)
+        public virtual Domain.Entities.Country GetCountryById(int countryId)
         {
             if (countryId == 0)
                 return null;
@@ -77,17 +75,17 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="countryIds">Country identifiers</param>
         /// <returns>Countries</returns>
-        public virtual IList<Country> GetCountriesByIds(int[] countryIds)
+        public virtual IList<Domain.Entities.Country> GetCountriesByIds(int[] countryIds)
         {
             if (countryIds == null || countryIds.Length == 0)
-                return new List<Country>();
+                return new List<Domain.Entities.Country>();
 
             var query = from c in _countryRepository.Table
                         where countryIds.Contains(c.Id)
                         select c;
             var countries = query.ToList();
             //sort by passed identifiers
-            var sortedCountries = new List<Country>();
+            var sortedCountries = new List<Domain.Entities.Country>();
             foreach (int id in countryIds)
             {
                 var country = countries.Find(x => x.Id == id);
@@ -102,7 +100,7 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="twoLetterIsoCode">Country two letter ISO code</param>
         /// <returns>Country</returns>
-        public virtual Country GetCountryByTwoLetterIsoCode(string twoLetterIsoCode)
+        public virtual Domain.Entities.Country GetCountryByTwoLetterIsoCode(string twoLetterIsoCode)
         {
             if (String.IsNullOrEmpty(twoLetterIsoCode))
                 return null;
@@ -119,7 +117,7 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="threeLetterIsoCode">Country three letter ISO code</param>
         /// <returns>Country</returns>
-        public virtual Country GetCountryByThreeLetterIsoCode(string threeLetterIsoCode)
+        public virtual Domain.Entities.Country GetCountryByThreeLetterIsoCode(string threeLetterIsoCode)
         {
             if (String.IsNullOrEmpty(threeLetterIsoCode))
                 return null;
@@ -135,7 +133,7 @@ namespace DPTS.Services
         /// Inserts a country
         /// </summary>
         /// <param name="country">Country</param>
-        public virtual void InsertCountry(Country country)
+        public virtual void InsertCountry(Domain.Entities.Country country)
         {
             if (country == null)
                 throw new ArgumentNullException("country");
@@ -147,7 +145,7 @@ namespace DPTS.Services
         /// Updates the country
         /// </summary>
         /// <param name="country">Country</param>
-        public virtual void UpdateCountry(Country country)
+        public virtual void UpdateCountry(Domain.Entities.Country country)
         {
             if (country == null)
                 throw new ArgumentNullException("country");

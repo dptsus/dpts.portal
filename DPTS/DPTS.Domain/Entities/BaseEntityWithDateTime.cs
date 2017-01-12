@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DPTS.Domain
+namespace DPTS.Domain.Entities
 {
     public class BaseEntityWithDateTime : BaseEntity
     {

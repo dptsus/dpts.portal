@@ -1,12 +1,10 @@
-﻿using DPTS.Domain.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DPTS.Domain;
+using DPTS.Domain.Core;
+using DPTS.Domain.Core.StateProvince;
 
-namespace DPTS.Services
+namespace DPTS.Services.StateProvince
 {
     /// <summary>
     /// State Service
@@ -15,12 +13,12 @@ namespace DPTS.Services
     {
         #region Fields
 
-        private readonly IRepository<StateProvince> _stateProvinceRepository;
+        private readonly IRepository<Domain.Entities.StateProvince> _stateProvinceRepository;
 
         #endregion
 
         #region Ctor
-        public StateProvinceService(IRepository<StateProvince> stateProvinceRepository)
+        public StateProvinceService(IRepository<Domain.Entities.StateProvince> stateProvinceRepository)
         {
             _stateProvinceRepository = stateProvinceRepository;
         }
@@ -31,7 +29,7 @@ namespace DPTS.Services
         /// delete state
         /// </summary>
         /// <param name="state"></param>
-        public void DeleteStateProvince(StateProvince state)
+        public void DeleteStateProvince(Domain.Entities.StateProvince state)
         {
             if (state == null)
                 throw new ArgumentNullException("StateProvince");
@@ -43,7 +41,7 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="showHidden"></param>
         /// <returns></returns>
-        public IList<StateProvince> GetAllStateProvince(bool showHidden = false)
+        public IList<Domain.Entities.StateProvince> GetAllStateProvince(bool showHidden = false)
         {
             var query = _stateProvinceRepository.Table;
             if (!showHidden)
@@ -58,7 +56,7 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="abbreviation"></param>
         /// <returns></returns>
-        public StateProvince GetStateProvinceByAbbreviation(string abbreviation)
+        public Domain.Entities.StateProvince GetStateProvinceByAbbreviation(string abbreviation)
         {
             var query = from sp in _stateProvinceRepository.Table
                         where sp.Abbreviation == abbreviation
@@ -72,7 +70,7 @@ namespace DPTS.Services
         /// </summary>
         /// <param name="stateProvinceId"></param>
         /// <returns></returns>
-        public StateProvince GetStateProvinceById(int stateProvinceId)
+        public Domain.Entities.StateProvince GetStateProvinceById(int stateProvinceId)
         {
             if (stateProvinceId == 0)
                 return null;
@@ -80,17 +78,17 @@ namespace DPTS.Services
             return _stateProvinceRepository.GetById(stateProvinceId);
         }
 
-        public IList<StateProvince> GetStateProvinceByIds(int[] stateProvinceIds)
+        public IList<Domain.Entities.StateProvince> GetStateProvinceByIds(int[] stateProvinceIds)
         {
             if (stateProvinceIds == null || stateProvinceIds.Length == 0)
-                return new List<StateProvince>();
+                return new List<Domain.Entities.StateProvince>();
 
             var query = from c in _stateProvinceRepository.Table
                         where stateProvinceIds.Contains(c.Id)
                         select c;
             var countries = query.ToList();
             //sort by passed identifiers
-            var sortedCountries = new List<StateProvince>();
+            var sortedCountries = new List<Domain.Entities.StateProvince>();
             foreach (int id in stateProvinceIds)
             {
                 var country = countries.Find(x => x.Id == id);
@@ -100,7 +98,7 @@ namespace DPTS.Services
             return sortedCountries;
         }
 
-        public IList<StateProvince> GetStateProvincesByCountryId(int countryId, bool showHidden = false)
+        public IList<Domain.Entities.StateProvince> GetStateProvincesByCountryId(int countryId, bool showHidden = false)
         {
             var query = from sp in _stateProvinceRepository.Table
                         orderby sp.DisplayOrder, sp.Name
@@ -111,7 +109,7 @@ namespace DPTS.Services
             return query.ToList();
         }
 
-        public void InsertStateProvince(StateProvince state)
+        public void InsertStateProvince(Domain.Entities.StateProvince state)
         {
             if (state == null)
                 throw new ArgumentNullException("state");
@@ -119,7 +117,7 @@ namespace DPTS.Services
             _stateProvinceRepository.Insert(state);
         }
 
-        public void UpdateStateProvince(StateProvince state)
+        public void UpdateStateProvince(Domain.Entities.StateProvince state)
         {
             if (state == null)
                 throw new ArgumentNullException("state");

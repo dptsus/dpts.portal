@@ -1,3 +1,18 @@
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.Doctors;
+using DPTS.Domain.Core.EmailCategory;
+using DPTS.Domain.Core.Speciality;
+using DPTS.Domain.Core.StateProvince;
+using DPTS.Domain.Core.SubSpeciality;
+using DPTS.Services.Address;
+using DPTS.Services.Country;
+using DPTS.Services.Doctors;
+using DPTS.Services.EmailCategory;
+using DPTS.Services.Speciality;
+using DPTS.Services.StateProvince;
+using DPTS.Services.SubSpeciality;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(DPTS.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(DPTS.Web.App_Start.NinjectWebCommon), "Stop")]
 
@@ -70,6 +85,7 @@ namespace DPTS.Web.App_Start
             kernel.Bind<IStateProvinceService>().To<StateProvinceService>();
             kernel.Bind<ISubSpecialityService>().To<SubSpecialityService>();
             kernel.Bind<IAddressService>().To<AddressService>();
+            kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
 
         }
     }
