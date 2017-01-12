@@ -250,3 +250,5 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/DPTS/DPTS.Web/Uploads
+/DPTS/DPTS.Web/Views/Home/SearchResult.cshtml

@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = ViewBag.ErrorCode + "-" + ViewBag.ErrorHeading;
+}
+  
+<div class="row">
+    <div class="col-md-12">
+        <div class="jumbotron">
+            <h1>@ViewBag.ErrorCode - @ViewBag.ErrorHeading</h1>
+            <p class="lead">@ViewBag.ErrorContent</p>
+            <p><a href="@Url.RouteUrl("HomePage")" class="btn btn-primary btn-lg">Go to Home</a></p>
+        </div>
+    </div> 
+</div>

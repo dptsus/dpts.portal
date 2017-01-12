@@ -1,0 +1,504 @@
+﻿@using DPTS.Web.Models
+@model SearchModel
+@{
+    ViewBag.Title = "DPTS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main id="main" class="tg-page-wrapper tg-haslayout">
+    <div class="container">
+        <div class="row">
+            <div class="main-page-wrapper tg-haslayout">
+                <div class="fw-page-builder-content">
+                    <section class="tg-main-section haslayout  stretch_section_contents_corner stretch_section stretch_data" style="margin-top:-100px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="sc-dir-search v1">
+                                    <div id="tg-homebanner" class="tg-homebanner tg-overflowhidden tg-haslayout">
+                                        <div id="map_canvas" class="tg-location-map tg-haslayout"></div>
+                                        <div class="map-controls">
+                                            <span id="doc-mapplus"><i class="fa fa-plus"></i></span>
+                                            <span id="doc-mapminus"><i class="fa fa-minus"></i></span>
+                                            <span id="doc-lock"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <div id="gmap-noresult"></div>
+                                        <div class="tg-banner-content">
+                                            <div class="tg-displaytable">
+                                                <div class="tg-displaytablecell">
+                                                    <div class="container">
+
+                                                        @*@Html.Partial("SearchBox")*@
+                                                        @Html.Action("SearchBox", "Home")
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="show-search"><i class="fa fa-search"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default" style="padding-top:0px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="sc-services">
+                                    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                                        <div class="tg-theme-heading">
+                                            <h2>WHAT TO EXPECT</h2>
+                                            <span class="tg-roundbox"></span>
+                                            <div class="tg-description">
+                                                <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tg-search-categories">
+                                        <div class="row">
+                                            <div class="col-sm-4 col-xs-12 tg-expectwidth">
+                                                <div class="tg-search-category">
+                                                    <div class="tg-displaytable">
+
+                                                        <div class="tg-displaytablecell">
+                                                            <div class="tg-box">
+                                                                <a href="dir-search/indexf480.html?directory_type=doctor"><h3>find your doctor</h3></a>
+                                                                <i class="icon-stethoscope"></i>
+                                                                <a href="dir-search/indexf480.html?directory_type=doctor"><span class="tg-show"><em class="icon-add"></em></span></a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 col-xs-12 tg-expectwidth">
+                                                <div class="tg-search-category">
+                                                    <div class="tg-displaytable">
+
+                                                        <div class="tg-displaytablecell">
+                                                            <div class="tg-box">
+                                                                <a href="dir-search/index905a.html?directory_type=hospital"><h3>NEAREST HOSPITAL</h3></a>
+                                                                <i class="icon-healthcare"></i>
+                                                                <a href="dir-search/index905a.html?directory_type=hospital"><span class="tg-show"><em class="icon-add"></em></span></a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 col-xs-12 tg-expectwidth">
+                                                <div class="tg-search-category">
+                                                    <div class="tg-displaytable">
+
+                                                        <div class="tg-displaytablecell">
+                                                            <div class="tg-box">
+                                                                <a href="dir-search/index679e.html?directory_type=pharmacy"><h3>NEAREST PHARMACY</h3></a>
+                                                                <i class="icon-capsules"></i>
+                                                                <a href="dir-search/index679e.html?directory_type=pharmacy"><span class="tg-show"><em class="icon-add"></em></span></a>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+
+                                <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                                    <div class="tg-theme-heading">
+                                        <h2>Top Categories</h2>
+                                        <span class="tg-roundbox"></span>
+                                        <div class="tg-description">
+                                            <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-12 builder-column ">
+
+                                <div class="sc-dir-types catagories-types">
+                                    <div class="tg-findbycategorys">
+                                        <div class="specialities-list">
+                                            <ul>
+                                                <li id="dir-127">
+                                                    <div class="tg-checkbox user-selection">
+                                                        <div class="tg-packages">
+                                                            <a href="dir-search/indexf480.html?directory_type=doctor">
+                                                                <label>
+                                                                    <i class="icon-stethoscope"></i>
+                                                                    Doctor<span class="count">13</span>
+                                                                </label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li id="dir-126">
+                                                    <div class="tg-checkbox user-selection">
+                                                        <div class="tg-packages">
+                                                            <a href="dir-search/index905a.html?directory_type=hospital">
+                                                                <label>
+                                                                    <i class="icon-Hospitalmedicalsignalofacrossinacircle"></i>
+                                                                    hospital<span class="count">7</span>
+                                                                </label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li id="dir-125">
+                                                    <div class="tg-checkbox user-selection">
+                                                        <div class="tg-packages">
+                                                            <a href="dir-search/index3a88.html?directory_type=clinic">
+                                                                <label>
+                                                                    <i class="icon-Clinichistorymedicalpaperonclipboard"></i>
+                                                                    clinic<span class="count">9</span>
+                                                                </label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li id="dir-123">
+                                                    <div class="tg-checkbox user-selection">
+                                                        <div class="tg-packages">
+                                                            <a href="dir-search/index679e.html?directory_type=pharmacy">
+                                                                <label>
+                                                                    <i class="icon-Pills"></i>
+                                                                    Pharmacy<span class="count">8</span>
+                                                                </label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li id="dir-122">
+                                                    <div class="tg-checkbox user-selection">
+                                                        <div class="tg-packages">
+                                                            <a href="dir-search/index0565.html?directory_type=blood-bank">
+                                                                <label>
+                                                                    <i class="icon-BloodDonation"></i>
+                                                                    Blood Bank<span class="count">9</span>
+                                                                </label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li id="dir-121">
+                                                    <div class="tg-checkbox user-selection">
+                                                        <div class="tg-packages">
+                                                            <a href="dir-search/index2e50.html?directory_type=fitness-center">
+                                                                <label>
+                                                                    <i class="icon-hairs"></i>
+                                                                    Fitness Center<span class="count">9</span>
+                                                                </label>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="tg-main-section haslayout tg-areuadoctor stretch_section" style="padding-bottom:0px;background-repeat:no-repeat;background-position:0% 100%" data-speed="0.5" data-bleed="0" data-appear-top-offset="600" data-parallax="scroll" data-position="center 0" data-image-src="~/Content/wp-content/uploads/2016/03/bgparallax-01.jpg">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-6 builder-column col-sm-12 col-lg-6  pull-right">
+
+                                <div class="sc-about-us tg-healthcareonthego">
+                                    <div class="tg-contentbox tg-haslayout">
+                                        <div class="tg-heading-border">
+                                            <h2>ARE YOU A DOCTOR?</h2>
+
+                                            <h3>REGISTER NOW AND REACH THOUSANDS OF PATIENTS</h3>
+                                        </div>
+                                        <div class="tg-description">
+                                            <p>We know how much it takes to become a qualified doctor so we have taken away all your hassle to look out for your patients once you have qualified. DocDirect will give you an easy reach to all the patients, all you need is to sign up!</p>
+                                        </div>
+
+                                        <div class="tg-btns">
+                                            <a class="tg-btn" href="#">signup now</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 builder-column col-sm-12 col-lg-6  pull-left">
+
+                                <figure class="frame-img"><img src="~/Content/wp-content/uploads/2016/03/img-01.png" alt="Image Frame" /></figure>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default" style="padding-bottom:0px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-6 builder-column ">
+
+                                <div class="sc-about-us tg-healthcareonthego">
+                                    <div class="tg-contentbox tg-haslayout">
+                                        <div class="tg-heading-border">
+                                            <h2>HEALTHCARE ON THE GO</h2>
+                                        </div>
+                                        <div class="tg-description">
+                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat wisi enim ad minim veniam quis nostrud.</p>
+                                        </div>
+
+                                        <ul>
+                                            <li>Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum.</li>
+                                            <li>Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum.</li>
+                                            <li>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming.</li>
+
+                                        </ul>
+                                        <div class="tg-btns">
+                                            <a class="tg-btn" href="#">buy now</a>
+                                            <a class="tg-btn" href="#">screenshots</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 builder-column col-lg-6  pull-left">
+
+                                <figure class="frame-img"><img src="~/Content/wp-content/uploads/2016/03/img-02.png" alt="Image Frame" /></figure>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="tg-main-section haslayout  stretch_section" data-speed="0.5" data-bleed="0" data-appear-top-offset="600" data-parallax="scroll" data-position="center 0" data-image-src="~/Content/wp-content/uploads/2016/03/bgparallax-01.jpg">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="sc-review">
+                                    <div class="tg-patientfeedbacks tg-haslayout">
+                                        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                                            <div class="tg-theme-heading">
+                                                <h2>PATIENT FEEDBACK</h2>
+                                                <span class="tg-roundbox"></span>
+
+                                                <div class="tg-description">
+                                                    <p>We know how much it takes to become a qualified doctor so we have taken away all your hassle to look out for your patients once you have qualified. DocDirect will give you an easy reach to all the patients, all you need is to sign up!</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6 tg-feedbackwidht">
+                                            <div class="tg-patientfeedback">
+                                                <figure class="tg-patient-pic">
+                                                    <a href="user/steve/index.html"><img src="~/Content/wp-content/uploads/2016/04/img-01-1-150x150.jpg" alt="Reviewer"></a>
+                                                </figure>
+                                                <div class="tg-patient-message">
+                                                    <span class="tg-patient-name"><a href="user/steve/index.html">Dr Steve</a></span>
+                                                    <span class="tg-doctor-name">For <a href="user/professional/index.html">Demo Professional</a></span>
+                                                    <div class="tg-stars star-rating">
+                                                        <span style="width:80%"></span>
+                                                    </div>
+                                                    <div class="tg-description">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6 tg-feedbackwidht">
+                                            <div class="tg-patientfeedback">
+                                                <figure class="tg-patient-pic">
+                                                    <a href="user/steve/index.html"><img src="~/Content/wp-content/uploads/2016/04/img-01-1-150x150.jpg" alt="Reviewer"></a>
+                                                </figure>
+                                                <div class="tg-patient-message">
+                                                    <span class="tg-patient-name"><a href="user/steve/index.html">Dr Steve</a></span>
+                                                    <span class="tg-doctor-name">For <a href="user/carol/index.html">Dr.Carol</a></span>
+                                                    <div class="tg-stars star-rating">
+                                                        <span style="width:100%"></span>
+                                                    </div>
+                                                    <div class="tg-description">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+
+                                <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                                    <div class="tg-theme-heading">
+                                        <h2>find healthcare by</h2>
+                                        <span class="tg-roundbox"></span>
+                                        <div class="tg-description">
+                                            <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 builder-column ">
+                                <div class="sc-dir-search">
+                                    <div class="tg-findbycategory">
+                                        <div class="tg-box">
+                                            <div class="tg-heading-border tg-small">
+                                                <i class="icon-map"></i>
+                                                <h3>Location</h3>
+                                            </div>
+                                            <ul>
+                                                <li><a href="dir-search/index9b30.html?location=aberdeen">Aberdeen</a></li>
+                                                <li><a href="dir-search/index124e.html?location=aldershot">Aldershot</a></li>
+                                                <li><a href="dir-search/indexbb82.html?location=altrincham">Altrincham</a></li>
+                                                <li><a href="dir-search/index5fb7.html?location=aylesbury">Aylesbury</a></li>
+                                                <li><a href="dir-search/index92c6.html?location=bamber">Bamber</a></li>
+                                                <li><a href="dir-search/indexd00b.html?location=bangor">Bangor</a></li>
+                                                <li><a href="dir-search/indexd030.html?location=batley">Batley</a></li>
+                                                <li><a href="dir-search/index465b.html?location=bebingto">Bebingto</a></li>
+                                                <li><a href="dir-search/index64b6.html?location=bedford">Bedford</a></li>
+                                                <li><a href="dir-search/indexc7d3.html?location=birmingham">Birmingham</a></li>
+                                                <li><a href="dir-search/indexaf94.html?location=blackpool">Blackpool</a></li>
+                                                <li><a href="dir-search/indexb294.html?location=brentwood">Brentwood</a></li>
+                                                <li><a href="dir-search/index85e5.html?location=bristol">Bristol</a></li>
+                                                <li><a href="dir-search/index0a3c.html?location=cardiff">Cardiff</a></li>
+                                                <li><a href="dir-search/index0d11.html?location=carlisle">Carlisle</a></li>
+                                                <li><a href="dir-search/indexe274.html?location=crawley">Crawley</a></li>
+                                                <li><a href="dir-search/indexe9c7.html?location=darlington">Darlington</a></li>
+                                                <li><a href="dir-search/indexbd74.html?location=eastleigh">Eastleigh</a></li>
+                                                <li><a href="dir-search/index586a.html?location=edinburg">Edinburg</a></li>
+                                                <li><a href="dir-search/index5338.html?location=esher">Esher</a></li>
+                                                <li><a href="dir-search/indexf6a6.html?location=glasgow-sco">Glasgow SCO</a></li>
+                                                <li><a href="dir-search/index4074.html?location=guildford">Guildford</a></li>
+                                                <li><a href="dir-search/index5c88.html?location=halesowen">Halesowen</a></li>
+                                                <li><a href="dir-search/index6403.html?location=halifax">Halifax</a></li>
+                                                <li><a href="dir-search/index2133.html?location=hamilton">Hamilton</a></li>
+                                                <li><a href="dir-search/index70b2.html?location=leeds">Leeds</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 builder-column ">
+                                <div class="sc-dir-search sc-specialities">
+                                    <div class="tg-findbycategory">
+                                        <div class="tg-box">
+                                            <div class="tg-heading-border tg-small">
+                                                <i class="fa fa-medkit"></i>
+                                                <h3>Speciality</h3>
+                                            </div>
+                                            <ul>
+                                                <li><a href="dir-search/index3a5c.html?speciality=aerobic-centers">Aerobic Centers</a></li>
+                                                <li><a href="dir-search/indexb992.html?speciality=associazione-volontari-italiani-sangue">Associazione Volontari</a></li>
+                                                <li><a href="dir-search/index2804.html?speciality=athletic-clubs">Athletic Clubs</a></li>
+                                                <li><a href="dir-search/indexe328.html?speciality=blood-services">Blood Services</a></li>
+                                                <li><a href="dir-search/indexa96e.html?speciality=blood-services-center-for-biologics-evaluation-and-research">Blood Services Center</a></li>
+                                                <li><a href="dir-search/index2571.html?speciality=cancer-hospital">Cancer Hospital</a></li>
+                                                <li><a href="dir-search/index80e0.html?speciality=cardiologist">Cardiologist</a></li>
+                                                <li><a href="dir-search/index1ef1.html?speciality=cardiology-clinic">Cardiology clinic</a></li>
+                                                <li><a href="dir-search/index5bb4.html?speciality=children-clinic">Children clinic</a></li>
+                                                <li><a href="dir-search/indexd0d2.html?speciality=children-hospital">Children Hospital</a></li>
+                                                <li><a href="dir-search/indexcaa3.html?speciality=clinical-pharmacy">Clinical pharmacy</a></li>
+                                                <li><a href="dir-search/indexdf0c.html?speciality=colorectal-surgeon">Colorectal surgeon</a></li>
+                                                <li><a href="dir-search/index5ff6.html?speciality=community-blood-services">Community Blood Services</a></li>
+                                                <li><a href="dir-search/indexbae4.html?speciality=community-pharmacy">Community pharmacy</a></li>
+                                                <li><a href="dir-search/index0acd.html?speciality=compliance-medicine">Compliance (medicine)</a></li>
+                                                <li><a href="dir-search/indexac12.html?speciality=cord-blood-registry">Cord Blood Registry</a></li>
+                                                <li><a href="dir-search/index7fa1.html?speciality=country-clubs">Country Clubs</a></li>
+                                                <li><a href="dir-search/indexfd9f.html?speciality=dance-centers">Dance Centers</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="tg-main-section haslayout  stretch_section" style="background-image:url(/Content/wp-content/uploads/2016/08/bgparallax-03.jpg);padding-top:50px;padding-bottom:50px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="tg-buynowbox">
+                                    <h3 style="color:#5d5955">ONE OF THE VERY FEW USER BASE DIRECTORY THEMES AVAILABLE.</h3>
+                                    <a class="tg-btn" style="color:#5d5955" href="#">Read more</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default" style="padding-bottom:0px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="sc-teams-grid">
+                                    <div class="tg-team-members">
+                                        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                                            <div class="tg-section-head">
+                                                <div class="tg-theme-heading">
+                                                    <h2>TEAM BEHIND DOCDIRECT</h2>
+                                                    <span class="tg-roundbox"></span>
+                                                </div>
+                                                <div class="tg-description">
+                                                    <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tg-teams-member">
+                                            <div class="col-sm-4">
+                                                <div class="tg-member">
+                                                    <figure>
+                                                        <img src="~/Content/wp-content/uploads/2016/08/img-01.jpg" alt="team">
+                                                        <figcaption class="tg-share-icons">
+                                                            <ul class="tg-socialicon">
+                                                                <li class="tg-facebook"><a style="background:#3b5998" href="#"><i class="fa fa-facebook"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#55acee" href="#"><i class="fa fa-twitter"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#007bb5" href="#"><i class="fa fa-linkedin"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#cb2027" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                            </ul>
+                                                        </figcaption>
+                                                    </figure>
+                                                    <div class="tg-contentbox">
+                                                        <h2>DAWSON DAWYNE<span>CEO &amp; FOUNDER</span></h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="tg-member">
+                                                    <figure>
+                                                        <img src="~/Content/wp-content/uploads/2016/08/img-02.jpg" alt="team">
+                                                        <figcaption class="tg-share-icons">
+                                                            <ul class="tg-socialicon">
+                                                                <li class="tg-facebook"><a style="background:#3b5998" href="#"><i class="fa fa-facebook"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#55acee" href="#"><i class="fa fa-twitter"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#007bb5" href="#"><i class="fa fa-linkedin"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#cb2027" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                            </ul>
+                                                        </figcaption>
+                                                    </figure>
+                                                    <div class="tg-contentbox">
+                                                        <h2>TIFANY RENY<span>FOUNDER</span></h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="tg-member">
+                                                    <figure>
+                                                        <img src="~/Content/wp-content/uploads/2016/08/img-03-1.jpg" alt="team">
+                                                        <figcaption class="tg-share-icons">
+                                                            <ul class="tg-socialicon">
+                                                                <li class="tg-facebook"><a style="background:#3b5998" href="#"><i class="fa fa-facebook"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#55acee" href="#"><i class="fa fa-twitter"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#007bb5" href="#"><i class="fa fa-linkedin"></i></a></li>
+                                                                <li class="tg-facebook"><a style="background:#cb2027" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                            </ul>
+                                                        </figcaption>
+                                                    </figure>
+                                                    <div class="tg-contentbox">
+                                                        <h2>HECTOR ALLIE<span>CFO</span></h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+

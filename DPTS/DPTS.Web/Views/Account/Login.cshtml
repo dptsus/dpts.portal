@@ -1,0 +1,56 @@
+﻿@model LoginViewModel
+@using DPTS.Web.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main id="main" class="tg-page-wrapper tg-haslayout">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3" style="box-shadow: 0 0 20px 0 rgba(0,0,0,.2), 0 5px 5px 0 rgba(0,0,0,.24);">
+                <ul class="tg-modaltabs-nav" role="tablist">
+                    <li role="presentation" class="active"><a href="#tg-signin-formarea" aria-controls="tg-signin-formarea" role="tab" data-toggle="tab" aria-expanded="false">Sign In</a></li>
+                    <li role="presentation" class=""><a href="@Url.Action("Register","Account")" aria-expanded="true">Sign Up</a></li>
+                </ul>
+                <div class="tab-content tg-haslayout">
+                    <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signin-formarea">
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "tg-form-modal tg-form-signin do-login-form", role = "form" }))
+            {
+                            @Html.AntiForgeryToken()
+                            <fieldset>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group tg-checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-control" })
+                                        Remember Me
+                                    </label>
+                                    <a class="tg-forgot-password" href="#">
+                                        <i>Forgot Password</i>
+                                        <i class="fa fa-question-circle"></i>
+                                    </a>
+                                </div>
+                                <div class="domain-captcha">
+                                    <div id="recaptcha_signin"><div style="width: 304px; height: 78px;"><div><iframe src="https://www.google.com/recaptcha/api2/anchor?k=6Ld7fgcUAAAAANmJV2K3RulmACd_3DJwmYqT7bQw&amp;co=aHR0cHM6Ly90aGVtb2dyYXBoaWNzLmNvbTo0NDM.&amp;hl=en&amp;v=r20161215161951&amp;size=normal&amp;cb=b3hg94so1rss" title="recaptcha widget" width="304" height="78" frameborder="0" scrolling="no" name="undefined"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid #c1c1c1; margin: 10px 25px; padding: 0px; resize: none;  display: none; "></textarea></div></div>
+                                </div>
+                                <input type="submit" value="LOGIN now" class="tg-btn tg-btn-lg do-login-button" />
+                            </fieldset>
+                        }
+
+                    </div>
+                    @*<div role="tabpanel" class="tab-pane tg-haslayout" id="tg-signup-formarea">
+                            @Html.Action("Register", "Account")
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
