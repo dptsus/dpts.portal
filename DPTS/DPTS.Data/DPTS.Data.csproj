@@ -67,6 +67,10 @@
     <Compile Include="Migrations\201701110632196_CreateAppointmentScheduleMap.Designer.cs">
       <DependentUpon>201701110632196_CreateAppointmentScheduleMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701120626091_EmailCategory.cs" />
+    <Compile Include="Migrations\201701120626091_EmailCategory.Designer.cs">
+      <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701110632196_CreateAppointmentScheduleMap.resx">
       <DependentUpon>201701110632196_CreateAppointmentScheduleMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701120626091_EmailCategory.resx">
+      <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
