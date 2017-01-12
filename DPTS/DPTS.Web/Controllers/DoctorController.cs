@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DPTS.Domain.Entities;
+using Microsoft.AspNet.Identity;
+using static System.DateTime;
 
 namespace DPTS.Web.Controllers
 {
@@ -101,7 +102,7 @@ namespace DPTS.Web.Controllers
                 throw new ArgumentNullException("countryId");
 
             var country = _countryService.GetCountryById(countryId);
-            var states = _stateProvinceService.GetStateProvincesByCountryId(country != null ? country.Id : 0).ToList();
+            var states = _stateProvinceService.GetStateProvincesByCountryId(country?.Id ?? 0).ToList();
             var result = (from s in states
                           select new { id = s.Id, name = s.Name })
                           .ToList();
@@ -110,14 +111,7 @@ namespace DPTS.Web.Controllers
             if (country == null)
             {
                 //country is not selected ("choose country" item)
-                if (addSelectStateItem)
-                {
-                    result.Insert(0, new { id = 0, name = "select state" });
-                }
-                else
-                {
-                    result.Insert(0, new { id = 0, name = "None" });
-                }
+                result.Insert(0, addSelectStateItem ? new {id = 0, name = "select state"} : new {id = 0, name = "None"});
             }
             else
             {
@@ -143,22 +137,18 @@ namespace DPTS.Web.Controllers
         public IList<SelectListItem> GetCountryList()
         {
             var countries = _countryService.GetAllCountries(true);
-            List<SelectListItem> typelst = new List<SelectListItem>();
-            typelst.Add(
-                     new SelectListItem
-                     {
-                         Text = "Select",
-                         Value = "0"
-                     });
-            foreach (var _type in countries.ToList())
+            var typelst = new List<SelectListItem>
             {
-                typelst.Add(
-                     new SelectListItem
-                     {
-                         Text = _type.Name,
-                         Value = _type.Id.ToString()
-                     });
-            }
+                new SelectListItem
+                {
+                    Text = "Select",
+                    Value = "0"
+                }
+            };
+            typelst.AddRange(countries.ToList().Select(type => new SelectListItem
+            {
+                Text = type.Name, Value = type.Id.ToString()
+            }));
             return typelst;
         }
         #endregion
@@ -174,33 +164,38 @@ namespace DPTS.Web.Controllers
             var model = new DoctorProfileSettingViewModel();
             if (!string.IsNullOrEmpty(User.Identity.Name))
             {
-               // var user = context.Users.a(u => u.Id).Where(u => u.Id == id).FirstOrDefault();
+               // var user = context.Users.a(u => u.id).Where(u => u.id == id).FirstOrDefault();
 
                 var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-                var doctor = _doctorService.GetDoctorbyId(user.Id);
-                if(doctor != null)
+                if (user != null)
                 {
-                    model.DateCreated = doctor.DateCreated;
-                    var dateOfBirth = string.IsNullOrWhiteSpace(doctor.DateOfBirth) ? (DateTime?)null : DateTime.Parse(doctor.DateOfBirth);
-                    if (dateOfBirth.HasValue)
+                    var doctor = _doctorService.GetDoctorbyId(user.Id);
+                    if(doctor != null)
                     {
-                        model.DateOfBirthDay = dateOfBirth.Value.Day;
-                        model.DateOfBirthMonth = dateOfBirth.Value.Month;
-                        model.DateOfBirthYear = dateOfBirth.Value.Year;
+                        model.DateCreated = doctor.DateCreated;
+                        var dateOfBirth = string.IsNullOrWhiteSpace(doctor.DateOfBirth) ? (DateTime?)null : Parse(doctor.DateOfBirth);
+                        if (dateOfBirth.HasValue)
+                        {
+                            model.DateOfBirthDay = dateOfBirth.Value.Day;
+                            model.DateOfBirthMonth = dateOfBirth.Value.Month;
+                            model.DateOfBirthYear = dateOfBirth.Value.Year;
+                        }
+                        model.Gender = doctor.Gender;
+                        model.ShortProfile = doctor.ShortProfile;
+                        model.Qualifications = doctor.Qualifications;
+                        model.NoOfYearExperience = doctor.YearsOfExperience.GetValueOrDefault();
+                        model.RegistrationNumber = doctor.RegistrationNumber;
                     }
-                    model.Gender = doctor.Gender;
-                    model.ShortProfile = doctor.ShortProfile;
-                    model.Qualifications = doctor.Qualifications;
-                //    model.NoOfYearExperience = doctor.YearsOfExperience;
-                    model.RegistrationNumber = doctor.RegistrationNumber;
-
                 }
-                model.Email = user.Email;
-                model.FirstName = user.FirstName;
-                model.LastName = user.LastName;
-                model.Id = user.Id;
-                model.PhoneNumber = user.PhoneNumber;
-                model.AvailableSpeciality = GetAllSpecialities(user.Id);
+                if (user != null)
+                {
+                    model.Email = user.Email;
+                    model.FirstName = user.FirstName;
+                    model.LastName = user.LastName;
+                    model.Id = user.Id;
+                    model.PhoneNumber = user.PhoneNumber;
+                    model.AvailableSpeciality = GetAllSpecialities(user.Id);
+                }
             }
             ViewBag.GenderList = GetGender();
             return View(model);
@@ -208,24 +203,19 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
-            var dob = model.DateOfBirth;
-            // var doctorSpec = GetAllSpecialities(model.Id).Select(c => c.Selected == true);
+            // var doctorSpec = GetAllSpecialities(model.id).Select(c => c.Selected == true);
             if (model.SelectedSpeciality.Count > 0)
             {
-                var Specilities = string.Join(",", model.SelectedSpeciality);
-                foreach (var item in Specilities.Split(',').ToList())
+                var specilities = string.Join(",", model.SelectedSpeciality);
+                foreach (var specilityMap in specilities.Split(',').ToList().Select(item => new SpecialityMapping
                 {
-                    var specilityMap = new SpecialityMapping
-                    {
-                        Speciality_Id = int.Parse(item),
-                        Doctor_Id = model.Id,
-                        DateCreated = DateTime.UtcNow,
-                        DateUpdated = DateTime.UtcNow,
-                    };
-                    if (!_specialityService.IsDoctorSpecialityExists(specilityMap))
-                    {
-                        _specialityService.AddSpecialityByDoctor(specilityMap);
-                    }
+                    Speciality_Id = int.Parse(item),
+                    Doctor_Id = model.Id,
+                    DateCreated = UtcNow,
+                    DateUpdated = UtcNow
+                }).Where(specilityMap => !_specialityService.IsDoctorSpecialityExists(specilityMap)))
+                {
+                    _specialityService.AddSpecialityByDoctor(specilityMap);
                 }
             }
 
@@ -235,9 +225,9 @@ namespace DPTS.Web.Controllers
 
             doctor.Gender = model.Gender;
             doctor.ShortProfile = model.ShortProfile;
-            DateTime? dateOfBirth = model.ParseDateOfBirth();
+            var dateOfBirth = model.ParseDateOfBirth();
             doctor.DateOfBirth = dateOfBirth.ToString();
-            doctor.DateUpdated = DateTime.UtcNow;
+            doctor.DateUpdated = UtcNow;
             doctor.Qualifications = model.Qualifications;
             doctor.RegistrationNumber = model.RegistrationNumber;
             doctor.YearsOfExperience = model.NoOfYearExperience;
@@ -284,12 +274,15 @@ namespace DPTS.Web.Controllers
                     address.StateProvinceId = null;
 
                  _addressService.AddAddress(address);
-                var addrMap = new AddressMapping
+                if (user != null)
                 {
-                    AddressId = address.Id,
-                    UserId = user.Id
-                };
-                _addressService.AddAddressMapping(addrMap);
+                    var addrMap = new AddressMapping
+                    {
+                        AddressId = address.Id,
+                        UserId = user.Id
+                    };
+                    _addressService.AddAddressMapping(addrMap);
+                }
 
                 return RedirectToAction("Addresses");
             }
@@ -302,18 +295,28 @@ namespace DPTS.Web.Controllers
         {
             if (string.IsNullOrEmpty(User.Identity.Name))
                 return new HttpUnauthorizedResult();
+            var userId = User.Identity.GetUserId();
+            var user = context.Users.SingleOrDefault(u => u.Id == userId);
+            if (user == null)
+                return Json(new
+                {
+                    redirect = Url.Action("Addresses", "Doctor"),
+                });
 
-            var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var addrMapping = _addressService.GetAddressMappingbuUserIdAddrId(UserId: user.Id, AddressId: addressId);
+
+            if (addrMapping == null)
+                return Content("No Customer found with the specified id");
+
+            _addressService.DeleteAddressMapping(addrMapping);
             var address = _addressService.GetAddressbyId(addressId);
-            if (address != null)
-            {
-                _addressService.DeleteAddress(address);
-                var addrMapping = _addressService.GetAddressMappingbuUserIdAddrId(UserId: user.Id, AddressId: addressId);
-                if (addrMapping == null)
-                    return Content("No Customer found with the specified id");
-
-                _addressService.DeleteAddressMapping(addrMapping);
-            }
+            if (address == null)
+                return Json(new
+                {
+                    redirect = Url.Action("Addresses", "Doctor"),
+                });
+            _addressService.DeleteAddress(address);
+            
 
             return Json(new
             {
@@ -330,32 +333,33 @@ namespace DPTS.Web.Controllers
             var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
             var model = new List<AddressViewModel>();
 
-            model.AddRange(_addressService.GetAllAddressByUser(user.Id).Select(c => new AddressViewModel
-            {
-                Id = c.Id,
-                Address1 = c.Address1,
-                Address2 = c.Address2,
-                City = c.City,
-                CountryName = (c.CountryId.GetValueOrDefault() > 0) ? _countryService.GetCountryById(c.CountryId.GetValueOrDefault()).Name : " ",
-                StateName = (c.StateProvinceId.GetValueOrDefault() > 0) ? _stateProvinceService.GetStateProvinceById(c.StateProvinceId.GetValueOrDefault()) .Name : " ",
-                FaxNumber=c.FaxNumber,
-                Hospital=c.Hospital,
-                LandlineNumber=c.PhoneNumber,
-                Website=c.Website,
-                ZipPostalCode=c.ZipPostalCode,
+            if (user != null)
+                model.AddRange(_addressService.GetAllAddressByUser(user.Id).Select(c => new AddressViewModel
+                {
+                    Id = c.Id,
+                    Address1 = c.Address1,
+                    Address2 = c.Address2,
+                    City = c.City,
+                    CountryName = (c.CountryId.GetValueOrDefault() > 0) ? _countryService.GetCountryById(c.CountryId.GetValueOrDefault()).Name : " ",
+                    StateName = (c.StateProvinceId.GetValueOrDefault() > 0) ? _stateProvinceService.GetStateProvinceById(c.StateProvinceId.GetValueOrDefault()) .Name : " ",
+                    FaxNumber=c.FaxNumber,
+                    Hospital=c.Hospital,
+                    LandlineNumber=c.PhoneNumber,
+                    Website=c.Website,
+                    ZipPostalCode=c.ZipPostalCode,
 
-            }).ToList());
+                }).ToList());
 
             return View(model);
 
         }
 
-        public ActionResult AddressEdit(int Id)
+        public ActionResult AddressEdit(int id)
         {
             if (string.IsNullOrEmpty(User.Identity.Name))
                 return new HttpUnauthorizedResult();
 
-            var address = _addressService.GetAddressbyId(Id);
+            var address = _addressService.GetAddressbyId(id);
             if (address == null)
                 return null;
 
@@ -471,16 +475,17 @@ namespace DPTS.Web.Controllers
                 string prodId = string.Empty;
                 foreach (string file in Request.Files)
                 {
-                    HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
-                    if (hpf.ContentLength == 0)
+                    var hpf = Request.Files[file];
+                    if (hpf != null && hpf.ContentLength == 0)
                         continue;
-                    prodId = Request.QueryString["pid"].ToString() + Path.GetExtension(hpf.FileName);
+                    if (hpf == null) continue;
+                    prodId = Request.QueryString["pid"] + Path.GetExtension(hpf.FileName);
                     var folderPath = Server.MapPath("~/Uploads");
                     if (!Directory.Exists(folderPath))
                     {
                         Directory.CreateDirectory(folderPath);
                     }
-                    string savedFileName = Path.Combine(folderPath, prodId);
+                    var savedFileName = Path.Combine(folderPath, prodId);
                     hpf.SaveAs(savedFileName);
 
                     r.Add(new UploadFilesResult()
@@ -491,10 +496,11 @@ namespace DPTS.Web.Controllers
                     });
                 }
 
-                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" + string.Format("{0} bytes", r[0].Length) + "\"}", "application/json");
+                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" +
+                               $"{r[0].Length} bytes" + "\"}", "application/json");
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

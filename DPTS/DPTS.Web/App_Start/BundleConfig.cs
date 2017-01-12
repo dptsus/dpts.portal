@@ -50,8 +50,8 @@ namespace DPTS.Web
                 "~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js",
-               "~/Content/Admin/js/bootstrap-datetimepicker.js"));
+                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
+               //"~/Content/Admin/js/bootstrap-datetimepicker.js"));
 
             bundles.Add(new StyleBundle("~/Content/wp-content/themes").Include(
                 "~/Content/wp-content/themes/docdirect/css/bootstrap.min1bba.css",

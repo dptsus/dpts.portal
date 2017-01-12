@@ -260,8 +260,7 @@
                 $("#prodfront").attr("src", '../../Uploads/'+BannerId+'.jpg?' + new Date().getTime());
             }).fail(function () {
                 $("#prodfront").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
-            })
-
+            });
         $('#fileuploadfront').fileupload({
             dataType: 'json',
             url: '/Doctor/UploadFiles?pid='+BannerId,
@@ -284,8 +283,7 @@
             }).fail(function () {
                 $("#user-profile").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
                 $("#profile-picture").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
-            })
-
+            });
         $('#fileuploadprofile').fileupload({
             dataType: 'json',
             url: '/Doctor/UploadFiles?pid=' + ProfilePicId,
