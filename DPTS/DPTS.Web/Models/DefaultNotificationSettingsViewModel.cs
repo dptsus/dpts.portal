@@ -5,9 +5,9 @@ using System.Web.Mvc;
 
 namespace DPTS.Web.Models
 {
-    public class StateProvinceViewModel
+    public class DefaultNotificationSettingsViewModel
     {
-        public StateProvinceViewModel()
+        public DefaultNotificationSettingsViewModel()
         {
             AvailableCountry = new List<SelectListItem>();
         }

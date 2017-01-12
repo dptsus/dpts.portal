@@ -1,25 +1,25 @@
 ﻿@using DPTS.Web.Models
-@model IEnumerable<EmailCategoryViewModel>
+@model IEnumerable<DefaultNotificationSettingsViewModel>
 @{
     ViewBag.Title = "List";
     Layout = "~/Views/Shared/Admin_Layout.cshtml";
     <link href="~/Content/Admin/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
     <!-- DataTables Responsive CSS -->
     <link href="~/Content/Admin/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
-     
+
     int i = 1;
 }
 
 <div class="row">
     <div class="col-lg-12">
         <div class="pull-right-button">
-            <a href="@Url.Action("Create","EmailCategory")" class="btn btn-primary">
+            <a href="@Url.Action("Create","DefaultNotificationSettings")" class="btn btn-primary">
                 <i class="fa fa-plus-square"></i>
                 Add new
             </a>
         </div>
 
-        <h1 class="page-header">Email Category</h1>
+        <h1 class="page-header">  Default Notification Settings</h1>
     </div>
 </div>
 
@@ -27,7 +27,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Email Category
+                Default Notification Settings
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
@@ -39,13 +39,22 @@
                                     <tr>
                                         <th>
                                             Name
-                                        </th> 
+                                        </th>
+                                        <th>
+                                            Country
+                                        </th>
+                                        <th>
+                                            Abbravation
+                                        </th>
                                         <th>
                                             Display Order
                                         </th>
-                                        
-                                        <th>Published</th>
-                                        <th>Action</th>
+                                        <th>
+                                            Published
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,17 +66,21 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
-                                           
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.CountryName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Abbreviation)
+                                                </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.DisplayOrder)
                                                 </td>
-                                               
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Published)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                    <a href="#" data-toggle="modal" data-target="#myModal" onclick="deleterecord(@item.Id,'EmailCategory')">Delete</a>
+                                                    <a href="#" data-toggle="modal" data-target="#myModal" onclick="deleterecord(@item.Id,'DefaultNotificationSettings')">Delete</a>
                                                 </td>
                                             </tr>
                                         }
@@ -77,16 +90,21 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
-                                            
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.CountryName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Abbreviation)
+                                                </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.DisplayOrder)
-                                                </td> 
+                                                </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Published)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                    <a href="#" data-toggle="modal" data-target="#myModal" onclick="deleterecord(@item.Id,'EmailCategory')">Delete</a>
+                                                    <a href="#" data-toggle="modal" data-target="#myModal" onclick="deleterecord(@item.Id,'DefaultNotificationSettings')">Delete</a>
                                                 </td>
                                             </tr>
                                         }

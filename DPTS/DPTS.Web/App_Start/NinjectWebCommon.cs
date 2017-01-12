@@ -1,5 +1,6 @@
 using DPTS.Domain.Core.Address;
 using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.DefaultNotificationSettings;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Core.EmailCategory;
 using DPTS.Domain.Core.Speciality;
@@ -7,6 +8,7 @@ using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Core.SubSpeciality;
 using DPTS.Services.Address;
 using DPTS.Services.Country;
+using DPTS.Services.DefaultNotificationSettings;
 using DPTS.Services.Doctors;
 using DPTS.Services.EmailCategory;
 using DPTS.Services.Speciality;
@@ -87,6 +89,8 @@ namespace DPTS.Web.App_Start
             kernel.Bind<IAddressService>().To<AddressService>();
             kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
 
+            kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
+            
         }
     }
 }

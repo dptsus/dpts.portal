@@ -71,6 +71,14 @@
     <Compile Include="Migrations\201701120626091_EmailCategory.Designer.cs">
       <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701121122484_EmailCategory1.cs" />
+    <Compile Include="Migrations\201701121122484_EmailCategory1.Designer.cs">
+      <DependentUpon>201701121122484_EmailCategory1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701121155176_DefaultNotificationSettings.cs" />
+    <Compile Include="Migrations\201701121155176_DefaultNotificationSettings.Designer.cs">
+      <DependentUpon>201701121155176_DefaultNotificationSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -98,6 +106,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701120626091_EmailCategory.resx">
       <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701121122484_EmailCategory1.resx">
+      <DependentUpon>201701121122484_EmailCategory1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701121155176_DefaultNotificationSettings.resx">
+      <DependentUpon>201701121155176_DefaultNotificationSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

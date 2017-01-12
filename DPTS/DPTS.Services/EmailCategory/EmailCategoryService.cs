@@ -95,39 +95,8 @@ namespace DPTS.Services.EmailCategory
             return sortedCountries;
         }
 
-        /// <summary>
-        /// Gets a emailCategory by two letter ISO code
-        /// </summary>
-        /// <param name="twoLetterIsoCode">emailCategory two letter ISO code</param>
-        /// <returns>emailCategory</returns>
-        public virtual Domain.Entities.EmailCategory GetEmailCategoryByTwoLetterIsoCode(string twoLetterIsoCode)
-        {
-            if (String.IsNullOrEmpty(twoLetterIsoCode))
-                return null;
-
-            var query = from c in _emailCategoryRepository.Table
-                        where c.TwoLetterIsoCode == twoLetterIsoCode
-                        select c;
-            var emailCategory = query.FirstOrDefault();
-            return emailCategory;
-        }
-
-        /// <summary>
-        /// Gets a emailCategory by three letter ISO code
-        /// </summary>
-        /// <param name="threeLetterIsoCode">emailCategory three letter ISO code</param>
-        /// <returns>emailCategory</returns>
-        public virtual Domain.Entities.EmailCategory GetEmailCategoryByThreeLetterIsoCode(string threeLetterIsoCode)
-        {
-            if (String.IsNullOrEmpty(threeLetterIsoCode))
-                return null;
-
-            var query = from c in _emailCategoryRepository.Table
-                        where c.ThreeLetterIsoCode == threeLetterIsoCode
-                        select c;
-            var emailCategory = query.FirstOrDefault();
-            return emailCategory;
-        }
+      
+       
 
         /// <summary>
         /// Inserts a emailCategory

@@ -33,20 +33,7 @@ namespace DPTS.Domain.Core.EmailCategory
         /// <param name="emailCategoryIds">EmailCategory identifiers</param>
         /// <returns>Countries</returns>
         IList<Entities.EmailCategory> GetEmailCategoriesByIds(int[] emailCategoryIds);
-
-        /// <summary>
-        /// Gets a EmailCategory by two letter ISO code
-        /// </summary>
-        /// <param name="twoLetterIsoCode">EmailCategory two letter ISO code</param>
-        /// <returns>EmailCategory</returns>
-        Entities.EmailCategory GetEmailCategoryByTwoLetterIsoCode(string twoLetterIsoCode);
-
-        /// <summary>
-        /// Gets a EmailCategory by three letter ISO code
-        /// </summary>
-        /// <param name="threeLetterIsoCode">EmailCategory three letter ISO code</param>
-        /// <returns>EmailCategory</returns>
-        Entities.EmailCategory GetEmailCategoryByThreeLetterIsoCode(string threeLetterIsoCode);
+ 
 
         /// <summary>
         /// Inserts a EmailCategory

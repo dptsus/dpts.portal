@@ -207,6 +207,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SpecialityController.cs" />
+    <Compile Include="Controllers\DefaultNotificationSettingsController.cs" />
     <Compile Include="Controllers\StateProvinceController.cs" />
     <Compile Include="Controllers\SubSpecialityController.cs" />
     <Compile Include="Controllers\UserManagerController.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Models\SpecialityViewModel.cs" />
+    <Compile Include="Models\DefaultNotificationSettingsViewModel.cs" />
     <Compile Include="Models\StateProvinceViewModel.cs" />
     <Compile Include="Models\SubSpecialityViewModel.cs" />
     <Compile Include="Models\UploadFilesResult.cs" />
@@ -854,6 +856,10 @@
     <Content Include="Views\EmailCategory\Create.cshtml" />
     <Content Include="Views\EmailCategory\Edit.cshtml" />
     <Content Include="Views\EmailCategory\List.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\Create.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\Edit.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />

@@ -23,16 +23,12 @@ namespace DPTS.Web.Controllers
         public ActionResult List()
         {
             var countries = _emailCategory.GetAllEmailCategories(true);
-            var model = countries.Select(c => new CountryViewModel
+            var model = countries.Select(c => new EmailCategoryViewModel 
             {
                 Id=c.Id,
                 Name=c.Name,
-                DisplayOrder=c.DisplayOrder,
-                NumericIsoCode=c.NumericIsoCode,
-                Published=c.Published,
-                SubjectToVat=c.SubjectToVat,
-                ThreeLetterIsoCode=c.ThreeLetterIsoCode,
-                TwoLetterIsoCode=c.TwoLetterIsoCode
+                DisplayOrder=c.DisplayOrder, 
+                Published=c.Published
 
             }).ToList();
             return View(model);
@@ -49,11 +45,7 @@ namespace DPTS.Web.Controllers
             {
                 var country = new EmailCategory
                 {
-                    Name=model.Name,
-                    TwoLetterIsoCode=model.TwoLetterIsoCode,
-                    ThreeLetterIsoCode=model.ThreeLetterIsoCode,
-                    NumericIsoCode=model.NumericIsoCode,
-                    SubjectToVat=model.SubjectToVat,
+                    Name=model.Name, 
                     Published=model.Published,
                     DisplayOrder=model.DisplayOrder
                 };
@@ -75,30 +67,22 @@ namespace DPTS.Web.Controllers
             {
                 Id = country.Id,
                 Name = country.Name,
-                DisplayOrder = country.DisplayOrder,
-                NumericIsoCode = country.NumericIsoCode,
-                Published = country.Published,
-                SubjectToVat = country.SubjectToVat,
-                ThreeLetterIsoCode = country.ThreeLetterIsoCode,
-                TwoLetterIsoCode = country.TwoLetterIsoCode
+                DisplayOrder = country.DisplayOrder, 
+                Published = country.Published
             };
 
             return View(model);
         }
         [HttpPost]
-        public ActionResult Edit(CountryViewModel model)
+        public ActionResult Edit(EmailCategoryViewModel model)
         {
             if(ModelState.IsValid)
             {
                 var country = _emailCategory.GetEmailCategoryById(model.Id);
                 country.Id = model.Id;
                 country.Name = model.Name;
-                country.DisplayOrder = model.DisplayOrder;
-                country.NumericIsoCode = model.NumericIsoCode;
-                country.Published = model.Published;
-                country.SubjectToVat = model.SubjectToVat;
-                country.ThreeLetterIsoCode = model.ThreeLetterIsoCode;
-                country.TwoLetterIsoCode = model.TwoLetterIsoCode;
+                country.DisplayOrder = model.DisplayOrder; 
+                country.Published = model.Published; 
                 _emailCategory.UpdateEmailCategory(country);
                 return RedirectToAction("List");
             }
