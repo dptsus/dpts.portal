@@ -1,34 +1,34 @@
-﻿using DPTS.Domain;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Domain.Core
+namespace DPTS.Domain.Core.Speciality
 {
     public partial interface ISpecialityService
     {
         /// <summary>
         /// Inserts an Speciality
         /// </summary>
-        void AddSpeciality(Speciality speciality);
+        void AddSpeciality(Entities.Speciality speciality);
 
         /// <summary>
         /// Get Speciality by Id
         /// </summary>
-        Speciality GetSpecialitybyId(int Id);
+        Entities.Speciality GetSpecialitybyId(int Id);
 
         /// <summary>
         /// Delete Specialityr by Id
         /// </summary>
-        void DeleteSpeciality(Speciality speciality);
+        void DeleteSpeciality(Entities.Speciality speciality);
 
         /// <summary>
         /// update Speciality
         /// </summary>
-        void UpdateSpeciality(Speciality data);
+        void UpdateSpeciality(Entities.Speciality data);
 
         /// <summary>
         /// get list of Speciality
         /// </summary>
-        IList<Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false);
+        IList<Entities.Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false);
 
         void AddSpecialityByDoctor(SpecialityMapping doctorSpecilities);
 
@@ -38,6 +38,6 @@ namespace DPTS.Domain.Core
         /// </summary>
         /// <param name="doctorId"></param>
         /// <returns></returns>
-        IList<Speciality> GetDoctorSpecilities(string doctorId);
+        IList<Entities.Speciality> GetDoctorSpecilities(string doctorId);
     }
 }

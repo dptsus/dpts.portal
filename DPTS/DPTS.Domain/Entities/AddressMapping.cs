@@ -1,7 +1,7 @@
-namespace DPTS.Domain
-{
-    using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
+namespace DPTS.Domain.Entities
+{
     public partial class AddressMapping
     {
         [Key]

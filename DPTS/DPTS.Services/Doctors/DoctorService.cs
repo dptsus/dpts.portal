@@ -1,20 +1,22 @@
-﻿using DPTS.Data.Context;
-using DPTS.Domain.Core;
-using DPTS.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DPTS.Data.Context;
+using DPTS.Domain.Core;
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Doctors;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Services
+namespace DPTS.Services.Doctors
 {
     public class DoctorService : IDoctorService
     {
         #region Fields
         private readonly IRepository<Doctor> _doctorRepository;
-        private readonly IRepository<Speciality> _specialityRepository;
+        private readonly IRepository<Domain.Entities.Speciality> _specialityRepository;
         private readonly IRepository<SpecialityMapping> _specialityMappingRepository;
         private readonly IRepository<AddressMapping> _addressMapping;
-        private readonly IRepository<Address> _address;
+        private readonly IRepository<Domain.Entities.Address> _address;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
 
@@ -22,11 +24,11 @@ namespace DPTS.Services
 
         #region Constructor
         public DoctorService(IRepository<Doctor> doctorRepository,
-            IRepository<Speciality> specialityRepository,
+            IRepository<Domain.Entities.Speciality> specialityRepository,
             IRepository<SpecialityMapping> specialityMappingRepository,
             IAddressService addressService,
             IRepository<AddressMapping> addressMapping,
-            IRepository<Address> address)
+            IRepository<Domain.Entities.Address> address)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;

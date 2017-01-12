@@ -1,13 +1,12 @@
-﻿using DPTS.Domain.Core;
-using DPTS.Domain;
-using DPTS.Web.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DPTS.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Doctors;
+using DPTS.Domain.Core.Speciality;
 
 namespace DPTS.Web.Controllers
 {

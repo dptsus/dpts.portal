@@ -1,11 +1,11 @@
 ﻿using DPTS.Data.Context;
 using DPTS.Domain.Core;
-using DPTS.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using DPTS.Domain.Entities;
 
 
 namespace DPTS.Services

@@ -18,8 +18,7 @@
     <!-- Custom Fonts -->
     <link href="~/Content/Admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="~/Content/Alertify/css/alertify.core.css" rel="stylesheet" />
-    <link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" />
-
+    <link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" /> 
 </head>
 <body>
     <div id="wrapper">
@@ -292,7 +291,13 @@
                                     <a href="@Url.Action("List","Country")"><i class="fa fa-dot-circle-o"></i> Country</a>
                                 </li>
                                 <li>
-                                    <a href="@Url.Action("List","StateProvince")"><i class="fa fa-dot-circle-o"></i> State Province</a>
+                                    <a href="@Url.Action("List", "StateProvince")"><i class="fa fa-dot-circle-o"></i> State Province</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("List", "EmailCategory")"><i class="fa fa-dot-circle-o"></i> Email Category</a>
+                                </li> 
+                                <li>
+                                    <a href="@Url.Action("List", "DefaultNotificationSettings")"><i class="fa fa-dot-circle-o"></i> Default Notification Settings </a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -330,7 +335,7 @@
 </body>
 </html>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#Spacility-list').DataTable({
             responsive: true
         });

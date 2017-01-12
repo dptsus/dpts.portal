@@ -1,8 +1,7 @@
-﻿using DPTS.Domain;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Domain.Core
+namespace DPTS.Domain.Core.Doctors
 {
     public interface IDoctorService
     {
