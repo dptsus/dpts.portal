@@ -7,14 +7,20 @@ namespace DPTS.Web.Models
 {
     public class SheduleViewModel
     {
-        public string Sunday { get; set; }
-        public string Monday { get; set; }
-        public string Tuesday { get; set; }
-        public string Wensday { get; set; }
-        public string Thursday { get; set; }
-        public string Friday { get; set; }
-        public string Saterday { get; set; }
+        //public string Sunday { get; set; }
+        //public string Monday { get; set; }
+        //public string Tuesday { get; set; }
+        //public string Wednesday { get; set; }
+        //public string Thursday { get; set; }
+        //public string Friday { get; set; }
+        //public string Saturday { get; set; }
 
-        public DateTime Type { get; set; }
+        public string DoctorId { get; set; }
+
+        public string Day { get; set; }
+
+        public TimeSpan StartTime { get; set; }
+
+        public TimeSpan EndTime { get; set; }
     }
 }

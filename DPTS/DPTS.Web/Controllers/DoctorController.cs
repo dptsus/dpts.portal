@@ -322,7 +322,7 @@ namespace DPTS.Web.Controllers
                     redirect = Url.Action("Addresses", "Doctor"),
                 });
             _addressService.DeleteAddress(address);
-            
+
 
             return Json(new
             {
@@ -451,8 +451,21 @@ namespace DPTS.Web.Controllers
         }
         public ActionResult DoctorSchedules()
         {
-            var sheduleList = _scheduleService.GetAppointmentScheduleByDoctorId(User.Identity.GetUserId());
-            return View(sheduleList);
+            var sheduleList = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId());
+            var models = new List<SheduleViewModel>();
+            foreach (var schedule in sheduleList)
+            {
+                var model = new SheduleViewModel
+                {
+                    Day = schedule.Day,
+                    StartTime = schedule.StartTime,
+                    EndTime = schedule.EndTime,
+                    DoctorId = schedule.DoctorId
+                };
+                models.Add(model);
+            }
+
+            return View(models);
         }
         [HttpPost]
         public ActionResult DoctorSchedules(AppointmentSchedule model)

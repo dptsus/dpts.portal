@@ -11,12 +11,14 @@ namespace DPTS.Services.Appointment
     {
         #region Fields
         private readonly IRepository<AppointmentSchedule> _scheduleRepository;
+        private readonly IRepository<Schedule> _docScheduleRepository;
         #endregion
 
         #region Ctor
-        public AppointmentService(IRepository<AppointmentSchedule> scheduleRepository)
+        public AppointmentService(IRepository<AppointmentSchedule> scheduleRepository, IRepository<Schedule> docScheduleRepository)
         {
             _scheduleRepository = scheduleRepository;
+            _docScheduleRepository = docScheduleRepository;
         }
         #endregion
 
@@ -82,6 +84,71 @@ namespace DPTS.Services.Appointment
                 throw new ArgumentNullException(nameof(schedule));
 
             _scheduleRepository.Update(schedule);
+        }
+        #endregion
+
+        #region Methods(Schedule)
+        public void DeleteSchedule(Schedule schedule)
+        {
+            if (schedule == null)
+                throw new ArgumentNullException(nameof(schedule));
+
+            _docScheduleRepository.Delete(schedule);
+        }
+
+        public IList<Schedule> GetAllSchedule()
+        {
+            var query = _docScheduleRepository.Table;
+            return query.ToList();
+        }
+
+        public Schedule GetScheduleById(int scheduleId)
+        {
+            if (scheduleId == 0)
+                return null;
+
+            return _docScheduleRepository.GetById(scheduleId);
+        }
+
+        public IList<Schedule> GetScheduleByDoctorId(string doctorId)
+        {
+            if (string.IsNullOrWhiteSpace(doctorId))
+                return null;
+
+            var query = from c in _docScheduleRepository.Table
+                        where c.DoctorId.Equals(doctorId)
+                        select c;
+
+            return query.ToList();
+        }
+
+        public IList<Schedule> GetScheduleByIds(int[] scheduleIds)
+        {
+            if (scheduleIds == null || scheduleIds.Length == 0)
+                return new List<Schedule>();
+
+            var query = from c in _docScheduleRepository.Table
+                        where scheduleIds.Contains(c.Id)
+                        select c;
+            var schedules = query.ToList();
+            return scheduleIds.Select(id => schedules.Find(x => x.Id == id)).Where(schedule => schedule != null).ToList();
+        }
+
+        public void InsertSchedule(Schedule schedule)
+        {
+            if (schedule == null)
+                throw new ArgumentNullException(nameof(schedule));
+
+            _docScheduleRepository.Insert(schedule);
+
+        }
+
+        public void UpdateSchedule(Schedule schedule)
+        {
+            if (schedule == null)
+                throw new ArgumentNullException(nameof(schedule));
+
+            _docScheduleRepository.Update(schedule);
         }
         #endregion
     }

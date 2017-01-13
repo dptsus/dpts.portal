@@ -8,6 +8,8 @@ namespace DPTS.Domain.Core.Appointment
     /// </summary>
     public interface IAppointmentService
     {
+        #region Appoinment Schedule
+
         /// <summary>
         /// Deletes a Appointment
         /// </summary>
@@ -52,5 +54,55 @@ namespace DPTS.Domain.Core.Appointment
         /// </summary>
         /// <param name="schedule">Country</param>
         void UpdateAppointmentSchedule(AppointmentSchedule schedule);
+        #endregion
+
+        #region Doctor Schedule
+
+        /// <summary>
+        /// Deletes a schedule
+        /// </summary>
+        /// <param name="schedule">Appointment</param>
+        void DeleteSchedule(Schedule schedule);
+
+        /// <summary>
+        /// Gets all Schedule
+        /// </summary>
+        /// <returns>Schedule</returns>
+        IList<Schedule> GetAllSchedule();
+
+        /// <summary>
+        /// Gets a Schedule
+        /// </summary>
+        /// <param name="scheduleId">Schedule identifier</param>
+        /// <returns>Schedule</returns>
+        Schedule GetScheduleById(int scheduleId);
+
+        /// <summary>
+        /// Get Appointment Schedules
+        /// </summary>
+        /// <param name="doctorId"></param>
+        /// <returns></returns>
+        IList<Schedule> GetScheduleByDoctorId(string doctorId);
+
+        /// <summary>
+        /// Get Schedule by identifiers
+        /// </summary>
+        /// <param name="scheduleIds">Country identifiers</param>
+        /// <returns>Countries</returns>
+        IList<Schedule> GetScheduleByIds(int[] scheduleIds);
+
+        /// <summary>
+        /// Inserts a Schedule
+        /// </summary>
+        /// <param name="schedule">schedule</param>
+        void InsertSchedule(Schedule schedule);
+
+        /// <summary>
+        /// Updates the Schedule
+        /// </summary>
+        /// <param name="schedule">schedule</param>
+        void UpdateSchedule(Schedule schedule);
+        #endregion
+
     }
 }
