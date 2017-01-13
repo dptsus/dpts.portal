@@ -16,10 +16,10 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Contructor
-        public DefaultNotificationSettingsController(IDefaultNotificationSettingsService stateProvinceService, IEmailCategoryService countryService)
+        public DefaultNotificationSettingsController(IDefaultNotificationSettingsService defaultNotificationSettingsService, IEmailCategoryService emailCategoryService)
         {
-            _defaultNotificationSettingsService = stateProvinceService;
-            _emailCategoryService = countryService;
+            _defaultNotificationSettingsService = defaultNotificationSettingsService;
+            _emailCategoryService = emailCategoryService;
         }
         #endregion
 
@@ -47,7 +47,7 @@ namespace DPTS.Web.Controllers
         #region Methods
         public ActionResult List()
         {
-            var countries = _defaultNotificationSettingsService.GetAllStateProvince(true);
+            var countries = _defaultNotificationSettingsService.GetAllDefaultNotificationSettings(true);
             var model = countries.Select(c => new DefaultNotificationSettingsViewModel
             {
                 Id = c.Id,
@@ -82,7 +82,7 @@ namespace DPTS.Web.Controllers
                     Abbreviation = model.Abbreviation,
                     CountryId=model.CountryId
                 };
-                _defaultNotificationSettingsService.InsertStateProvince(stateProvince);
+                _defaultNotificationSettingsService.InsertDefaultNotificationSettings(stateProvince);
                 return RedirectToAction("List");
             }
             model.AvailableCountry = GetCountryList();
@@ -93,7 +93,7 @@ namespace DPTS.Web.Controllers
             if (!IsValidateId(Id))
                 return HttpNotFound();
 
-            var stateProvince = _defaultNotificationSettingsService.GetStateProvinceById(Id);
+            var stateProvince = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(Id);
             if (stateProvince == null)
                 return HttpNotFound();
 
@@ -115,7 +115,7 @@ namespace DPTS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var stateProvince = _defaultNotificationSettingsService.GetStateProvinceById(model.Id);
+                var stateProvince = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(model.Id);
                 stateProvince.Id = model.Id;
                 stateProvince.Name = model.Name;
                 stateProvince.DisplayOrder = model.DisplayOrder;
@@ -123,7 +123,7 @@ namespace DPTS.Web.Controllers
                 stateProvince.CountryId = model.CountryId;
                 stateProvince.Abbreviation = model.Abbreviation;
 
-                _defaultNotificationSettingsService.UpdateStateProvince(stateProvince);
+                _defaultNotificationSettingsService.UpdateDefaultNotificationSettings(stateProvince);
                 return RedirectToAction("List");
             }
             model.AvailableCountry = GetCountryList();
@@ -131,9 +131,9 @@ namespace DPTS.Web.Controllers
         }
         public ActionResult DeleteConfirmed(int id)
         {
-            var stateProvince = _defaultNotificationSettingsService.GetStateProvinceById(id);
+            var stateProvince = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(id);
             if (stateProvince != null)
-                _defaultNotificationSettingsService.DeleteStateProvince(stateProvince);
+                _defaultNotificationSettingsService.DeleteDefaultNotificationSettings(stateProvince);
 
 
             return Content("Deleted");
