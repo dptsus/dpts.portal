@@ -17,6 +17,7 @@ namespace DPTS.Services.Doctors
         private readonly IRepository<SpecialityMapping> _specialityMappingRepository;
         private readonly IRepository<AddressMapping> _addressMapping;
         private readonly IRepository<Domain.Entities.Address> _address;
+        private readonly IRepository<AppointmentSchedule> _appointmentScheduleRepository;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
 
@@ -28,7 +29,8 @@ namespace DPTS.Services.Doctors
             IRepository<SpecialityMapping> specialityMappingRepository,
             IAddressService addressService,
             IRepository<AddressMapping> addressMapping,
-            IRepository<Domain.Entities.Address> address)
+            IRepository<Domain.Entities.Address> address,
+            IRepository<AppointmentSchedule> appointmentScheduleRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
@@ -36,6 +38,7 @@ namespace DPTS.Services.Doctors
             _addressService = addressService;
             _addressMapping = addressMapping;
             _address = address;
+            _appointmentScheduleRepository = appointmentScheduleRepository;
             _context = new DPTSDbContext();
         }
         #endregion
@@ -44,7 +47,7 @@ namespace DPTS.Services.Doctors
         public void AddDoctor(Doctor doctor)
         {
             if (doctor == null)
-                throw new ArgumentNullException("doctor");
+                throw new ArgumentNullException(nameof(doctor));
 
             _doctorRepository.Insert(doctor);
         }
@@ -52,21 +55,21 @@ namespace DPTS.Services.Doctors
         public void DeleteDoctor(Doctor doctor)
         {
             if (doctor == null)
-                throw new ArgumentNullException("doctor");
+                throw new ArgumentNullException(nameof(doctor));
 
             _doctorRepository.Delete(doctor);
         }
 
 
-        public Doctor GetDoctorbyId(string DoctorId)
+        public Doctor GetDoctorbyId(string doctorId)
         {
-            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == DoctorId);
+            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == doctorId);
         }
 
         public void UpdateDoctor(Doctor data)
         {
             if (data == null)
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
 
             _doctorRepository.Update(data);
         }
@@ -75,14 +78,14 @@ namespace DPTS.Services.Doctors
             return null;
         }
 
-        public IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null,string zipcode = null)
+        public IList<Doctor> SearchDoctor(string keywords = null, int specialityId = 0, string directoryType = null,string zipcode = null)
         {
             var query = from d in _doctorRepository.Table
                         select d;
 
           //  query = query.Where(p => !p.Deleted && p.IsActive);
 
-            if (string.IsNullOrWhiteSpace(directory_type) && directory_type != "doctor")
+            if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
                 return null;
 
 
@@ -94,9 +97,9 @@ namespace DPTS.Services.Doctors
                         where m.ZipPostalCode == zipcode
                         select d;
              }
-            if (SpecialityId > 0)
+            if (specialityId > 0)
             {
-                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(SpecialityId)), (d, s) => d);
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
             }
             if (!string.IsNullOrWhiteSpace(keywords))
             {
@@ -107,6 +110,7 @@ namespace DPTS.Services.Doctors
             return query.ToList();
 
         }
+
         #endregion
     }
 }

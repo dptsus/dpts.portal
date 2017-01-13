@@ -8,7 +8,7 @@
             <div class="col-md-12 col-sm-6 col-xs-6">
                 <div class="form-group">
                     <span class="select">
-                        <select class="directory_type" name="directory_type">
+                        <select class="directory_type" name="directoryType">
                             <option value="">Category</option>
                             <option selected="" data-dir_name="Doctor" id="127" value="doctor">Doctor</option>
                             <option data-dir_name="hospital" id="126" value="hospital">Hospital</option>
@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-12 col-sm-6 col-xs-6">
                 <div class="form-group">
-                    @Html.DropDownListFor(model => model.SpecialityId, Model.AvailableSpeciality, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.specialityId, Model.AvailableSpeciality, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-12 col-sm-6 col-xs-6">

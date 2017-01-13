@@ -13,6 +13,7 @@ using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Entities;
 using Microsoft.AspNet.Identity;
 using static System.DateTime;
+using DPTS.Domain.Core.Appointment;
 
 namespace DPTS.Web.Controllers
 {
@@ -24,6 +25,7 @@ namespace DPTS.Web.Controllers
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
         private readonly IAddressService _addressService;
+        private readonly IAppointmentService _scheduleService;
         private ApplicationDbContext context;
         #endregion
 
@@ -31,7 +33,7 @@ namespace DPTS.Web.Controllers
         public DoctorController(IDoctorService doctorService, ISpecialityService specialityService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
-            IAddressService addressService)
+            IAddressService addressService, IAppointmentService scheduleService)
         {
             _doctorService = doctorService;
             context = new ApplicationDbContext();
@@ -39,6 +41,7 @@ namespace DPTS.Web.Controllers
             _countryService = countryService;
             _stateProvinceService = stateProvinceService;
             _addressService = addressService;
+            _scheduleService = scheduleService;
         }
         #endregion
 
@@ -448,7 +451,13 @@ namespace DPTS.Web.Controllers
         }
         public ActionResult DoctorSchedules()
         {
-            return View();
+            var sheduleList = _scheduleService.GetAppointmentScheduleByDoctorId(User.Identity.GetUserId());
+            return View(sheduleList);
+        }
+        [HttpPost]
+        public ActionResult DoctorSchedules(AppointmentSchedule model)
+        {
+            return View(model);
         }
         public ActionResult BookingListings()
         {
