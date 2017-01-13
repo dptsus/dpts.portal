@@ -16,9 +16,9 @@
                             @Html.ValidationMessageFor(model => model.Name)
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.specialityId)
-                            @Html.DropDownListFor(model => model.specialityId, Model.AvailableSpeciality, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.specialityId, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.SpecialityId)
+                            @Html.DropDownListFor(model => model.SpecialityId, Model.AvailableSpeciality, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.SpecialityId, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.DisplayOrder)

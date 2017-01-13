@@ -16,7 +16,7 @@
             <article class="tg-doctor-profile user-330">
                 <div class="tg-box">
                     <figure class="tg-docprofile-img">
-                        <a href="@Url.Action("DoctorDetails","Doctor",new { doctorId = item.doctor.doctorId})" class="list-avatar"><img src="@picturePath" alt="Dr Steve"></a>
+                        <a href="@Url.Action("DoctorDetails","Doctor",new { doctorId = item.doctor.DoctorId})" class="list-avatar"><img src="@picturePath" alt="Dr Steve"></a>
                         <a class="tg-dislike" href="javascript:;"><i class="fa fa-heart"></i></a>                                                                                    <span class="tg-featuredtags">
                             <a class="tg-featured" href="javascript:;">featured</a>
                         </span>
@@ -62,7 +62,7 @@
                     <div class="tg-docprofile-content">
 
                         <div class="tg-heading-border tg-small">
-                            <h3><a href="@Url.Action("DoctorDetails","Doctor",new { doctorId = item.doctor.doctorId})">Dr @item.FirstName @item.LastName</a></h3>
+                            <h3><a href="@Url.Action("DoctorDetails","Doctor",new { doctorId = item.doctor.DoctorId})">Dr @item.FirstName @item.LastName</a></h3>
                         </div>
                         <div class="tg-description">
                             <p>@item.doctor.ShortProfile </p>

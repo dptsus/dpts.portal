@@ -30,6 +30,9 @@ namespace DPTS.Web.App_Start
     using Domain.Core;
     using Domain.Entities;
     using Services;
+    using Domain.Core.Appointment;
+    using Services.Appointment;
+
     public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -88,9 +91,9 @@ namespace DPTS.Web.App_Start
             kernel.Bind<ISubSpecialityService>().To<SubSpecialityService>();
             kernel.Bind<IAddressService>().To<AddressService>();
             kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
-
+            kernel.Bind<IAppointmentService>().To<AppointmentService>();
             kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
-            
+
         }
     }
 }

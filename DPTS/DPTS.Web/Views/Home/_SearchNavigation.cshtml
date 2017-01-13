@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-12 col-sm-6 col-xs-6">
                 <div class="form-group">
-                    @Html.DropDownListFor(model => model.specialityId, Model.AvailableSpeciality, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.SpecialityId, Model.AvailableSpeciality, new { @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-12 col-sm-6 col-xs-6">
@@ -56,7 +56,7 @@
                     <input type="text" class="form-control" value="" name="ZipCode" id="ZipCode" placeholder="Search users by zip code">
                 </div>
             </div>
-           
+
             <div class="col-sm-6 col-xs-6">
                 <button type="submit" class="tg-btn pull-left">Search</button>
                 <input type="hidden" name="view" value="">
