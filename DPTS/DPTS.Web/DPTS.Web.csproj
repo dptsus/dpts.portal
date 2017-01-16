@@ -198,6 +198,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EmailCategoryController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
@@ -861,6 +862,7 @@
     <Content Include="Views\DefaultNotificationSettings\Create.cshtml" />
     <Content Include="Views\DefaultNotificationSettings\Edit.cshtml" />
     <Content Include="Views\DefaultNotificationSettings\List.cshtml" />
+    <Content Include="Views\Appointment\AppointmentSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />
