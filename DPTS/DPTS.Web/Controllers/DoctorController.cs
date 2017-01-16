@@ -451,47 +451,141 @@ namespace DPTS.Web.Controllers
         }
         public ActionResult DoctorSchedules()
         {
-            var sheduleList = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId());
-            var models = new List<SheduleViewModel>();
-            foreach (var schedule in sheduleList)
+           var lst =new List<SheduleViewModel>();
+           foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
             {
-                var model = new SheduleViewModel
+                var obj = new SheduleViewModel();
+                var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId()).FirstOrDefault();
+                switch (day)
                 {
-                    Day = schedule.Day,
-                    StartTime = schedule.StartTime,
-                    EndTime = schedule.EndTime,
-                    DoctorId = schedule.DoctorId
-                };
-                models.Add(model);
-            }
+                    case DayOfWeek.Sunday:
+                        if (schedule == null || !schedule.Day.Equals("Sunday"))
+                            obj.Day = "Sunday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    case DayOfWeek.Monday:
+                        if (schedule == null || !schedule.Day.Equals("Monday"))
+                            obj.Day = "Monday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    case DayOfWeek.Tuesday:
+                        if (schedule == null || !schedule.Day.Equals("Tuesday"))
+                            obj.Day = "Tuesday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    case DayOfWeek.Wednesday:
+                        if (schedule == null || !schedule.Day.Equals("Wednesday"))
+                            obj.Day = "Wednesday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    case DayOfWeek.Thursday:
+                        if (schedule == null || !schedule.Day.Equals("Thursday"))
+                            obj.Day = "Thursday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    case DayOfWeek.Friday:
+                        if (schedule == null || !schedule.Day.Equals("Friday"))
+                            obj.Day = "Friday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    case DayOfWeek.Saturday:
+                        if (schedule == null || !schedule.Day.Equals("Saturday"))
+                            obj.Day = "Saturday";
+                        else
+                        {
+                            obj.DoctorId = schedule.DoctorId;
+                            obj.Day = schedule.Day;
+                            obj.EndTime = schedule.EndTime.ToString();
+                            obj.StartTime = schedule.StartTime.ToString();
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
-            return View(models);
+                lst.Add(obj);
+            }
+            return View(lst);
         }
-        [HttpPost]
-        public ActionResult DoctorSchedules(AppointmentSchedule model)
+
+        private enum DayOfWeek
         {
-            return View(model);
+            Sunday = 0,
+            Monday = 1,
+            Tuesday = 2,
+            Wednesday = 3,
+            Thursday = 4,
+            Friday = 5,
+            Saturday = 6,
         }
+
+        [HttpPost]
+        public ActionResult DoctorSchedules(FormCollection form)
+        {
+            return View();
+        }
+
         public ActionResult BookingListings()
         {
             return View();
         }
+
         public ActionResult BookingSchedules()
         {
             return View();
         }
+
         public ActionResult SecuritySettings()
         {
             return View();
         }
+
         public ActionResult PrivacySettings()
         {
             return View();
         }
+
         public ActionResult BookingSettings()
         {
             return View();
         }
+
         public ContentResult UploadFiles()
         {
             try
@@ -515,21 +609,16 @@ namespace DPTS.Web.Controllers
 
                     r.Add(new UploadFilesResult
                     {
-                        Name = hpf.FileName,
-                        Length = hpf.ContentLength,
-                        Type = hpf.ContentType
+                        Name = hpf.FileName, Length = hpf.ContentLength, Type = hpf.ContentType
                     });
                 }
 
-                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" +
-                               $"{r[0].Length} bytes" + "\"}", "application/json");
-
+                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" + $"{r[0].Length} bytes" + "\"}", "application/json");
             }
             catch (Exception)
             {
                 return null;
             }
-
         }
 
         public ActionResult DoctorDetails(string doctorId)
@@ -560,6 +649,5 @@ namespace DPTS.Web.Controllers
         }
 
         #endregion
-
     }
 }
