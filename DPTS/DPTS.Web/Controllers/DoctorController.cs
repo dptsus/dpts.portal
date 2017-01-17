@@ -499,7 +499,7 @@ namespace DPTS.Web.Controllers
                             break;
                         case DayOfWeek.Tuesday:
                             var scheduleTuesday = schedule.Where(s => s.Day.Equals("Tuesday")).FirstOrDefault();
-                            if (schedule == null || !scheduleTuesday.Day.Equals("Tuesday"))
+                            if (scheduleTuesday == null || !scheduleTuesday.Day.Equals("Tuesday"))
                                 obj.Day = "Tuesday";
                             else
                             {
