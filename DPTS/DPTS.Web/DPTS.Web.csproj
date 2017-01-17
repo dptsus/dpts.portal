@@ -894,6 +894,10 @@
       <Project>{087ef4a4-1e44-4087-8e62-76aa1e4d2e53}</Project>
       <Name>DPTS.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DPTS.EmailSmsNotifications\DPTS.EmailSmsNotifications.csproj">
+      <Project>{8FE2F61A-9327-41E1-9BFF-7507D2B37FD8}</Project>
+      <Name>DPTS.EmailSmsNotifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DPTS.Services\DPTS.Services.csproj">
       <Project>{14a19a53-9176-4318-8242-6fe2cfd35a3a}</Project>
       <Name>DPTS.Services</Name>

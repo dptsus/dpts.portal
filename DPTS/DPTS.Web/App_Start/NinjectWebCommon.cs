@@ -32,6 +32,8 @@ namespace DPTS.Web.App_Start
     using Services;
     using Domain.Core.Appointment;
     using Services.Appointment;
+    using EmailSmsNotifications.IServices;
+    using EmailSmsNotifications.Services;
 
     public static class NinjectWebCommon
     {
@@ -93,7 +95,7 @@ namespace DPTS.Web.App_Start
             kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
             kernel.Bind<IAppointmentService>().To<AppointmentService>();
             kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
-
+            kernel.Bind<ISmsService>().To<SmsService>();
         }
     }
 }

@@ -10,6 +10,8 @@ using DPTS.Web.Models;
 using System.Collections.Generic;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Entities;
+using DPTS.EmailSmsNotifications.ServiceModels;
+using DPTS.EmailSmsNotifications.IServices;
 
 namespace DPTS.Web.Controllers
 {
@@ -20,11 +22,13 @@ namespace DPTS.Web.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
+        private ISmsService _smsService;
 
-        public AccountController(IDoctorService doctorService)
+        public AccountController(IDoctorService doctorService, ISmsService smsService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
+            _smsService = smsService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -204,6 +208,13 @@ namespace DPTS.Web.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
+                    SmsModel sms = new SmsModel();
+                    sms.numbers = model.PhoneNumber;
+                    //Below 3 values will come from database SMSCategory of Registration sms
+                    sms.route = 4; //route 4 is for transactional sms
+                    sms.senderId = "DOCPTS";
+                    sms.message = "You have registered successfully!";
+                    _smsService.SendSms(sms);
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
