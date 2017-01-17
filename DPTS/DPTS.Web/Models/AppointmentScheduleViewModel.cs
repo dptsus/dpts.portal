@@ -9,7 +9,7 @@ namespace DPTS.Web.Models
     {
         public AppointmentScheduleViewModel()
         {
-            Morning = new List<MorningSlotModel>(); 
+            Morning = new List<MorningSlotModel>();
             Afternoon =new List<AfternoonSlotModel>();
             Evening =new List<EveningSlotModel>();
         }
@@ -19,7 +19,9 @@ namespace DPTS.Web.Models
         public IList<AfternoonSlotModel> Afternoon { get; set; }
 
         public IList<EveningSlotModel> Evening { get; set; }
-        
+
+        public string doctorId { get; set; }
+
     }
     public class MorningSlotModel
     {

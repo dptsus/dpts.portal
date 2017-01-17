@@ -27,54 +27,138 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Utilities
-        private static AppointmentScheduleViewModel GetEndTime(string startTime, string endTime, double duration)
+        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime, string endTime, double duration)
         {
-            var slots = new AppointmentScheduleViewModel();
-
-            var start = DateTime.Parse(startTime);
-            var end = DateTime.Parse(endTime);
-            while (true)
+            try
             {
-                var dtNext = start.AddMinutes(duration);
-                if (start > end || dtNext > end)
-                    break;
-                if (start < DateTime.Parse("12:00 PM"))
+                var slots = new AppointmentScheduleViewModel();
+
+                var start = DateTime.Parse(startTime);
+                var end = DateTime.Parse(endTime);
+                while (true)
                 {
-                    var morn = new MorningSlotModel
+                    var dtNext = start.AddMinutes(duration);
+                    if (start > end || dtNext > end)
+                        break;
+                    if (start < DateTime.Parse("12:00 PM"))
                     {
-                        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                    };
-                    slots.Morning.Add(morn);
-                }
-                else
-                {
-                    var aft = new AfternoonSlotModel
+                        var morn = new MorningSlotModel
+                        {
+                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                        };
+                        slots.Morning.Add(morn);
+                    }
+                    else if (start > DateTime.Parse("06:00 PM"))
                     {
-                        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                    };
-                    slots.Afternoon.Add(aft);
+                        var eve = new EveningSlotModel
+                        {
+                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                        };
+                        slots.Evening.Add(eve);
+                    }
+                    else
+                    {
+                        var aft = new AfternoonSlotModel
+                        {
+                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                        };
+                        slots.Afternoon.Add(aft);
+                    }
+                    start = dtNext;
                 }
-                start = dtNext;
+                return slots;
             }
-
-            //Label lbl = new Label();
-            //lbl.Text = morning + afternon;
-            //Form.Controls.Add(lbl);
-
-            return null;
+            catch { return null; }
         }
         #endregion
 
         #region Methods
         [HttpGet]
-        public ActionResult AppointmentSchedule(string doctorId,string selectedDate = null)
+        public ActionResult AvailableSchedule(string doctorId,string selectedDate = null)
         {
-            string todayDay = DateTime.UtcNow.ToString("dddd");
-            var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
-            if (schedule == null)
-                return null;
-            var scheduleSlots = GetEndTime(schedule.StartTime, schedule.EndTime, 10);
-           // schedule.StartTime
+            var scheduleSlots = new AppointmentScheduleViewModel();
+            if (!string.IsNullOrWhiteSpace(doctorId))
+            {
+                string todayDay = DateTime.UtcNow.ToString("dddd");
+                var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
+                if (schedule == null)
+                    return RedirectToAction("NoSchedule");
+
+                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20);
+                scheduleSlots.doctorId = doctorId;
+                return View(scheduleSlots);
+            }
+            return RedirectToAction("NoSchedule");
+
+        }
+        [HttpPost]
+        public ActionResult AvailableSchedule(AppointmentScheduleViewModel model, string Command)
+        {
+            if (Command == "next" && !string.IsNullOrWhiteSpace(model.doctorId))
+            {
+                return RedirectToAction("VisitorContactDeatils",new { doctorId = model.doctorId });
+            }
+            return View();
+        }
+
+        public ActionResult VisitorContactDeatils(string doctorId)
+        {
+            var model = new VisitorContactDeatilsModel
+            {
+                doctorId =doctorId
+            };
+            return View(model);
+        }
+        public ActionResult NoSchedule()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult VisitorContactDeatils(VisitorContactDeatilsModel model,string Command)
+        {
+            try
+            {
+
+                if (Command == "previous" && !string.IsNullOrWhiteSpace(model.doctorId))
+                {
+                    return RedirectToAction("AvailableSchedule", new { doctorId = model.doctorId });
+                }
+                else if (Command == "next")
+                {
+                    return RedirectToAction("PaymentMode");
+                }
+            }
+            catch { }
+            return View();
+        }
+        public ActionResult PaymentMode()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult PaymentMode(string Command)
+        {
+            try
+            {
+                if (Command == "previous")
+                {
+                    return RedirectToAction("VisitorContactDeatils");
+                }
+                else if (Command == "next")
+                {
+                    return RedirectToAction("Finish");
+                }
+            }
+            catch { }
+            return View();
+        }
+        public ActionResult Finish()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Finish(string Command)
+        {
             return View();
         }
         #endregion

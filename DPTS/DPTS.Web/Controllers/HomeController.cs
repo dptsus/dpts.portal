@@ -119,29 +119,30 @@ namespace DPTS.Web.Controllers
                 model.SpecialityId,
                 model.directory_type,model.ZipCode);
 
-            if (data == null)
-                return null;
-
             var searchVmodel = new SearchViewModel();
-
-            foreach (var doc in data)
+            //if (data == null)
+            //    return View(searchVmodel);
+            if (data != null)
             {
-                var user = GetUserById(doc.DoctorId);
-                if (user == null)
-                    return null;
-
-                var doctor = new DoctorViewModel
+                foreach (var doc in data)
                 {
-                    Id= user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    MobileNumber = user.PhoneNumber,
-                    doctor = doc
-                };
-                var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
-                doctor.Addresses = addr;
-                searchVmodel.doctorsModel.Add(doctor);
+                    var user = GetUserById(doc.DoctorId);
+                    if (user == null)
+                        return null;
+
+                    var doctor = new DoctorViewModel
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        MobileNumber = user.PhoneNumber,
+                        doctor = doc
+                    };
+                    var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
+                    doctor.Addresses = addr;
+                    searchVmodel.doctorsModel.Add(doctor);
+                }
             }
 
             searchVmodel.SearchModel = new SearchModel

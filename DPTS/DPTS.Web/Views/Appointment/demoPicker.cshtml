@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-4">
+    <div class="form-group">
+        <div class='input-group date' id='datetimepicker8'>
+            <input type='text' class="form-control" />
+            <span class="input-group-addon">
+                <span class="fa fa-calendar">
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var nowDate = new Date();
+        var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+        alert(today);
+            $('#datetimepicker8').datetimepicker({
+                format: 'l',
+            });
+        });
+</script>

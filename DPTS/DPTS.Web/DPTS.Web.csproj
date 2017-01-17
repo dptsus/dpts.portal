@@ -234,6 +234,7 @@
     <Compile Include="Models\StateProvinceViewModel.cs" />
     <Compile Include="Models\SubSpecialityViewModel.cs" />
     <Compile Include="Models\UploadFilesResult.cs" />
+    <Compile Include="Models\VisitorContactDeatilsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -863,7 +864,12 @@
     <Content Include="Views\DefaultNotificationSettings\Create.cshtml" />
     <Content Include="Views\DefaultNotificationSettings\Edit.cshtml" />
     <Content Include="Views\DefaultNotificationSettings\List.cshtml" />
-    <Content Include="Views\Appointment\AppointmentSchedule.cshtml" />
+    <Content Include="Views\Appointment\AvailableSchedule.cshtml" />
+    <Content Include="Views\Appointment\demoPicker.cshtml" />
+    <Content Include="Views\Appointment\VisitorContactDeatils.cshtml" />
+    <Content Include="Views\Appointment\PaymentMode.cshtml" />
+    <Content Include="Views\Appointment\Finish.cshtml" />
+    <Content Include="Views\Appointment\NoSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ActionFilters\" />
