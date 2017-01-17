@@ -2,9 +2,7 @@
 using DPTS.Domain.Core.Doctors;
 using DPTS.Web.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DPTS.Web.Controllers
@@ -29,44 +27,39 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Utilities
-        private AppointmentScheduleViewModel GetEndTime(string startTime, string endTime, double duration)
+        private static AppointmentScheduleViewModel GetEndTime(string startTime, string endTime, double duration)
         {
             var slots = new AppointmentScheduleViewModel();
 
-            DateTime start = DateTime.Parse(startTime);
-            DateTime end = DateTime.Parse(endTime);
-            string morning = "";
-            string afternon = "";
+            var start = DateTime.Parse(startTime);
+            var end = DateTime.Parse(endTime);
             while (true)
             {
-                DateTime dtNext = start.AddMinutes(duration);
+                var dtNext = start.AddMinutes(duration);
                 if (start > end || dtNext > end)
                     break;
                 if (start < DateTime.Parse("12:00 PM"))
                 {
-                    var morn =new MorningSlotModel();
-                    morn.Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString();
+                    var morn = new MorningSlotModel
+                    {
+                        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                    };
                     slots.Morning.Add(morn);
                 }
                 else
                 {
-                    var aft = new AfternoonSlotModel();
-                    aft.Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString();
+                    var aft = new AfternoonSlotModel
+                    {
+                        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                    };
                     slots.Afternoon.Add(aft);
                 }
                 start = dtNext;
             }
-            if (morning.Length > 0)
-                morning = "<B>Morning</B><BR>" + morning;
-            if (afternon.Length > 0)
-                afternon = "<B>Afternon</B><BR>" + afternon;
 
             //Label lbl = new Label();
             //lbl.Text = morning + afternon;
             //Form.Controls.Add(lbl);
-
-            //DateTime startDateTime = DateTime.Parse(startTime);
-            //DateTime endDateTime = startDateTime.AddHours(duration);
 
             return null;
         }
@@ -77,10 +70,10 @@ namespace DPTS.Web.Controllers
         public ActionResult AppointmentSchedule(string doctorId,string selectedDate = null)
         {
             string todayDay = DateTime.UtcNow.ToString("dddd");
-            var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).Where(s => s.Day.Equals(todayDay)).FirstOrDefault();
+            var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
             if (schedule == null)
                 return null;
-            var tt = GetEndTime(schedule.StartTime, schedule.EndTime, 10);
+            var scheduleSlots = GetEndTime(schedule.StartTime, schedule.EndTime, 10);
            // schedule.StartTime
             return View();
         }
