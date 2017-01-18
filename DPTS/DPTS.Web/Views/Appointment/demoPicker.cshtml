@@ -1,26 +1,85 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Info";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="col-md-4">
-    <div class="form-group">
-        <div class='input-group date' id='datetimepicker8'>
-            <input type='text' class="form-control" />
-            <span class="input-group-addon">
-                <span class="fa fa-calendar">
-                </span>
-            </span>
-        </div>
-    </div>
+<script src="~/Scripts/public.onepagecheckout.js"></script>
+
+<div class="container one-page-checkout-page">
+    <div class="custom-page-box-div">
+        <div class="opc panel-group" id="checkout-steps">
+            <div id="opc-billing" class="panel panel-default tab-section allow">
+                <div class="step-title panel-heading">
+                    <h2 class="panel-title">
+                        <span class="fa fa-map-marker"></span>
+                       Billing Address
+                        <span class="pull-right op-number">1</span>
+                    </h2>
+                </div>
+                <div id="checkout-step-billing" class="step a-item panel-collapse collapse" style="display: none;">
+                    <div class="panel-body">
+                        <form id="co-billing-form" action="">
+                            <div id="checkout-billing-load">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="Email" value="" placeholder="Email*">
+                                </div>
+                            </div>
+                        </form>
+                        <script type="text/javascript">
+                            Billing.init('#co-billing-form', 'Appointment/OpcSaveBilling/', true);
+                            //if ($("#billing-address-select").length > 0) {
+                            //    Billing.newAddress(!$('#billing-address-select').val());
+                            //}
+                        </script>
+                        <div class="buttons" id="billing-buttons-container">
+                            <input type="button" title="Continue" class="btn btn-primary button-1 new-address-next-step-button" onclick="Billing.save()" value="Continue" />
+                            <span class="please-wait" id="billing-please-wait" style="display: none;">LoadingNextStep</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="opc-shipping" class="panel panel-default tab-section">
+                <div class="step-title panel-heading">
+
+                    <h2 class="panel-title">
+                        <span class="fa fa-map-marker"></span>
+                        ShippingAddress
+                        <span class="pull-right op-number">2</span>
+                    </h2>
+
+                </div>
+                <div id="checkout-step-shipping" class="panel-collapse collapse step a-item" style="display: none;">
+                    <div class="panel-body">
+                        <form action="" id="co-shipping-form">
+                            <div id="checkout-shipping-load">
+                                @*shipping address content will be loaded here*@
+                                <div class="form-group tg-textarea">
+                                    <textarea class="form-control" name="Note" placeholder="Note*"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <script type="text/javascript">
+                            Shipping.init('#co-shipping-form', 'Appointment/OpcSaveShipping/');
+                                //if ($("#shipping-address-select").length > 0) {
+                                //    Shipping.newAddress(!$('#shipping-address-select').val());
+                                //}
+                        </script>
+                        <div class="buttons" id="shipping-buttons-container">
+                            <div class="row">
+                                <div class="col-md-3 pull-left">
+                                    <p class="back-link">
+                                        <a class="btn btn-primary" href="#" onclick="Checkout.back(); return false;"><small>&laquo; </small>Back</a>
+                                    </p>
+                                </div>
+                                <div class="col-md-3 pull-right pull-text-right">
+                                    <input type="button" class="btn btn-primary button-1 new-address-next-step-button" title="Continue" onclick="Shipping.save()" value="Continue" />
+                                    <span id="shipping-please-wait" class="please-wait" style="display: none;">LoadingNextStep</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </div>
-<script type="text/javascript">
-    $(function () {
-        var nowDate = new Date();
-        var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
-        alert(today);
-            $('#datetimepicker8').datetimepicker({
-                format: 'l',
-            });
-        });
-</script>
+</div>
+</div>

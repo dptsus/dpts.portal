@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace DPTS.Web.Controllers
 {
-    public class AppointmentController : Controller
+    public class AppointmentController : BaseController
     {
         #region Fields
         private readonly IDoctorService _doctorService;
@@ -161,7 +161,44 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult demoPicker()
+        {
+            return View();
+        }
+
+        [ValidateInput(false)]
+        public ActionResult OpcSaveBilling(FormCollection form)
+        {
+            var model = new VisitorContactDeatilsModel
+            {
+                Name = "Tushar Khairnar"
+            };
+            if (model != null)
+            {
+                return Json(new
+                {
+                    update_section = new UpdateSectionJsonModel
+                    {
+                        name = "billing",
+                        html = this.RenderPartialViewToString("OpcBillingAddress", model)
+                    },
+                    wrong_billing_address = true,
+                });
+            }
+            return View();
+        }
+        public ActionResult OpcSaveShipping(FormCollection form)
+        {
+            return View();
+        }
         #endregion
 
+    }
+
+    internal class UpdateSectionJsonModel
+    {
+        public object html { get; set; }
+        public string name { get; set; }
     }
 }

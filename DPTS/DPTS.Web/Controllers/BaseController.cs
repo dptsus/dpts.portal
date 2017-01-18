@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.IO.Compression;
 using System.Web;
 using System.Web.Mvc;
@@ -31,10 +32,34 @@ namespace DPTS.Web.Controllers
                 return false;
             }
         }
+
         [NonAction]
         protected bool IsValidateId(int id)
         {
             return id != 0;
+        }
+
+        /// <summary>
+        /// Render partial view to string
+        /// </summary>
+        /// <param name="viewName">View name</param>
+        /// <param name="model">Model</param>
+        /// <returns>Result</returns>
+        public virtual string RenderPartialViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = this.ControllerContext.RouteData.GetRequiredString("action");
+
+            this.ViewData.Model = model;
+
+            using (var sw = new StringWriter())
+            {
+                ViewEngineResult viewResult = System.Web.Mvc.ViewEngines.Engines.FindPartialView(this.ControllerContext, viewName);
+                var viewContext = new ViewContext(this.ControllerContext, viewResult.View, this.ViewData, this.TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.GetStringBuilder().ToString();
+            }
         }
 
 
