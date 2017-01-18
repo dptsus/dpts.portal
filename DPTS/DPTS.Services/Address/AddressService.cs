@@ -1,20 +1,21 @@
-﻿using DPTS.Domain.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DPTS.Domain;
+using DPTS.Domain.Core;
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Services
+namespace DPTS.Services.Address
 {
     public class AddressService : IAddressService
     {
         #region Fields
-        private readonly IRepository<Address> _addressRepository;
+        private readonly IRepository<Domain.Entities.Address> _addressRepository;
         private readonly IRepository<AddressMapping> _addressMappingRepository;
         #endregion
 
         #region Constructor
-        public AddressService(IRepository<Address> addressRepository, IRepository<AddressMapping> addressMappingRepository)
+        public AddressService(IRepository<Domain.Entities.Address> addressRepository, IRepository<AddressMapping> addressMappingRepository)
         {
             _addressRepository = addressRepository;
             _addressMappingRepository = addressMappingRepository;
@@ -23,7 +24,7 @@ namespace DPTS.Services
 
         #region Methods
 
-        public void AddAddress(Address address)
+        public void AddAddress(Domain.Entities.Address address)
         {
             if (address == null)
                 throw new ArgumentNullException("address");
@@ -31,7 +32,7 @@ namespace DPTS.Services
             _addressRepository.Insert(address);
         }
 
-        public void DeleteAddress(Address address)
+        public void DeleteAddress(Domain.Entities.Address address)
         {
             if (address == null)
                 throw new ArgumentNullException("address");
@@ -39,7 +40,7 @@ namespace DPTS.Services
             _addressRepository.Delete(address);
         }
 
-        public Address GetAddressbyId(int Id)
+        public Domain.Entities.Address GetAddressbyId(int Id)
         {
             if (Id == 0)
                 return null;
@@ -47,7 +48,7 @@ namespace DPTS.Services
             return _addressRepository.GetById(Id);
         }
 
-        public IList<Address> GetAllAddress()
+        public IList<Domain.Entities.Address> GetAllAddress()
         {
             var query = _addressRepository.Table;
 
@@ -60,7 +61,7 @@ namespace DPTS.Services
             return query.ToList(); ;
         }
 
-        public IList<Address> GetAllAddressByUser(string UserId)
+        public IList<Domain.Entities.Address> GetAllAddressByUser(string UserId)
         {
             if (string.IsNullOrWhiteSpace(UserId))
                 return null;
@@ -68,7 +69,7 @@ namespace DPTS.Services
             var query = _addressMappingRepository.Table;
                 query = query.Where(c => c.UserId == UserId);
 
-            var lstAddr = new List<Address>();
+            var lstAddr = new List<Domain.Entities.Address>();
             foreach (var addrMap in query.ToList())
             {
                 var addr = _addressRepository.GetById(addrMap.AddressId);
@@ -77,7 +78,7 @@ namespace DPTS.Services
             }
             return lstAddr;
         }
-        public IList<Address> GetAllAddressByZipcode(string zipcode)
+        public IList<Domain.Entities.Address> GetAllAddressByZipcode(string zipcode)
         {
             if (string.IsNullOrWhiteSpace(zipcode))
                 return null;
@@ -86,7 +87,7 @@ namespace DPTS.Services
             return addrs;
         }
 
-        public void UpdateAddress(Address address)
+        public void UpdateAddress(Domain.Entities.Address address)
         {
             if (address == null)
                 throw new ArgumentNullException("address");

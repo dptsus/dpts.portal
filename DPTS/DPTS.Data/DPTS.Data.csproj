@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DPTS.Data</RootNamespace>
     <AssemblyName>DPTS.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -67,6 +68,22 @@
     <Compile Include="Migrations\201701110632196_CreateAppointmentScheduleMap.Designer.cs">
       <DependentUpon>201701110632196_CreateAppointmentScheduleMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701120626091_EmailCategory.cs" />
+    <Compile Include="Migrations\201701120626091_EmailCategory.Designer.cs">
+      <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701121122484_EmailCategory1.cs" />
+    <Compile Include="Migrations\201701121122484_EmailCategory1.Designer.cs">
+      <DependentUpon>201701121122484_EmailCategory1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701121155176_DefaultNotificationSettings.cs" />
+    <Compile Include="Migrations\201701121155176_DefaultNotificationSettings.Designer.cs">
+      <DependentUpon>201701121155176_DefaultNotificationSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701160455277_updateScheduleTable.cs" />
+    <Compile Include="Migrations\201701160455277_updateScheduleTable.Designer.cs">
+      <DependentUpon>201701160455277_updateScheduleTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,6 +108,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701110632196_CreateAppointmentScheduleMap.resx">
       <DependentUpon>201701110632196_CreateAppointmentScheduleMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701120626091_EmailCategory.resx">
+      <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701121122484_EmailCategory1.resx">
+      <DependentUpon>201701121122484_EmailCategory1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701121155176_DefaultNotificationSettings.resx">
+      <DependentUpon>201701121155176_DefaultNotificationSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701160455277_updateScheduleTable.resx">
+      <DependentUpon>201701160455277_updateScheduleTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

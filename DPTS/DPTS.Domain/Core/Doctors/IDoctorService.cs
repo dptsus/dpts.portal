@@ -1,8 +1,7 @@
-﻿using DPTS.Domain;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Domain.Core
+namespace DPTS.Domain.Core.Doctors
 {
     public interface IDoctorService
     {
@@ -14,7 +13,7 @@ namespace DPTS.Domain.Core
         /// <summary>
         /// Get Doctor by Id
         /// </summary>
-        Doctor GetDoctorbyId(string DoctorId);
+        Doctor GetDoctorbyId(string doctorId);
 
         /// <summary>
         /// Delete Doctor by Id
@@ -34,10 +33,10 @@ namespace DPTS.Domain.Core
         /// Search
         /// </summary>
         /// <param name="keywords"></param>
-        /// <param name="SpecialityId"></param>
-        /// <param name="directory_type"></param>
+        /// <param name="specialityId"></param>
+        /// <param name="directoryType"></param>
         /// <param name="zipcode"></param>
         /// <returns></returns>
-        IList<Doctor> SearchDoctor(string keywords = null, int SpecialityId = 0, string directory_type = null, string zipcode = null);
+        IList<Doctor> SearchDoctor(string keywords = null, int specialityId = 0, string directoryType = null, string zipcode = null);
     }
 }

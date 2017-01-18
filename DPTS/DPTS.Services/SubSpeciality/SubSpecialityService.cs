@@ -1,12 +1,10 @@
-﻿using DPTS.Domain.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DPTS.Domain;
+using DPTS.Domain.Core;
+using DPTS.Domain.Core.SubSpeciality;
 
-namespace DPTS.Services
+namespace DPTS.Services.SubSpeciality
 {
     /// <summary>
     /// Sub Speci service
@@ -14,16 +12,16 @@ namespace DPTS.Services
     public class SubSpecialityService : ISubSpecialityService
     {
         #region Fields
-        private readonly IRepository<SubSpeciality> _subSpecialityRepository;
+        private readonly IRepository<Domain.Entities.SubSpeciality> _subSpecialityRepository;
         #endregion
 
         #region Constructor
-        public SubSpecialityService(IRepository<SubSpeciality> subSpecialityRepository)
+        public SubSpecialityService(IRepository<Domain.Entities.SubSpeciality> subSpecialityRepository)
         {
             _subSpecialityRepository = subSpecialityRepository;
         }
         #endregion
-        public void AddSubSpeciality(SubSpeciality subSpeciality)
+        public void AddSubSpeciality(Domain.Entities.SubSpeciality subSpeciality)
         {
             if (subSpeciality == null)
                 throw new ArgumentNullException("subSpeciality");
@@ -31,7 +29,7 @@ namespace DPTS.Services
             _subSpecialityRepository.Insert(subSpeciality);
         }
 
-        public void DeleteSubSpeciality(SubSpeciality subSpeciality)
+        public void DeleteSubSpeciality(Domain.Entities.SubSpeciality subSpeciality)
         {
             if (subSpeciality == null)
                 throw new ArgumentNullException("subSpeciality");
@@ -39,7 +37,7 @@ namespace DPTS.Services
             _subSpecialityRepository.Delete(subSpeciality);
         }
 
-        public SubSpeciality GetSubSpecialitybyId(int Id)
+        public Domain.Entities.SubSpeciality GetSubSpecialitybyId(int Id)
         {
             if (Id == 0)
                 return null;
@@ -47,7 +45,7 @@ namespace DPTS.Services
             return _subSpecialityRepository.GetById(Id);
         }
 
-        public void UpdateSubSpeciality(SubSpeciality subSpeciality)
+        public void UpdateSubSpeciality(Domain.Entities.SubSpeciality subSpeciality)
         {
             if (subSpeciality == null)
                 throw new ArgumentNullException("subSpeciality");
@@ -56,7 +54,7 @@ namespace DPTS.Services
             _subSpecialityRepository.Update(subSpeciality);
         }
 
-        public IList<SubSpeciality> GetAllSubSpeciality(bool showhidden, bool enableTracking = false)
+        public IList<Domain.Entities.SubSpeciality> GetAllSubSpeciality(bool showhidden, bool enableTracking = false)
         {
             var query = _subSpecialityRepository.Table;
             if (!showhidden)

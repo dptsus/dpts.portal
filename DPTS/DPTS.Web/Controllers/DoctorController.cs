@@ -1,15 +1,19 @@
-﻿using DPTS.Domain;
-using DPTS.Domain.Core;
-using DPTS.Web.Models;
+﻿using DPTS.Web.Models;
 using SQS_Shopee.Entites;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.Doctors;
+using DPTS.Domain.Core.Speciality;
+using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Entities;
 using Microsoft.AspNet.Identity;
 using static System.DateTime;
+using DPTS.Domain.Core.Appointment;
 
 namespace DPTS.Web.Controllers
 {
@@ -21,6 +25,7 @@ namespace DPTS.Web.Controllers
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
         private readonly IAddressService _addressService;
+        private readonly IAppointmentService _scheduleService;
         private ApplicationDbContext context;
         #endregion
 
@@ -28,7 +33,7 @@ namespace DPTS.Web.Controllers
         public DoctorController(IDoctorService doctorService, ISpecialityService specialityService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
-            IAddressService addressService)
+            IAddressService addressService, IAppointmentService scheduleService)
         {
             _doctorService = doctorService;
             context = new ApplicationDbContext();
@@ -36,6 +41,7 @@ namespace DPTS.Web.Controllers
             _countryService = countryService;
             _stateProvinceService = stateProvinceService;
             _addressService = addressService;
+            _scheduleService = scheduleService;
         }
         #endregion
 
@@ -52,7 +58,7 @@ namespace DPTS.Web.Controllers
             items.Add(new SelectListItem { Text = "Select Gender", Value = "0" });
             foreach (var gender in Enum.GetValues(typeof(Gender)))
             {
-                items.Add(new SelectListItem()
+                items.Add(new SelectListItem
                 {
                     Text = Enum.GetName(typeof(Gender), gender),
                     Value = Enum.GetName(typeof(Gender), gender)
@@ -151,6 +157,18 @@ namespace DPTS.Web.Controllers
             }));
             return typelst;
         }
+
+        private enum DayOfWeek
+        {
+            Sunday = 0,
+            Monday = 1,
+            Tuesday = 2,
+            Wednesday = 3,
+            Thursday = 4,
+            Friday = 5,
+            Saturday = 6,
+        }
+
         #endregion
 
         #region Methods
@@ -245,6 +263,7 @@ namespace DPTS.Web.Controllers
             model.AvailableCountry = GetCountryList();
             return View(model);
         }
+
         [HttpPost]
         public ActionResult AddressAdd(AddressViewModel model)
         {
@@ -316,7 +335,7 @@ namespace DPTS.Web.Controllers
                     redirect = Url.Action("Addresses", "Doctor"),
                 });
             _addressService.DeleteAddress(address);
-            
+
 
             return Json(new
             {
@@ -445,28 +464,343 @@ namespace DPTS.Web.Controllers
         }
         public ActionResult DoctorSchedules()
         {
-            return View();
+            try
+            {
+                var lst = new List<SheduleViewModel>();
+                foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    var obj = new SheduleViewModel();
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId());
+                    switch (day)
+                    {
+                        case DayOfWeek.Sunday:
+                            var scheduleSunday = schedule.Where(s => s.Day.Equals("Sunday")).FirstOrDefault();
+                            if (scheduleSunday == null || !scheduleSunday.Day.Equals("Sunday"))
+                                obj.Day = "Sunday";
+                            else
+                            {
+                                obj.DoctorId = scheduleSunday.DoctorId;
+                                obj.Day = scheduleSunday.Day;
+                                obj.EndTime = scheduleSunday.EndTime.ToString();
+                                obj.StartTime = scheduleSunday.StartTime.ToString();
+                            }
+                            break;
+                        case DayOfWeek.Monday:
+                            var scheduleMonday = schedule.Where(s => s.Day.Equals("Monday")).FirstOrDefault();
+                            if (scheduleMonday == null || !scheduleMonday.Day.Equals("Monday"))
+                                obj.Day = "Monday";
+                            else
+                            {
+                                obj.DoctorId = scheduleMonday.DoctorId;
+                                obj.Day = scheduleMonday.Day;
+                                obj.EndTime = scheduleMonday.EndTime.ToString();
+                                obj.StartTime = scheduleMonday.StartTime.ToString();
+                            }
+                            break;
+                        case DayOfWeek.Tuesday:
+                            var scheduleTuesday = schedule.Where(s => s.Day.Equals("Tuesday")).FirstOrDefault();
+                            if (scheduleTuesday == null || !scheduleTuesday.Day.Equals("Tuesday"))
+                                obj.Day = "Tuesday";
+                            else
+                            {
+                                obj.DoctorId = scheduleTuesday.DoctorId;
+                                obj.Day = scheduleTuesday.Day;
+                                obj.EndTime = scheduleTuesday.EndTime.ToString();
+                                obj.StartTime = scheduleTuesday.StartTime.ToString();
+                            }
+                            break;
+                        case DayOfWeek.Wednesday:
+                            var scheduleWednesday = schedule.Where(s => s.Day.Equals("Wednesday")).FirstOrDefault();
+                            if (scheduleWednesday == null || !scheduleWednesday.Day.Equals("Wednesday"))
+                                obj.Day = "Wednesday";
+                            else
+                            {
+                                obj.DoctorId = scheduleWednesday.DoctorId;
+                                obj.Day = scheduleWednesday.Day;
+                                obj.EndTime = scheduleWednesday.EndTime.ToString();
+                                obj.StartTime = scheduleWednesday.StartTime.ToString();
+                            }
+                            break;
+                        case DayOfWeek.Thursday:
+                            var scheduleThursday = schedule.Where(s => s.Day.Equals("Thursday")).FirstOrDefault();
+                            if (scheduleThursday == null || !scheduleThursday.Day.Equals("Thursday"))
+                                obj.Day = "Thursday";
+                            else
+                            {
+                                obj.DoctorId = scheduleThursday.DoctorId;
+                                obj.Day = scheduleThursday.Day;
+                                obj.EndTime = scheduleThursday.EndTime.ToString();
+                                obj.StartTime = scheduleThursday.StartTime.ToString();
+                            }
+                            break;
+                        case DayOfWeek.Friday:
+                            var scheduleFriday = schedule.Where(s => s.Day.Equals("Friday")).FirstOrDefault();
+                            if (scheduleFriday == null || !scheduleFriday.Day.Equals("Friday"))
+                                obj.Day = "Friday";
+                            else
+                            {
+                                obj.DoctorId = scheduleFriday.DoctorId;
+                                obj.Day = scheduleFriday.Day;
+                                obj.EndTime = scheduleFriday.EndTime.ToString();
+                                obj.StartTime = scheduleFriday.StartTime.ToString();
+                            }
+                            break;
+                        case DayOfWeek.Saturday:
+                            var scheduleSaturday = schedule.Where(s => s.Day.Equals("Saturday")).FirstOrDefault();
+                            if (scheduleSaturday == null || !scheduleSaturday.Day.Equals("Saturday"))
+                                obj.Day = "Saturday";
+                            else
+                            {
+                                obj.DoctorId = scheduleSaturday.DoctorId;
+                                obj.Day = scheduleSaturday.Day;
+                                obj.EndTime = scheduleSaturday.EndTime.ToString();
+                                obj.StartTime = scheduleSaturday.StartTime.ToString();
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    lst.Add(obj);
+                }
+
+            return View(lst);
+            }
+            catch { return null; }
         }
+
+
+        [HttpPost]
+        public ActionResult DoctorSchedules(FormCollection form)
+        {
+            try
+            {
+                if (User.Identity.GetUserId() == null)
+                    return null;
+
+                #region Sunday
+                if (!string.IsNullOrWhiteSpace(form["sunday_start"].ToString()) &&
+                    !string.IsNullOrWhiteSpace(form["sunday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId()).Where(s => s.Day.Equals("Sunday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Sunday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["sunday_start"].Trim().ToString();
+                        model.EndTime = form["sunday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["sunday_start"].Trim().ToString();
+                        schedule.EndTime = form["sunday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                #region Monday
+
+                if (!string.IsNullOrWhiteSpace(form["monday_start"].ToString()) &&
+                   !string.IsNullOrWhiteSpace(form["monday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId()).Where(s => s.Day.Equals("Monday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Monday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["monday_start"].Trim().ToString();
+                        model.EndTime = form["monday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["monday_start"].Trim().ToString();
+                        schedule.EndTime = form["monday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                #region Tuesday
+
+                if (!string.IsNullOrWhiteSpace(form["tuesday_start"].ToString()) &&
+                    !string.IsNullOrWhiteSpace(form["tuesday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId()).Where(s => s.Day.Equals("Tuesday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Tuesday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["tuesday_start"].Trim().ToString();
+                        model.EndTime = form["tuesday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["tuesday_start"].Trim().ToString();
+                        schedule.EndTime = form["tuesday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                #region Wednesday
+
+                //Wednesday
+                if (!string.IsNullOrWhiteSpace(form["wednesday_start"].ToString()) &&
+                   !string.IsNullOrWhiteSpace(form["wednesday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId())
+                        .Where(s => s.Day.Equals("Wednesday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Wednesday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["wednesday_start"].Trim().ToString();
+                        model.EndTime = form["wednesday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["wednesday_start"].Trim().ToString();
+                        schedule.EndTime = form["wednesday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                #region Thursday
+                //Thursday
+                if (!string.IsNullOrWhiteSpace(form["thursday_start"].ToString()) &&
+                  !string.IsNullOrWhiteSpace(form["thursday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId())
+                        .Where(s => s.Day.Equals("Thursday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Thursday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["thursday_start"].Trim().ToString();
+                        model.EndTime = form["thursday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["thursday_start"].Trim().ToString();
+                        schedule.EndTime = form["thursday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                #region Friday
+                //Friday
+                if (!string.IsNullOrWhiteSpace(form["friday_start"].ToString()) &&
+                 !string.IsNullOrWhiteSpace(form["friday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId())
+                        .Where(s => s.Day.Equals("Friday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Friday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["friday_start"].Trim().ToString();
+                        model.EndTime = form["friday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["friday_start"].Trim().ToString();
+                        schedule.EndTime = form["friday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                #region Saturday
+                //Saturday
+                if (!string.IsNullOrWhiteSpace(form["saturday_start"].ToString()) &&
+                !string.IsNullOrWhiteSpace(form["saturday_end"].ToString()))
+                {
+                    var schedule = _scheduleService.GetScheduleByDoctorId(User.Identity.GetUserId())
+                        .Where(s => s.Day.Equals("Saturday")).FirstOrDefault();
+
+                    if (schedule == null)
+                    {
+                        //insert record
+                        var model = new Schedule();
+                        model.Day = "Saturday";
+                        model.DoctorId = User.Identity.GetUserId();
+                        model.StartTime = form["saturday_start"].Trim().ToString();
+                        model.EndTime = form["saturday_end"].Trim().ToString();
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        //update record
+                        schedule.StartTime = form["saturday_start"].Trim().ToString();
+                        schedule.EndTime = form["saturday_end"].Trim().ToString();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+                #endregion
+
+                return RedirectToAction("DoctorSchedules");
+            }
+            catch { return null; }
+        }
+
         public ActionResult BookingListings()
         {
             return View();
         }
+
         public ActionResult BookingSchedules()
         {
             return View();
         }
+
         public ActionResult SecuritySettings()
         {
             return View();
         }
+
         public ActionResult PrivacySettings()
         {
             return View();
         }
+
         public ActionResult BookingSettings()
         {
             return View();
         }
+
         public ContentResult UploadFiles()
         {
             try
@@ -488,23 +822,18 @@ namespace DPTS.Web.Controllers
                     var savedFileName = Path.Combine(folderPath, prodId);
                     hpf.SaveAs(savedFileName);
 
-                    r.Add(new UploadFilesResult()
+                    r.Add(new UploadFilesResult
                     {
-                        Name = hpf.FileName,
-                        Length = hpf.ContentLength,
-                        Type = hpf.ContentType
+                        Name = hpf.FileName, Length = hpf.ContentLength, Type = hpf.ContentType
                     });
                 }
 
-                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" +
-                               $"{r[0].Length} bytes" + "\"}", "application/json");
-
+                return Content("{\"name\":\"" + prodId + "\",\"type\":\"" + r[0].Type + "\",\"size\":\"" + $"{r[0].Length} bytes" + "\"}", "application/json");
             }
             catch (Exception)
             {
                 return null;
             }
-
         }
 
         public ActionResult DoctorDetails(string doctorId)
@@ -535,6 +864,5 @@ namespace DPTS.Web.Controllers
         }
 
         #endregion
-
     }
 }

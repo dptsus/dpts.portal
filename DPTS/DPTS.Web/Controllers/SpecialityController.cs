@@ -1,7 +1,7 @@
-﻿using DPTS.Domain;
-using DPTS.Domain.Core;
-using System;
+﻿using System;
 using System.Web.Mvc;
+using DPTS.Domain.Core.Speciality;
+using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {

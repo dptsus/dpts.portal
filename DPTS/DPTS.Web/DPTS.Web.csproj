@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DPTS.Web</RootNamespace>
     <AssemblyName>DPTS.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,11 +76,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -189,15 +186,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppFilters\ExceptionLogingAttribute.cs" />
+    <Compile Include="AppFilters\LogApplicationAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\EmailCategoryController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -205,6 +207,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SpecialityController.cs" />
+    <Compile Include="Controllers\DefaultNotificationSettingsController.cs" />
     <Compile Include="Controllers\StateProvinceController.cs" />
     <Compile Include="Controllers\SubSpecialityController.cs" />
     <Compile Include="Controllers\UserManagerController.cs" />
@@ -214,6 +217,8 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
+    <Compile Include="Models\AppointmentScheduleViewModel.cs" />
+    <Compile Include="Models\EmailCategoryViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\DoctorProfileSettingViewModel.cs" />
     <Compile Include="Models\DoctorSpecialityViewModel.cs" />
@@ -222,10 +227,13 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
+    <Compile Include="Models\SheduleViewModel.cs" />
     <Compile Include="Models\SpecialityViewModel.cs" />
+    <Compile Include="Models\DefaultNotificationSettingsViewModel.cs" />
     <Compile Include="Models\StateProvinceViewModel.cs" />
     <Compile Include="Models\SubSpecialityViewModel.cs" />
     <Compile Include="Models\UploadFilesResult.cs" />
+    <Compile Include="Models\VisitorContactDeatilsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -746,6 +754,7 @@
     <Content Include="Content\Admin\vendor\font-awesome\scss\_spinning.scss" />
     <Content Include="Content\Admin\vendor\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\Admin\vendor\font-awesome\scss\_variables.scss" />
+    <Content Include="Areas\Admin\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -846,10 +855,26 @@
     <Content Include="Views\Home\_DoctorBox.cshtml" />
     <Content Include="Views\Home\_SearchNavigation.cshtml" />
     <Content Include="Views\Doctor\DoctorDetails.cshtml" />
+    <Content Include="Views\EmailCategory\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\EmailCategory\Create.cshtml" />
+    <Content Include="Views\EmailCategory\Edit.cshtml" />
+    <Content Include="Views\EmailCategory\List.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\Create.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\Edit.cshtml" />
+    <Content Include="Views\DefaultNotificationSettings\List.cshtml" />
+    <Content Include="Views\Appointment\AvailableSchedule.cshtml" />
+    <Content Include="Views\Appointment\demoPicker.cshtml" />
+    <Content Include="Views\Appointment\VisitorContactDeatils.cshtml" />
+    <Content Include="Views\Appointment\PaymentMode.cshtml" />
+    <Content Include="Views\Appointment\Finish.cshtml" />
+    <Content Include="Views\Appointment\NoSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ActionFilters\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -866,6 +891,10 @@
     <ProjectReference Include="..\DPTS.Domain\DPTS.Domain.csproj">
       <Project>{087ef4a4-1e44-4087-8e62-76aa1e4d2e53}</Project>
       <Name>DPTS.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPTS.Logging\DPTS.Logging.csproj">
+      <Project>{ac5c9e96-9c62-4f5e-b7b5-f1335346f9b7}</Project>
+      <Name>DPTS.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\DPTS.Services\DPTS.Services.csproj">
       <Project>{14a19a53-9176-4318-8242-6fe2cfd35a3a}</Project>

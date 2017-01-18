@@ -1,13 +1,12 @@
-﻿using DPTS.Domain.Core;
-using DPTS.Domain;
-using DPTS.Web.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using DPTS.Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Doctors;
+using DPTS.Domain.Core.Speciality;
 
 namespace DPTS.Web.Controllers
 {
@@ -120,29 +119,30 @@ namespace DPTS.Web.Controllers
                 model.SpecialityId,
                 model.directory_type,model.ZipCode);
 
-            if (data == null)
-                return null;
-
             var searchVmodel = new SearchViewModel();
-
-            foreach (var doc in data)
+            //if (data == null)
+            //    return View(searchVmodel);
+            if (data != null)
             {
-                var user = GetUserById(doc.DoctorId);
-                if (user == null)
-                    return null;
-
-                var doctor = new DoctorViewModel
+                foreach (var doc in data)
                 {
-                    Id= user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    MobileNumber = user.PhoneNumber,
-                    doctor = doc
-                };
-                var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
-                doctor.Addresses = addr;
-                searchVmodel.doctorsModel.Add(doctor);
+                    var user = GetUserById(doc.DoctorId);
+                    if (user == null)
+                        return null;
+
+                    var doctor = new DoctorViewModel
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        MobileNumber = user.PhoneNumber,
+                        doctor = doc
+                    };
+                    var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
+                    doctor.Addresses = addr;
+                    searchVmodel.doctorsModel.Add(doctor);
+                }
             }
 
             searchVmodel.SearchModel = new SearchModel

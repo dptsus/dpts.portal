@@ -1,45 +1,41 @@
-﻿using DPTS.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using DPTS.Domain.Entities;
 
-namespace DPTS.Domain.Core
+namespace DPTS.Domain.Core.Address
 {
     public interface IAddressService
     {
         /// <summary>
         /// Inserts an Address
         /// </summary>
-        void AddAddress(Address address);
+        void AddAddress(Entities.Address address);
 
         /// <summary>
         /// Get Address by Id
         /// </summary>
-        Address GetAddressbyId(int Id);
+        Entities.Address GetAddressbyId(int Id);
 
         /// <summary>
         /// Delete Addressr by Id
         /// </summary>
-        void DeleteAddress(Address address);
+        void DeleteAddress(Entities.Address address);
 
         /// <summary>
         /// update Address
         /// </summary>
-        void UpdateAddress(Address address);
+        void UpdateAddress(Entities.Address address);
 
         /// <summary>
         /// get list of Address
         /// </summary>
-        IList<Address> GetAllAddress();
+        IList<Entities.Address> GetAllAddress();
 
         /// <summary>
         /// Get all address by userId
         /// </summary>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        IList<Address> GetAllAddressByUser(string UserId);
+        IList<Entities.Address> GetAllAddressByUser(string UserId);
 
         /// <summary>
         /// Inserts an Address Mapping
@@ -50,7 +46,7 @@ namespace DPTS.Domain.Core
 
         AddressMapping GetAddressMappingbuUserIdAddrId(string UserId, int AddressId);
 
-        IList<Address> GetAllAddressByZipcode(string zipcode);
+        IList<Entities.Address> GetAllAddressByZipcode(string zipcode);
 
         IList<AddressMapping> GetAllAddressMapping();
 
