@@ -1,6 +1,6 @@
-﻿namespace KetanAgnihotriContosoPOS.Core.AppInfra
+﻿namespace DPTS.Logging.AppInfra
 {
-   public class Constants
+    public class Constants
     {
         public const string ApplicationName = "KetanAgnihotriContosoPOS";
     }

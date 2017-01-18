@@ -1,9 +1,9 @@
-﻿using KetanAgnihotriContosoPOS.Core.Models;
+﻿using DPTS.Logging.Models;
 
-namespace KetanAgnihotriContosoPOS.Core.Contracts
+namespace DPTS.Logging.Contracts
 {
     public interface ILogManager
     {
-        void LogApplicationCalls(EventEntry eventLogEntry); 
+        void LogApplicationCalls(EventEntry eventLogEntry);
     }
 }

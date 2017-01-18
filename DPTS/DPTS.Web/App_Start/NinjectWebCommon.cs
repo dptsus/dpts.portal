@@ -1,4 +1,8 @@
+using System;
+using System.Web;
+using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Appointment;
 using DPTS.Domain.Core.Country;
 using DPTS.Domain.Core.DefaultNotificationSettings;
 using DPTS.Domain.Core.Doctors;
@@ -6,7 +10,9 @@ using DPTS.Domain.Core.EmailCategory;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Core.SubSpeciality;
+using DPTS.Services;
 using DPTS.Services.Address;
+using DPTS.Services.Appointment;
 using DPTS.Services.Country;
 using DPTS.Services.DefaultNotificationSettings;
 using DPTS.Services.Doctors;
@@ -14,37 +20,28 @@ using DPTS.Services.EmailCategory;
 using DPTS.Services.Speciality;
 using DPTS.Services.StateProvince;
 using DPTS.Services.SubSpeciality;
+using DPTS.Web;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using Ninject;
+using Ninject.Web.Common;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(DPTS.Web.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(DPTS.Web.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof (NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof (NinjectWebCommon), "Stop")]
 
-namespace DPTS.Web.App_Start
+namespace DPTS.Web
 {
-    using System;
-    using System.Web;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-    using Ninject;
-    using Ninject.Web.Common;
-    using Domain.Core;
-    using Domain.Entities;
-    using Services;
-    using Domain.Core.Appointment;
-    using Services.Appointment;
-
     public static class NinjectWebCommon
     {
-        private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+        private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
         public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            bootstrapper.Initialize(CreateKernel);
+            DynamicModuleUtility.RegisterModule(typeof (OnePerRequestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof (NinjectHttpModule));
+            Bootstrapper.Initialize(CreateKernel);
         }
 
         /// <summary>
@@ -52,7 +49,7 @@ namespace DPTS.Web.App_Start
         /// </summary>
         public static void Stop()
         {
-            bootstrapper.ShutDown();
+            Bootstrapper.ShutDown();
         }
 
         /// <summary>
@@ -83,7 +80,7 @@ namespace DPTS.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
+            kernel.Bind(typeof (IRepository<>)).To(typeof (Repository<>)).InRequestScope();
             kernel.Bind<IDoctorService>().To<DoctorService>();
             kernel.Bind<ISpecialityService>().To<SpecialityService>();
             kernel.Bind<ICountryService>().To<CountryService>();
@@ -93,7 +90,6 @@ namespace DPTS.Web.App_Start
             kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
             kernel.Bind<IAppointmentService>().To<AppointmentService>();
             kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
-
         }
     }
 }

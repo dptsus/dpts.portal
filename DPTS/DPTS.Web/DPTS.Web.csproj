@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DPTS.Web</RootNamespace>
     <AssemblyName>DPTS.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,11 +76,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -189,8 +186,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionFilters\ExceptionLogingAttribute.cs" />
-    <Compile Include="ActionFilters\LogApplicationAttribute.cs" />
+    <Compile Include="AppFilters\ExceptionLogingAttribute.cs" />
+    <Compile Include="AppFilters\LogApplicationAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -894,6 +891,10 @@
     <ProjectReference Include="..\DPTS.Domain\DPTS.Domain.csproj">
       <Project>{087ef4a4-1e44-4087-8e62-76aa1e4d2e53}</Project>
       <Name>DPTS.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPTS.Logging\DPTS.Logging.csproj">
+      <Project>{ac5c9e96-9c62-4f5e-b7b5-f1335346f9b7}</Project>
+      <Name>DPTS.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\DPTS.Services\DPTS.Services.csproj">
       <Project>{14a19a53-9176-4318-8242-6fe2cfd35a3a}</Project>
