@@ -871,6 +871,8 @@
     <Content Include="Views\Appointment\Finish.cshtml" />
     <Content Include="Views\Appointment\NoSchedule.cshtml" />
     <Content Include="Views\Appointment\OpcBillingAddress.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

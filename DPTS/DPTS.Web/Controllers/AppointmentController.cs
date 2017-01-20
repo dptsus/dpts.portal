@@ -181,7 +181,7 @@ namespace DPTS.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "billing",
-                        html = this.RenderPartialViewToString("OpcBillingAddress", model)
+                        html = RenderPartialViewToString("OpcBillingAddress", model)
                     },
                     wrong_billing_address = true,
                 });

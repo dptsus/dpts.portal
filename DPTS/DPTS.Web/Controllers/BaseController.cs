@@ -48,14 +48,14 @@ namespace DPTS.Web.Controllers
         public virtual string RenderPartialViewToString(string viewName, object model)
         {
             if (string.IsNullOrEmpty(viewName))
-                viewName = this.ControllerContext.RouteData.GetRequiredString("action");
+                viewName = ControllerContext.RouteData.GetRequiredString("action");
 
-            this.ViewData.Model = model;
+            ViewData.Model = model;
 
             using (var sw = new StringWriter())
             {
-                ViewEngineResult viewResult = System.Web.Mvc.ViewEngines.Engines.FindPartialView(this.ControllerContext, viewName);
-                var viewContext = new ViewContext(this.ControllerContext, viewResult.View, this.ViewData, this.TempData, sw);
+                ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
                 viewResult.View.Render(viewContext, sw);
 
                 return sw.GetStringBuilder().ToString();

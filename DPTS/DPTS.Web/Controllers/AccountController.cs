@@ -196,7 +196,7 @@ namespace DPTS.Web.Controllers
                 {
                     if (model.UserType == "professional")
                     {
-                        await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+                        await UserManager.AddToRoleAsync(user.Id, model.Role);
                         var doctor = new Doctor();
                         doctor.DoctorId = user.Id;
                         _doctorService.AddDoctor(doctor);
