@@ -61,8 +61,6 @@ namespace DPTS.Web.Controllers
                 return sw.GetStringBuilder().ToString();
             }
         }
-
-
     }
 
 
@@ -98,7 +96,6 @@ namespace DPTS.Web.Controllers
         //FilterExecutingContext
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-
             var request = filterContext.HttpContext.Request;
 
             var acceptEncoding = request.Headers["Accept-Encoding"];
@@ -133,5 +130,4 @@ namespace DPTS.Web.Controllers
             }
         }
     }
-
 }

@@ -18,6 +18,7 @@ namespace DPTS.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //rigister
         }
+
         //protected void Application_AcquireRequestState(object sender, EventArgs e)
         //{
         //}
