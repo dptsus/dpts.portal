@@ -160,7 +160,7 @@ namespace dpts.portal.Controllers
                 SetPageData();
                 if (user != null)
                 {
-                    this.UserManager.AddToRole(user.Id, rolename);
+                    UserManager.AddToRole(user.Id, rolename);
                     ViewBag.ResultMessage = "Role created successfully !";
                     return RedirectToAction("Index");
                 }
@@ -253,9 +253,9 @@ namespace dpts.portal.Controllers
                     context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase))
                         .FirstOrDefault();
 
-                if (this.UserManager.IsInRole(user.Id, RoleName))
+                if (UserManager.IsInRole(user.Id, RoleName))
                 {
-                    this.UserManager.RemoveFromRole(user.Id, RoleName);
+                    UserManager.RemoveFromRole(user.Id, RoleName);
                     ViewBag.ResultMessage = "Role removed from this user successfully !";
                 }
                 else

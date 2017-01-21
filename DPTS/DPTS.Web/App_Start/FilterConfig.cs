@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using DPTS.Web.AppFilters;
 
 namespace DPTS.Web
 {
@@ -8,6 +9,8 @@ namespace DPTS.Web
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new ExceptionLogingAttribute());
+            filters.Add(new LogApplicationAttribute());
         }
     }
 }

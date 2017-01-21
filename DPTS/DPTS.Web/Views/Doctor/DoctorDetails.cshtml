@@ -160,7 +160,8 @@
                                 <li><a class="tg-like add-to-fav" data-wl_id="330" href="javascript:;"><i class="fa fa-heart"></i></a></li>
                                 <li><span>1272&nbsp;view(s)</span></li>
                             </ul>
-                            <button class="tg-btn tg-btn-lg make-appointment-btn" type="button" data-toggle="modal" data-target=".tg-user-modal">MAKE AN APPOINTMENT!</button>
+                            <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("AvailableSchedule", "Appointment", new RouteValueDictionary(new { doctorId = Model.Id }))">MAKE AN APPOINTMENT!</a>
+                            @*<button  type="button"></button>*@
                         </div>
 
                         <div class="tg-section-map">
@@ -543,4 +544,7 @@
         </div>
     </div>
 </main>
+
+
+
 

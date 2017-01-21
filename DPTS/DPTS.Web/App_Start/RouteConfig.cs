@@ -26,6 +26,11 @@ namespace DPTS.Web
             routes.MapRoute("DPTSSearch",
                          "search/",
                          new { controller = "Home", action = "Search" });
+            routes.MapRoute(
+                "BookAppoinment",
+                "appoinment/{doctorId}",
+                new { controller = "Appointment", action = "AppointmentSchedule", doctorId = UrlParameter.Optional }
+            );
 
             //routes.MapRoute(
             //    "ContactUs",
