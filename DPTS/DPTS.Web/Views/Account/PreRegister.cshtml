@@ -12,7 +12,7 @@
                 </ul>
                 <div class="tab-content tg-haslayout">
                     <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signup-formarea">
-                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
+                        @using (Html.BeginForm("PreRegister", "Account", FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
                         {
                         @Html.AntiForgeryToken()
                         <fieldset>

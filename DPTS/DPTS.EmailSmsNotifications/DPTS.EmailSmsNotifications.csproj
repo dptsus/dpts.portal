@@ -58,14 +58,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IServices\IEmailService.cs" />
-    <Compile Include="IServices\ISmsService.cs" />
+    <Compile Include="IServices\IEmailNotificationService.cs" />
+    <Compile Include="IServices\ISmsNotificationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceModels\EmailModel.cs" />
-    <Compile Include="ServiceModels\SmsModel.cs" />
-    <Compile Include="Services\ConfigService.cs" />
-    <Compile Include="Services\EmailService.cs" />
-    <Compile Include="Services\SmsService.cs" />
+    <Compile Include="ServiceModels\EmailNotificationModel.cs" />
+    <Compile Include="ServiceModels\SmsNotificationModel.cs" />
+    <Compile Include="Services\NotificationServiceConfig.cs" />
+    <Compile Include="Services\EmailNotificationService.cs" />
+    <Compile Include="Services\SmsNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

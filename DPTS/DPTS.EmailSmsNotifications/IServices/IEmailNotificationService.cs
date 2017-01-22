@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace DPTS.EmailSmsNotifications.IServices
 {
-    public interface IEmailService
+    public interface IEmailNotificationService
     {
-        Task SendEmail(EmailModel model);
+        Task SendEmail(EmailNotificationModel model);
     }
 }

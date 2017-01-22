@@ -95,7 +95,8 @@ namespace DPTS.Web.App_Start
             kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
             kernel.Bind<IAppointmentService>().To<AppointmentService>();
             kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
-            kernel.Bind<ISmsService>().To<SmsService>();
+            kernel.Bind<ISmsNotificationService>().To<SmsNotificationService>();
+            kernel.Bind<IEmailNotificationService>().To<EmailNotificationService>();
         }
     }
 }

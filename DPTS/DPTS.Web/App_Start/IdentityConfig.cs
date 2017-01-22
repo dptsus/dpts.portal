@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using DPTS.Web.Models;
+using DPTS.EmailSmsNotifications.ServiceModels;
 
 namespace DPTS.Web
 {
@@ -68,7 +69,7 @@ namespace DPTS.Web
                 BodyFormat = "Your security code is {0}"
             });
             manager.EmailService = new EmailService();
-            //manager.SmsService = new SmsService();
+            manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
@@ -78,32 +79,33 @@ namespace DPTS.Web
             return manager;
         }
     }
-    //public class SmsService : IIdentityMessageService
-    //{
-    //    public Task SendAsync(IdentityMessage message)
-    //    {
-    //        // Plug in your SMS service here to send a text message.
-    //        //var Twilio = new TwilioRestClient("AC6eec9ab16de06b6555d5823d3d7d009f", "26cbda1255a0952c962af6b27fa216af");
-    //        ////System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"],
-    //        ////System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"]);
-    //        ////System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"]
-    //        //var result = Twilio.SendMessage("+14703759131", message.Destination, message.Body);
-    //        ////Status is one of Queued, Sending, Sent, Failed or null if the number is not valid
-    //        //Trace.TraceInformation(result.Status);
+    public class SmsService : IIdentityMessageService
+    {
+        public Task SendAsync(IdentityMessage message)
+        {
+            // Plug in your SMS service here to send a text message.
+            //var Twilio = new TwilioRestClient("AC6eec9ab16de06b6555d5823d3d7d009f", "26cbda1255a0952c962af6b27fa216af");
+            ////System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"],
+            ////System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"]);
+            ////System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"]
+            //var result = Twilio.SendMessage("+14703759131", message.Destination, message.Body);
+            ////Status is one of Queued, Sending, Sent, Failed or null if the number is not valid
+            //Trace.TraceInformation(result.Status);
 
-    //        //ASPSMS Begin
-    //        //var soapSms = new ASPSMSX2SoapClient("ASPSMSX2Soap");
-    //        //soapSms.SendSimpleTextSMS(
-    //        //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"],
-    //        //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"],
-    //        //    message.Destination,
-    //        //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"],
-    //        //    message.Body);
-    //        //soapSms.Close();
-    //        //ASPSMS End
-    //        return Task.FromResult(0);
-    //    }
-    //}
+            //ASPSMS Begin
+            //var soapSms = new ASPSMSX2SoapClient("ASPSMSX2Soap");
+            //soapSms.SendSimpleTextSMS(
+            //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"],
+            //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"],
+            //    message.Destination,
+            //    System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"],
+            //    message.Body);
+            //soapSms.Close();
+            //ASPSMS End
+            
+            return Task.FromResult(0);
+        }
+    }
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {

@@ -22,9 +22,9 @@ namespace DPTS.Web.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
-        private ISmsService _smsService;
+        private ISmsNotificationService _smsService;
 
-        public AccountController(IDoctorService doctorService, ISmsService smsService)
+        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
@@ -162,13 +162,15 @@ namespace DPTS.Web.Controllers
             }
             return typelst;
         }
+
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult PreRegister()
         {
             var model = new RegisterViewModel();
             model.UserRoleList = GetUserTypeList();
+            //return Redirect("/Account/ConfirmRegistration");
             return View(model);
         }
 
@@ -177,30 +179,69 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public ActionResult PreRegister(RegisterViewModel model)
         {
             if (model.Role == "0" && model.UserType == "professional")
                 ModelState.AddModelError("", "Select user type");
 
             if (ModelState.IsValid)
             {
+                SmsNotificationModel sms = new SmsNotificationModel();
+                sms.numbers = model.PhoneNumber;
+                sms.route = 4; //route 4 is for transactional sms
+                sms.senderId = "DOCPTS";
+                Session["otp"] = _smsService.GenerateOTP();
+                sms.message = "DTPS Verification code: " + Session["otp"].ToString() + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                _smsService.SendSms(sms);
+                TempData["regmodel"] = model;
+                //return RedirectToAction("ConfirmRegistration", "Account");
+                return Redirect("Account/ConfirmRegistration");
+                //return RedirectToAction("ConfirmRegistration", "Account");
+            }
+            model.UserRoleList = GetUserTypeList();
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult ConfirmRegistration()
+        {
+            RegisterViewModel model = new RegisterViewModel();
+            var regmodel = TempData["regmodel"];
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                if (model.CnfirmOTP != Session["otp"].ToString())
+                {
+                    ViewBag.confirmFail = "Invalid OTP!!";
+                    return View(model);
+                }
+                
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    LastName = model.LastName,
-                    FirstName = model.FirstName,
+                    UserName = model.RegistrationDetails.Email,
+                    Email = model.RegistrationDetails.Email,
+                    LastName = model.RegistrationDetails.LastName,
+                    FirstName = model.RegistrationDetails.FirstName,
                     LastIpAddress = "192.168.225.1",
                     LastLoginDateUtc = DateTime.UtcNow,
                     CreatedOnUtc = DateTime.UtcNow,
-                    PhoneNumber = model.PhoneNumber
+                    PhoneNumber = model.RegistrationDetails.PhoneNumber,
+                    TwoFactorEnabled = true
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
                 if (result.Succeeded)
                 {
-                    if (model.UserType == "professional")
+                    if (model.RegistrationDetails.UserType == "professional")
                     {
-                        await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+                        await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
                         var doctor = new Doctor();
                         doctor.DoctorId = user.Id;
                         _doctorService.AddDoctor(doctor);
@@ -208,25 +249,10 @@ namespace DPTS.Web.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    SmsModel sms = new SmsModel();
-                    sms.numbers = model.PhoneNumber;
-                    //Below 3 values will come from database SMSCategory of Registration sms
-                    sms.route = 4; //route 4 is for transactional sms
-                    sms.senderId = "DOCPTS";
-                    sms.message = "You have registered successfully!";
-                    _smsService.SendSms(sms);
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
-            model.UserRoleList = GetUserTypeList();
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 

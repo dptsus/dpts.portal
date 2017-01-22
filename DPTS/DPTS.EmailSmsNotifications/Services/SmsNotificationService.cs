@@ -7,16 +7,16 @@ using System.Text;
 
 namespace DPTS.EmailSmsNotifications.Services
 {
-    public class SmsService : ISmsService
+    public class SmsNotificationService : ISmsNotificationService
     {
-        private ConfigService _config;
+        private NotificationServiceConfig _config;
 
-        public SmsService()
+        public SmsNotificationService()
         {
-            _config = new ConfigService();
+            _config = new NotificationServiceConfig();
         }
 
-        public string SendSms(SmsModel sms)
+        public string SendSms(SmsNotificationModel sms)
         {
             //Your authentication key
             string authKey = _config.SmsAuthKey;
@@ -69,6 +69,21 @@ namespace DPTS.EmailSmsNotifications.Services
             {
                 return ex.Message.ToString();
             }
+        }
+
+        public string GenerateOTP()
+        {
+            int length = 6;
+            string numbers = "0123456789";
+            Random objrandom = new Random();
+            string strrandom = string.Empty;
+            int noofnumbers = length;
+            for (int i = 0; i < noofnumbers; i++)
+            {
+                int temp = objrandom.Next(0, numbers.Length);
+                strrandom += temp;
+            }
+            return strrandom;
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Configuration;
 
 namespace DPTS.EmailSmsNotifications.Services
 {
-    public class ConfigService
+    public class NotificationServiceConfig
     {
-        public ConfigService() { }
+        public NotificationServiceConfig() { }
 
         /// <summary>
         /// Get the SMS gateway url

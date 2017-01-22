@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace DPTS.EmailSmsNotifications.Services
 {
-    public class EmailService : IEmailService
+    public class EmailNotificationService : IEmailNotificationService
     {
-        private ConfigService _config;
+        private NotificationServiceConfig _config;
 
-        public EmailService()
+        public EmailNotificationService()
         {
-            _config = new ConfigService();
+            _config = new NotificationServiceConfig();
 
         }
 
-        public async Task SendEmail(EmailModel model)
+        public async Task SendEmail(EmailNotificationModel model)
         {
             string apiKey = _config.SendGridAPIKey;
             dynamic sg = new SendGridAPIClient(apiKey);

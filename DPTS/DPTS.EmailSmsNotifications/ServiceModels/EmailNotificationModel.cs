@@ -1,6 +1,6 @@
 ﻿namespace DPTS.EmailSmsNotifications.ServiceModels
 {
-    public class EmailModel
+    public class EmailNotificationModel
     {
         public string from { get; set; }
         public string to { get; set; }

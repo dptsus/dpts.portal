@@ -1,6 +1,6 @@
 ﻿namespace DPTS.EmailSmsNotifications.ServiceModels
 {
-    public class SmsModel
+    public class SmsNotificationModel
     {
         public string numbers { get; set; }
         public string senderId { get; set; }
