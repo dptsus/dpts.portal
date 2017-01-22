@@ -84,6 +84,18 @@
     <Compile Include="Migrations\201701160455277_updateScheduleTable.Designer.cs">
       <DependentUpon>201701160455277_updateScheduleTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701210938294_UpdateAppointmentSchedule.cs" />
+    <Compile Include="Migrations\201701210938294_UpdateAppointmentSchedule.Designer.cs">
+      <DependentUpon>201701210938294_UpdateAppointmentSchedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701211040273_UpdateAppointmentStatus.cs" />
+    <Compile Include="Migrations\201701211040273_UpdateAppointmentStatus.Designer.cs">
+      <DependentUpon>201701211040273_UpdateAppointmentStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.cs" />
+    <Compile Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.Designer.cs">
+      <DependentUpon>201701211205218_UpdateAppointmentScheduleTimeSpan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,6 +132,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701160455277_updateScheduleTable.resx">
       <DependentUpon>201701160455277_updateScheduleTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701210938294_UpdateAppointmentSchedule.resx">
+      <DependentUpon>201701210938294_UpdateAppointmentSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701211040273_UpdateAppointmentStatus.resx">
+      <DependentUpon>201701211040273_UpdateAppointmentStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.resx">
+      <DependentUpon>201701211205218_UpdateAppointmentScheduleTimeSpan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

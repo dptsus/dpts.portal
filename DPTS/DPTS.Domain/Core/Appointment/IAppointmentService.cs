@@ -104,5 +104,21 @@ namespace DPTS.Domain.Core.Appointment
         void UpdateSchedule(Schedule schedule);
         #endregion
 
+        #region Booking Status
+
+        /// <summary>
+        /// get all status
+        /// </summary>
+        /// <returns></returns>
+        IList<AppointmentStatus> GetAllAppointmentStatus();
+
+        /// <summary>
+        /// get status by name
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        AppointmentStatus GetAppointmentStatusByName(string status);
+        #endregion
+
     }
 }

@@ -180,7 +180,7 @@ namespace DPTS.Web.Controllers
         public ActionResult ProfileSetting()
         {
             var model = new DoctorProfileSettingViewModel();
-            if (!string.IsNullOrEmpty(User.Identity.Name))
+            if (Request.IsAuthenticated)
             {
                // var user = context.Users.a(u => u.id).Where(u => u.id == id).FirstOrDefault();
 
@@ -575,8 +575,8 @@ namespace DPTS.Web.Controllers
         {
             try
             {
-                if (User.Identity.GetUserId() == null)
-                    return null;
+                if (!Request.IsAuthenticated)
+                    return HttpNotFound();
 
                 #region Sunday
                 if (!string.IsNullOrWhiteSpace(form["sunday_start"].ToString()) &&
