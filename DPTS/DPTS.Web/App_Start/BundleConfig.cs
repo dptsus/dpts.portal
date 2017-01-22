@@ -38,7 +38,7 @@ namespace DPTS.Web
                 "~/Content/wp-content/themes/docdirect/js/parallax1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js",
-                //"~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js",
+                "~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/appear1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/countTo1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/sticky_message1bba.js",
@@ -50,8 +50,8 @@ namespace DPTS.Web
                 "~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js",
-               "~/Content/Admin/js/bootstrap-datetimepicker.js"));
+                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
+            //      "~/Content/Admin/js/bootstrap-datetimepicker.js"));
 
             bundles.Add(new StyleBundle("~/Content/wp-content/themes").Include(
                 "~/Content/wp-content/themes/docdirect/css/bootstrap.min1bba.css",
@@ -67,7 +67,7 @@ namespace DPTS.Web
                 "~/Content/wp-content/themes/docdirect/css/responsive1bba.css",
                 "~/Content/wp-content/themes/docdirect/css/jquery-ui1bba.css",
                 "~/Content/wp-content/themes/docdirect/css/color1bba.css",
-                //"~/Content/wp-content/themes/docdirect/css/datetimepicker1bba.css",
+                "~/Content/wp-content/themes/docdirect/css/datetimepicker1bba.css",
                 "~/Content/wp-content/themes/docdirect/css/chosen1bba.css",
                 "~/Content/wp-content/themes/docdirect/framework-customizations/extensions/breadcrumbs/static/css/style1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/builder/static/css/frontend-grid578f.css",
@@ -75,8 +75,8 @@ namespace DPTS.Web
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/css/jquery.fs.wallpaper1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/css/styles1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/button/static/css/styles1c9b.css",
-                "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/call-to-action/static/css/styles1c9b.css",
-                 "~/Content/Admin/vendor/bootstrap-datetimepicker.css"
+                "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/call-to-action/static/css/styles1c9b.css"
+                // "~/Content/Admin/vendor/bootstrap-datetimepicker.css"
                 ));
         }
     }

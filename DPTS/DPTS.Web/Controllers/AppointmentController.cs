@@ -2,8 +2,12 @@
 using DPTS.Domain.Core.Doctors;
 using DPTS.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using DPTS.Data.Context;
+using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {
@@ -12,7 +16,7 @@ namespace DPTS.Web.Controllers
         #region Fields
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
-        private ApplicationDbContext context;
+        private readonly DPTSDbContext _context;
         #endregion
 
         #region Contr
@@ -21,13 +25,13 @@ namespace DPTS.Web.Controllers
         {
             _doctorService = doctorService;
             _scheduleService = scheduleService;
-            context = new ApplicationDbContext();
+            _context = new DPTSDbContext();
         }
 
         #endregion
 
         #region Utilities
-        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime, string endTime, double duration)
+        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime, string endTime, double duration,IList<AppointmentSchedule> bookedSlots )
         {
             try
             {
@@ -40,30 +44,30 @@ namespace DPTS.Web.Controllers
                     var dtNext = start.AddMinutes(duration);
                     if (start > end || dtNext > end)
                         break;
-                    if (start < DateTime.Parse("12:00 PM"))
-                    {
+                    //if (start < DateTime.Parse("12:00 PM"))
+                    //{
                         var morn = new MorningSlotModel
                         {
                             Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
                         };
                         slots.Morning.Add(morn);
-                    }
-                    else if (start > DateTime.Parse("06:00 PM"))
-                    {
-                        var eve = new EveningSlotModel
-                        {
-                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                        };
-                        slots.Evening.Add(eve);
-                    }
-                    else
-                    {
-                        var aft = new AfternoonSlotModel
-                        {
-                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                        };
-                        slots.Afternoon.Add(aft);
-                    }
+                   // }
+                    //else if (start > DateTime.Parse("06:00 PM"))
+                    //{
+                    //    var eve = new EveningSlotModel
+                    //    {
+                    //        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                    //    };
+                    //    slots.Evening.Add(eve);
+                    //}
+                    //else
+                    //{
+                    //    var aft = new AfternoonSlotModel
+                    //    {
+                    //        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
+                    //    };
+                    //    slots.Afternoon.Add(aft);
+                    //}
                     start = dtNext;
                 }
                 return slots;
@@ -74,17 +78,20 @@ namespace DPTS.Web.Controllers
 
         #region Methods
         [HttpGet]
-        public ActionResult AvailableSchedule(string doctorId,string selectedDate = null)
+        public ActionResult Booking(string doctorId, string selectedDate = null)
         {
-            var scheduleSlots = new AppointmentScheduleViewModel();
             if (!string.IsNullOrWhiteSpace(doctorId))
             {
+                var scheduleSlots = new AppointmentScheduleViewModel();
+
                 string todayDay = DateTime.UtcNow.ToString("dddd");
                 var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
                 if (schedule == null)
                     return RedirectToAction("NoSchedule");
 
-                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20);
+                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId);
+
+                scheduleSlots = GenrateTimeSlots("1:00 AM", "2:00 PM", 20);
                 scheduleSlots.doctorId = doctorId;
                 return View(scheduleSlots);
             }
@@ -96,65 +103,87 @@ namespace DPTS.Web.Controllers
         {
             if (Command == "next" && !string.IsNullOrWhiteSpace(model.doctorId))
             {
-                return RedirectToAction("VisitorContactDeatils",new { doctorId = model.doctorId });
+                return RedirectToAction("VisitorContactDeatils", new { doctorId = model.doctorId });
             }
             return View();
         }
 
-        public ActionResult VisitorContactDeatils(string doctorId)
-        {
-            var model = new VisitorContactDeatilsModel
-            {
-                doctorId =doctorId
-            };
-            return View(model);
-        }
         public ActionResult NoSchedule()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult VisitorContactDeatils(VisitorContactDeatilsModel model,string Command)
-        {
-            try
-            {
 
-                if (Command == "previous" && !string.IsNullOrWhiteSpace(model.doctorId))
-                {
-                    return RedirectToAction("AvailableSchedule", new { doctorId = model.doctorId });
-                }
-                else if (Command == "next")
-                {
-                    return RedirectToAction("PaymentMode");
-                }
-            }
-            catch { }
-            return View();
-        }
-        public ActionResult PaymentMode()
+        public JsonResult VisitorContactDeatils()
         {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult PaymentMode(string Command)
-        {
-            try
+            if (!Request.IsAuthenticated)
+                return Json(new
+                {
+                    success = 1
+                });
+
+            var userId = User.Identity.GetUserId();
+            var visitor = _context.AspNetUsers.SingleOrDefault(u => u.Id == userId);
+            if (visitor == null)
             {
-                if (Command == "previous")
+                return Json(new
                 {
-                    return RedirectToAction("VisitorContactDeatils");
-                }
-                else if (Command == "next")
-                {
-                    return RedirectToAction("Finish");
-                }
+                    success =1
+                });
             }
-            catch { }
-            return View();
+            var fullName = visitor.FirstName + " " + visitor.LastName; 
+            return Json(data: new
+            {
+                mobilenumber = visitor.PhoneNumber,
+                useremail = visitor.Email,
+                username = fullName
+            });
         }
-        public ActionResult Finish()
+        public JsonResult PaymentMode()
         {
-            return View();
+            return Json(new
+            {
+                success = 1
+            });
+        }
+        //booking_date,"slottime" ,,"subject","username","mobilenumber","useremail","booking_note","payment"
+
+        public JsonResult FinishBooking(FormCollection form)
+        {
+            if(!string.IsNullOrWhiteSpace(form["booking_date"]) &&
+                !string.IsNullOrWhiteSpace("slottime") &&
+                !string.IsNullOrWhiteSpace("subject") &&
+                !string.IsNullOrWhiteSpace("username") &&
+                !string.IsNullOrWhiteSpace("mobilenumber") &&
+                !string.IsNullOrWhiteSpace("useremail") &&
+                !string.IsNullOrWhiteSpace("booking_note") &&
+                !string.IsNullOrWhiteSpace("payment") &&
+                !string.IsNullOrWhiteSpace("doctorId") &&
+                Request.IsAuthenticated)
+            {
+                string statusFlag = "Pending";
+                var bookingStatus = _scheduleService.GetAppointmentStatusByName(statusFlag);
+                var userId = User.Identity.GetUserId();
+
+                var booking = new AppointmentSchedule
+                {
+                    DoctorId = form["doctorId"],
+                    PatientId = userId,
+                    Subject = form["subject"],
+                    DiseasesDescription = form["booking_note"],
+                    AppointmentTime = form["slottime"].Trim(),
+                    StatusId = bookingStatus.Id,
+                    DateCreated = DateTime.Parse(form["booking_date"])
+                };
+                _scheduleService.InsertAppointmentSchedule(booking);
+                return Json(new
+                {
+                    success = 1
+                });
+            }
+            return Json(new
+            {
+                success = 1
+            });
         }
         [HttpPost]
         public ActionResult Finish(string Command)
@@ -181,16 +210,19 @@ namespace DPTS.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "billing",
-                        html = RenderPartialViewToString("OpcBillingAddress", model)
+                        html = this.RenderPartialViewToString("OpcBillingAddress", model)
                     },
                     wrong_billing_address = true,
                 });
             }
             return View();
         }
-        public ActionResult OpcSaveShipping(FormCollection form)
+        public JsonResult OpcSaveShipping()
         {
-            return View();
+            return Json(new
+            {
+                success = 1
+            });
         }
         #endregion
 

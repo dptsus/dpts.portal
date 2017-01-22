@@ -11,14 +11,18 @@ namespace DPTS.Services.Appointment
     {
         #region Fields
         private readonly IRepository<AppointmentSchedule> _scheduleRepository;
+        private readonly IRepository<AppointmentStatus> _statusRepository;
         private readonly IRepository<Schedule> _docScheduleRepository;
         #endregion
 
         #region Ctor
-        public AppointmentService(IRepository<AppointmentSchedule> scheduleRepository, IRepository<Schedule> docScheduleRepository)
+        public AppointmentService(IRepository<AppointmentSchedule> scheduleRepository, 
+            IRepository<Schedule> docScheduleRepository,
+            IRepository<AppointmentStatus> statusRepository)
         {
             _scheduleRepository = scheduleRepository;
             _docScheduleRepository = docScheduleRepository;
+            _statusRepository = statusRepository;
         }
         #endregion
 
@@ -150,6 +154,27 @@ namespace DPTS.Services.Appointment
 
             _docScheduleRepository.Update(schedule);
         }
+
+        #endregion
+
+        #region Methods(Booking)
+        public IList<AppointmentStatus> GetAllAppointmentStatus()
+        {
+            var query = _statusRepository.Table;
+            return query.ToList();
+        }
+
+        public AppointmentStatus GetAppointmentStatusByName(string status)
+        {
+            //if (!string.IsNullOrWhiteSpace(status))
+              //  return null;
+
+            var query = _statusRepository.Table.ToList();
+                query.Where(s => s.Name.Trim().ToLower() == status.Trim().ToLower());
+
+            return query.FirstOrDefault();
+        }
+
         #endregion
     }
 }

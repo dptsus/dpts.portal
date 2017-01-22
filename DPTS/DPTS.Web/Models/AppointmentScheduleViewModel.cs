@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Web;
 
 namespace DPTS.Web.Models
@@ -9,31 +10,15 @@ namespace DPTS.Web.Models
     {
         public AppointmentScheduleViewModel()
         {
-            Morning = new List<MorningSlotModel>();
-            Afternoon =new List<AfternoonSlotModel>();
-            Evening =new List<EveningSlotModel>();
+            ScheduleSlotModel = new List<ScheduleSlotModel>();
         }
 
-        public IList<MorningSlotModel> Morning { get; set; }
-
-        public IList<AfternoonSlotModel> Afternoon { get; set; }
-
-        public IList<EveningSlotModel> Evening { get; set; }
-
-        public string doctorId { get; set; }
+        public IList<ScheduleSlotModel> ScheduleSlotModel { get; set; }
 
     }
-    public class MorningSlotModel
+    public class ScheduleSlotModel
     {
         public string Slot { get; set; }
+        public string BookedSlot { get; set; }
     }
-    public class AfternoonSlotModel
-    {
-        public string Slot { get; set; }
-    }
-    public class EveningSlotModel
-    {
-        public string Slot { get; set; }
-    }
-
 }
