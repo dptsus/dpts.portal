@@ -15,10 +15,12 @@ namespace DPTS.Web.Models
 
         public IList<ScheduleSlotModel> ScheduleSlotModel { get; set; }
 
+        public string doctorId { get; set; }
+
     }
     public class ScheduleSlotModel
     {
         public string Slot { get; set; }
-        public string BookedSlot { get; set; }
+        public bool IsBooked { get; set; }
     }
 }

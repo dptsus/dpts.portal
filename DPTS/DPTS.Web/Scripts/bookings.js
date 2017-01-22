@@ -103,7 +103,7 @@ jQuery(document).ready(function ($) {
 		var bk_userphone = _this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val();
 		var bk_useremail	   = _this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val();
 		var bk_booking_note	= _this.parents(".tg-appointmenttabcontent").find('textarea[name="booking_note"]').val();
-
+		//docdirect_booking_calender();
 		//Check step 1
 		//if( bk_category
 		//	&&
@@ -362,37 +362,10 @@ jQuery(document).ready(function ($) {
 	  format:'Y-m-d',
 	  timepicker:false
 	});
+    //primery value
+	jQuery('.booking-pickr strong').html(moment().format('MMM D, dddd'));
 
-	jQuery('.booking-pickr').datetimepicker({
-	    format: 'Y-m-d',
-	    minDate: new Date(),
-	    timepicker: false,
-	    onChangeDateTime: function (dp, $input) {
-	        var slot_date = moment(dp).format('YYYY-MM-DD');
-	        jQuery('.booking-pickr strong').html(moment(dp).format('MMM D, dddd'));
-
-	        jQuery('.booking_date').val(slot_date);
-
-	        var _this = jQuery(this);
-	        var data_id = jQuery('.tg-appointmenttabcontent').data('id');
-
-	        jQuery('.booking-model-contents').append(loder_html);
-	        var dataString = 'slot_date=' + slot_date + '&data_id=' + data_id + '&action=docdirect_get_booking_step_two';
-	        jQuery.ajax({
-	            type: "POST",
-	            url: "/Appointment/OpcSaveShipping/",
-	            data: dataString,
-	            dataType: "json",
-	            success: function (response) {
-	                jQuery('body').find('.docdirect-loader-wrap').remove();
-	                Z_Steps.booking_step = 2;
-	                jQuery('.step-two-slots .tg-timeslotswrapper').html(response.data);
-	                docdirect_booking_calender();
-	            }
-	        });
-	        return false;
-	    }
-	});
+	docdirect_booking_calender(this);
 });
 
 //Input Type Phone
@@ -456,35 +429,36 @@ function docdirect_booking_calender(val){
 	//Booking Calender
 	var loder_html	= '<div class="docdirect-loader-wrap"><div class="docdirect-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
 
-	  jQuery('.booking-pickr').datetimepicker({
-	  format:'Y-m-d',
-	  minDate: new Date(),
-	  timepicker:false,
-	  onChangeDateTime:function(dp,$input){
-		var slot_date	= moment(dp).format('YYYY-MM-DD');
-		jQuery('.booking-pickr strong').html(moment(dp).format('MMM D, dddd'));
+	jQuery('.booking-pickr').datetimepicker({
+	    format: 'Y-m-d',
+	    minDate: new Date(),
+	    timepicker: false,
+	    onChangeDateTime: function (dp, $input) {
+	        var slot_date = moment(dp).format('YYYY-MM-DD');
+	        jQuery('.booking-pickr strong').html(moment(dp).format('MMM D, dddd'));
 
-		jQuery('.booking_date').val(slot_date);
+	        jQuery('.booking_date').val(slot_date);
 
-		var _this	= jQuery(this);
-		var data_id	= jQuery('.tg-appointmenttabcontent').data('id');
+	        var _this = jQuery(this);
+	        var data_id = jQuery('.tg-appointmenttabcontent').data('id');
 
-		jQuery('.booking-model-contents').append(loder_html);
-		var dataString = 'slot_date='+slot_date+'&data_id='+data_id+'&action=docdirect_get_booking_step_two';
-		jQuery.ajax({
-			type: "POST",
-			url: scripts_vars.ajaxurl,
-			data: dataString,
-			dataType:"json",
-			success: function(response) {
-				jQuery('body').find('.docdirect-loader-wrap').remove();
-				Z_Steps.booking_step	= 2;
-				jQuery('.step-two-slots .tg-timeslotswrapper').html(response.data);
-				docdirect_booking_calender();
-			}
-		});
-		return false;
-	  }
+	        jQuery('.booking-model-contents').append(loder_html);
+	        var docId = $('#doctorId').val();
+	        var dataString = 'slot_date=' + slot_date + '&doctorId=' + docId + '';
+	        jQuery.ajax({
+	            type: "POST",
+	            url: "/Appointment/BookingScheduleByDate/",
+	            data: dataString,
+	            dataType: "json",
+	            success: function (c) {
+	                jQuery('body').find('.docdirect-loader-wrap').remove();
+	                Z_Steps.booking_step = 2;
+	                jQuery('.step-one-slots .tg-timeslotswrapper').html(c.response);
+	                docdirect_booking_calender();
+	            }
+	        });
+	        return false;
+	    }
 	});
 }
 

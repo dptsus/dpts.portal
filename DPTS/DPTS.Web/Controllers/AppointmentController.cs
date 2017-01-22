@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using DPTS.Data.Context;
 using DPTS.Domain.Entities;
+using System.Text;
 
 namespace DPTS.Web.Controllers
 {
@@ -31,7 +32,9 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Utilities
-        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime, string endTime, double duration,IList<AppointmentSchedule> bookedSlots )
+        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime,
+            string endTime, double duration,
+            IList<AppointmentSchedule> bookedSlots )
         {
             try
             {
@@ -44,30 +47,16 @@ namespace DPTS.Web.Controllers
                     var dtNext = start.AddMinutes(duration);
                     if (start > end || dtNext > end)
                         break;
-                    //if (start < DateTime.Parse("12:00 PM"))
-                    //{
-                        var morn = new MorningSlotModel
-                        {
-                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                        };
-                        slots.Morning.Add(morn);
-                   // }
-                    //else if (start > DateTime.Parse("06:00 PM"))
-                    //{
-                    //    var eve = new EveningSlotModel
-                    //    {
-                    //        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                    //    };
-                    //    slots.Evening.Add(eve);
-                    //}
-                    //else
-                    //{
-                    //    var aft = new AfternoonSlotModel
-                    //    {
-                    //        Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                    //    };
-                    //    slots.Afternoon.Add(aft);
-                    //}
+
+                    var slot = start.ToString("hh:mm tt") + " - " + dtNext.ToString("hh:mm tt");
+                    var bookingstatus = bookedSlots.Where(s => s.AppointmentTime == slot).FirstOrDefault();
+
+                    var splitSlot = new ScheduleSlotModel
+                    {
+                        Slot = slot,
+                        IsBooked = (bookingstatus == null) ? false : true
+                    };
+                    slots.ScheduleSlotModel.Add(splitSlot);
                     start = dtNext;
                 }
                 return slots;
@@ -91,13 +80,70 @@ namespace DPTS.Web.Controllers
 
                 var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId);
 
-                scheduleSlots = GenrateTimeSlots("1:00 AM", "2:00 PM", 20);
+                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20,bookedSlots);
                 scheduleSlots.doctorId = doctorId;
                 return View(scheduleSlots);
             }
             return RedirectToAction("NoSchedule");
-
         }
+
+        public JsonResult BookingScheduleByDate(string slot_date , string doctorId)
+        {
+            var response = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(doctorId) && !string.IsNullOrWhiteSpace(slot_date))
+            {
+                var scheduleSlots = new AppointmentScheduleViewModel();
+
+                string todayDay = DateTime.Parse(slot_date).ToString("dddd");
+                //DateTime.UtcNow.ToString("dddd");
+                var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
+                if (schedule == null)
+                {
+                    return Json(new
+                    {
+                        success = 1
+                    });
+                }
+                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.DateCreated.Equals(DateTime.Parse(slot_date))).ToList();
+
+                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
+
+                foreach (var item in scheduleSlots.ScheduleSlotModel)
+                {
+                    string repo = string.Empty;
+                    if(item.IsBooked)
+                    {
+                        repo = "<div class=\"tg-doctimeslot tg-booked\">";
+                        repo += "<div class=\"tg-box\">";
+                        repo += "<div class=\"tg-radio\">";
+                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\" disabled >";
+                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "</div> </div> </div>";
+                    }
+                    else
+                    {
+                        repo = "<div class=\"tg-doctimeslot tg-available\">";
+                        repo += "<div class=\"tg-box\">";
+                        repo += "<div class=\"tg-radio\">";
+                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\">";
+                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "</div> </div> </div>";
+                    }
+                    response.AppendLine(repo);
+
+                }
+
+                return Json(new
+                {
+                    response = response.ToString()
+                });
+            }
+            return Json(new
+            {
+                success = 1
+            });
+        }
+
         [HttpPost]
         public ActionResult AvailableSchedule(AppointmentScheduleViewModel model, string Command)
         {
@@ -130,7 +176,7 @@ namespace DPTS.Web.Controllers
                     success =1
                 });
             }
-            var fullName = visitor.FirstName + " " + visitor.LastName; 
+            var fullName = visitor.FirstName + " " + visitor.LastName;
             return Json(data: new
             {
                 mobilenumber = visitor.PhoneNumber,
@@ -174,6 +220,7 @@ namespace DPTS.Web.Controllers
                     StatusId = bookingStatus.Id,
                     DateCreated = DateTime.Parse(form["booking_date"])
                 };
+
                 _scheduleService.InsertAppointmentSchedule(booking);
                 return Json(new
                 {

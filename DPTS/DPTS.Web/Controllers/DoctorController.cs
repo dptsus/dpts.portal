@@ -575,7 +575,7 @@ namespace DPTS.Web.Controllers
         {
             try
             {
-                if (Request.IsAuthenticated)
+                if (!Request.IsAuthenticated)
                     return HttpNotFound();
 
                 #region Sunday
