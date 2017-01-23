@@ -78,7 +78,7 @@ namespace DPTS.Web.Controllers
                 if (schedule == null)
                     return RedirectToAction("NoSchedule");
 
-                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId);
+                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("dddd"))).ToList();
 
                 scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20,bookedSlots);
                 scheduleSlots.doctorId = doctorId;
@@ -90,9 +90,18 @@ namespace DPTS.Web.Controllers
         public JsonResult BookingScheduleByDate(string slot_date , string doctorId)
         {
             var response = new StringBuilder();
+            string resultNoResultFound = string.Empty;
+
             if (!string.IsNullOrWhiteSpace(doctorId) && !string.IsNullOrWhiteSpace(slot_date))
             {
                 var scheduleSlots = new AppointmentScheduleViewModel();
+
+                resultNoResultFound += "<div class=\"bk-thanks-message\">";
+                resultNoResultFound += "<div class=\"tg-message\">";
+                resultNoResultFound += "<h2>Schedule Not Found !!</h2>";
+                resultNoResultFound += "<div class=\"tg-description\">";
+                resultNoResultFound += "<p>Appointment not available...</p>";
+                resultNoResultFound += "</div></div></div>";
 
                 string todayDay = DateTime.Parse(slot_date).ToString("dddd");
                 //DateTime.UtcNow.ToString("dddd");
@@ -101,12 +110,21 @@ namespace DPTS.Web.Controllers
                 {
                     return Json(new
                     {
-                        success = 1
+                        result = resultNoResultFound
                     });
                 }
-                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.DateCreated.Equals(DateTime.Parse(slot_date))).ToList();
+                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(slot_date)).ToList();
 
                 scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
+
+                if(scheduleSlots == null)
+                {
+
+                    return Json(new
+                    {
+                        result = resultNoResultFound
+                    });
+                }
 
                 foreach (var item in scheduleSlots.ScheduleSlotModel)
                 {
@@ -130,9 +148,7 @@ namespace DPTS.Web.Controllers
                         repo += "</div> </div> </div>";
                     }
                     response.AppendLine(repo);
-
                 }
-
                 return Json(new
                 {
                     response = response.ToString()
@@ -218,18 +234,18 @@ namespace DPTS.Web.Controllers
                     DiseasesDescription = form["booking_note"],
                     AppointmentTime = form["slottime"].Trim(),
                     StatusId = bookingStatus.Id,
-                    DateCreated = DateTime.Parse(form["booking_date"])
+                    AppointmentDate = form["booking_date"]
                 };
 
                 _scheduleService.InsertAppointmentSchedule(booking);
                 return Json(new
                 {
-                    success = 1
+                    result = "success"
                 });
             }
             return Json(new
             {
-                success = 1
+                result = "fail"
             });
         }
         [HttpPost]

@@ -172,6 +172,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Methods
+
         public ActionResult Info()
         {
             return View();
@@ -458,10 +459,12 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+
         public ActionResult InvoicesPackages()
         {
             return View();
         }
+
         public ActionResult DoctorSchedules()
         {
             try
@@ -568,7 +571,6 @@ namespace DPTS.Web.Controllers
             }
             catch { return null; }
         }
-
 
         [HttpPost]
         public ActionResult DoctorSchedules(FormCollection form)

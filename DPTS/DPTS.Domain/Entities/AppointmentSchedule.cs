@@ -22,6 +22,8 @@ namespace DPTS.Domain.Entities
 
         public string AppointmentTime { get; set; }
 
+        public string AppointmentDate { get; set; }
+
         public virtual AppointmentStatus AppointmentStatus { get; set; }
 
         public virtual AspNetUser AspNetUser { get; set; }
