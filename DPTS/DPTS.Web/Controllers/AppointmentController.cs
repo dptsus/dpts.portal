@@ -78,7 +78,7 @@ namespace DPTS.Web.Controllers
                 if (schedule == null)
                     return RedirectToAction("NoSchedule");
 
-                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("dddd"))).ToList();
+                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("yyyy-MM-dd"))).ToList();
 
                 scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20,bookedSlots);
                 scheduleSlots.doctorId = doctorId;

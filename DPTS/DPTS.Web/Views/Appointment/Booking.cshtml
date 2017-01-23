@@ -31,7 +31,7 @@
                                             <div class="tg-doctimeslot tg-booked">
                                                 <div class="tg-box">
                                                     <div class="tg-radio">
-                                                        <input id="@slot.Slot" value="@slot.Slot" type="radio" name="slottime" disabled >
+                                                        <input id="@slot.Slot" value="@slot.Slot" type="radio" name="slottime" disabled>
                                                         <label for="@slot.Slot">@slot.Slot</label>
                                                     </div>
                                                 </div>
@@ -84,7 +84,22 @@
                         }
                         else
                         {
-                            <a href="@Url.Action("Login","Account",new {returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery})"><span class="s-user" style="display:block">Login/Register</span><img alt="Login" src="~/Content/wp-content/themes/docdirect/images/singin_icon.png"></a>
+                            <div class="col-xs-4">
+                                <p class="lead">Register now for <span class="text-success">FREE</span></p>
+                                <ul class="list-unstyled" style="line-height: 2">
+                                    <li><span class="fa fa-check text-success"></span> See all your appoinment</li>
+                                    <li><span class="fa fa-check text-success"></span> Save your favorites</li>
+                                    <li><span class="fa fa-check text-success"></span> Fast appoinment booking</li>
+                                </ul>
+                                <br />
+                                <p>
+                                    <a class="btn btn-primary btn-block" href="@Url.Action("Login","Account",
+                                    new {returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery})">
+                                        Login/Register
+                                    </a>
+                                </p>
+                            </div>
+
                         }
                     </div>
 
@@ -127,5 +142,6 @@
                 </div>
             </div>
         </fieldset>
+
     </form>
 </div>
