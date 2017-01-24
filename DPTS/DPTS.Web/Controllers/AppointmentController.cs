@@ -69,22 +69,32 @@ namespace DPTS.Web.Controllers
         [HttpGet]
         public ActionResult Booking(string doctorId, string selectedDate = null)
         {
-            if (!string.IsNullOrWhiteSpace(doctorId))
+            try
             {
-                var scheduleSlots = new AppointmentScheduleViewModel();
+                if (!string.IsNullOrWhiteSpace(doctorId))
+                {
+                    string todayDay = DateTime.UtcNow.ToString("dddd");
+                    var schedule =
+                        _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
+                    if (schedule == null)
+                        return RedirectToAction("NoSchedule");
 
-                string todayDay = DateTime.UtcNow.ToString("dddd");
-                var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
-                if (schedule == null)
-                    return RedirectToAction("NoSchedule");
+                    var bookedSlots =
+                        _scheduleService.GetAppointmentScheduleByDoctorId(doctorId)
+                            .Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("yyyy-MM-dd")))
+                            .ToList();
 
-                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("yyyy-MM-dd"))).ToList();
-
-                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20,bookedSlots);
-                scheduleSlots.doctorId = doctorId;
-                return View(scheduleSlots);
+                    var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
+                    scheduleSlots.doctorId = doctorId;
+                    return View(scheduleSlots);
+                }
+            }
+            catch
+            {
+                // ignored
             }
             return RedirectToAction("NoSchedule");
+
         }
 
         public JsonResult BookingScheduleByDate(string slot_date , string doctorId)

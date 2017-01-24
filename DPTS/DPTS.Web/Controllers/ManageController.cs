@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DPTS.Web.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DPTS.Web.Controllers
 {
@@ -63,14 +64,26 @@ namespace DPTS.Web.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var user = manager.FindById(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Id = userId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
             };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(IndexViewModel model)
+        {
             return View(model);
         }
 

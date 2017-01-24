@@ -60,6 +60,17 @@ namespace DPTS.Services.Appointment
 
             return query.ToList();
         }
+        public IList<AppointmentSchedule> GetAppointmentScheduleByPatientId(string patientId)
+        {
+            if (string.IsNullOrWhiteSpace(patientId))
+                return null;
+
+            var query = from c in _scheduleRepository.Table
+                        where c.PatientId.Equals(patientId)
+                        select c;
+
+            return query.ToList();
+        }
 
         public IList<AppointmentSchedule> GetAppointmentScheduleByIds(int[] scheduleIds)
         {
@@ -166,13 +177,13 @@ namespace DPTS.Services.Appointment
 
         public AppointmentStatus GetAppointmentStatusByName(string status)
         {
-            //if (!string.IsNullOrWhiteSpace(status))
-              //  return null;
+            if (string.IsNullOrWhiteSpace(status))
+                return null;
 
             var query = _statusRepository.Table.ToList();
-                query.Where(s => s.Name.Trim().ToLower() == status.Trim().ToLower());
+            var appointmentStatuses = query.Where(s => s.Name.Trim().ToLower() == status.Trim().ToLower());
 
-            return query.FirstOrDefault();
+            return appointmentStatuses.FirstOrDefault();
         }
 
         #endregion
