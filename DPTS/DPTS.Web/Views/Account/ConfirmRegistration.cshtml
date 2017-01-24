@@ -12,7 +12,7 @@
                 </ul>
                 <div class="tab-content tg-haslayout">
                     <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signup-formarea">
-                        @using (Html.BeginForm("ConfirmRegistraion", "Account", FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
+                        @using (Html.BeginForm("ConfirmRegistration", "Account", FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
                             @Html.HiddenFor(model => model.RegistrationDetails.Role)

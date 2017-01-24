@@ -166,11 +166,10 @@ namespace DPTS.Web.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult PreRegister()
+        public ActionResult Register()
         {
             var model = new RegisterViewModel();
             model.UserRoleList = GetUserTypeList();
-            //return Redirect("/Account/ConfirmRegistration");
             return View(model);
         }
 
@@ -179,7 +178,7 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult PreRegister(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model)
         {
             if (model.Role == "0" && model.UserType == "professional")
                 ModelState.AddModelError("", "Select user type");
@@ -194,9 +193,7 @@ namespace DPTS.Web.Controllers
                 sms.message = "DTPS Verification code: " + Session["otp"].ToString() + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
                 _smsService.SendSms(sms);
                 TempData["regmodel"] = model;
-                //return RedirectToAction("ConfirmRegistration", "Account");
-                return Redirect("Account/ConfirmRegistration");
-                //return RedirectToAction("ConfirmRegistration", "Account");
+                return RedirectToAction("ConfirmRegistration", "Account");
             }
             model.UserRoleList = GetUserTypeList();
             // If we got this far, something failed, redisplay form
@@ -204,15 +201,18 @@ namespace DPTS.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult ConfirmRegistration()
         {
-            RegisterViewModel model = new RegisterViewModel();
-            var regmodel = TempData["regmodel"];
-
+            RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
+            ConfirmRegisterViewModel model = new ConfirmRegisterViewModel();
+            model.RegistrationDetails = regModel;
             return View(model);
         }
 
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model)
         {
             
