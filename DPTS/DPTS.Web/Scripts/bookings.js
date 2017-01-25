@@ -227,12 +227,9 @@ jQuery(document).ready(function ($) {
 	//Booking detail show/hide
 	jQuery(document).on('click','.get-detail',function(){
 	    jQuery(this).parents('tr').next('tr').slideToggle(200);
-
-
-
 	});
 
-	//Change Appointment Status
+	//Change Appointment Status - doc
 	jQuery(document).on('click','.get-process',function(){
 
 		var _this	= jQuery(this);
@@ -289,6 +286,7 @@ jQuery(document).ready(function ($) {
 
 	});
 
+
 	//Privacy Settings
 	jQuery(document).on('change','.privacy-switch',function(){
 
@@ -333,7 +331,7 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-	//Booking Seach
+	//Booking Seach - doc
 	jQuery('.booking-search-date').datetimepicker({
 	  format:'Y-m-d',
 	  timepicker:false
@@ -344,6 +342,8 @@ jQuery(document).ready(function ($) {
 
 	docdirect_booking_calender(this);
 });
+
+
 
 //Input Type Phone
 function docdirect_intl_tel_input(){
@@ -373,8 +373,65 @@ function docdirect_isValidEmailAddress(emailAddress) {
     var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
     return pattern.test(emailAddress);
 };
+//booking doc
+var scripts_doc_vars = {
 
+    "approve_appointment": "Approve Appointment?",
+    "approve_appointment_message": "Are you sure, you want to approve this appointment?",
+    "cancel_appointment": "Cancel Appointment?",
+    "cancel_appointment_message": "Are you sure, you want to cancel this appointment?",
+};
+var loder_html_doc = '<div class="docdirect-loader-wrap"><div class="docdirect-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
+function approveAppoinment(id, action) {
+    var _this = $(this);
+    if (action == 'approve') {
+        var _title = scripts_doc_vars.approve_appointment;
+        var _message = scripts_doc_vars.approve_appointment_message;
+    } else {
+        var _title = scripts_doc_vars.cancel_appointment;
+        var _message = scripts_doc_vars.cancel_appointment_message;
+    }
+    var dataString = 'type=' + action + '&id=' + id + '&action=docdirect_change_appointment_status';
 
+    jQuery.confirm({
+        'title': _title,
+        'message': _message,
+        'buttons': {
+            'Yes': {
+                'class': 'blue',
+                'action': function () {
+                    jQuery('.booking-model-contents').append(loder_html_doc);
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/Doctor/ChangeBookingStatus/",
+                        data: dataString,
+                        dataType: "json",
+                        success: function (response) {
+                            jQuery('body').find('.docdirect-loader-wrap').remove();
+
+                            if (response.action_type == 'approved') {
+                                var approved = wp.template('status-approved');
+                                _this.parents('td').html(approved);
+                            } else if (response.action_type == 'cancelled') {
+                                _this.parents('tr').remove();
+                                _this.parents('tr').next('tr').remove();
+                            }if (response.action_type == 'visited') {
+                                _this.parents('tr').remove();
+                                _this.parents('tr').next('tr').remove();
+                            }
+                        }
+                    });
+                }
+            },
+            'No': {
+                'class': 'gray',
+                'action': function () {
+                    return false;
+                }	// Nothing to do in this case. You can as well omit the action property.
+            }
+        }
+    });
+}
 //Booking Calender
 function docdirect_appointment_tabs(current){
 	//Tab Items

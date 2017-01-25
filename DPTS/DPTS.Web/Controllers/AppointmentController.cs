@@ -83,6 +83,10 @@ namespace DPTS.Web.Controllers
                         _scheduleService.GetAppointmentScheduleByDoctorId(doctorId)
                             .Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("yyyy-MM-dd")))
                             .ToList();
+                    bookedSlots =
+                        bookedSlots.Where(
+                            s => s.AppointmentStatus.Name == "Pending" || s.AppointmentStatus.Name == "Booked")
+                            .ToList();
 
                     var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
                     scheduleSlots.doctorId = doctorId;
@@ -104,8 +108,6 @@ namespace DPTS.Web.Controllers
 
             if (!string.IsNullOrWhiteSpace(doctorId) && !string.IsNullOrWhiteSpace(slot_date))
             {
-                var scheduleSlots = new AppointmentScheduleViewModel();
-
                 resultNoResultFound += "<div class=\"bk-thanks-message\">";
                 resultNoResultFound += "<div class=\"tg-message\">";
                 resultNoResultFound += "<h2>Schedule Not Found !!</h2>";
@@ -125,7 +127,13 @@ namespace DPTS.Web.Controllers
                 }
                 var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(slot_date)).ToList();
 
-                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
+                bookedSlots =
+                        bookedSlots.Where(
+                            s => s.AppointmentStatus.Name == "Pending" || s.AppointmentStatus.Name == "Booked")
+                            .ToList();
+
+
+                var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
 
                 if(scheduleSlots == null)
                 {
@@ -294,7 +302,7 @@ namespace DPTS.Web.Controllers
         {
             return Json(new
             {
-                success = 1
+                action_type = "cancelled"
             });
         }
         #endregion

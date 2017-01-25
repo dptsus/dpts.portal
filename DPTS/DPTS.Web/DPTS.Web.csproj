@@ -219,6 +219,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\AppointmentScheduleViewModel.cs" />
+    <Compile Include="Models\DoctorScheduleListingViewModel.cs" />
     <Compile Include="Models\EmailCategoryViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\DoctorProfileSettingViewModel.cs" />
