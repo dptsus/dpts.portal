@@ -15,5 +15,7 @@ namespace DPTS.Web.Models
 
         public IList<AppointmentSchedule> AppointmentSchedule { get; set; }
 
+        public string ByDate { get; set; }
+
     }
 }

@@ -380,6 +380,10 @@ var scripts_doc_vars = {
     "approve_appointment_message": "Are you sure, you want to approve this appointment?",
     "cancel_appointment": "Cancel Appointment?",
     "cancel_appointment_message": "Are you sure, you want to cancel this appointment?",
+    "visit_appointment": "Visit Appointment?",
+    "visit_appointment_message": "Are you sure, patient is visited this appointment?",
+    "fail_appointment": "Fail Appointment?",
+    "fail_appointment_message": "Are you sure, patient is failed to Visit?",
 };
 var loder_html_doc = '<div class="docdirect-loader-wrap"><div class="docdirect-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
 function approveAppoinment(id, action) {
@@ -387,9 +391,17 @@ function approveAppoinment(id, action) {
     if (action == 'approve') {
         var _title = scripts_doc_vars.approve_appointment;
         var _message = scripts_doc_vars.approve_appointment_message;
-    } else {
+    } else if (action == 'cancel') {
         var _title = scripts_doc_vars.cancel_appointment;
         var _message = scripts_doc_vars.cancel_appointment_message;
+    }
+    else if (action == 'visit') {
+        var _title = scripts_doc_vars.visit_appointment;
+        var _message = scripts_doc_vars.visit_appointment_message;
+    }
+    else if (action == 'failed') {
+        var _title = scripts_doc_vars.fail_appointment;
+        var _message = scripts_doc_vars.fail_appointment_message;
     }
     var dataString = 'type=' + action + '&id=' + id + '&action=docdirect_change_appointment_status';
 
@@ -409,16 +421,17 @@ function approveAppoinment(id, action) {
                         success: function (response) {
                             jQuery('body').find('.docdirect-loader-wrap').remove();
 
-                            if (response.action_type == 'approved') {
-                                var approved = wp.template('status-approved');
-                                _this.parents('td').html(approved);
-                            } else if (response.action_type == 'cancelled') {
-                                _this.parents('tr').remove();
-                                _this.parents('tr').next('tr').remove();
-                            }if (response.action_type == 'visited') {
-                                _this.parents('tr').remove();
-                                _this.parents('tr').next('tr').remove();
-                            }
+                            //if (response.action_type == 'approved') {
+                            //    var approved = wp.template('status-approved');
+                            //    _this.parents('td').html(approved);
+                            //} else if (response.action_type == 'cancelled') {
+                            //    _this.parents('tr').remove();
+                            //    _this.parents('tr').next('tr').remove();
+                            //}if (response.action_type == 'visited') {
+                            //    _this.parents('tr').remove();
+                            //    _this.parents('tr').next('tr').remove();
+                            //}
+                            window.location.reload();
                         }
                     });
                 }

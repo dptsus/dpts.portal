@@ -778,15 +778,21 @@ namespace DPTS.Web.Controllers
             catch { return null; }
         }
 
-        public ActionResult BookingListings()
+        public ActionResult BookingListings(DoctorScheduleListingViewModel model)
         {
-            var model = new DoctorScheduleListingViewModel();
             try
             {
                 if (Request.IsAuthenticated && User.IsInRole("Doctor"))
                 {
                     var userId = User.Identity.GetUserId();
                     var doctorSchedule = _scheduleService.GetAppointmentScheduleByDoctorId(userId);
+
+                    if (!string.IsNullOrWhiteSpace(model.ByDate))
+                    {
+                        var sortedByDate = doctorSchedule.Where(s => s.AppointmentDate == model.ByDate).ToList();
+                        model.AppointmentSchedule = sortedByDate;
+                        return View(model);
+                    }
                     model.AppointmentSchedule = doctorSchedule;
                 }
             }
@@ -794,6 +800,7 @@ namespace DPTS.Web.Controllers
             {
                 throw;
             }
+
             return View(model);
         }
 
@@ -810,53 +817,61 @@ namespace DPTS.Web.Controllers
                             return Json(new { action_type = "none" });
 
                         AppointmentStatus status;
-                        switch (type)
+                        if(type.Equals("approve"))
                         {
-                            case "approve":
-                                status = _scheduleService.GetAppointmentStatusByName("Booked");
-                                if (status == null)
-                                    return Json(new { action_type = "none" });
+                            status = _scheduleService.GetAppointmentStatusByName("Approved");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
 
-                                appoinment.StatusId = status.Id;
-                                _scheduleService.UpdateAppointmentSchedule(appoinment);
-                                return Json(new
-                                {
-                                    action_type = "approved"
-                                });
-                            //return Json(new
-                            //{
-                            //    redirect = Url.Action("AppointmentList", "Visitor"),
-                            //});
-                            case "cancel":
-                                status = _scheduleService.GetAppointmentStatusByName("Cancelled");
-                                if (status == null)
-                                    return Json(new { action_type = "none" });
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "approved"
+                            });
+                        }else if(type.Equals("cancel"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Cancelled");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
 
-                                appoinment.StatusId = status.Id;
-                                _scheduleService.UpdateAppointmentSchedule(appoinment);
-                                return Json(new
-                                {
-                                    action_type = "cancelled"
-                                });
-                            case "visit":
-                                status = _scheduleService.GetAppointmentStatusByName("Visited");
-                                if (status == null)
-                                    return Json(new { action_type = "none" });
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "cancelled"
+                            });
+                        }
+                        else if (type.Equals("visit"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Visited");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
 
-                                appoinment.StatusId = status.Id;
-                                _scheduleService.UpdateAppointmentSchedule(appoinment);
-                                return Json(new
-                                {
-                                    action_type = "visited"
-                                });
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "visited"
+                            });
+                        }
+                        else if (type.Equals("failed"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Failed");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
+
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "visited"
+                            });
                         }
                     }
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            catch{ }
             return Json(new
             {
                 action_type = "none"

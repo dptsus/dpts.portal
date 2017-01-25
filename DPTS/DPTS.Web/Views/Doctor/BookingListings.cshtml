@@ -20,17 +20,16 @@
                         <div class="tg-heading-border tg-small">
                             <h3>Appointments</h3>
                         </div>
-                        <form class="tg-formappointmentsearch" action="#" method="get">
+@using (Html.BeginForm("BookingListings", "Doctor", FormMethod.Get, new { id = "form-appoinmentlist", @class = "tg-formappointmentsearch" }))
+{
                             <fieldset>
                                 <h4>Search Here:</h4>
                                 <div class="form-group">
-                                    <input type="hidden" class="" value="bookings" name="ref">
-                                    <input type="hidden" class="" value="340" name="identity">
-                                    <input type="text" class="form-control booking-search-date" value="" name="by_date" placeholder="Search by date">
+                                    <input type="text" class="form-control booking-search-date" value="@Model.ByDate" name="ByDate" placeholder="Search by date">
                                     <button type="submit"><i class="fa fa-search"></i></button>
                                 </div>
                             </fieldset>
-                        </form>
+}
                         <div class="tg-appointmenttable">
                             <table class="table">
                                 <thead class="thead-inverse">
@@ -47,7 +46,7 @@
                                 {
                                     foreach (var item in Model.AppointmentSchedule)
                                     {
-                                        string fullName = item.AspNetUser.FirstName + " " + item.AspNetUser.LastName; 
+                                        string fullName = item.AspNetUser.FirstName + " " + item.AspNetUser.LastName;
                                         <tr class="booking-odd booking-1883">
                                             <td data-name="id">@fullName</td>
                                             <td data-name="subject">@item.Subject</td>
@@ -56,15 +55,15 @@
                                             <td>
                                                 @if (item.AppointmentStatus.Name.Equals("Pending"))
                                                 {
-                                                    <a class="tg-btncheck appointment-actioned fa fa-check" onclick="approveAppoinment(@item.Id, 'approve')" href="javascript:;">Approved</a>
-                                                    <a class="tg-btncheck appointment-actioned fa fa-check" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>
-                                                    <a class="tg-btncheck appointment-actioned fa fa-check" href="javascript:;">Reschudle</a>
-                                                }
-                                                else if (item.AppointmentStatus.Name.Equals("Booked"))
+                                                    <a class="tg-btncheck appointment-actioned fa fa-check" style="background: cornflowerblue" onclick="approveAppoinment(@item.Id, 'approve')" href="javascript:;">Approved</a>
+                                                    <a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" href="javascript:;">Reschudle</a>
+                                                    <a class="tg-btncheck appointment-actioned fa fa-times" style="background: crimson" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>
+                                                    }
+                                                else if (item.AppointmentStatus.Name.Equals("Approved"))
                                                 {
-                                                    <a class="tg-btncheck appointment-actioned fa fa-check" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>
-                                                    <a class="tg-btncheck appointment-actioned fa fa-check" onclick="approveAppoinment(@item.Id, 'visit')" href="javascript:;">Visited</a>
-                                                    <a class="tg-btncheck appointment-actioned fa fa-check" onclick="approveAppoinment(@item.Id, 'visit')" href="javascript:;">Fail to Visit</a>
+                                                    @*<a class="tg-btncheck appointment-actioned fa fa-check" style="background: crimson" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>*@
+                                                    <a class="tg-btncheck appointment-actioned fa fa-check" style="background: green" onclick="approveAppoinment(@item.Id, 'visit')" href="javascript:;">Visited</a>
+                                                    <a class="tg-btncheck appointment-actioned fa fa-times" style="background: crimson" onclick="approveAppoinment(@item.Id, 'failed')" href="javascript:;">Fail to Visit</a>
                                                 }
                                                 else if (item.AppointmentStatus.Name.Equals("Cancelled"))
                                                 {
@@ -73,6 +72,10 @@
                                                 else if (item.AppointmentStatus.Name.Equals("Visited"))
                                                 {
                                                     <span style="width: auto; Display: inline-block;" class="label label-success">@item.AppointmentStatus.Name</span>
+                                                }
+                                                else if (item.AppointmentStatus.Name.Equals("Failed"))
+                                                {
+                                                    <span style="width: auto; Display: inline-block;" class="label label-danger">@item.AppointmentStatus.Name</span>
                                                 }
                                             </td>
                                         </tr>
@@ -122,7 +125,7 @@
                                         </tr>
                                     }
                                 }
-                                
+
                                 </tbody>
                             </table>
                             @*<div class="col-md-xs-12">

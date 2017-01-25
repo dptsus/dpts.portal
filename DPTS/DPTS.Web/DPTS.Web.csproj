@@ -879,6 +879,7 @@
     <Content Include="Views\Appointment\Booking.cshtml" />
     <Content Include="Views\Shared\VisitorAccountNavigation.cshtml" />
     <Content Include="Views\Visitor\AppointmentList.cshtml" />
+    <Content Include="Views\Home\Doctors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,66 @@
+﻿@model SearchViewModel
+@using DPTS.Web.Models
+@{
+    ViewBag.Title = "Doctors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main id="main" class="tg-page-wrapper tg-haslayout">
+    <div class="container">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <form">
+                        <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
+                            <div class="tg-doctors-list tg-haslayout">
+                                <div class="tg-refinesearcharea">
+                                    <div class="tg-heading-border tg-small">
+                                        <h2>refine search</h2>
+                                    </div>
+                                    @Html.Partial("_SearchNavigation", Model.SearchModel)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
+                            <div class="tg-doctors-list tg-haslayout">
+                                <div class="tg-doclisthead">
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-4 col-xs-6">
+                                            <div class="form-group">
+                                                <span class="select">
+                                                    <select class="group sort_by" name="sort_by" id="sort_by">
+                                                        <option value="">Sort By</option>
+                                                        <option value="recent">Most recent</option>
+                                                        <option value="featured">Featured</option>
+                                                        <option value="title">Alphabetical</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4 col-xs-6">
+                                            <div class="form-group">
+                                                <span class="select">
+                                                    <select class="group order_by" name="order" id="order">
+                                                        <option value="ASC">ASC</option>
+                                                        <option value="DESC">DESC</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-4 col-xs-12">
+                                            <ul class="tg-listing-views">
+                                                <li class=""><a href="javascript:;" class="grid"><i class="fa fa-th-large"></i></a></li>
+                                                <li class="active"><a href="javascript:;" class="list"><i class="fa fa-th-list"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                @Html.Partial("_DoctorBox", Model.doctorsModel)
+
+                            </div>
+                        </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
