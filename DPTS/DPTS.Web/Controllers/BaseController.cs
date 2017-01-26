@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.IO.Compression;
 using System.Web;
 using System.Web.Mvc;
@@ -31,13 +32,35 @@ namespace DPTS.Web.Controllers
                 return false;
             }
         }
+
         [NonAction]
         protected bool IsValidateId(int id)
         {
             return id != 0;
         }
 
+        /// <summary>
+        /// Render partial view to string
+        /// </summary>
+        /// <param name="viewName">View name</param>
+        /// <param name="model">Model</param>
+        /// <returns>Result</returns>
+        public virtual string RenderPartialViewToString(string viewName, object model)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                viewName = ControllerContext.RouteData.GetRequiredString("action");
 
+            ViewData.Model = model;
+
+            using (var sw = new StringWriter())
+            {
+                ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+
+                return sw.GetStringBuilder().ToString();
+            }
+        }
     }
 
 
@@ -73,7 +96,6 @@ namespace DPTS.Web.Controllers
         //FilterExecutingContext
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-
             var request = filterContext.HttpContext.Request;
 
             var acceptEncoding = request.Headers["Accept-Encoding"];
@@ -108,5 +130,4 @@ namespace DPTS.Web.Controllers
             }
         }
     }
-
 }

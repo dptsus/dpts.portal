@@ -14,11 +14,15 @@ namespace DPTS.Domain.Entities
         [StringLength(128)]
         public string PatientId { get; set; }
 
+        public string Subject { get; set; }
+
         public string DiseasesDescription { get; set; }
 
         public int StatusId { get; set; }
 
-        public TimeSpan AppointmentTime { get; set; }
+        public string AppointmentTime { get; set; }
+
+        public string AppointmentDate { get; set; }
 
         public virtual AppointmentStatus AppointmentStatus { get; set; }
 

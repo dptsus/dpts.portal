@@ -157,5 +157,45 @@ namespace DPTS.Web.Controllers
             return View(searchVmodel);
         }
 
+        public ActionResult Doctors(SearchModel model)
+        {
+            var data = _doctorService.GetAllDoctors();
+
+            var searchVmodel = new SearchViewModel();
+
+            if (data != null)
+            {
+                foreach (var doc in data)
+                {
+                    var user = GetUserById(doc.DoctorId);
+                    if (user == null)
+                        return null;
+
+                    var doctor = new DoctorViewModel
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        MobileNumber = user.PhoneNumber,
+                        doctor = doc
+                    };
+                    var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
+                    doctor.Addresses = addr;
+                    searchVmodel.doctorsModel.Add(doctor);
+                }
+            }
+
+            searchVmodel.SearchModel = new SearchModel
+            {
+                AvailableSpeciality = GetSpecialityList(),
+                directory_type = model.directory_type,
+                keyword = model.keyword,
+                SpecialityId = model.SpecialityId,
+                ZipCode = model.ZipCode
+            };
+
+            return View(searchVmodel);
+        }
     }
 }

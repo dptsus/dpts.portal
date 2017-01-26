@@ -27,7 +27,7 @@ namespace DPTS.Services
         /// <param name="context">Object context</param>
         public Repository(DPTSDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace DPTS.Services
         {
             //see some suggested performance optimization (not tested)
             //http://stackoverflow.com/questions/11686225/dbset-find-method-ridiculously-slow-compared-to-singleordefault-on-id/11688189#comment34876113_11688189
-            return this.Entities.Find(id);
+            return Entities.Find(id);
         }
 
         /// <summary>
@@ -96,9 +96,9 @@ namespace DPTS.Services
 
                 SetDateTimePropertiesIfAny(entity);
 
-                this.Entities.Add(entity);
+                Entities.Add(entity);
 
-                this._context.SaveChanges();
+                _context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -118,9 +118,9 @@ namespace DPTS.Services
                     throw new ArgumentNullException("entities");
 
                 foreach (var entity in entities)
-                    this.Entities.Add(entity);
+                    Entities.Add(entity);
 
-                this._context.SaveChanges();
+                _context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -140,7 +140,7 @@ namespace DPTS.Services
                     throw new ArgumentNullException("entity");
 
                 SetDateTimePropertiesIfAny(entity,false);
-                this._context.SaveChanges();
+                _context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -159,7 +159,7 @@ namespace DPTS.Services
                 if (entities == null)
                     throw new ArgumentNullException("entities");
 
-                this._context.SaveChanges();
+                _context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -178,9 +178,9 @@ namespace DPTS.Services
                 if (entity == null)
                     throw new ArgumentNullException("entity");
 
-                this.Entities.Remove(entity);
+                Entities.Remove(entity);
 
-                this._context.SaveChanges();
+                _context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -200,9 +200,9 @@ namespace DPTS.Services
                     throw new ArgumentNullException("entities");
 
                 foreach (var entity in entities)
-                    this.Entities.Remove(entity);
+                    Entities.Remove(entity);
 
-                this._context.SaveChanges();
+                _context.SaveChanges();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -221,7 +221,7 @@ namespace DPTS.Services
         {
             get
             {
-                return this.Entities;
+                return Entities;
             }
         }
 
@@ -232,7 +232,7 @@ namespace DPTS.Services
         {
             get
             {
-                return this.Entities.AsNoTracking();
+                return Entities.AsNoTracking();
             }
         }
 
