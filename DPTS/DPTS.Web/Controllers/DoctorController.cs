@@ -172,6 +172,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Methods
+
         public ActionResult Info()
         {
             return View();
@@ -458,10 +459,12 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+
         public ActionResult InvoicesPackages()
         {
             return View();
         }
+
         public ActionResult DoctorSchedules()
         {
             try
@@ -568,7 +571,6 @@ namespace DPTS.Web.Controllers
             }
             catch { return null; }
         }
-
 
         [HttpPost]
         public ActionResult DoctorSchedules(FormCollection form)
@@ -776,9 +778,104 @@ namespace DPTS.Web.Controllers
             catch { return null; }
         }
 
-        public ActionResult BookingListings()
+        public ActionResult BookingListings(DoctorScheduleListingViewModel model)
         {
-            return View();
+            try
+            {
+                if (Request.IsAuthenticated && User.IsInRole("Doctor"))
+                {
+                    var userId = User.Identity.GetUserId();
+                    var doctorSchedule = _scheduleService.GetAppointmentScheduleByDoctorId(userId);
+
+                    if (!string.IsNullOrWhiteSpace(model.ByDate))
+                    {
+                        var sortedByDate = doctorSchedule.Where(s => s.AppointmentDate == model.ByDate).ToList();
+                        model.AppointmentSchedule = sortedByDate;
+                        return View(model);
+                    }
+                    model.AppointmentSchedule = doctorSchedule;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return View(model);
+        }
+
+        public JsonResult ChangeBookingStatus(string type,string id)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(id) && !string.IsNullOrWhiteSpace(type))
+                {
+                    if (Request.IsAuthenticated && User.IsInRole("Doctor"))
+                    {
+                        var appoinment = _scheduleService.GetAppointmentScheduleById(int.Parse(id));
+                        if (appoinment == null)
+                            return Json(new { action_type = "none" });
+
+                        AppointmentStatus status;
+                        if(type.Equals("approve"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Approved");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
+
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "approved"
+                            });
+                        }else if(type.Equals("cancel"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Cancelled");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
+
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "cancelled"
+                            });
+                        }
+                        else if (type.Equals("visit"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Visited");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
+
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "visited"
+                            });
+                        }
+                        else if (type.Equals("failed"))
+                        {
+                            status = _scheduleService.GetAppointmentStatusByName("Failed");
+                            if (status == null)
+                                return Json(new { action_type = "none" });
+
+                            appoinment.StatusId = status.Id;
+                            _scheduleService.UpdateAppointmentSchedule(appoinment);
+                            return Json(new
+                            {
+                                action_type = "visited"
+                            });
+                        }
+                    }
+                }
+            }
+            catch{ }
+            return Json(new
+            {
+                action_type = "none"
+            });
         }
 
         public ActionResult BookingSchedules()

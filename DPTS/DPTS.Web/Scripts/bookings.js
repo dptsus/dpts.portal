@@ -103,34 +103,7 @@ jQuery(document).ready(function ($) {
 		var bk_userphone = _this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val();
 		var bk_useremail	   = _this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val();
 		var bk_booking_note	= _this.parents(".tg-appointmenttabcontent").find('textarea[name="booking_note"]').val();
-		//docdirect_booking_calender();
-		//Check step 1
-		//if( bk_category
-		//	&&
-		//	bk_service
-		//	&&
-		//	Z_Steps.booking_step	== 1
-		//) {
 
-		//	jQuery('.booking-model-contents').append(loder_html);
-		//	var dataString = 'data_id='+data_id+'&action=docdirect_get_booking_step_two';
-		//	jQuery.ajax({
-		//		type: "POST",
-		//		url: "/Appointment/OpcSaveShipping/",
-		//		data: dataString,
-		//		dataType:"json",
-		//		success: function(response) {
-		//			//jQuery('body').find('.docdirect-loader-wrap').remove();
-
-		//			Z_Steps.booking_step	= 2;
-		//			jQuery('.step-two-slots .tg-timeslotswrapper').html(response.data);
-		//		//	docdirect_booking_calender();
-		//			docdirect_appointment_tabs(2);
-		//			jQuery('.bk-step-2').trigger('click');
-
-		//		}
-		//	});
-	    //} else
 		if (
 			Z_Steps.booking_step	== 1
 		) {
@@ -140,7 +113,7 @@ jQuery(document).ready(function ($) {
 				return false;
 			}
 
-			//jQuery('.booking-model-contents').append(loder_html);
+			jQuery('.booking-model-contents').append(loder_html);
 			var dataString = 'data_id=' + data_id + '&action=docdirect_get_booking_step_two';
 			jQuery.ajax({
 				type: "POST",
@@ -155,6 +128,7 @@ jQuery(document).ready(function ($) {
 					_this.parents(".tg-appointmenttabcontent").find('input[name="username"]').val(response.username);
 					_this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val(response.mobilenumber);
 					_this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val(response.useremail);
+                    //docdirect_booking_calender();
 					docdirect_appointment_tabs(2);
 					jQuery('.bk-step-2').trigger('click');
 				}
@@ -208,18 +182,20 @@ jQuery(document).ready(function ($) {
 				data: serialize_data,
 				dataType:"json",
 				success: function(response) {
-					jQuery('body').find('.docdirect-loader-wrap').remove();
-					{
-						jQuery('body').find('.docdirect-loader-wrap').remove();
-						//jQuery('.step-four-contents').html(response.data);
-						Z_Steps.booking_step	= 1;
-						jQuery('.bk-step-4').trigger('click');
-						docdirect_appointment_tabs(4);
-						jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
-						jQuery('.booking-step-button').find('.bk-step-prev').remove();
-						jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
-						jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
-					}
+				    jQuery('body').find('.docdirect-loader-wrap').remove();
+				    if (response.result == "fail") {
+				        jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
+				        return false;
+				    } else {
+				        //jQuery('.step-four-contents').html(response.data);
+				        Z_Steps.booking_step = 1;
+				        jQuery('.bk-step-4').trigger('click');
+				        docdirect_appointment_tabs(4);
+				        jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
+				        jQuery('.booking-step-button').find('.bk-step-prev').remove();
+				        jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
+				        jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
+				    }
 				}
 			});
 		}
@@ -251,12 +227,9 @@ jQuery(document).ready(function ($) {
 	//Booking detail show/hide
 	jQuery(document).on('click','.get-detail',function(){
 	    jQuery(this).parents('tr').next('tr').slideToggle(200);
-
-
-
 	});
 
-	//Change Appointment Status
+	//Change Appointment Status - doc
 	jQuery(document).on('click','.get-process',function(){
 
 		var _this	= jQuery(this);
@@ -313,6 +286,7 @@ jQuery(document).ready(function ($) {
 
 	});
 
+
 	//Privacy Settings
 	jQuery(document).on('change','.privacy-switch',function(){
 
@@ -357,16 +331,19 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-	//Booking Seach
+	//Booking Seach - doc
 	jQuery('.booking-search-date').datetimepicker({
 	  format:'Y-m-d',
 	  timepicker:false
 	});
     //primery value
 	jQuery('.booking-pickr strong').html(moment().format('MMM D, dddd'));
+	jQuery('#booking_date').val(moment().format('YYYY-MM-DD'));
 
 	docdirect_booking_calender(this);
 });
+
+
 
 //Input Type Phone
 function docdirect_intl_tel_input(){
@@ -396,8 +373,78 @@ function docdirect_isValidEmailAddress(emailAddress) {
     var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
     return pattern.test(emailAddress);
 };
+//booking doc
+var scripts_doc_vars = {
 
+    "approve_appointment": "Approve Appointment?",
+    "approve_appointment_message": "Are you sure, you want to approve this appointment?",
+    "cancel_appointment": "Cancel Appointment?",
+    "cancel_appointment_message": "Are you sure, you want to cancel this appointment?",
+    "visit_appointment": "Visit Appointment?",
+    "visit_appointment_message": "Are you sure, patient is visited this appointment?",
+    "fail_appointment": "Fail Appointment?",
+    "fail_appointment_message": "Are you sure, patient is failed to Visit?",
+};
+var loder_html_doc = '<div class="docdirect-loader-wrap"><div class="docdirect-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
+function approveAppoinment(id, action) {
+    var _this = $(this);
+    if (action == 'approve') {
+        var _title = scripts_doc_vars.approve_appointment;
+        var _message = scripts_doc_vars.approve_appointment_message;
+    } else if (action == 'cancel') {
+        var _title = scripts_doc_vars.cancel_appointment;
+        var _message = scripts_doc_vars.cancel_appointment_message;
+    }
+    else if (action == 'visit') {
+        var _title = scripts_doc_vars.visit_appointment;
+        var _message = scripts_doc_vars.visit_appointment_message;
+    }
+    else if (action == 'failed') {
+        var _title = scripts_doc_vars.fail_appointment;
+        var _message = scripts_doc_vars.fail_appointment_message;
+    }
+    var dataString = 'type=' + action + '&id=' + id + '&action=docdirect_change_appointment_status';
 
+    jQuery.confirm({
+        'title': _title,
+        'message': _message,
+        'buttons': {
+            'Yes': {
+                'class': 'blue',
+                'action': function () {
+                    jQuery('.booking-model-contents').append(loder_html_doc);
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/Doctor/ChangeBookingStatus/",
+                        data: dataString,
+                        dataType: "json",
+                        success: function (response) {
+                            jQuery('body').find('.docdirect-loader-wrap').remove();
+
+                            //if (response.action_type == 'approved') {
+                            //    var approved = wp.template('status-approved');
+                            //    _this.parents('td').html(approved);
+                            //} else if (response.action_type == 'cancelled') {
+                            //    _this.parents('tr').remove();
+                            //    _this.parents('tr').next('tr').remove();
+                            //}if (response.action_type == 'visited') {
+                            //    _this.parents('tr').remove();
+                            //    _this.parents('tr').next('tr').remove();
+                            //}
+                            window.location.reload();
+                        }
+                    });
+                }
+            },
+            'No': {
+                'class': 'gray',
+                'action': function () {
+                    return false;
+                }	// Nothing to do in this case. You can as well omit the action property.
+            }
+        }
+    });
+}
 //Booking Calender
 function docdirect_appointment_tabs(current){
 	//Tab Items
@@ -437,7 +484,7 @@ function docdirect_booking_calender(val){
 	        var slot_date = moment(dp).format('YYYY-MM-DD');
 	        jQuery('.booking-pickr strong').html(moment(dp).format('MMM D, dddd'));
 
-	        jQuery('.booking_date').val(slot_date);
+	        jQuery('#booking_date').val(slot_date);
 
 	        var _this = jQuery(this);
 	        var data_id = jQuery('.tg-appointmenttabcontent').data('id');
@@ -452,7 +499,7 @@ function docdirect_booking_calender(val){
 	            dataType: "json",
 	            success: function (c) {
 	                jQuery('body').find('.docdirect-loader-wrap').remove();
-	                Z_Steps.booking_step = 2;
+	                Z_Steps.booking_step = 1;
 	                jQuery('.step-one-slots .tg-timeslotswrapper').html(c.response);
 	                docdirect_booking_calender();
 	            }

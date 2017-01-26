@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.Designer.cs">
       <DependentUpon>201701211205218_UpdateAppointmentScheduleTimeSpan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701230506377_UpdateAppointmentSchedule1.cs" />
+    <Compile Include="Migrations\201701230506377_UpdateAppointmentSchedule1.Designer.cs">
+      <DependentUpon>201701230506377_UpdateAppointmentSchedule1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -141,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.resx">
       <DependentUpon>201701211205218_UpdateAppointmentScheduleTimeSpan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701230506377_UpdateAppointmentSchedule1.resx">
+      <DependentUpon>201701230506377_UpdateAppointmentSchedule1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

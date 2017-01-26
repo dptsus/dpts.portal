@@ -1,49 +1,73 @@
 ﻿@using DPTS.Web.Models;
 @using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
 @{
     string FirstName = string.Empty;
-    var context = new ApplicationDbContext();
-    if (!string.IsNullOrEmpty(User.Identity.Name))
+    if (Request.IsAuthenticated)
     {
-        var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+        var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        var user = manager.FindById(User.Identity.GetUserId());
         FirstName = string.Concat(new string[] { user.FirstName });
     }
 }
 <div class="doc-menu">
     <ul class="tg-login-logout">
-            @if (Request.IsAuthenticated)
+        @if (Request.IsAuthenticated)
+        {
+            if (User.IsInRole("Doctor"))
             {
-                    <li class="session-user-info">
-                        <a href="javascript:;"><span class="s-user">@FirstName</span><img alt="Welcome" id="welcome"></a>
-                        <ul>
-                            <li class="active"><a href="@Url.Action("Info","Doctor")"><i class="fa fa-line-chart"></i>Profile</a></li>
-                            <li class=""><a href="@Url.Action("ProfileSetting","Doctor")">Profile Settings</a></li>
-                            <li class=""><a href="@Url.Action("Addresses", "Doctor")">Address</a></li>
-                            <li class=""><a href="@Url.Action("Favourites","Doctor")">Favourites</a></li>
-                            <li class=""><a href="@Url.Action("InvoicesPackages","Doctor")">Invoices &amp; Packages</a></li>
-                            <li class=""><a href="@Url.Action("DoctorSchedules","Doctor")">My Schedules</a></li>
-                            <li class=""><a href="@Url.Action("BookingListings","Doctor")">Booking Listings</a></li>
-                            <li class=""><a href="@Url.Action("BookingSchedules","Doctor")">Booking Schedules</a></li>
-                            <li class=""><a href="@Url.Action("BookingSettings","Doctor")">Booking Settings</a></li>
-                            <li class=""><a href="@Url.Action("SecuritySettings","Doctor")">Security Settings</a></li>
-                            <li class=""><a href="@Url.Action("PrivacySettings","Doctor")">Privacy Settings</a></li>
-                            <li>
-                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                <li class="session-user-info">
+                    <a href="javascript:;"><span class="s-user">@FirstName</span><img alt="Welcome" id="welcome"></a>
+                    <ul>
+                        <li class="active"><a href="@Url.Action("Info", "Doctor")"><i class="fa fa-line-chart"></i>Profile</a></li>
+                        <li class=""><a href="@Url.Action("ProfileSetting", "Doctor")">Profile Settings</a></li>
+                        <li class=""><a href="@Url.Action("Addresses", "Doctor")">Address</a></li>
+                        @*<li class=""><a href="@Url.Action("Favourites", "Doctor")">Favourites</a></li>*@
+                        @*<li class=""><a href="@Url.Action("InvoicesPackages", "Doctor")">Invoices &amp; Packages</a></li>*@
+                        <li class=""><a href="@Url.Action("DoctorSchedules", "Doctor")">My Schedules</a></li>
+                        <li class=""><a href="@Url.Action("BookingListings", "Doctor")">Booking Listings</a></li>
+                        <li class=""><a href="@Url.Action("BookingSchedules", "Doctor")">Booking Schedules</a></li>
+                        <li class=""><a href="@Url.Action("BookingSettings", "Doctor")">Booking Settings</a></li>
+                        <li class=""><a href="@Url.Action("SecuritySettings", "Doctor")">Security Settings</a></li>
+                        <li class=""><a href="@Url.Action("PrivacySettings", "Doctor")">Privacy Settings</a></li>
+                        <li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                                 {
-                                   @Html.AntiForgeryToken()
-                                   <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
+                                @Html.AntiForgeryToken()
+                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
                                 }
-                            </li>
-                        </ul>
-                    </li>
+                        </li>
+                    </ul>
+                </li>
             }
             else
             {
                 <li class="session-user-info">
-                    <a href="@Url.Action("Login","Account")"><span class="s-user" style="display:block">Login/Register</span><img alt="Login" src="~/Content/wp-content/themes/docdirect/images/singin_icon.png"></a>
+                    <a href="javascript:;"><span class="s-user">@FirstName</span><img alt="Welcome" id="welcome"></a>
+                    <ul>
+                        <li class="active"><a href="@Url.Action("AppointmentList", "Visitor")"><i class="fa fa-hospital-o" aria-hidden="true"></i>
+Appoinments</a></li>
+                        <li class=""><a href="@Url.Action("Index", "Manage")"><i class="fa fa-user" aria-hidden="true"></i>Profile Settings</a></li>
+                        <li class=""><a href="@Url.Action("ChangePassword", "Manage")"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Security Settings</a></li>
+                        <li>
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
+                            }
+                        </li>
+                    </ul>
                 </li>
             }
-        </ul>
+        }
+        else
+        {
+            <li class="session-user-info">
+                <a href="@Url.Action("Login","Account")"><span class="s-user" style="display:block">Login/Register</span><img alt="Login" src="~/Content/wp-content/themes/docdirect/images/singin_icon.png"></a>
+            </li>
+        }
+    </ul>
+
     </div>
 
 @Scripts.Render("~/bundles/jquery")

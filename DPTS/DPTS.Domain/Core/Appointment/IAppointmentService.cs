@@ -37,6 +37,13 @@ namespace DPTS.Domain.Core.Appointment
         IList<AppointmentSchedule> GetAppointmentScheduleByDoctorId(string doctorId);
 
         /// <summary>
+        /// Get Appointment Schedules by patient id
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
+        IList<AppointmentSchedule> GetAppointmentScheduleByPatientId(string patientId);
+
+        /// <summary>
         /// Get Appointment Schedule by identifiers
         /// </summary>
         /// <param name="scheduleIds">Country identifiers</param>
