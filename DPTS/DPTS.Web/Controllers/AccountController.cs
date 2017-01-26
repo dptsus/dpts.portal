@@ -176,7 +176,7 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
+        public ActionResult Register(RegisterViewModel model, string returnUrl)
         {
             if (model.Role == "0" && model.UserType == "professional")
                 ModelState.AddModelError("", "Select user type");
@@ -211,7 +211,7 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model)
+        public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model, string returnUrl)
         {
             
             if (ModelState.IsValid)
