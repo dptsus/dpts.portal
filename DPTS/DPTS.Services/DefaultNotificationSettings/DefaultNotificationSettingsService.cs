@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.DefaultNotificationSettings;
-using DPTS.Domain.Entities;
 
 namespace DPTS.Services.DefaultNotificationSettings
 {
@@ -14,37 +13,37 @@ namespace DPTS.Services.DefaultNotificationSettings
     {
         #region Fields
 
-        private readonly IRepository<Domain.Entities.DefaultNotificationSettings> _stateProvinceRepository;
+        private readonly IRepository<Domain.Entities.DefaultNotificationSettings> _defaultNotificationSettingsRepository;
 
         #endregion
 
         #region Ctor
-        public DefaultNotificationSettingsService(IRepository<Domain.Entities.DefaultNotificationSettings> stateProvinceRepository)
+        public DefaultNotificationSettingsService(IRepository<Domain.Entities.DefaultNotificationSettings> defaultNotificationSettingsRepository)
         {
-            _stateProvinceRepository = stateProvinceRepository;
+            _defaultNotificationSettingsRepository = defaultNotificationSettingsRepository;
         }
         #endregion
 
         #region Methods
         /// <summary>
-        /// delete state
+        /// delete defaultNotificationSettings
         /// </summary>
-        /// <param name="state"></param>
-        public void DeleteStateProvince(Domain.Entities.DefaultNotificationSettings state)
+        /// <param name="defaultNotificationSettings"></param>
+        public void DeleteDefaultNotificationSettings(Domain.Entities.DefaultNotificationSettings defaultNotificationSettings)
         {
-            if (state == null)
+            if (defaultNotificationSettings == null)
                 throw new ArgumentNullException("defaultNotificationSettings");
 
-            _stateProvinceRepository.Delete(state);
+            _defaultNotificationSettingsRepository.Delete(defaultNotificationSettings);
         }
         /// <summary>
-        /// Get all state
+        /// Get all defaultNotificationSettings
         /// </summary>
         /// <param name="showHidden"></param>
         /// <returns></returns>
-        public IList<Domain.Entities.DefaultNotificationSettings> GetAllStateProvince(bool showHidden = false)
+        public IList<Domain.Entities.DefaultNotificationSettings> GetAllDefaultNotificationSettings(bool showHidden = false)
         {
-            var query = _stateProvinceRepository.Table;
+            var query = _defaultNotificationSettingsRepository.Table;
             if (!showHidden)
                 query = query.Where(c => c.Published);
             query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
@@ -53,44 +52,44 @@ namespace DPTS.Services.DefaultNotificationSettings
             return countries;
         }
         /// <summary>
-        /// get state by abbreviation
+        /// get defaultNotificationSettings by abbreviation
         /// </summary>
         /// <param name="abbreviation"></param>
         /// <returns></returns>
-        public Domain.Entities.DefaultNotificationSettings GetStateProvinceByAbbreviation(string abbreviation)
+        public Domain.Entities.DefaultNotificationSettings GetDefaultNotificationSettingsByAbbreviation(string abbreviation)
         {
-            var query = from sp in _stateProvinceRepository.Table
-                        where sp.Abbreviation == abbreviation
+            var query = from sp in _defaultNotificationSettingsRepository.Table
+                        where sp.Message == abbreviation
                         select sp;
-            var stateProvince = query.FirstOrDefault();
-            return stateProvince;
+            var defaultNotificationSettings = query.FirstOrDefault();
+            return defaultNotificationSettings;
         }
 
         /// <summary>
-        /// get state by id
+        /// get defaultNotificationSettings by id
         /// </summary>
-        /// <param name="stateProvinceId"></param>
+        /// <param name="defaultNotificationSettingsId"></param>
         /// <returns></returns>
-        public Domain.Entities.DefaultNotificationSettings GetStateProvinceById(int stateProvinceId)
+        public Domain.Entities.DefaultNotificationSettings GetDefaultNotificationSettingsById(int defaultNotificationSettingsId)
         {
-            if (stateProvinceId == 0)
+            if (defaultNotificationSettingsId == 0)
                 return null;
 
-            return _stateProvinceRepository.GetById(stateProvinceId);
+            return _defaultNotificationSettingsRepository.GetById(defaultNotificationSettingsId);
         }
 
-        public IList<Domain.Entities.DefaultNotificationSettings> GetStateProvinceByIds(int[] stateProvinceIds)
+        public IList<Domain.Entities.DefaultNotificationSettings> GetDefaultNotificationSettingsByIds(int[] defaultNotificationSettingsIds)
         {
-            if (stateProvinceIds == null || stateProvinceIds.Length == 0)
+            if (defaultNotificationSettingsIds == null || defaultNotificationSettingsIds.Length == 0)
                 return new List<Domain.Entities.DefaultNotificationSettings>();
 
-            var query = from c in _stateProvinceRepository.Table
-                        where stateProvinceIds.Contains(c.Id)
+            var query = from c in _defaultNotificationSettingsRepository.Table
+                        where defaultNotificationSettingsIds.Contains(c.Id)
                         select c;
             var countries = query.ToList();
             //sort by passed identifiers
             var sortedCountries = new List<Domain.Entities.DefaultNotificationSettings>();
-            foreach (int id in stateProvinceIds)
+            foreach (int id in defaultNotificationSettingsIds)
             {
                 var country = countries.Find(x => x.Id == id);
                 if (country != null)
@@ -99,31 +98,31 @@ namespace DPTS.Services.DefaultNotificationSettings
             return sortedCountries;
         }
 
-        public IList<Domain.Entities.DefaultNotificationSettings> GetStateProvincesByCountryId(int countryId, bool showHidden = false)
+        public IList<Domain.Entities.DefaultNotificationSettings> GetDefaultNotificationSettingssByCountryId(int countryId, bool showHidden = false)
         {
-            var query = from sp in _stateProvinceRepository.Table
+            var query = from sp in _defaultNotificationSettingsRepository.Table
                         orderby sp.DisplayOrder, sp.Name
-                        where sp.CountryId == countryId &&
+                        where sp.CategoryId == countryId &&
                         (showHidden || sp.Published)
                         select sp;
 
             return query.ToList();
         }
 
-        public void InsertStateProvince(Domain.Entities.DefaultNotificationSettings state)
+        public void InsertDefaultNotificationSettings(Domain.Entities.DefaultNotificationSettings defaultNotificationSettings)
         {
-            if (state == null)
-                throw new ArgumentNullException("DefaultNotificationSettings");
+            if (defaultNotificationSettings == null)
+                throw new ArgumentNullException("defaultNotificationSettings");
 
-            _stateProvinceRepository.Insert(state);
+            _defaultNotificationSettingsRepository.Insert(defaultNotificationSettings);
         }
 
-        public void UpdateStateProvince(Domain.Entities.DefaultNotificationSettings state)
+        public void UpdateDefaultNotificationSettings(Domain.Entities.DefaultNotificationSettings defaultNotificationSettings)
         {
-            if (state == null)
-                throw new ArgumentNullException("DefaultNotificationSettings");
+            if (defaultNotificationSettings == null)
+                throw new ArgumentNullException("defaultNotificationSettings");
 
-            _stateProvinceRepository.Update(state);
+            _defaultNotificationSettingsRepository.Update(defaultNotificationSettings);
         }
          
         #endregion
