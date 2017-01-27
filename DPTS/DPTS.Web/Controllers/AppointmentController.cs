@@ -256,6 +256,8 @@ namespace DPTS.Web.Controllers
                 };
 
                 _scheduleService.InsertAppointmentSchedule(booking);
+                var doctorname = booking
+                "Your dental appointment with" +  Dr P. Delvour " is scheduled for " + timeofappointment + ", " + Address + ", " + contactnumber
                 return Json(new
                 {
                     result = "success"
