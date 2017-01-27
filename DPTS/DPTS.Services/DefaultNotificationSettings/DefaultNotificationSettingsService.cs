@@ -59,7 +59,7 @@ namespace DPTS.Services.DefaultNotificationSettings
         public Domain.Entities.DefaultNotificationSettings GetDefaultNotificationSettingsByAbbreviation(string abbreviation)
         {
             var query = from sp in _defaultNotificationSettingsRepository.Table
-                        where sp.Abbreviation == abbreviation
+                        where sp.Message == abbreviation
                         select sp;
             var defaultNotificationSettings = query.FirstOrDefault();
             return defaultNotificationSettings;
@@ -102,7 +102,7 @@ namespace DPTS.Services.DefaultNotificationSettings
         {
             var query = from sp in _defaultNotificationSettingsRepository.Table
                         orderby sp.DisplayOrder, sp.Name
-                        where sp.CountryId == countryId &&
+                        where sp.CategoryId == countryId &&
                         (showHidden || sp.Published)
                         select sp;
 

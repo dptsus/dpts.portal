@@ -25,9 +25,9 @@ namespace DPTS.Web.Controllers
 
         #region Utilities
 
-        public IList<SelectListItem> GetCountryList()
+        public IList<SelectListItem> GetDefaultNotificationSettings()
         {
-            var countries = _emailCategoryService.GetAllEmailCategories(true);
+            var emailCategories = _emailCategoryService.GetAllEmailCategories(true);
             var typelst = new List<SelectListItem>
             {
                 new SelectListItem
@@ -36,7 +36,7 @@ namespace DPTS.Web.Controllers
                     Value = "0"
                 }
             };
-            typelst.AddRange(countries.ToList().Select(type => new SelectListItem
+            typelst.AddRange(emailCategories.ToList().Select(type => new SelectListItem
             {
                 Text = type.Name, Value = type.Id.ToString()
             }));
@@ -47,30 +47,29 @@ namespace DPTS.Web.Controllers
         #region Methods
         public ActionResult List()
         {
-            var countries = _defaultNotificationSettingsService.GetAllDefaultNotificationSettings(true);
-            var model = countries.Select(c => new DefaultNotificationSettingsViewModel
+            var defaultNotificationSettings = _defaultNotificationSettingsService.GetAllDefaultNotificationSettings(true);
+            var model = defaultNotificationSettings.Select(c => new DefaultNotificationSettingsViewModel
             {
                 Id = c.Id,
                 Name = c.Name,
-                CountryName = _emailCategoryService.GetEmailCategoryById(c.Id).Name,
+                EmailCategory = _emailCategoryService.GetEmailCategoryById(c.Id).Name,
                 DisplayOrder = c.DisplayOrder,
-                Abbreviation = c.Abbreviation,
+                Message = c.Message,
                 Published = c.Published,
-                CountryId=c.CountryId
+                EmailCategoryId= c.CategoryId
             }).ToList();
             return View(model);
         }
         public ActionResult Create()
         {
-            var model = new DefaultNotificationSettingsViewModel();
-            model.AvailableCountry = GetCountryList();
+            var model = new DefaultNotificationSettingsViewModel {AvailableEmailCategory = GetDefaultNotificationSettings()};
             return View(model);
         }
         [HttpPost]
         public ActionResult Create(DefaultNotificationSettingsViewModel model)
         {
-            if (model.CountryId == 0)
-                ModelState.AddModelError("", "select country");
+            if (model.EmailCategoryId == 0)
+                ModelState.AddModelError("", "select Email Category");
 
             if (ModelState.IsValid)
             {
@@ -79,13 +78,13 @@ namespace DPTS.Web.Controllers
                     Name = model.Name,
                     Published = model.Published,
                     DisplayOrder = model.DisplayOrder,
-                    Abbreviation = model.Abbreviation,
-                    CountryId=model.CountryId
+                    Message = model.Message,
+                    CategoryId= model.EmailCategoryId
                 };
                 _defaultNotificationSettingsService.InsertDefaultNotificationSettings(stateProvince);
                 return RedirectToAction("List");
             }
-            model.AvailableCountry = GetCountryList();
+            model.AvailableEmailCategory = GetDefaultNotificationSettings();
             return View(model);
         }
         public ActionResult Edit(int Id)
@@ -93,20 +92,20 @@ namespace DPTS.Web.Controllers
             if (!IsValidateId(Id))
                 return HttpNotFound();
 
-            var stateProvince = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(Id);
-            if (stateProvince == null)
+            var defaultNotificationSettings = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(Id);
+            if (defaultNotificationSettings == null)
                 return HttpNotFound();
 
             var model = new DefaultNotificationSettingsViewModel
             {
-                Id = stateProvince.Id,
-                Name = stateProvince.Name,
-                CountryName=_emailCategoryService.GetEmailCategoryById(stateProvince.Id).Name,
-                DisplayOrder = stateProvince.DisplayOrder,
-                Published = stateProvince.Published,
-                CountryId= stateProvince.CountryId,
-                Abbreviation= stateProvince.Abbreviation,
-                AvailableCountry = GetCountryList()
+                Id = defaultNotificationSettings.Id,
+                Name = defaultNotificationSettings.Name,
+                EmailCategory= _emailCategoryService.GetEmailCategoryById(defaultNotificationSettings.Id).Name,
+                DisplayOrder = defaultNotificationSettings.DisplayOrder,
+                Published = defaultNotificationSettings.Published,
+                EmailCategoryId = defaultNotificationSettings.CategoryId,
+                Message= defaultNotificationSettings.Message,
+                AvailableEmailCategory = GetDefaultNotificationSettings()
             };
             return View(model);
         }
@@ -120,20 +119,20 @@ namespace DPTS.Web.Controllers
                 stateProvince.Name = model.Name;
                 stateProvince.DisplayOrder = model.DisplayOrder;
                 stateProvince.Published = model.Published;
-                stateProvince.CountryId = model.CountryId;
-                stateProvince.Abbreviation = model.Abbreviation;
+                stateProvince.CategoryId = model.EmailCategoryId;
+                stateProvince.Message = model.Message;
 
                 _defaultNotificationSettingsService.UpdateDefaultNotificationSettings(stateProvince);
                 return RedirectToAction("List");
             }
-            model.AvailableCountry = GetCountryList();
+            model.AvailableEmailCategory = GetDefaultNotificationSettings();
             return View(model);
         }
         public ActionResult DeleteConfirmed(int id)
         {
-            var stateProvince = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(id);
-            if (stateProvince != null)
-                _defaultNotificationSettingsService.DeleteDefaultNotificationSettings(stateProvince);
+            var defaultNotificationSettings = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(id);
+            if (defaultNotificationSettings != null)
+                _defaultNotificationSettingsService.DeleteDefaultNotificationSettings(defaultNotificationSettings);
 
 
             return Content("Deleted");
