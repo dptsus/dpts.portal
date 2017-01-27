@@ -16,6 +16,8 @@ namespace DPTS.Domain.Entities
         [StringLength(100)]
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public virtual ICollection<AppointmentSchedule> AppointmentSchedules { get; set; }
     }
 }

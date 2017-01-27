@@ -77,6 +77,12 @@ namespace DPTS.Services.Doctors
         {
             return null;
         }
+        public IList<Doctor> GetAllDoctors()
+        {
+            var query = from d in _doctorRepository.Table
+                        select d;
+            return query.ToList();
+        }
 
         public IList<Doctor> SearchDoctor(string keywords = null, int specialityId = 0, string directoryType = null,string zipcode = null)
         {

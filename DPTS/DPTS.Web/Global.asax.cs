@@ -8,7 +8,7 @@ using System.Web.Routing;
 
 namespace DPTS.Web
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -18,6 +18,7 @@ namespace DPTS.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //rigister
         }
+
         //protected void Application_AcquireRequestState(object sender, EventArgs e)
         //{
         //}

@@ -2,17 +2,22 @@
 using DPTS.Domain.Core.Doctors;
 using DPTS.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using DPTS.Data.Context;
+using DPTS.Domain.Entities;
+using System.Text;
 
 namespace DPTS.Web.Controllers
 {
-    public class AppointmentController : Controller
+    public class AppointmentController : BaseController
     {
         #region Fields
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
-        private ApplicationDbContext context;
+        private readonly DPTSDbContext _context;
         #endregion
 
         #region Contr
@@ -21,13 +26,15 @@ namespace DPTS.Web.Controllers
         {
             _doctorService = doctorService;
             _scheduleService = scheduleService;
-            context = new ApplicationDbContext();
+            _context = new DPTSDbContext();
         }
 
         #endregion
 
         #region Utilities
-        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime, string endTime, double duration)
+        private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime,
+            string endTime, double duration,
+            IList<AppointmentSchedule> bookedSlots )
         {
             try
             {
@@ -40,30 +47,16 @@ namespace DPTS.Web.Controllers
                     var dtNext = start.AddMinutes(duration);
                     if (start > end || dtNext > end)
                         break;
-                    if (start < DateTime.Parse("12:00 PM"))
+
+                    var slot = start.ToString("hh:mm tt") + " - " + dtNext.ToString("hh:mm tt");
+                    var bookingstatus = bookedSlots.Where(s => s.AppointmentTime == slot).FirstOrDefault();
+
+                    var splitSlot = new ScheduleSlotModel
                     {
-                        var morn = new MorningSlotModel
-                        {
-                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                        };
-                        slots.Morning.Add(morn);
-                    }
-                    else if (start > DateTime.Parse("06:00 PM"))
-                    {
-                        var eve = new EveningSlotModel
-                        {
-                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                        };
-                        slots.Evening.Add(eve);
-                    }
-                    else
-                    {
-                        var aft = new AfternoonSlotModel
-                        {
-                            Slot = start.ToShortTimeString() + " - " + dtNext.ToShortTimeString()
-                        };
-                        slots.Afternoon.Add(aft);
-                    }
+                        Slot = slot,
+                        IsBooked = (bookingstatus == null) ? false : true
+                    };
+                    slots.ScheduleSlotModel.Add(splitSlot);
                     start = dtNext;
                 }
                 return slots;
@@ -74,94 +67,251 @@ namespace DPTS.Web.Controllers
 
         #region Methods
         [HttpGet]
-        public ActionResult AvailableSchedule(string doctorId,string selectedDate = null)
+        public ActionResult Booking(string doctorId, string selectedDate = null)
         {
-            var scheduleSlots = new AppointmentScheduleViewModel();
-            if (!string.IsNullOrWhiteSpace(doctorId))
+            try
             {
-                string todayDay = DateTime.UtcNow.ToString("dddd");
-                var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
-                if (schedule == null)
-                    return RedirectToAction("NoSchedule");
+                if (!string.IsNullOrWhiteSpace(doctorId))
+                {
+                    string todayDay = DateTime.UtcNow.ToString("dddd");
+                    var schedule =
+                        _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
+                    if (schedule == null)
+                        return RedirectToAction("NoSchedule");
 
-                scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20);
-                scheduleSlots.doctorId = doctorId;
-                return View(scheduleSlots);
+                    var bookedSlots =
+                        _scheduleService.GetAppointmentScheduleByDoctorId(doctorId)
+                            .Where(s => s.AppointmentDate.Equals(DateTime.UtcNow.ToString("yyyy-MM-dd")))
+                            .ToList();
+                    bookedSlots =
+                        bookedSlots.Where(
+                            s => s.AppointmentStatus.Name == "Pending" || s.AppointmentStatus.Name == "Booked")
+                            .ToList();
+
+                    var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
+                    scheduleSlots.doctorId = doctorId;
+                    return View(scheduleSlots);
+                }
+            }
+            catch
+            {
+                // ignored
             }
             return RedirectToAction("NoSchedule");
 
         }
+
+        public JsonResult BookingScheduleByDate(string slot_date , string doctorId)
+        {
+            var response = new StringBuilder();
+            string resultNoResultFound = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(doctorId) && !string.IsNullOrWhiteSpace(slot_date))
+            {
+                resultNoResultFound += "<div class=\"bk-thanks-message\">";
+                resultNoResultFound += "<div class=\"tg-message\">";
+                resultNoResultFound += "<h2>Schedule Not Found !!</h2>";
+                resultNoResultFound += "<div class=\"tg-description\">";
+                resultNoResultFound += "<p>Appointment not available...</p>";
+                resultNoResultFound += "</div></div></div>";
+
+                string todayDay = DateTime.Parse(slot_date).ToString("dddd");
+                //DateTime.UtcNow.ToString("dddd");
+                var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
+                if (schedule == null)
+                {
+                    return Json(new
+                    {
+                        result = resultNoResultFound
+                    });
+                }
+                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(slot_date)).ToList();
+
+                bookedSlots =
+                        bookedSlots.Where(
+                            s => s.AppointmentStatus.Name == "Pending" || s.AppointmentStatus.Name == "Booked")
+                            .ToList();
+
+
+                var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
+
+                if(scheduleSlots == null)
+                {
+
+                    return Json(new
+                    {
+                        result = resultNoResultFound
+                    });
+                }
+
+                foreach (var item in scheduleSlots.ScheduleSlotModel)
+                {
+                    string repo = string.Empty;
+                    if(item.IsBooked)
+                    {
+                        repo = "<div class=\"tg-doctimeslot tg-booked\">";
+                        repo += "<div class=\"tg-box\">";
+                        repo += "<div class=\"tg-radio\">";
+                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\" disabled >";
+                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "</div> </div> </div>";
+                    }
+                    else
+                    {
+                        repo = "<div class=\"tg-doctimeslot tg-available\">";
+                        repo += "<div class=\"tg-box\">";
+                        repo += "<div class=\"tg-radio\">";
+                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\">";
+                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "</div> </div> </div>";
+                    }
+                    response.AppendLine(repo);
+                }
+                return Json(new
+                {
+                    response = response.ToString()
+                });
+            }
+            return Json(new
+            {
+                success = 1
+            });
+        }
+
         [HttpPost]
         public ActionResult AvailableSchedule(AppointmentScheduleViewModel model, string Command)
         {
             if (Command == "next" && !string.IsNullOrWhiteSpace(model.doctorId))
             {
-                return RedirectToAction("VisitorContactDeatils",new { doctorId = model.doctorId });
+                return RedirectToAction("VisitorContactDeatils", new { doctorId = model.doctorId });
             }
             return View();
         }
 
-        public ActionResult VisitorContactDeatils(string doctorId)
-        {
-            var model = new VisitorContactDeatilsModel
-            {
-                doctorId =doctorId
-            };
-            return View(model);
-        }
         public ActionResult NoSchedule()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult VisitorContactDeatils(VisitorContactDeatilsModel model,string Command)
-        {
-            try
-            {
 
-                if (Command == "previous" && !string.IsNullOrWhiteSpace(model.doctorId))
-                {
-                    return RedirectToAction("AvailableSchedule", new { doctorId = model.doctorId });
-                }
-                else if (Command == "next")
-                {
-                    return RedirectToAction("PaymentMode");
-                }
-            }
-            catch { }
-            return View();
-        }
-        public ActionResult PaymentMode()
+        public JsonResult VisitorContactDeatils()
         {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult PaymentMode(string Command)
-        {
-            try
+            if (!Request.IsAuthenticated)
+                return Json(new
+                {
+                    success = 1
+                });
+
+            var userId = User.Identity.GetUserId();
+            var visitor = _context.AspNetUsers.SingleOrDefault(u => u.Id == userId);
+            if (visitor == null)
             {
-                if (Command == "previous")
+                return Json(new
                 {
-                    return RedirectToAction("VisitorContactDeatils");
-                }
-                else if (Command == "next")
-                {
-                    return RedirectToAction("Finish");
-                }
+                    success =1
+                });
             }
-            catch { }
-            return View();
+            var fullName = visitor.FirstName + " " + visitor.LastName;
+            return Json(data: new
+            {
+                mobilenumber = visitor.PhoneNumber,
+                useremail = visitor.Email,
+                username = fullName
+            });
         }
-        public ActionResult Finish()
+        public JsonResult PaymentMode()
         {
-            return View();
+            return Json(new
+            {
+                success = 1
+            });
+        }
+        //booking_date,"slottime" ,,"subject","username","mobilenumber","useremail","booking_note","payment"
+
+        public JsonResult FinishBooking(FormCollection form)
+        {
+            if(!string.IsNullOrWhiteSpace(form["booking_date"]) &&
+                !string.IsNullOrWhiteSpace("slottime") &&
+                !string.IsNullOrWhiteSpace("subject") &&
+                !string.IsNullOrWhiteSpace("username") &&
+                !string.IsNullOrWhiteSpace("mobilenumber") &&
+                !string.IsNullOrWhiteSpace("useremail") &&
+                !string.IsNullOrWhiteSpace("booking_note") &&
+                !string.IsNullOrWhiteSpace("payment") &&
+                !string.IsNullOrWhiteSpace("doctorId") &&
+                Request.IsAuthenticated)
+            {
+                string statusFlag = "Pending";
+                var bookingStatus = _scheduleService.GetAppointmentStatusByName(statusFlag);
+                var userId = User.Identity.GetUserId();
+
+                var booking = new AppointmentSchedule
+                {
+                    DoctorId = form["doctorId"],
+                    PatientId = userId,
+                    Subject = form["subject"],
+                    DiseasesDescription = form["booking_note"],
+                    AppointmentTime = form["slottime"].Trim(),
+                    StatusId = bookingStatus.Id,
+                    AppointmentDate = form["booking_date"]
+                };
+
+                _scheduleService.InsertAppointmentSchedule(booking);
+                return Json(new
+                {
+                    result = "success"
+                });
+            }
+            return Json(new
+            {
+                result = "fail"
+            });
         }
         [HttpPost]
         public ActionResult Finish(string Command)
         {
             return View();
         }
+
+        public ActionResult demoPicker()
+        {
+            return View();
+        }
+
+        [ValidateInput(false)]
+        public ActionResult OpcSaveBilling(FormCollection form)
+        {
+            var model = new VisitorContactDeatilsModel
+            {
+                Name = "Tushar Khairnar"
+            };
+            if (model != null)
+            {
+                return Json(new
+                {
+                    update_section = new UpdateSectionJsonModel
+                    {
+                        name = "billing",
+                        html = this.RenderPartialViewToString("OpcBillingAddress", model)
+                    },
+                    wrong_billing_address = true,
+                });
+            }
+            return View();
+        }
+        public JsonResult OpcSaveShipping()
+        {
+            return Json(new
+            {
+                action_type = "cancelled"
+            });
+        }
         #endregion
 
+    }
+
+    internal class UpdateSectionJsonModel
+    {
+        public object html { get; set; }
+        public string name { get; set; }
     }
 }
