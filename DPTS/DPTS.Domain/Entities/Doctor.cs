@@ -41,6 +41,8 @@ namespace DPTS.Domain.Entities
 
         public string DateOfBirth { get; set; }
 
+        public decimal Rating { get; set; }
+
         public virtual AspNetUser AspNetUser { get; set; }
 
         public virtual ICollection<SpecialityMapping> SpecialityMapping { get; set; }

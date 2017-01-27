@@ -61,6 +61,7 @@
     <Compile Include="Entities\AspNetUserLogin.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
+    <Compile Include="Entities\ReviewComments.cs" />
     <Compile Include="Entities\EmailCategory.cs" />
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Doctor.cs" />
