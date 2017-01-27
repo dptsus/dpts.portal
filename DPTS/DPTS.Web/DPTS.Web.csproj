@@ -352,12 +352,6 @@
     <Content Include="Content\wp-content\plugins\docdirect_core\js\functionsd5f7.js" />
     <Content Include="Content\wp-content\plugins\unyson\framework\extensions\builder\static\css\frontend-grid578f.css" />
     <Content Include="Content\wp-content\plugins\unyson\framework\extensions\forms\static\css\frontenda23f.css" />
-    <Content Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\button\static\css\styles1c9b.css" />
-    <Content Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\call-to-action\static\css\styles1c9b.css" />
-    <Content Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\section\static\css\jquery.fs.wallpaper1c9b.css" />
-    <Content Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\section\static\css\styles1c9b.css" />
-    <Content Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\section\static\js\jquery.fs.wallpaper1c9b.js" />
-    <Content Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\section\static\js\scripts1c9b.js" />
     <Content Include="Content\wp-content\plugins\unyson\framework\static\js\fw-form-helpers1c9b.js" />
     <Content Include="Content\wp-content\themes\docdirect\css\booking\css\intlTelInput1bba.css" />
     <Content Include="Content\wp-content\themes\docdirect\css\booking\img\flags%402x.png" />
@@ -887,6 +881,9 @@
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\button\static\css\" />
+    <Folder Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\call-to-action\static\css\" />
+    <Folder Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\section\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
