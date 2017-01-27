@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using DPTS.Web.Models;
+using DPTS.EmailSmsNotifications.ServiceModels;
 
 namespace DPTS.Web
 {
@@ -101,6 +102,7 @@ namespace DPTS.Web
             //    message.Body);
             //soapSms.Close();
             //ASPSMS End
+            
             return Task.FromResult(0);
         }
     }

@@ -10,6 +10,8 @@ using DPTS.Web.Models;
 using System.Collections.Generic;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Entities;
+using DPTS.EmailSmsNotifications.ServiceModels;
+using DPTS.EmailSmsNotifications.IServices;
 
 namespace DPTS.Web.Controllers
 {
@@ -20,11 +22,13 @@ namespace DPTS.Web.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
+        private ISmsNotificationService _smsService;
 
-        public AccountController(IDoctorService doctorService)
+        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
+            _smsService = smsService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -172,30 +176,70 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
+        public ActionResult Register(RegisterViewModel model, string returnUrl)
         {
             if (model.Role == "0" && model.UserType == "professional")
                 ModelState.AddModelError("", "Select user type");
 
             if (ModelState.IsValid)
             {
+                SmsNotificationModel sms = new SmsNotificationModel();
+                sms.numbers = model.PhoneNumber;
+                sms.route = 4; //route 4 is for transactional sms
+                sms.senderId = "DOCPTS";
+                Session["otp"] = _smsService.GenerateOTP();
+                sms.message = "DTPS Verification code: " + Session["otp"].ToString() + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                _smsService.SendSms(sms);
+                TempData["regmodel"] = model;
+                return RedirectToAction("ConfirmRegistration", "Account");
+            }
+            model.UserRoleList = GetUserTypeList();
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ConfirmRegistration()
+        {
+            RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
+            ConfirmRegisterViewModel model = new ConfirmRegisterViewModel();
+            model.RegistrationDetails = regModel;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model, string returnUrl)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                if (model.CnfirmOTP != Session["otp"].ToString())
+                {
+                    ViewBag.confirmFail = "Invalid OTP!!";
+                    return View(model);
+                }
+                
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    LastName = model.LastName,
-                    FirstName = model.FirstName,
+                    UserName = model.RegistrationDetails.Email,
+                    Email = model.RegistrationDetails.Email,
+                    LastName = model.RegistrationDetails.LastName,
+                    FirstName = model.RegistrationDetails.FirstName,
                     LastIpAddress = "192.168.225.1",
                     LastLoginDateUtc = DateTime.UtcNow,
                     CreatedOnUtc = DateTime.UtcNow,
-                    PhoneNumber = model.PhoneNumber
+                    PhoneNumber = model.RegistrationDetails.PhoneNumber,
+                    TwoFactorEnabled = true
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
                 if (result.Succeeded)
                 {
-                    if (model.UserType == "professional")
+                    if (model.RegistrationDetails.UserType == "professional")
                     {
-                        await UserManager.AddToRoleAsync(user.Id, model.Role);
+                        await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
                         var doctor = new Doctor();
                         doctor.DoctorId = user.Id;
                         _doctorService.AddDoctor(doctor);
@@ -203,25 +247,11 @@ namespace DPTS.Web.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    if (!string.IsNullOrWhiteSpace(returnUrl))
-                    {
-                         return RedirectToLocal(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
                 ViewBag.ReturnUrl = returnUrl;
                 AddErrors(result);
             }
-            model.UserRoleList = GetUserTypeList();
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 

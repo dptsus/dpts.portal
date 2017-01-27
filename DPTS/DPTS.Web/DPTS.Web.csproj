@@ -873,6 +873,7 @@
     <Content Include="Views\Appointment\PaymentMode.cshtml" />
     <Content Include="Views\Appointment\Finish.cshtml" />
     <Content Include="Views\Appointment\NoSchedule.cshtml" />
+    <Content Include="Views\Account\ConfirmRegistration.cshtml" />
     <Content Include="Views\Appointment\OpcBillingAddress.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
@@ -906,6 +907,10 @@
     <ProjectReference Include="..\DPTS.Logging\DPTS.Logging.csproj">
       <Project>{ac5c9e96-9c62-4f5e-b7b5-f1335346f9b7}</Project>
       <Name>DPTS.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPTS.EmailSmsNotifications\DPTS.EmailSmsNotifications.csproj">
+      <Project>{8FE2F61A-9327-41E1-9BFF-7507D2B37FD8}</Project>
+      <Name>DPTS.EmailSmsNotifications</Name>
     </ProjectReference>
     <ProjectReference Include="..\DPTS.Services\DPTS.Services.csproj">
       <Project>{14a19a53-9176-4318-8242-6fe2cfd35a3a}</Project>
