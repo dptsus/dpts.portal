@@ -1,4 +1,4 @@
-namespace DPTS.Domain.Entities
+namespace DPTS.Domain.Entities.Notification
 {
     public class DoctorNotificationSettings : BaseEntityWithDateTime
     {

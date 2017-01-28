@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DPTS.Domain.Core;
-using DPTS.Domain.Core.EmailCategory;
+using DPTS.Domain.Core.Notification;
 
-namespace DPTS.Services.EmailCategory
+namespace DPTS.Services.Notification
 {
     /// <summary>
     /// emailCategory service
@@ -13,13 +13,13 @@ namespace DPTS.Services.EmailCategory
     {
         #region Fields
 
-        private readonly IRepository<Domain.Entities.EmailCategory> _emailCategoryRepository;
+        private readonly IRepository<Domain.Entities.Notification.EmailCategory> _emailCategoryRepository;
 
         #endregion
 
         #region Ctor
 
-        public EmailCategoryService(IRepository<Domain.Entities.EmailCategory> emailCategoryRepository)
+        public EmailCategoryService(IRepository<Domain.Entities.Notification.EmailCategory> emailCategoryRepository)
         {
             _emailCategoryRepository = emailCategoryRepository;
         }
@@ -32,7 +32,7 @@ namespace DPTS.Services.EmailCategory
         /// Deletes a emailCategory
         /// </summary>
         /// <param name="emailCategory">emailCategory</param>
-        public virtual void DeleteEmailCategory(Domain.Entities.EmailCategory emailCategory)
+        public virtual void DeleteEmailCategory(Domain.Entities.Notification.EmailCategory emailCategory)
         {
             if (emailCategory == null)
                 throw new ArgumentNullException("emailCategory");
@@ -46,7 +46,7 @@ namespace DPTS.Services.EmailCategory
         /// <param name="languageId">Language identifier. It's used to sort countries by localized names (if specified); pass 0 to skip it</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Countries</returns>
-        public virtual IList<Domain.Entities.EmailCategory> GetAllEmailCategories(bool showHidden = false)
+        public virtual IList<Domain.Entities.Notification.EmailCategory> GetAllEmailCategories(bool showHidden = false)
         {
                 var query = _emailCategoryRepository.Table;
                 if (!showHidden)
@@ -62,7 +62,7 @@ namespace DPTS.Services.EmailCategory
         /// </summary>
         /// <param name="emailCategoryId">emailCategory identifier</param>
         /// <returns>emailCategory</returns>
-        public virtual Domain.Entities.EmailCategory GetEmailCategoryById(int emailCategoryId)
+        public virtual Domain.Entities.Notification.EmailCategory GetEmailCategoryById(int emailCategoryId)
         {
             if (emailCategoryId == 0)
                 return null;
@@ -75,17 +75,17 @@ namespace DPTS.Services.EmailCategory
         /// </summary>
         /// <param name="emailCategoryIds">emailCategory identifiers</param>
         /// <returns>Countries</returns>
-        public virtual IList<Domain.Entities.EmailCategory> GetEmailCategoriesByIds(int[] emailCategoryIds)
+        public virtual IList<Domain.Entities.Notification.EmailCategory> GetEmailCategoriesByIds(int[] emailCategoryIds)
         {
             if (emailCategoryIds == null || emailCategoryIds.Length == 0)
-                return new List<Domain.Entities.EmailCategory>();
+                return new List<Domain.Entities.Notification.EmailCategory>();
 
             var query = from c in _emailCategoryRepository.Table
                         where emailCategoryIds.Contains(c.Id)
                         select c;
             var countries = query.ToList();
             //sort by passed identifiers
-            var sortedCountries = new List<Domain.Entities.EmailCategory>();
+            var sortedCountries = new List<Domain.Entities.Notification.EmailCategory>();
             foreach (int id in emailCategoryIds)
             {
                 var emailCategory = countries.Find(x => x.Id == id);
@@ -102,7 +102,7 @@ namespace DPTS.Services.EmailCategory
         /// Inserts a emailCategory
         /// </summary>
         /// <param name="emailCategory">emailCategory</param>
-        public virtual void InsertEmailCategory(Domain.Entities.EmailCategory emailCategory)
+        public virtual void InsertEmailCategory(Domain.Entities.Notification.EmailCategory emailCategory)
         {
             if (emailCategory == null)
                 throw new ArgumentNullException("emailCategory");
@@ -114,7 +114,7 @@ namespace DPTS.Services.EmailCategory
         /// Updates the emailCategory
         /// </summary>
         /// <param name="emailCategory">emailCategory</param>
-        public virtual void UpdateEmailCategory(Domain.Entities.EmailCategory emailCategory)
+        public virtual void UpdateEmailCategory(Domain.Entities.Notification.EmailCategory emailCategory)
         {
             if (emailCategory == null)
                 throw new ArgumentNullException("emailCategory");
