@@ -21,7 +21,7 @@ namespace DPTS.EmailSmsNotifications.Services
 
         public async Task SendEmail(EmailNotificationModel model)
         {
-            string apiKey = _config.SendGridAPIKey;
+            string apiKey = _config.SendGridApiKey;
             dynamic sg = new SendGridAPIClient(apiKey);
 
             Email from = new Email(model.from);
