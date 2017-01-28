@@ -54,7 +54,7 @@ namespace DPTS.Web.Controllers
                     var splitSlot = new ScheduleSlotModel
                     {
                         Slot = slot,
-                        IsBooked = (bookingstatus == null) ? false : true
+                        IsBooked = bookingstatus == null ? false : true
                     };
                     slots.ScheduleSlotModel.Add(splitSlot);
                     start = dtNext;
@@ -211,7 +211,7 @@ namespace DPTS.Web.Controllers
                 });
             }
             var fullName = visitor.FirstName + " " + visitor.LastName;
-            return Json(data: new
+            return Json(new
             {
                 mobilenumber = visitor.PhoneNumber,
                 useremail = visitor.Email,

@@ -892,6 +892,8 @@
     <Content Include="Views\Shared\VisitorAccountNavigation.cshtml" />
     <Content Include="Views\Visitor\AppointmentList.cshtml" />
     <Content Include="Views\Home\Doctors.cshtml" />
+    <Content Include="Views\Account\Unsubscribe.cshtml" />
+    <Content Include="Views\Account\Subscribe.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -322,7 +322,7 @@ namespace DPTS.Web.Controllers
                     redirect = Url.Action("Addresses", "Doctor"),
                 });
 
-            var addrMapping = _addressService.GetAddressMappingbuUserIdAddrId(UserId: user.Id, AddressId: addressId);
+            var addrMapping = _addressService.GetAddressMappingbuUserIdAddrId(user.Id, addressId);
 
             if (addrMapping == null)
                 return Content("No Customer found with the specified id");
@@ -359,8 +359,8 @@ namespace DPTS.Web.Controllers
                     Address1 = c.Address1,
                     Address2 = c.Address2,
                     City = c.City,
-                    CountryName = (c.CountryId.GetValueOrDefault() > 0) ? _countryService.GetCountryById(c.CountryId.GetValueOrDefault()).Name : " ",
-                    StateName = (c.StateProvinceId.GetValueOrDefault() > 0) ? _stateProvinceService.GetStateProvinceById(c.StateProvinceId.GetValueOrDefault()) .Name : " ",
+                    CountryName = c.CountryId.GetValueOrDefault() > 0 ? _countryService.GetCountryById(c.CountryId.GetValueOrDefault()).Name : " ",
+                    StateName = c.StateProvinceId.GetValueOrDefault() > 0 ? _stateProvinceService.GetStateProvinceById(c.StateProvinceId.GetValueOrDefault()) .Name : " ",
                     FaxNumber=c.FaxNumber,
                     Hospital=c.Hospital,
                     LandlineNumber=c.PhoneNumber,
@@ -415,7 +415,7 @@ namespace DPTS.Web.Controllers
                         {
                             Text = s.Name,
                             Value = s.Id.ToString(),
-                            Selected = (s.Id == model.StateProvinceId)
+                            Selected = s.Id == model.StateProvinceId
                         });
                     }
                 }
@@ -424,7 +424,7 @@ namespace DPTS.Web.Controllers
                     bool anyCountrySelected = model.AvailableCountry.Any(x => x.Selected);
                     model.AvailableStateProvince.Add(new SelectListItem
                     {
-                        Text = (anyCountrySelected ? "None" : "Select State"),
+                        Text = anyCountrySelected ? "None" : "Select State",
                         Value = "0"
                     });
                 }
