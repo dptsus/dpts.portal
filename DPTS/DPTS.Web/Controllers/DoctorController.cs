@@ -1,5 +1,4 @@
 ﻿using DPTS.Web.Models;
-using SQS_Shopee.Entites;
 using System;
 using System.Collections.Generic;
 using System.IO;
