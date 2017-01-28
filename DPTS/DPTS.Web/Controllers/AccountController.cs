@@ -10,6 +10,8 @@ using DPTS.Web.Models;
 using System.Collections.Generic;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Entities;
+using DPTS.EmailSmsNotifications.ServiceModels;
+using DPTS.EmailSmsNotifications.IServices;
 
 namespace DPTS.Web.Controllers
 {
@@ -20,11 +22,13 @@ namespace DPTS.Web.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
+        private ISmsNotificationService _smsService;
 
-        public AccountController(IDoctorService doctorService)
+        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
+            _smsService = smsService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -53,6 +57,49 @@ namespace DPTS.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+         
+        [AllowAnonymous]
+        public ActionResult Unsubscribe(string id)
+        {
+            try
+            {
+                var user = UserManager.FindByIdAsync(id);
+                if (user == null || !UserManager.IsEmailConfirmedAsync(id).Result)
+                {
+                    //TODO Update Values in table
+                    ViewBag.UserId = id;
+                    ViewBag.Message = "Subscribe Successfully";
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.UserId = id;
+                ViewBag.Message = "Subscribe unsuccessfully";
+                throw;
+            }
+            return View();
+        } 
+        [AllowAnonymous]
+        public ActionResult Subscribe(string id)
+        {
+            try
+            {
+                var user = UserManager.FindByIdAsync(id);
+                if (user == null || !UserManager.IsEmailConfirmedAsync(id).Result)
+                {
+                    //TODO Update Values in table
+                    ViewBag.UserId = id;
+                    ViewBag.Message = "Subscribe Successfully";
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.UserId = id;
+                ViewBag.Message = "Subscribe unsuccessfully";
+                throw;
+            } 
+            return View();
+        }
 
         //
         // POST: /Account/Login
@@ -71,8 +118,7 @@ namespace DPTS.Web.Controllers
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result =
                 await
-                    SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe,
-                        shouldLockout: false);
+                    SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -80,7 +126,7 @@ namespace DPTS.Web.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = model.RememberMe});
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, model.RememberMe});
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -120,8 +166,7 @@ namespace DPTS.Web.Controllers
             // You can configure the account lockout settings in IdentityConfig
             var result =
                 await
-                    SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe,
-                        rememberBrowser: model.RememberBrowser);
+                    SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -137,22 +182,18 @@ namespace DPTS.Web.Controllers
 
         public IList<SelectListItem> GetUserTypeList()
         {
-            List<SelectListItem> typelst = new List<SelectListItem>();
-            typelst.Add(
+            List<SelectListItem> typelst = new List<SelectListItem>
+            {
                 new SelectListItem
                 {
                     Text = "Select",
                     Value = "0"
-                });
-            foreach (var _type in context.Roles.ToList())
+                }
+            };
+            typelst.AddRange(context.Roles.ToList().Select(type => new SelectListItem
             {
-                typelst.Add(
-                    new SelectListItem
-                    {
-                        Text = _type.Name,
-                        Value = _type.Name
-                    });
-            }
+                Text = type.Name, Value = type.Name
+            }));
             return typelst;
         }
 
@@ -161,8 +202,7 @@ namespace DPTS.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register(string returnUrl)
         {
-            var model = new RegisterViewModel();
-            model.UserRoleList = GetUserTypeList();
+            var model = new RegisterViewModel {UserRoleList = GetUserTypeList()};
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -172,56 +212,80 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
+        public ActionResult Register(RegisterViewModel model, string returnUrl)
         {
             if (model.Role == "0" && model.UserType == "professional")
                 ModelState.AddModelError("", "Select user type");
 
             if (ModelState.IsValid)
             {
+                SmsNotificationModel sms = new SmsNotificationModel();
+                sms.numbers = model.PhoneNumber;
+                sms.route = 4; //route 4 is for transactional sms
+                sms.senderId = "DOCPTS";
+                Session["otp"] = _smsService.GenerateOTP();
+                sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                _smsService.SendSms(sms);
+                TempData["regmodel"] = model;
+                return RedirectToAction("ConfirmRegistration", "Account");
+            }
+            model.UserRoleList = GetUserTypeList();
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ConfirmRegistration()
+        {
+            RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
+            ConfirmRegisterViewModel model = new ConfirmRegisterViewModel {RegistrationDetails = regModel};
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model, string returnUrl)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                if (model.CnfirmOTP != Session["otp"].ToString())
+                {
+                    ViewBag.confirmFail = "Invalid OTP!!";
+                    return View(model);
+                }
+                
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    LastName = model.LastName,
-                    FirstName = model.FirstName,
+                    UserName = model.RegistrationDetails.Email,
+                    Email = model.RegistrationDetails.Email,
+                    LastName = model.RegistrationDetails.LastName,
+                    FirstName = model.RegistrationDetails.FirstName,
                     LastIpAddress = "192.168.225.1",
                     LastLoginDateUtc = DateTime.UtcNow,
                     CreatedOnUtc = DateTime.UtcNow,
-                    PhoneNumber = model.PhoneNumber
+                    PhoneNumber = model.RegistrationDetails.PhoneNumber,
+                    TwoFactorEnabled = true
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
                 if (result.Succeeded)
                 {
-                    if (model.UserType == "professional")
+                    if (model.RegistrationDetails.UserType == "professional")
                     {
-                        await UserManager.AddToRoleAsync(user.Id, model.Role);
-                        var doctor = new Doctor();
-                        doctor.DoctorId = user.Id;
+                        await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
+                        var doctor = new Doctor {DoctorId = user.Id};
                         _doctorService.AddDoctor(doctor);
                     }
 
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await SignInManager.SignInAsync(user, false, false);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    if (!string.IsNullOrWhiteSpace(returnUrl))
-                    {
-                         return RedirectToLocal(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
                 ViewBag.ReturnUrl = returnUrl;
                 AddErrors(result);
             }
-            model.UserRoleList = GetUserTypeList();
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -256,7 +320,7 @@ namespace DPTS.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null || !await UserManager.IsEmailConfirmedAsync(user.Id))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -371,7 +435,7 @@ namespace DPTS.Web.Controllers
                 return View("Error");
             }
             return RedirectToAction("VerifyCode",
-                new {Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe});
+                new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});
         }
 
         //
@@ -386,7 +450,7 @@ namespace DPTS.Web.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            var result = await SignInManager.ExternalSignInAsync(loginInfo, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -433,7 +497,7 @@ namespace DPTS.Web.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await SignInManager.SignInAsync(user, false, false);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -451,7 +515,7 @@ namespace DPTS.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Search", "Home");
         }
 
         //
@@ -487,10 +551,7 @@ namespace DPTS.Web.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get { return HttpContext.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {

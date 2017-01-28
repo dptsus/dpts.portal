@@ -1,6 +1,5 @@
 namespace DPTS.Data.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class UpdateDoctorDOB : DbMigration

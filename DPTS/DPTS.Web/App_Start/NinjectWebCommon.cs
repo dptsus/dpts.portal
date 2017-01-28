@@ -30,6 +30,21 @@ using Ninject.Web.Common;
 
 namespace DPTS.Web
 {
+    using System;
+    using System.Web;
+
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+
+    using Ninject;
+    using Ninject.Web.Common;
+    using Domain.Core;
+    using Domain.Entities;
+    using Services;
+    using Domain.Core.Appointment;
+    using Services.Appointment;
+    using EmailSmsNotifications.IServices;
+    using EmailSmsNotifications.Services;
+
     public static class NinjectWebCommon
     {
         private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
@@ -90,6 +105,8 @@ namespace DPTS.Web
             kernel.Bind<IEmailCategoryService>().To<EmailCategoryService>();
             kernel.Bind<IAppointmentService>().To<AppointmentService>();
             kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
+            kernel.Bind<ISmsNotificationService>().To<SmsNotificationService>();
+            kernel.Bind<IEmailNotificationService>().To<EmailNotificationService>();
         }
     }
 }

@@ -100,7 +100,7 @@ namespace DPTS.Web.Controllers
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await SignInManager.SignInAsync(user, false, false);
                 }
                 message = ManageMessageId.RemoveLoginSuccess;
             }
@@ -152,7 +152,7 @@ namespace DPTS.Web.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
             {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                await SignInManager.SignInAsync(user, false, false);
             }
             return RedirectToAction("Index", "Manage");
         }
@@ -167,7 +167,7 @@ namespace DPTS.Web.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
             {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                await SignInManager.SignInAsync(user, false, false);
             }
             return RedirectToAction("Index", "Manage");
         }
@@ -197,7 +197,7 @@ namespace DPTS.Web.Controllers
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await SignInManager.SignInAsync(user, false, false);
                 }
                 return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
             }
@@ -220,7 +220,7 @@ namespace DPTS.Web.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
             {
-                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                await SignInManager.SignInAsync(user, false, false);
             }
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
@@ -248,7 +248,7 @@ namespace DPTS.Web.Controllers
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    await SignInManager.SignInAsync(user, false, false);
                 }
                 return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
@@ -277,7 +277,7 @@ namespace DPTS.Web.Controllers
                     var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
                     if (user != null)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await SignInManager.SignInAsync(user, false, false);
                     }
                     return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
                 }

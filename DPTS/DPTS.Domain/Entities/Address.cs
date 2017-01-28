@@ -30,6 +30,9 @@ namespace DPTS.Domain.Entities
         public string FaxNumber { get; set; }
 
         public int? Doctor_Id { get; set; }
+         
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
 
         public virtual ICollection<AddressMapping> AddressMappings { get; set; }
 

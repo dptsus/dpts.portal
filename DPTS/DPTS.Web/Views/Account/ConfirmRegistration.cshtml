@@ -1,0 +1,38 @@
+﻿@model DPTS.Web.Models.ConfirmRegisterViewModel
+@{
+    ViewBag.Title = "ConfirmRegistration";
+}
+<h2>ConfirmRegistration</h2>
+<main id="main" class="tg-page-wrapper tg-haslayout">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-3" style="box-shadow: 0 0 20px 0 rgba(0,0,0,.2), 0 5px 5px 0 rgba(0,0,0,.24);">
+                <ul class="tg-modaltabs-nav" role="tablist">
+                    <li role="presentation" class=""><a href="#">Confirm OTP</a></li>
+                </ul>
+                <div class="tab-content tg-haslayout">
+                    <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signup-formarea">
+                        @using (Html.BeginForm("ConfirmRegistration", "Account", FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.RegistrationDetails.Role)
+                            @Html.HiddenFor(m => m.RegistrationDetails.FirstName)
+                            @Html.HiddenFor(m => m.RegistrationDetails.LastName)
+                            @Html.HiddenFor(m => m.RegistrationDetails.Email)
+                            @Html.HiddenFor(m => m.RegistrationDetails.PhoneNumber)
+                            @Html.HiddenFor(m => m.RegistrationDetails.Password)
+                            @Html.HiddenFor(m => m.RegistrationDetails.ConfirmPassword)
+                            <fieldset>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "123456" })
+                                    @Html.ValidationMessageFor(model => model.CnfirmOTP, "", new { @class = "text-danger" })
+                                </div>
+                                <input type="submit" class="tg-btn tg-btn-lg  do-register-button" value="ConfirmRegister" />
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

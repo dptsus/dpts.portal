@@ -1,4 +1,4 @@
-﻿namespace SQS_Shopee.Entites
+﻿namespace DPTS.Web.Models
 {
     public class UploadFilesResult
     {

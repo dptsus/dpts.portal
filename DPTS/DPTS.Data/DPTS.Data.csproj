@@ -100,6 +100,30 @@
     <Compile Include="Migrations\201701230506377_UpdateAppointmentSchedule1.Designer.cs">
       <DependentUpon>201701230506377_UpdateAppointmentSchedule1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701270649451_namechange2.cs" />
+    <Compile Include="Migrations\201701270649451_namechange2.Designer.cs">
+      <DependentUpon>201701270649451_namechange2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701270711050_LatLongAdded.cs" />
+    <Compile Include="Migrations\201701270711050_LatLongAdded.Designer.cs">
+      <DependentUpon>201701270711050_LatLongAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701270714591_DocRating.cs" />
+    <Compile Include="Migrations\201701270714591_DocRating.Designer.cs">
+      <DependentUpon>201701270714591_DocRating.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701270754145_ReviewTablecreate.cs" />
+    <Compile Include="Migrations\201701270754145_ReviewTablecreate.Designer.cs">
+      <DependentUpon>201701270754145_ReviewTablecreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701270757434_ReviewTablecreate1.cs" />
+    <Compile Include="Migrations\201701270757434_ReviewTablecreate1.Designer.cs">
+      <DependentUpon>201701270757434_ReviewTablecreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701280843108_DoctorNotificationSettingtableUnsubscribe.cs" />
+    <Compile Include="Migrations\201701280843108_DoctorNotificationSettingtableUnsubscribe.Designer.cs">
+      <DependentUpon>201701280843108_DoctorNotificationSettingtableUnsubscribe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -148,6 +172,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701230506377_UpdateAppointmentSchedule1.resx">
       <DependentUpon>201701230506377_UpdateAppointmentSchedule1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701270649451_namechange2.resx">
+      <DependentUpon>201701270649451_namechange2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701270711050_LatLongAdded.resx">
+      <DependentUpon>201701270711050_LatLongAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701270714591_DocRating.resx">
+      <DependentUpon>201701270714591_DocRating.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701270754145_ReviewTablecreate.resx">
+      <DependentUpon>201701270754145_ReviewTablecreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701270757434_ReviewTablecreate1.resx">
+      <DependentUpon>201701270757434_ReviewTablecreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701280843108_DoctorNotificationSettingtableUnsubscribe.resx">
+      <DependentUpon>201701280843108_DoctorNotificationSettingtableUnsubscribe.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

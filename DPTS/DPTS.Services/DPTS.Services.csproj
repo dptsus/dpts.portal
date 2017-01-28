@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Address\AddressService.cs" />
     <Compile Include="Appointment\AppointmentService.cs" />
+    <Compile Include="DoctorNotificationSettingsService\DoctorNotificationSettingsService.cs" />
     <Compile Include="EmailCategory\EmailCategoryService.cs" />
     <Compile Include="Country\CountryService.cs" />
     <Compile Include="Doctors\DoctorService.cs" />

@@ -5,58 +5,58 @@ namespace DPTS.Domain.Core.DefaultNotificationSettings
     public interface IDefaultNotificationSettingsService
     {
         /// <summary>
-        /// Deletes a state
+        /// Deletes a defaultNotificationSettings
         /// </summary>
-        /// <param name="state">state</param>
-        void DeleteStateProvince(Entities.DefaultNotificationSettings state);
+        /// <param name="defaultNotificationSettings">defaultNotificationSettings</param>
+        void DeleteDefaultNotificationSettings(Entities.DefaultNotificationSettings defaultNotificationSettings);
 
         /// <summary>
         /// Gets all countries
         /// </summary>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
-        /// <returns>StateProvinces</returns>
-        IList<Entities.DefaultNotificationSettings> GetAllStateProvince(bool showHidden = false);
+        /// <returns>defaultNotificationSettings</returns>
+        IList<Entities.DefaultNotificationSettings> GetAllDefaultNotificationSettings(bool showHidden = false);
 
         /// <summary>
-        /// Gets a state
+        /// Gets a defaultNotificationSettings
         /// </summary>
-        /// <param name="stateProvinceId">state identifier</param>
-        /// <returns>state</returns>
-        Entities.DefaultNotificationSettings GetStateProvinceById(int stateProvinceId);
+        /// <param name="defaultNotificationSettingsId">defaultNotificationSettings identifier</param>
+        /// <returns>defaultNotificationSettings</returns>
+        Entities.DefaultNotificationSettings GetDefaultNotificationSettingsById(int defaultNotificationSettingsId);
 
         /// <summary>
         /// Get countries by identifiers
         /// </summary>
-        /// <param name="stateProvinceIds">state identifiers</param>
+        /// <param name="defaultNotificationSettingsIds">defaultNotificationSettings identifiers</param>
         /// <returns>Countries</returns>
-        IList<Entities.DefaultNotificationSettings> GetStateProvinceByIds(int[] stateProvinceIds);
+        IList<Entities.DefaultNotificationSettings> GetDefaultNotificationSettingsByIds(int[] defaultNotificationSettingsIds);
 
         /// <summary>
-        /// Gets a state/province
+        /// Gets a defaultNotificationSettings/
         /// </summary>
-        /// <param name="abbreviation">The state/province abbreviation</param>
-        /// <returns>State/province</returns>
-        Entities.DefaultNotificationSettings GetStateProvinceByAbbreviation(string abbreviation);
+        /// <param name="abbreviation">The defaultNotificationSettings/ abbreviation</param>
+        /// <returns>defaultNotificationSettings/</returns>
+        Entities.DefaultNotificationSettings GetDefaultNotificationSettingsByAbbreviation(string abbreviation);
 
         /// <summary>
-        /// Gets a state/province collection by country identifier
+        /// Gets a defaultNotificationSettings/ collection by country identifier
         /// </summary>
         /// <param name="countryId">Country identifier</param>
-        /// <param name="languageId">Language identifier. It's used to sort states by localized names (if specified); pass 0 to skip it</param>
+        /// <param name="languageId">Language identifier. It's used to sort defaultNotificationSettingss by localized names (if specified); pass 0 to skip it</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
-        /// <returns>States</returns>
-        IList<Entities.DefaultNotificationSettings> GetStateProvincesByCountryId(int countryId, bool showHidden = false);
+        /// <returns>defaultNotificationSettingss</returns>
+        IList<Entities.DefaultNotificationSettings> GetDefaultNotificationSettingssByCountryId(int countryId, bool showHidden = false);
 
         /// <summary>
-        /// Inserts a state
+        /// Inserts a defaultNotificationSettings
         /// </summary>
-        /// <param name="state">state</param>
-        void InsertStateProvince(Entities.DefaultNotificationSettings state);
+        /// <param name="defaultNotificationSettings">defaultNotificationSettings</param>
+        void InsertDefaultNotificationSettings(Entities.DefaultNotificationSettings defaultNotificationSettings);
 
         /// <summary>
-        /// Updates the state
+        /// Updates the defaultNotificationSettings
         /// </summary>
-        /// <param name="state">state</param>
-        void UpdateStateProvince(Entities.DefaultNotificationSettings state);
+        /// <param name="defaultNotificationSettings">defaultNotificationSettings</param>
+        void UpdateDefaultNotificationSettings(Entities.DefaultNotificationSettings state);
     }
 }

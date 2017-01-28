@@ -113,6 +113,13 @@ namespace DPTS.Web.Models
 
     }
 
+    public class ConfirmRegisterViewModel
+    {
+        public RegisterViewModel RegistrationDetails { get; set; }
+
+        public string CnfirmOTP { get; set; }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required]
