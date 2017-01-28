@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DPTS.Domain.Core;
-using DPTS.Domain.Core.DefaultNotificationSettings;
+using DPTS.Domain.Core.Notification;
 
-namespace DPTS.Services.DefaultNotificationSettings
+namespace DPTS.Services.Notification
 {
     /// <summary>
     /// DefaultNotificationSettings Service
@@ -13,12 +13,12 @@ namespace DPTS.Services.DefaultNotificationSettings
     {
         #region Fields
 
-        private readonly IRepository<Domain.Entities.DefaultNotificationSettings> _defaultNotificationSettingsRepository;
+        private readonly IRepository<Domain.Entities.Notification.DefaultNotificationSettings> _defaultNotificationSettingsRepository;
 
         #endregion
 
         #region Ctor
-        public DefaultNotificationSettingsService(IRepository<Domain.Entities.DefaultNotificationSettings> defaultNotificationSettingsRepository)
+        public DefaultNotificationSettingsService(IRepository<Domain.Entities.Notification.DefaultNotificationSettings> defaultNotificationSettingsRepository)
         {
             _defaultNotificationSettingsRepository = defaultNotificationSettingsRepository;
         }
@@ -29,7 +29,7 @@ namespace DPTS.Services.DefaultNotificationSettings
         /// delete defaultNotificationSettings
         /// </summary>
         /// <param name="defaultNotificationSettings"></param>
-        public void DeleteDefaultNotificationSettings(Domain.Entities.DefaultNotificationSettings defaultNotificationSettings)
+        public void DeleteDefaultNotificationSettings(Domain.Entities.Notification.DefaultNotificationSettings defaultNotificationSettings)
         {
             if (defaultNotificationSettings == null)
                 throw new ArgumentNullException("defaultNotificationSettings");
@@ -41,7 +41,7 @@ namespace DPTS.Services.DefaultNotificationSettings
         /// </summary>
         /// <param name="showHidden"></param>
         /// <returns></returns>
-        public IList<Domain.Entities.DefaultNotificationSettings> GetAllDefaultNotificationSettings(bool showHidden = false)
+        public IList<Domain.Entities.Notification.DefaultNotificationSettings> GetAllDefaultNotificationSettings(bool showHidden = false)
         {
             var query = _defaultNotificationSettingsRepository.Table;
             if (!showHidden)
@@ -56,7 +56,7 @@ namespace DPTS.Services.DefaultNotificationSettings
         /// </summary>
         /// <param name="abbreviation"></param>
         /// <returns></returns>
-        public Domain.Entities.DefaultNotificationSettings GetDefaultNotificationSettingsByAbbreviation(string abbreviation)
+        public Domain.Entities.Notification.DefaultNotificationSettings GetDefaultNotificationSettingsByAbbreviation(string abbreviation)
         {
             var query = from sp in _defaultNotificationSettingsRepository.Table
                         where sp.Message == abbreviation
@@ -70,7 +70,7 @@ namespace DPTS.Services.DefaultNotificationSettings
         /// </summary>
         /// <param name="defaultNotificationSettingsId"></param>
         /// <returns></returns>
-        public Domain.Entities.DefaultNotificationSettings GetDefaultNotificationSettingsById(int defaultNotificationSettingsId)
+        public Domain.Entities.Notification.DefaultNotificationSettings GetDefaultNotificationSettingsById(int defaultNotificationSettingsId)
         {
             if (defaultNotificationSettingsId == 0)
                 return null;
@@ -78,17 +78,17 @@ namespace DPTS.Services.DefaultNotificationSettings
             return _defaultNotificationSettingsRepository.GetById(defaultNotificationSettingsId);
         }
 
-        public IList<Domain.Entities.DefaultNotificationSettings> GetDefaultNotificationSettingsByIds(int[] defaultNotificationSettingsIds)
+        public IList<Domain.Entities.Notification.DefaultNotificationSettings> GetDefaultNotificationSettingsByIds(int[] defaultNotificationSettingsIds)
         {
             if (defaultNotificationSettingsIds == null || defaultNotificationSettingsIds.Length == 0)
-                return new List<Domain.Entities.DefaultNotificationSettings>();
+                return new List<Domain.Entities.Notification.DefaultNotificationSettings>();
 
             var query = from c in _defaultNotificationSettingsRepository.Table
                         where defaultNotificationSettingsIds.Contains(c.Id)
                         select c;
             var countries = query.ToList();
             //sort by passed identifiers
-            var sortedCountries = new List<Domain.Entities.DefaultNotificationSettings>();
+            var sortedCountries = new List<Domain.Entities.Notification.DefaultNotificationSettings>();
             foreach (int id in defaultNotificationSettingsIds)
             {
                 var country = countries.Find(x => x.Id == id);
@@ -98,7 +98,7 @@ namespace DPTS.Services.DefaultNotificationSettings
             return sortedCountries;
         }
 
-        public IList<Domain.Entities.DefaultNotificationSettings> GetDefaultNotificationSettingssByCountryId(int countryId, bool showHidden = false)
+        public IList<Domain.Entities.Notification.DefaultNotificationSettings> GetDefaultNotificationSettingssByCountryId(int countryId, bool showHidden = false)
         {
             var query = from sp in _defaultNotificationSettingsRepository.Table
                         orderby sp.DisplayOrder, sp.Name
@@ -109,7 +109,7 @@ namespace DPTS.Services.DefaultNotificationSettings
             return query.ToList();
         }
 
-        public void InsertDefaultNotificationSettings(Domain.Entities.DefaultNotificationSettings defaultNotificationSettings)
+        public void InsertDefaultNotificationSettings(Domain.Entities.Notification.DefaultNotificationSettings defaultNotificationSettings)
         {
             if (defaultNotificationSettings == null)
                 throw new ArgumentNullException("defaultNotificationSettings");
@@ -117,7 +117,7 @@ namespace DPTS.Services.DefaultNotificationSettings
             _defaultNotificationSettingsRepository.Insert(defaultNotificationSettings);
         }
 
-        public void UpdateDefaultNotificationSettings(Domain.Entities.DefaultNotificationSettings defaultNotificationSettings)
+        public void UpdateDefaultNotificationSettings(Domain.Entities.Notification.DefaultNotificationSettings defaultNotificationSettings)
         {
             if (defaultNotificationSettings == null)
                 throw new ArgumentNullException("defaultNotificationSettings");

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace DPTS.Domain.Entities
+namespace DPTS.Domain.Entities.Notification
 {
     public partial class DefaultNotificationSettings : BaseEntityWithDateTime
     {

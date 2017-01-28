@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using DPTS.Domain.Core.DefaultNotificationSettings;
-using DPTS.Domain.Core.EmailCategory;
+using DPTS.Domain.Core.Notification;
 using DPTS.Domain.Entities;
+using DPTS.Domain.Entities.Notification;
 
 namespace DPTS.Web.Controllers
 {

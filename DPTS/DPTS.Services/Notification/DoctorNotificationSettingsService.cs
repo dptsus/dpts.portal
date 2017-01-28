@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using DPTS.Domain.Core;
-using DPTS.Domain.Core.DoctorNotificationSettingsService;
+using DPTS.Domain.Core.Notification;
+using DPTS.Domain.Entities.Notification;
 
-namespace DPTS.Services.DoctorNotificationSettingsService
+namespace DPTS.Services.Notification
 {
     /// <summary>
     /// DoctorNotificationSettings Service
@@ -13,12 +14,12 @@ namespace DPTS.Services.DoctorNotificationSettingsService
     {
         #region Fields
 
-        private readonly IRepository<Domain.Entities.DoctorNotificationSettings> _doctorNotificationSettingsRepository;
+        private readonly IRepository<DoctorNotificationSettings> _doctorNotificationSettingsRepository;
 
         #endregion
 
         #region Ctor
-        public DoctorNotificationSettingsService(IRepository<Domain.Entities.DoctorNotificationSettings> doctorNotificationSettingsRepository)
+        public DoctorNotificationSettingsService(IRepository<DoctorNotificationSettings> doctorNotificationSettingsRepository)
         {
             _doctorNotificationSettingsRepository = doctorNotificationSettingsRepository;
         }
@@ -29,7 +30,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
         /// delete doctorNotificationSettings
         /// </summary>
         /// <param name="doctorNotificationSettings"></param>
-        public void DeleteDoctorNotificationSettings(Domain.Entities.DoctorNotificationSettings doctorNotificationSettings)
+        public void DeleteDoctorNotificationSettings(DoctorNotificationSettings doctorNotificationSettings)
         {
             if (doctorNotificationSettings == null)
                 throw new ArgumentNullException("doctorNotificationSettings");
@@ -41,7 +42,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
         /// </summary>
         /// <param name="showHidden"></param>
         /// <returns></returns>
-        public IList<Domain.Entities.DoctorNotificationSettings> GetAllDoctorNotificationSettings(bool showHidden = false)
+        public IList<DoctorNotificationSettings> GetAllDoctorNotificationSettings(bool showHidden = false)
         {
             var query = _doctorNotificationSettingsRepository.Table;
             if (!showHidden)
@@ -56,7 +57,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
         /// </summary>
         /// <param name="abbreviation"></param>
         /// <returns></returns>
-        public Domain.Entities.DoctorNotificationSettings GetDoctorNotificationSettingsByAbbreviation(string abbreviation)
+        public DoctorNotificationSettings GetDoctorNotificationSettingsByAbbreviation(string abbreviation)
         {
             var query = from sp in _doctorNotificationSettingsRepository.Table
                         where sp.Message == abbreviation
@@ -70,7 +71,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
         /// </summary>
         /// <param name="doctorNotificationSettingsId"></param>
         /// <returns></returns>
-        public Domain.Entities.DoctorNotificationSettings GetDoctorNotificationSettingsById(int doctorNotificationSettingsId)
+        public DoctorNotificationSettings GetDoctorNotificationSettingsById(int doctorNotificationSettingsId)
         {
             if (doctorNotificationSettingsId == 0)
                 return null;
@@ -78,17 +79,17 @@ namespace DPTS.Services.DoctorNotificationSettingsService
             return _doctorNotificationSettingsRepository.GetById(doctorNotificationSettingsId);
         }
 
-        public IList<Domain.Entities.DoctorNotificationSettings> GetDoctorNotificationSettingsByIds(int[] doctorNotificationSettingsIds)
+        public IList<DoctorNotificationSettings> GetDoctorNotificationSettingsByIds(int[] doctorNotificationSettingsIds)
         {
             if (doctorNotificationSettingsIds == null || doctorNotificationSettingsIds.Length == 0)
-                return new List<Domain.Entities.DoctorNotificationSettings>();
+                return new List<DoctorNotificationSettings>();
 
             var query = from c in _doctorNotificationSettingsRepository.Table
                         where doctorNotificationSettingsIds.Contains(c.Id)
                         select c;
             var countries = query.ToList();
             //sort by passed identifiers
-            var sortedCountries = new List<Domain.Entities.DoctorNotificationSettings>();
+            var sortedCountries = new List<DoctorNotificationSettings>();
             foreach (int id in doctorNotificationSettingsIds)
             {
                 var country = countries.Find(x => x.Id == id);
@@ -98,7 +99,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
             return sortedCountries;
         }
 
-        public IList<Domain.Entities.DoctorNotificationSettings> GetDoctorNotificationSettingssByCountryId(int countryId, bool showHidden = false)
+        public IList<DoctorNotificationSettings> GetDoctorNotificationSettingssByCountryId(int countryId, bool showHidden = false)
         {
             var query = from sp in _doctorNotificationSettingsRepository.Table
                         orderby sp.DisplayOrder, sp.Name
@@ -109,7 +110,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
             return query.ToList();
         }
 
-        public void InsertDoctorNotificationSettings(Domain.Entities.DoctorNotificationSettings doctorNotificationSettings)
+        public void InsertDoctorNotificationSettings(DoctorNotificationSettings doctorNotificationSettings)
         {
             if (doctorNotificationSettings == null)
                 throw new ArgumentNullException("doctorNotificationSettings");
@@ -117,7 +118,7 @@ namespace DPTS.Services.DoctorNotificationSettingsService
             _doctorNotificationSettingsRepository.Insert(doctorNotificationSettings);
         }
 
-        public void UpdateDoctorNotificationSettings(Domain.Entities.DoctorNotificationSettings doctorNotificationSettings)
+        public void UpdateDoctorNotificationSettings(DoctorNotificationSettings doctorNotificationSettings)
         {
             if (doctorNotificationSettings == null)
                 throw new ArgumentNullException("doctorNotificationSettings");

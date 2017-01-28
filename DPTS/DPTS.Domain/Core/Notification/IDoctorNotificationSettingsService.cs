@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using DPTS.Domain.Entities.Notification;
 
-namespace DPTS.Domain.Core.DoctorNotificationSettingsService
+namespace DPTS.Domain.Core.Notification
 {
     public interface IDoctorNotificationSettingsService
     {
@@ -8,35 +9,35 @@ namespace DPTS.Domain.Core.DoctorNotificationSettingsService
         /// Deletes a doctorNotificationSettings
         /// </summary>
         /// <param name="doctorNotificationSettings">doctorNotificationSettings</param>
-        void DeleteDoctorNotificationSettings(Entities.DoctorNotificationSettings doctorNotificationSettings);
+        void DeleteDoctorNotificationSettings(DoctorNotificationSettings doctorNotificationSettings);
 
         /// <summary>
         /// Gets all countries
         /// </summary>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>doctorNotificationSettings</returns>
-        IList<Entities.DoctorNotificationSettings> GetAllDoctorNotificationSettings(bool showHidden = false);
+        IList<DoctorNotificationSettings> GetAllDoctorNotificationSettings(bool showHidden = false);
 
         /// <summary>
         /// Gets a doctorNotificationSettings
         /// </summary>
         /// <param name="doctorNotificationSettingsId">doctorNotificationSettings identifier</param>
         /// <returns>doctorNotificationSettings</returns>
-        Entities.DoctorNotificationSettings GetDoctorNotificationSettingsById(int doctorNotificationSettingsId);
+        DoctorNotificationSettings GetDoctorNotificationSettingsById(int doctorNotificationSettingsId);
 
         /// <summary>
         /// Get countries by identifiers
         /// </summary>
         /// <param name="doctorNotificationSettingsIds">doctorNotificationSettings identifiers</param>
         /// <returns>Countries</returns>
-        IList<Entities.DoctorNotificationSettings> GetDoctorNotificationSettingsByIds(int[] doctorNotificationSettingsIds);
+        IList<DoctorNotificationSettings> GetDoctorNotificationSettingsByIds(int[] doctorNotificationSettingsIds);
 
         /// <summary>
         /// Gets a doctorNotificationSettings/
         /// </summary>
         /// <param name="abbreviation">The doctorNotificationSettings/ abbreviation</param>
         /// <returns>doctorNotificationSettings/</returns>
-        Entities.DoctorNotificationSettings GetDoctorNotificationSettingsByAbbreviation(string abbreviation);
+        DoctorNotificationSettings GetDoctorNotificationSettingsByAbbreviation(string abbreviation);
 
         /// <summary>
         /// Gets a doctorNotificationSettings/ collection by country identifier
@@ -45,17 +46,17 @@ namespace DPTS.Domain.Core.DoctorNotificationSettingsService
         /// <param name="languageId">Language identifier. It's used to sort doctorNotificationSettingss by localized names (if specified); pass 0 to skip it</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>doctorNotificationSettingss</returns>
-        IList<Entities.DoctorNotificationSettings> GetDoctorNotificationSettingssByCountryId(int countryId, bool showHidden = false);
+        IList<DoctorNotificationSettings> GetDoctorNotificationSettingssByCountryId(int countryId, bool showHidden = false);
 
         /// <summary>
         /// Inserts a doctorNotificationSettings
         /// </summary>
         /// <param name="doctorNotificationSettings">doctorNotificationSettings</param>
-        void InsertDoctorNotificationSettings(Entities.DoctorNotificationSettings doctorNotificationSettings);
+        void InsertDoctorNotificationSettings(DoctorNotificationSettings doctorNotificationSettings);
 
         /// <summary>
         /// Updates the doctorNotificationSettings
         /// </summary>
-        void UpdateDoctorNotificationSettings(Entities.DoctorNotificationSettings settings);
+        void UpdateDoctorNotificationSettings(DoctorNotificationSettings settings);
     }
 }
