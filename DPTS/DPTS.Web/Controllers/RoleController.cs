@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DPTS.Web;
 using DPTS.Web.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 
-namespace dpts.portal.Controllers
+namespace DPTS.Web.Controllers
 {
     //[Authorize(Roles = "SuperAdmin")]
     //[RequireHttps]

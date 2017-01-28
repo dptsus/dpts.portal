@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Core\Address\IAddressService.cs" />
     <Compile Include="Core\Appointment\IAppointmentService.cs" />
+    <Compile Include="Core\DoctorNotificationSettingsService\IDoctorNotificationSettingsService.cs" />
     <Compile Include="Core\EmailCategory\IEmailCategoryService.cs" />
     <Compile Include="Core\Country\ICountryService.cs" />
     <Compile Include="Core\Doctors\IDoctorService.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Entities\AspNetUserLogin.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
+    <Compile Include="Entities\DoctorNotificationSettings.cs" />
     <Compile Include="Entities\ReviewComments.cs" />
     <Compile Include="Entities\EmailCategory.cs" />
     <Compile Include="Entities\Country.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace dpts.portal.Controllers
+namespace DPTS.Web.Controllers
 {
     [AllowAnonymous]
     public class ErrorController : Controller

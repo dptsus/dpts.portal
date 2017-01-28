@@ -1,16 +1,19 @@
-﻿@{
-    ViewBag.Title = ViewBag.ErrorCode + "-" + ViewBag.ErrorHeading;
+﻿
+@{
+    ViewBag.Title = "Unsubscribe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="jumbotron">
-                    <h1>@ViewBag.ErrorCode - @ViewBag.ErrorHeading</h1>
-                    <p class="lead">@ViewBag.ErrorContent</p>
+                    <h1>@ViewBag.UserId</h1>
+                    <p class="lead">@ViewBag.Message</p>
                     <p><a href="@Url.Action("Search","Home")" class="btn btn-success btn-lg">Go to Home</a></p>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </main>
+
