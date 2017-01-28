@@ -23,12 +23,15 @@ namespace DPTS.Web.Controllers
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
         private ISmsNotificationService _smsService;
+        private IEmailNotificationService _emailService;
 
-        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService)
+        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService,
+            IEmailNotificationService emailService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
             _smsService = smsService;
+            _emailService = emailService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -188,7 +191,8 @@ namespace DPTS.Web.Controllers
                 sms.route = 4; //route 4 is for transactional sms
                 sms.senderId = "DOCPTS";
                 Session["otp"] = _smsService.GenerateOTP();
-                sms.message = "DTPS Verification code: " + Session["otp"].ToString() + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                sms.message = "DTPS Verification code: " + Session["otp"].ToString() + "." + 
+                    "Pls do not share with anyone. It is valid for 10 minutes.";
                 _smsService.SendSms(sms);
                 TempData["regmodel"] = model;
                 return RedirectToAction("ConfirmRegistration", "Account");
@@ -221,7 +225,7 @@ namespace DPTS.Web.Controllers
                     ViewBag.confirmFail = "Invalid OTP!!";
                     return View(model);
                 }
-                
+
                 var user = new ApplicationUser
                 {
                     UserName = model.RegistrationDetails.Email,
@@ -232,7 +236,7 @@ namespace DPTS.Web.Controllers
                     LastLoginDateUtc = DateTime.UtcNow,
                     CreatedOnUtc = DateTime.UtcNow,
                     PhoneNumber = model.RegistrationDetails.PhoneNumber,
-                    TwoFactorEnabled = true
+                    PhoneNumberConfirmed = true
                 };
                 var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
                 if (result.Succeeded)

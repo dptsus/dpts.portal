@@ -63,6 +63,7 @@
     <Compile Include="EmailCategory\EmailCategoryService.cs" />
     <Compile Include="Country\CountryService.cs" />
     <Compile Include="Doctors\DoctorService.cs" />
+    <Compile Include="Notifications\AppointmentNotificationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Speciality\SpecialityService.cs" />

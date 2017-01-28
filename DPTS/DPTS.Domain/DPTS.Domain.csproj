@@ -46,6 +46,7 @@
     <Compile Include="Core\EmailCategory\IEmailCategoryService.cs" />
     <Compile Include="Core\Country\ICountryService.cs" />
     <Compile Include="Core\Doctors\IDoctorService.cs" />
+    <Compile Include="Core\Notifications\IAppointmentNotificationService.cs" />
     <Compile Include="Core\Speciality\ISpecialityService.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\DefaultNotificationSettings\IDefaultNotificationSettingsService.cs" />

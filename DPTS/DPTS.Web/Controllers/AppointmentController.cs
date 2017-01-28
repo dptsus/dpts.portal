@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using DPTS.Data.Context;
 using DPTS.Domain.Entities;
 using System.Text;
+using DPTS.EmailSmsNotifications.ServiceModels;
+using DPTS.EmailSmsNotifications.IServices;
+using DPTS.Domain.Core.Address;
 
 namespace DPTS.Web.Controllers
 {
@@ -18,15 +21,22 @@ namespace DPTS.Web.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
         private readonly DPTSDbContext _context;
+        private ISmsNotificationService _smsService;
+        private IEmailNotificationService _emailService;
+        private readonly IAddressService _addressService;
         #endregion
 
         #region Contr
         public AppointmentController(IDoctorService doctorService,
-            IAppointmentService scheduleService)
+            IAppointmentService scheduleService, ISmsNotificationService smsService,
+            IEmailNotificationService emailService, IAddressService addressService)
         {
             _doctorService = doctorService;
             _scheduleService = scheduleService;
             _context = new DPTSDbContext();
+            _smsService = smsService;
+            _emailService = emailService;
+            _addressService = addressService;
         }
 
         #endregion
@@ -34,7 +44,7 @@ namespace DPTS.Web.Controllers
         #region Utilities
         private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime,
             string endTime, double duration,
-            IList<AppointmentSchedule> bookedSlots )
+            IList<AppointmentSchedule> bookedSlots)
         {
             try
             {
@@ -101,7 +111,7 @@ namespace DPTS.Web.Controllers
 
         }
 
-        public JsonResult BookingScheduleByDate(string slot_date , string doctorId)
+        public JsonResult BookingScheduleByDate(string slot_date, string doctorId)
         {
             var response = new StringBuilder();
             string resultNoResultFound = string.Empty;
@@ -135,7 +145,7 @@ namespace DPTS.Web.Controllers
 
                 var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
 
-                if(scheduleSlots == null)
+                if (scheduleSlots == null)
                 {
 
                     return Json(new
@@ -147,13 +157,13 @@ namespace DPTS.Web.Controllers
                 foreach (var item in scheduleSlots.ScheduleSlotModel)
                 {
                     string repo = string.Empty;
-                    if(item.IsBooked)
+                    if (item.IsBooked)
                     {
                         repo = "<div class=\"tg-doctimeslot tg-booked\">";
                         repo += "<div class=\"tg-box\">";
                         repo += "<div class=\"tg-radio\">";
                         repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\" disabled >";
-                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "<label for=\"" + item.Slot + "\">" + item.Slot + "</label>";
                         repo += "</div> </div> </div>";
                     }
                     else
@@ -162,7 +172,7 @@ namespace DPTS.Web.Controllers
                         repo += "<div class=\"tg-box\">";
                         repo += "<div class=\"tg-radio\">";
                         repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\">";
-                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "<label for=\"" + item.Slot + "\">" + item.Slot + "</label>";
                         repo += "</div> </div> </div>";
                     }
                     response.AppendLine(repo);
@@ -207,7 +217,7 @@ namespace DPTS.Web.Controllers
             {
                 return Json(new
                 {
-                    success =1
+                    success = 1
                 });
             }
             var fullName = visitor.FirstName + " " + visitor.LastName;
@@ -229,7 +239,7 @@ namespace DPTS.Web.Controllers
 
         public JsonResult FinishBooking(FormCollection form)
         {
-            if(!string.IsNullOrWhiteSpace(form["booking_date"]) &&
+            if (!string.IsNullOrWhiteSpace(form["booking_date"]) &&
                 !string.IsNullOrWhiteSpace("slottime") &&
                 !string.IsNullOrWhiteSpace("subject") &&
                 !string.IsNullOrWhiteSpace("username") &&
@@ -256,8 +266,34 @@ namespace DPTS.Web.Controllers
                 };
 
                 _scheduleService.InsertAppointmentSchedule(booking);
-                var doctorname = booking
-                "Your dental appointment with" +  Dr P. Delvour " is scheduled for " + timeofappointment + ", " + Address + ", " + contactnumber
+
+                //Below is the temporary code, i will update service class, interfaces
+
+                Doctor doctorDetails = _doctorService.GetDoctorbyId(booking.DoctorId);
+                string doctorName = "Dr. " + doctorDetails.AspNetUser.FirstName + doctorDetails.AspNetUser.LastName;
+                string appointmemtSchedule = booking.AppointmentDate + " " + booking.AppointmentTime;
+                string appomitmentAddress = _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().Address1 + " " +
+                    _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().Address2 + " " +
+                    _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().City + " " +
+                    _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().ZipPostalCode;
+                string contactNumber = doctorDetails.AspNetUser.PhoneNumber;
+
+                SmsNotificationModel sms = new SmsNotificationModel();
+                sms.numbers = form["mobilenumber"].ToString();
+                sms.route = 4; //route 4 is for transactional sms
+                sms.senderId = "DOCPTS";
+                sms.message = "Your appointment with " + doctorName + " is scheduled for " +
+                    appointmemtSchedule + ", " + appomitmentAddress + ", " + contactNumber;
+                _smsService.SendSms(sms);
+
+                EmailNotificationModel email = new EmailNotificationModel();
+                email.from = doctorDetails.AspNetUser.Email;
+                email.to = form["useremail"].ToString();
+                email.subject = "Doc Direct Appointment Schedule.";
+                email.content = "Your appointment with " + doctorName + " is scheduled for " +
+                    appointmemtSchedule + ", " + appomitmentAddress + ", " + contactNumber;
+                _emailService.SendEmail(email);
+
                 return Json(new
                 {
                     result = "success"
