@@ -112,17 +112,9 @@
     <Compile Include="Migrations\201701270714591_DocRating.Designer.cs">
       <DependentUpon>201701270714591_DocRating.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701270754145_ReviewTablecreate.cs" />
-    <Compile Include="Migrations\201701270754145_ReviewTablecreate.Designer.cs">
-      <DependentUpon>201701270754145_ReviewTablecreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701270757434_ReviewTablecreate1.cs" />
-    <Compile Include="Migrations\201701270757434_ReviewTablecreate1.Designer.cs">
-      <DependentUpon>201701270757434_ReviewTablecreate1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701280843108_DoctorNotificationSettingtableUnsubscribe.cs" />
-    <Compile Include="Migrations\201701280843108_DoctorNotificationSettingtableUnsubscribe.Designer.cs">
-      <DependentUpon>201701280843108_DoctorNotificationSettingtableUnsubscribe.cs</DependentUpon>
+    <Compile Include="Migrations\201701290809491_TableUpdated.cs" />
+    <Compile Include="Migrations\201701290809491_TableUpdated.Designer.cs">
+      <DependentUpon>201701290809491_TableUpdated.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -182,14 +174,8 @@
     <EmbeddedResource Include="Migrations\201701270714591_DocRating.resx">
       <DependentUpon>201701270714591_DocRating.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701270754145_ReviewTablecreate.resx">
-      <DependentUpon>201701270754145_ReviewTablecreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701270757434_ReviewTablecreate1.resx">
-      <DependentUpon>201701270757434_ReviewTablecreate1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701280843108_DoctorNotificationSettingtableUnsubscribe.resx">
-      <DependentUpon>201701280843108_DoctorNotificationSettingtableUnsubscribe.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201701290809491_TableUpdated.resx">
+      <DependentUpon>201701290809491_TableUpdated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
