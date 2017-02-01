@@ -257,6 +257,7 @@
   <ItemGroup>
     <Content Include="Content\Admin\vendor\bootstrap-datetimepicker.css" />
     <Content Include="Content\Admin\js\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\docdirect_functions.js" />
     <Content Include="Content\jquery.fileupload.css" />
     <Content Include="Content\tagEditor\jquery.tag-editor.css" />
     <Content Include="Scripts\AdminHelper.js" />

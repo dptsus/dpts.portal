@@ -4,41 +4,280 @@
     ViewBag.Title = "DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script type='text/javascript'>
+/* <![CDATA[ */
+var scripts_vars = {"ajaxurl":"https:\/\/themographics.com\/wordpress\/docdirect\/wp-admin\/admin-ajax.php","award_name":"Award Name","award_date":"Award Date","award_description":"Award Description","file_upload_title":"Avatar Upload","delete_message":"Are you sure you want to delete your account?","deactivate":"Are you sure you want to deactivate your account?","delete_title":"Delete account?","deactivate_title":"Deactivate account?","docdirect_upload_nounce":"f285cd2c24","dir_close_marker":"https:\/\/themographics.com\/wordpress\/docdirect\/wp-content\/themes\/docdirect\/images\/close.png","dir_cluster_marker":"\/\/themographics.com\/wordpress\/docdirect\/wp-content\/uploads\/2016\/04\/cluster.png","dir_map_marker":{"attachment_id":"7","url":"\/\/themographics.com\/wordpress\/docdirect\/wp-content\/uploads\/2016\/03\/03.png"},"dir_cluster_color":"#505050","dir_map_type":"ROADMAP","dir_zoom":"11","dir_longitude":"-0.1262362","dir_latitude":"51.5001524","dir_datasize":"10485760","data_size_in_kb":"10240kb","dir_map_scroll":"false","map_styles":"none","site_key":"6Ld7fgcUAAAAANmJV2K3RulmACd_3DJwmYqT7bQw","rating_1":"Not Satisfied","rating_2":"Satisfied","rating_3":"Good","rating_4":"Very Good","rating_5":"Excellent","delete_award":"Delete Award","delete_award_message":"Are you sure, you want to delete this award?","delete_education":"Delete Degree","delete_education_message":"Are you sure, you want to delete this Degree?","delete_experience":"Delete Experience","delete_experience_message":"Are you sure, you want to delete this experience?","delete_category":"Delete Category","delete_category_message":"Are you sure, you want to delete this category?","delete_service":"Delete Service","delete_service_message":"Are you sure, you want to delete this service?","delete_slot":"Delete Slot","delete_slot_message":"Are you sure, you want to delete this slot?","delete_slot_date":"Delete Slot Date","delete_slot_date_message":"Are you sure, you want to delete this slot date?","approve_appointment":"Approve Appointment?","approve_appointment_message":"Are you sure, you want to approve this appointment?","cancel_appointment":"Cancel Appointment?","cancel_appointment_message":"Are you sure, you want to cancel this appointment?","booking_time":"Please select booking time.","gmap_norecod":"No Record Found.","fav_message":"Please login first.","fav_nothing":"Nothing found.","empty_category":"Please add category name.","complete_fields":"Please fill all the fields.","system_error":"Some error occur, please try again later.","valid_email":"Please add valid email address.","user_status":"false","custom_slots_dates":"Atleast one date! start or end date is required.","finish":"Finish","with_in":"within ","kilometer":" km","select_language":" Select Language"};
+/* ]]> */
+</script>
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div class="container">
         <div class="row">
             <div class="main-page-wrapper tg-haslayout">
                 <div class="fw-page-builder-content">
-                    <section class="tg-main-section haslayout  stretch_section_contents_corner stretch_section stretch_data" style="margin-top:-100px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                    <section class="tg-main-section haslayout  stretch_section_contents_corner stretch_section stretch_data" style="margin-top: -100px; padding-top: 0px; padding-bottom: 0px; background-repeat: no-repeat; background-position: 0% 100%; background-size: cover; position: relative; left: -89.5px; box-sizing: border-box; width: 1349px;">
                         <div class="builder-items">
                             <div class="col-xs-12 col-md-12 builder-column ">
-                                <div class="sc-dir-search v1">
-                                    <div id="tg-homebanner" class="tg-homebanner tg-overflowhidden tg-haslayout">
-                                        <div id="map_canvas" class="tg-location-map tg-haslayout"></div>
-                                        <div class="map-controls">
-                                            <span id="doc-mapplus"><i class="fa fa-plus"></i></span>
-                                            <span id="doc-mapminus"><i class="fa fa-minus"></i></span>
-                                            <span id="doc-lock"><i class="fa fa-lock"></i></span>
-                                        </div>
-                                        <div id="gmap-noresult"></div>
-                                        <div class="tg-banner-content">
-                                            <div class="tg-displaytable">
-                                                <div class="tg-displaytablecell">
-                                                    <div class="container">
+                                <div class="tg-banner-holder">
+                                    <div class="tg-banner-content">
+                                        <div class="container">
+                                            <div class="tg-heading-border">
+                                                <h1><span>find your nearest</span><div class="dynamic-title">Doctor</div></h1>
+                                            </div>
+                                            <div class="tg-searcharea-v2">
+                                                <form class="tg-searchform directory-map" action="https://themographics.com/wordpress/docdirect/dir-search/" method="get" id="directory-map">
+                                                    <fieldset>
+                                                        <div class="form-group">
+                                                            <input type="text" name="by_name" placeholder="Type Keyword..." class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="locate-me-wrap">
+                                                                <div class="locate-me-wrap">
+                                                                    <div id="location-pickr-map" class="elm-display-none"></div>
 
-                                                        @*@Html.Partial("SearchBox")*@
-                                                        @Html.Action("SearchBox", "Home")
+                                                                    <input type="text" autocomplete="on" id="location-address" value="" name="geo_location" placeholder="Geo location" class="form-control">
+                                                                    <a href="javascript:;" class="geolocate"><img src="https://themographics.com/wordpress/docdirect/wp-content/themes/docdirect/images/geoicon.svg" width="16" height="16" class="geo-locate-me" alt="Locate me!"></a>
+                                                                    <a href="javascript:;" class="geodistance"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                                                    <div class="geodistance_range elm-display-none">
+                                                                        <div class="distance-ml">Distance in&nbsp;( Miles )<span>50</span></div>
+                                                                        <input type="hidden" name="geo_distance" value="50" class="geo_distance" />
+                                                                        <div class="geo_distance" id="geo_distance"></div>
+                                                                    </div>
+                                                                    </div>
+                                                                <script>
+			jQuery(document).ready(function(e) {
+				jQuery( "#geo_distance" ).slider({
+				   range: "min",
+				   min:1,
+				   max:300,
+				   value:50,
+				   animate:"slow",
+				   orientation: "horizontal",
+				   slide: function( event, ui ) {
+					  jQuery( ".distance-ml span" ).html( ui.value );
+					  jQuery( ".geo_distance" ).val( ui.value );
+				   }
+				});
+			});
+                                                                </script>
+                                                                <script>
+                                    jQuery(document).ready(function(e) {
+                                        //init
+                                        jQuery.docdirect_init_map(51.5001524,-0.1262362);
+                                    });
+                                                                </script>
+                                                                <div id="map" style="display:none"></div>
+                                                                <script>
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+
+      function initMap() {
+        //var map = new google.maps.Map(document.getElementById('map'), {
+        //  center: {lat: -34.397, lng: 150.644},
+        //  zoom: 6
+        //});
+        //var infoWindow = new google.maps.InfoWindow({map: map});
+
+        //// Try HTML5 geolocation.
+        //if (navigator.geolocation) {
+        //    navigator.geolocation.getCurrentPosition(function (position) {
+        //        codeLatLng(position.coords.latitude, position.coords.longitude);
+        //    var pos = {
+        //      lat: position.coords.latitude,
+        //      lng: position.coords.longitude
+        //    };
+
+        //    infoWindow.setPosition(pos);
+        //    infoWindow.setContent('Location found.');
+        //    map.setCenter(pos);
+
+        //  }, function() {
+        //    handleLocationError(true, infoWindow, map.getCenter());
+        //  });
+        //} else {
+        //  // Browser doesn't support Geolocation
+        //  handleLocationError(false, infoWindow, map.getCenter());
+          //}
+          navigator.geolocation.getCurrentPosition(function (pos) {
+              var geocoder = new google.maps.Geocoder();
+              var lat = pos.coords.latitude;
+              var lng = pos.coords.longitude;
+              var latlng = new google.maps.LatLng(lat, lng);
+
+              //reverse geocode the coordinates, returning location information.
+              geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                  var result = results[0];
+                  var state = '';
+
+                  for (var i = 0, len = result.address_components.length; i < len; i++) {
+                      var ac = result.address_components[i];
+
+                      if (ac.types.indexOf('administrative_area_level_1') >= 0) {
+                          state = ac.short_name;
+                      }
+                  }
+
+                  alert(state);
+
+              });
+          });
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+
+      function codeLatLng(lat, lng) {
+          var latlng = new google.maps.LatLng(lat, lng);
+          geocoder.geocode({ latLng: latlng }, function (results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[1]) {
+                      var arrAddress = results;
+                      console.log(results);
+                      $.each(arrAddress, function (i, address_component) {
+                          if (address_component.types[0] == "locality") {
+                              console.log("City: " + address_component.address_components[0].long_name);
+                              alert(address_component.address_components[0].long_name);
+                              itemLocality = address_component.address_components[0].long_name;
+                              alert(itemLocality);
+                          }
+                      });
+                  } else {
+                      alert("No results found");
+                  }
+              } else {
+                  alert("Geocoder failed due to: " + status);
+              }
+          });
+      }
+                                                                </script>
+                                                                <script async defer
+                                                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U&callback=initMap">
+                                                                </script>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <span class="select">
+                                                                <select class="directory_type" name="directory_type">
+                                                                    <option value="">All</option>
+                                                                    <option id="127" data-dir_name="Doctor" value="doctor">Doctor</option>
+                                                                    <option id="126" data-dir_name="hospital" value="hospital">Hospital</option>
+                                                                    <option id="125" data-dir_name="clinic" value="clinic">Clinic</option>
+                                                                    <option id="123" data-dir_name="Pharmacy" value="pharmacy">Pharmacy</option>
+                                                                    <option id="122" data-dir_name="Blood Bank" value="blood-bank">Blood Bank</option>
+                                                                    <option id="121" data-dir_name="Fitness Center" value="fitness-center">Fitness Center</option>
+                                                                </select>
+                                                            </span>
+                                                            <script>
+								jQuery(document).ready(function() {
+									var Z_Editor = {};
+									Z_Editor.elements = {};
+									window.Z_Editor = Z_Editor;
+									Z_Editor.elements = jQuery.parseJSON( '{\"127\":{\"cardiologist\":\"Cardiologist\",\"colorectal-surgeon\":\"Colorectal surgeon\",\"dentist\":\"Dentist\",\"dermatologist\":\"Dermatologist\",\"dietician\":\"Dietician\",\"eye-doctor\":\"Eye Doctor\",\"eye-nose-ear-ent-specialist\":\"Eye, Nose, Ear (ENT) specialist\",\"nephrologist\":\"Nephrologist\",\"neurosurgeon\":\"Neurosurgeon\",\"nutritionist\":\"Nutritionist\",\"oncologist\":\"Oncologist\",\"ophthalmologist\":\"Ophthalmologist\",\"orthodontist\":\"Orthodontist\",\"orthopedic-surgeon\":\"Orthopedic Surgeon\",\"pediatrician\":\"Pediatrician\",\"physiotherapist\":\"Physiotherapist\",\"plastic-surgeon\":\"Plastic surgeon\",\"primary-care-doctor\":\"Primary care doctor\",\"psychiatrist\":\"Psychiatrist\",\"psychologist\":\"Psychologist\"},\"126\":{\"cancer-hospital\":\"Cancer Hospital\",\"children-hospital\":\"Children Hospital\",\"psychiatric-hospital\":\"Psychiatric Hospital\",\"rehabilitation-hospital\":\"Rehabilitation Hospital\",\"trauma-centre\":\"Trauma Centre\"},\"125\":{\"cardiology-clinic\":\"Cardiology clinic\",\"children-clinic\":\"Children clinic\",\"dermatology-clinic\":\"Dermatology clinic\",\"ent-clinic\":\"ENT clinic\",\"family-clinic\":\"Family clinic\"},\"123\":{\"clinical-pharmacy\":\"Clinical pharmacy\",\"community-pharmacy\":\"Community pharmacy\",\"compliance-medicine\":\"Compliance (medicine)\",\"distribution-pharmacology\":\"Distribution (pharmacology)\",\"drug-reaction-testing\":\"Drug reaction testing\",\"drug-therapy-problems\":\"Drug therapy problems\"},\"122\":{\"associazione-volontari-italiani-sangue\":\"Associazione Volontari\",\"blood-services\":\"Blood Services\",\"blood-services-center-for-biologics-evaluation-and-research\":\"Blood Services Center\",\"community-blood-services\":\"Community Blood Services\",\"cord-blood-registry\":\"Cord Blood Registry\",\"general-blood-bank\":\"General Blood Bank\",\"international-society-of-blood-transfusion\":\"International Society of Blood Transfusion\"},\"121\":{\"aerobic-centers\":\"Aerobic Centers\",\"athletic-clubs\":\"Athletic Clubs\",\"country-clubs\":\"Country Clubs\",\"dance-centers\":\"Dance Centers\",\"gyms\":\"Gyms\",\"pilates-centers\":\"Pilates Centers\",\"yoga-centers\":\"Yoga Centers\"}}' );
+									jQuery('.dynamic-title').html("Doctor");
+								});
+                                                            </script>
+                                                            <script type="text/template" id="tmpl-load-subcategories">
+                                                                <option value="">{{data['parent']}} - Specialities</option>
+                                                                <# var _option='' ;
+                                                                   if( !_.isEmpty(data['childrens']) ) {
+                                                                   _.each( data['childrens'] , function(element, index, attr) { #>
+                                                                    <option value="{{index}}">{{element}}</option>
+                                                                    <# });
+                                                                       }
+                                                                       #>
+                                                            </script>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <span class="select">
+                                                                <select class="group subcats" name="speciality">
+                                                                    <option value="">
+                                                                        Specialities
+                                                                    </option>
+                                                                    <option value="cardiologist">Cardiologist</option>
+                                                                    <option value="colorectal-surgeon">Colorectal surgeon</option>
+                                                                    <option value="dentist">Dentist</option>
+                                                                    <option value="dermatologist">Dermatologist</option>
+                                                                    <option value="dietician">Dietician</option>
+                                                                    <option value="eye-doctor">Eye Doctor</option>
+                                                                    <option value="eye-nose-ear-ent-specialist">Eye, Nose, Ear (ENT) specialist</option>
+                                                                    <option value="nephrologist">Nephrologist</option>
+                                                                    <option value="neurosurgeon">Neurosurgeon</option>
+                                                                    <option value="nutritionist">Nutritionist</option>
+                                                                    <option value="oncologist">Oncologist</option>
+                                                                    <option value="ophthalmologist">Ophthalmologist</option>
+                                                                    <option value="orthodontist">Orthodontist</option>
+                                                                    <option value="orthopedic-surgeon">Orthopedic Surgeon</option>
+                                                                    <option value="pediatrician">Pediatrician</option>
+                                                                    <option value="physiotherapist">Physiotherapist</option>
+                                                                    <option value="plastic-surgeon">Plastic surgeon</option>
+                                                                    <option value="primary-care-doctor">Primary care doctor</option>
+                                                                    <option value="psychiatrist">Psychiatrist</option>
+                                                                    <option value="psychologist">Psychologist</option>
+                                                                </select>
+                                                            </span>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="submit" id="search_banner" class="tg-btn" value="search">
+                                                        </div>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="searchbanner-" class="tg-homeslidertwo owl-carousel owl-theme" style="opacity: 1; display: block;">
+                                        <div class="owl-wrapper-outer">
+                                            <div class="owl-wrapper" style="width: 8094px; left: 0px; display: block; transition: all 1000ms ease; transform: translate3d(0px, 0px, 0px);">
+                                                <div class="owl-item" style="width: 1349px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/banner-img1.jpg" alt="Search">
+                                                        </figure>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 1349px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/banner-img2.jpg" alt="Search">
+                                                        </figure>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 1349px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/banner-img3.jpg" alt="Search">
+                                                        </figure>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="show-search"><i class="fa fa-search"></i></div>
+
+
+                                        <div class="owl-controls clickable"><div class="owl-pagination"><div class="owl-page active"><span class=""></span></div><div class="owl-page"><span class=""></span></div><div class="owl-page"><span class=""></span></div></div><div class="owl-buttons"><div class="owl-prev"><i class="tg-prev fa fa-angle-left"></i></div><div class="owl-next"><i class="tg-next fa fa-angle-right"></i></div></div></div>
                                     </div>
+                                    <script>
+		jQuery(document).ready(function(e) {
+            jQuery("#searchbanner-").owlCarousel({
+				paginationSpeed : 400,
+				slideSpeed : 300,
+				autoPlay : true,
+				singleItem:true,
+				navigation : true,
+				navigationText: [
+					"<i class='tg-prev fa fa-angle-left'></i>",
+					"<i class='tg-next fa fa-angle-right'></i>"
+				]
+			});
+        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
                     </section>
-                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default" style="padding-top:0px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  stretch_section" style="position: relative; left: -89.5px; box-sizing: border-box; width: 1349px; padding-left: 89.5px; padding-right: 89.5px;">
                         <div class="builder-items">
                             <div class="col-xs-12 col-md-12 builder-column ">
                                 <div class="sc-services">
@@ -60,9 +299,9 @@
 
                                                         <div class="tg-displaytablecell">
                                                             <div class="tg-box">
-                                                                <a href="dir-search/indexf480.html?directoryType=doctor"><h3>find your doctor</h3></a>
+                                                                <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=doctor"><h3>find your doctor</h3></a>
                                                                 <i class="icon-stethoscope"></i>
-                                                                <a href="dir-search/indexf480.html?directoryType=doctor"><span class="tg-show"><em class="icon-add"></em></span></a>
+                                                                <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=doctor"><span class="tg-show"><em class="icon-add"></em></span></a>
                                                             </div>
                                                         </div>
 
@@ -75,9 +314,9 @@
 
                                                         <div class="tg-displaytablecell">
                                                             <div class="tg-box">
-                                                                <a href="dir-search/index905a.html?directoryType=hospital"><h3>NEAREST HOSPITAL</h3></a>
-                                                                <i class="icon-healthcare"></i>
-                                                                <a href="dir-search/index905a.html?directoryType=hospital"><span class="tg-show"><em class="icon-add"></em></span></a>
+                                                                <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=hospital"><h3>NEAREST HOSPITAL</h3></a>
+                                                                <i class="icon-Hospitalmedicalsignalofacrossinacircle"></i>
+                                                                <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=hospital"><span class="tg-show"><em class="icon-add"></em></span></a>
                                                             </div>
                                                         </div>
 
@@ -90,9 +329,9 @@
 
                                                         <div class="tg-displaytablecell">
                                                             <div class="tg-box">
-                                                                <a href="dir-search/index679e.html?directoryType=pharmacy"><h3>NEAREST PHARMACY</h3></a>
+                                                                <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=pharmacy"><h3>NEAREST PHARMACY</h3></a>
                                                                 <i class="icon-capsules"></i>
-                                                                <a href="dir-search/index679e.html?directoryType=pharmacy"><span class="tg-show"><em class="icon-add"></em></span></a>
+                                                                <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=pharmacy"><span class="tg-show"><em class="icon-add"></em></span></a>
                                                             </div>
                                                         </div>
 
@@ -101,6 +340,365 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  stretch_section" style="background-image: url(&quot;https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/bgparallax-03.jpg&quot;); background-repeat: no-repeat; background-position: 0% 100%; background-size: cover; position: relative; left: -89.5px; box-sizing: border-box; width: 1349px; padding-left: 89.5px; padding-right: 89.5px;">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="sc-featured-users">
+                                    <div class="col-sm-8 col-sm-offset-2 col-xs-12">
+                                        <div class="tg-section-head tg-haslayout">
+                                            <div class="tg-section-heading tg-haslayout">
+                                                <h2>FEATURED LISTINGS</h2>
+                                            </div>
+                                            <div class="tg-description tg-haslayout">
+                                                <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="tg-featuredlist-3" class="tg-featuredlist-slider tg-featuredlist-slider-v2 tg-haslayout owl-carousel owl-theme" style="opacity: 1; display: block;">
+                                        <div class="owl-wrapper-outer">
+                                            <div class="owl-wrapper" style="width: 3420px; left: 0px; display: block;">
+                                                <div class="owl-item" style="width: 285px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <a href="https://themographics.com/wordpress/docdirect/fitness-center/better/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/7-275x191.jpg" alt="User"></a>
+                                                            <a data-view_type="v1" class="tg-like add-to-fav" data-wl_id="294" href="javascript:;"><i class="fa fa-heart"></i></a>																<span class="tg-featuredtags">
+                                                                <a class="tg-featured" href="javascript:;">featured</a>
+                                                            </span>
+                                                            <span class="user-verified">
+                                                                <svg id="Icon" xmlns="http://www.w3.org/2000/svg" width="74.875" height="21" viewBox="0 0 74.875 21">
+                                                                    <defs>
+                                                                        <style>
+                                                                            .cls-1 {
+                                                                                fill: #10a64a;
+                                                                            }
+
+                                                                            .cls-2 {
+                                                                                font-size: 16px;
+                                                                                text-anchor: middle;
+                                                                                font-family: FontAwesome;
+                                                                                text-transform: uppercase;
+                                                                            }
+
+                                                                            .cls-2, .cls-3 {
+                                                                                fill: #fff;
+                                                                            }
+
+                                                                            .cls-3 {
+                                                                                font-size: 14.437px;
+                                                                                font-family: Montserrat;
+                                                                            }
+                                                                        </style>
+                                                                    </defs>
+                                                                    <rect id="BG" class="cls-1" width="74.875" height="21" rx="3" ry="3"></rect>
+                                                                    <text id="_" data-name="" class="cls-2" transform="translate(14.829 14.99) scale(0.737 0.762)"></text>
+                                                                    <text id="Verified" class="cls-3" transform="translate(22.787 15.191) scale(0.737 0.762)">Verified</text>
+                                                                </svg>
+
+                                                            </span>
+                                                        </figure>
+                                                        <div class="tg-contentbox">
+                                                            <h3><a href="https://themographics.com/wordpress/docdirect/fitness-center/better/">Better Bodies</a></h3>
+                                                            <div class="feature-rating">
+                                                                <span class="tg-stars star-rating">
+                                                                    <span style="width:80%"></span>
+                                                                </span>
+                                                                <em>4.0<sub>/5</sub></em>
+                                                            </div>
+                                                            <address>54 Park Rd, London NW4 3PH, UK</address>
+                                                            <div class="tg-phone"><i class="fa fa-phone"></i> <em>50 235 856843</em></div>
+                                                        </div>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 285px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <a href="https://themographics.com/wordpress/docdirect/fitness-center/popular/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/9-275x191.jpg" alt="User"></a>
+                                                            <a data-view_type="v1" class="tg-like add-to-fav" data-wl_id="296" href="javascript:;"><i class="fa fa-heart"></i></a>																<span class="tg-featuredtags">
+                                                                <a class="tg-featured" href="javascript:;">featured</a>
+                                                            </span>
+                                                            <span class="user-verified">
+                                                                <svg id="Icon" xmlns="http://www.w3.org/2000/svg" width="74.875" height="21" viewBox="0 0 74.875 21">
+                                                                    <defs>
+                                                                        <style>
+                                                                            .cls-1 {
+                                                                                fill: #10a64a;
+                                                                            }
+
+                                                                            .cls-2 {
+                                                                                font-size: 16px;
+                                                                                text-anchor: middle;
+                                                                                font-family: FontAwesome;
+                                                                                text-transform: uppercase;
+                                                                            }
+
+                                                                            .cls-2, .cls-3 {
+                                                                                fill: #fff;
+                                                                            }
+
+                                                                            .cls-3 {
+                                                                                font-size: 14.437px;
+                                                                                font-family: Montserrat;
+                                                                            }
+                                                                        </style>
+                                                                    </defs>
+                                                                    <rect id="BG" class="cls-1" width="74.875" height="21" rx="3" ry="3"></rect>
+                                                                    <text id="_" data-name="" class="cls-2" transform="translate(14.829 14.99) scale(0.737 0.762)"></text>
+                                                                    <text id="Verified" class="cls-3" transform="translate(22.787 15.191) scale(0.737 0.762)">Verified</text>
+                                                                </svg>
+
+                                                            </span>
+                                                        </figure>
+                                                        <div class="tg-contentbox">
+                                                            <h3><a href="https://themographics.com/wordpress/docdirect/fitness-center/popular/">Popular Gym</a></h3>
+                                                            <div class="feature-rating">
+                                                                <span class="tg-stars star-rating">
+                                                                    <span style="width:100%"></span>
+                                                                </span>
+                                                                <em>5.0<sub>/5</sub></em>
+                                                            </div>
+                                                            <address>N Circular Rd, London N11, UK</address>
+                                                            <div class="tg-phone"><i class="fa fa-phone"></i> <em>52 235 856843</em></div>
+                                                        </div>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 285px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <a href="https://themographics.com/wordpress/docdirect/doctor/celia/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-07-1-275x191.jpg" alt="User"></a>
+                                                            <a data-view_type="v1" class="tg-like add-to-fav" data-wl_id="336" href="javascript:;"><i class="fa fa-heart"></i></a>																<span class="tg-featuredtags">
+                                                                <a class="tg-featured" href="javascript:;">featured</a>
+                                                            </span>
+                                                            <span class="user-verified">
+                                                                <svg id="Icon" xmlns="http://www.w3.org/2000/svg" width="74.875" height="21" viewBox="0 0 74.875 21">
+                                                                    <defs>
+                                                                        <style>
+                                                                            .cls-1 {
+                                                                                fill: #10a64a;
+                                                                            }
+
+                                                                            .cls-2 {
+                                                                                font-size: 16px;
+                                                                                text-anchor: middle;
+                                                                                font-family: FontAwesome;
+                                                                                text-transform: uppercase;
+                                                                            }
+
+                                                                            .cls-2, .cls-3 {
+                                                                                fill: #fff;
+                                                                            }
+
+                                                                            .cls-3 {
+                                                                                font-size: 14.437px;
+                                                                                font-family: Montserrat;
+                                                                            }
+                                                                        </style>
+                                                                    </defs>
+                                                                    <rect id="BG" class="cls-1" width="74.875" height="21" rx="3" ry="3"></rect>
+                                                                    <text id="_" data-name="" class="cls-2" transform="translate(14.829 14.99) scale(0.737 0.762)"></text>
+                                                                    <text id="Verified" class="cls-3" transform="translate(22.787 15.191) scale(0.737 0.762)">Verified</text>
+                                                                </svg>
+
+                                                            </span>
+                                                        </figure>
+                                                        <div class="tg-contentbox">
+                                                            <h3><a href="https://themographics.com/wordpress/docdirect/doctor/celia/">Dr Celia</a></h3>
+                                                            <div class="feature-rating">
+                                                                <span class="tg-stars star-rating">
+                                                                    <span style="width:60%"></span>
+                                                                </span>
+                                                                <em>3.0<sub>/5</sub></em>
+                                                            </div>
+                                                            <address>Holland Walk, Kensington, London W8...</address>
+                                                            <div class="tg-phone"><i class="fa fa-phone"></i> <em>60 235 856843</em></div>
+                                                        </div>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 285px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <a href="https://themographics.com/wordpress/docdirect/doctor/delia/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-05-1-275x191.jpg" alt="User"></a>
+                                                            <a data-view_type="v1" class="tg-like add-to-fav" data-wl_id="334" href="javascript:;"><i class="fa fa-heart"></i></a>																<span class="tg-featuredtags">
+                                                                <a class="tg-featured" href="javascript:;">featured</a>
+                                                            </span>
+                                                            <span class="user-verified">
+                                                                <svg id="Icon" xmlns="http://www.w3.org/2000/svg" width="74.875" height="21" viewBox="0 0 74.875 21">
+                                                                    <defs>
+                                                                        <style>
+                                                                            .cls-1 {
+                                                                                fill: #10a64a;
+                                                                            }
+
+                                                                            .cls-2 {
+                                                                                font-size: 16px;
+                                                                                text-anchor: middle;
+                                                                                font-family: FontAwesome;
+                                                                                text-transform: uppercase;
+                                                                            }
+
+                                                                            .cls-2, .cls-3 {
+                                                                                fill: #fff;
+                                                                            }
+
+                                                                            .cls-3 {
+                                                                                font-size: 14.437px;
+                                                                                font-family: Montserrat;
+                                                                            }
+                                                                        </style>
+                                                                    </defs>
+                                                                    <rect id="BG" class="cls-1" width="74.875" height="21" rx="3" ry="3"></rect>
+                                                                    <text id="_" data-name="" class="cls-2" transform="translate(14.829 14.99) scale(0.737 0.762)"></text>
+                                                                    <text id="Verified" class="cls-3" transform="translate(22.787 15.191) scale(0.737 0.762)">Verified</text>
+                                                                </svg>
+
+                                                            </span>
+                                                        </figure>
+                                                        <div class="tg-contentbox">
+                                                            <h3><a href="https://themographics.com/wordpress/docdirect/doctor/delia/">Dr Delia</a></h3>
+                                                            <div class="feature-rating">
+                                                                <span class="tg-stars star-rating">
+                                                                    <span style="width:60%"></span>
+                                                                </span>
+                                                                <em>3.0<sub>/5</sub></em>
+                                                            </div>
+                                                            <address>28 Gatcombe Mews, London, United Ki...</address>
+                                                            <div class="tg-phone"><i class="fa fa-phone"></i> <em>58 235 856843</em></div>
+                                                        </div>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 285px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <a href="https://themographics.com/wordpress/docdirect/doctor/steve/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-01-1-275x191.jpg" alt="User"></a>
+                                                            <a data-view_type="v1" class="tg-like add-to-fav" data-wl_id="330" href="javascript:;"><i class="fa fa-heart"></i></a>																<span class="tg-featuredtags">
+                                                                <a class="tg-featured" href="javascript:;">featured</a>
+                                                            </span>
+                                                            <span class="user-verified">
+                                                                <svg id="Icon" xmlns="http://www.w3.org/2000/svg" width="74.875" height="21" viewBox="0 0 74.875 21">
+                                                                    <defs>
+                                                                        <style>
+                                                                            .cls-1 {
+                                                                                fill: #10a64a;
+                                                                            }
+
+                                                                            .cls-2 {
+                                                                                font-size: 16px;
+                                                                                text-anchor: middle;
+                                                                                font-family: FontAwesome;
+                                                                                text-transform: uppercase;
+                                                                            }
+
+                                                                            .cls-2, .cls-3 {
+                                                                                fill: #fff;
+                                                                            }
+
+                                                                            .cls-3 {
+                                                                                font-size: 14.437px;
+                                                                                font-family: Montserrat;
+                                                                            }
+                                                                        </style>
+                                                                    </defs>
+                                                                    <rect id="BG" class="cls-1" width="74.875" height="21" rx="3" ry="3"></rect>
+                                                                    <text id="_" data-name="" class="cls-2" transform="translate(14.829 14.99) scale(0.737 0.762)"></text>
+                                                                    <text id="Verified" class="cls-3" transform="translate(22.787 15.191) scale(0.737 0.762)">Verified</text>
+                                                                </svg>
+
+                                                            </span>
+                                                        </figure>
+                                                        <div class="tg-contentbox">
+                                                            <h3><a href="https://themographics.com/wordpress/docdirect/doctor/steve/">Dr Steve</a></h3>
+                                                            <div class="feature-rating">
+                                                                <span class="tg-stars star-rating">
+                                                                    <span style="width:80%"></span>
+                                                                </span>
+                                                                <em>4.0<sub>/5</sub></em>
+                                                            </div>
+                                                            <address>154 Bayswater Rd, London W2 4HP, UK</address>
+                                                            <div class="tg-phone"><i class="fa fa-phone"></i> <em>54 235 856843</em></div>
+                                                        </div>
+                                                    </div>
+                                                </div><div class="owl-item" style="width: 285px;">
+                                                    <div class="item">
+                                                        <figure>
+                                                            <a href="https://themographics.com/wordpress/docdirect/pharmacy/bartell/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/3-3-275x191.jpg" alt="User"></a>
+                                                            <a data-view_type="v1" class="tg-like add-to-fav" data-wl_id="324" href="javascript:;"><i class="fa fa-heart"></i></a>																<span class="tg-featuredtags">
+                                                                <a class="tg-featured" href="javascript:;">featured</a>
+                                                            </span>
+                                                            <span class="user-verified">
+                                                                <svg id="Icon" xmlns="http://www.w3.org/2000/svg" width="74.875" height="21" viewBox="0 0 74.875 21">
+                                                                    <defs>
+                                                                        <style>
+                                                                            .cls-1 {
+                                                                                fill: #10a64a;
+                                                                            }
+
+                                                                            .cls-2 {
+                                                                                font-size: 16px;
+                                                                                text-anchor: middle;
+                                                                                font-family: FontAwesome;
+                                                                                text-transform: uppercase;
+                                                                            }
+
+                                                                            .cls-2, .cls-3 {
+                                                                                fill: #fff;
+                                                                            }
+
+                                                                            .cls-3 {
+                                                                                font-size: 14.437px;
+                                                                                font-family: Montserrat;
+                                                                            }
+                                                                        </style>
+                                                                    </defs>
+                                                                    <rect id="BG" class="cls-1" width="74.875" height="21" rx="3" ry="3"></rect>
+                                                                    <text id="_" data-name="" class="cls-2" transform="translate(14.829 14.99) scale(0.737 0.762)"></text>
+                                                                    <text id="Verified" class="cls-3" transform="translate(22.787 15.191) scale(0.737 0.762)">Verified</text>
+                                                                </svg>
+
+                                                            </span>
+                                                        </figure>
+                                                        <div class="tg-contentbox">
+                                                            <h3><a href="https://themographics.com/wordpress/docdirect/pharmacy/bartell/">Bartell Drugs</a></h3>
+                                                            <div class="feature-rating">
+                                                                <span class="tg-stars star-rating">
+                                                                    <span style="width:80%"></span>
+                                                                </span>
+                                                                <em>4.0<sub>/5</sub></em>
+                                                            </div>
+                                                            <address>Roundhouse Ln, London E15 2DU, UK</address>
+                                                            <div class="tg-phone"><i class="fa fa-phone"></i> <em>53 235 856843</em></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                        <div class="owl-controls clickable"><div class="owl-buttons"><div class="owl-prev"><i class="tg-prev fa fa-angle-left"></i></div><div class="owl-next"><i class="tg-next fa fa-angle-right"></i></div></div></div>
+                                    </div>
+                                    <script>
+	  	jQuery(document).ready(function(e) {
+            jQuery("#tg-featuredlist-3").owlCarousel({
+				autoPlay: false,
+				items: 4,
+				itemsDesktop: [1199, 3],
+				itemsDesktopSmall: [991, 2],
+				itemsTabletSmall: [568, 1],
+				slideSpeed: 300,
+				paginationSpeed: 400,
+				pagination: false,
+				navigation: true,
+				navigationText: [
+					"<i class='tg-prev fa fa-angle-left'></i>",
+					"<i class='tg-next fa fa-angle-right'></i>"
+				]
+			});
+        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +709,7 @@
 
                                 <div class="col-sm-10 col-sm-offset-1 col-xs-12">
                                     <div class="tg-theme-heading">
-                                        <h2>Top Categories</h2>
+                                        <h2>TOP CATEGORIES</h2>
                                         <span class="tg-roundbox"></span>
                                         <div class="tg-description">
                                             <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
@@ -128,7 +726,7 @@
                                                 <li id="dir-127">
                                                     <div class="tg-checkbox user-selection">
                                                         <div class="tg-packages">
-                                                            <a href="dir-search/indexf480.html?directoryType=doctor">
+                                                            <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=doctor">
                                                                 <label>
                                                                     <i class="icon-stethoscope"></i>
                                                                     Doctor<span class="count">13</span>
@@ -140,7 +738,7 @@
                                                 <li id="dir-126">
                                                     <div class="tg-checkbox user-selection">
                                                         <div class="tg-packages">
-                                                            <a href="dir-search/index905a.html?directoryType=hospital">
+                                                            <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=hospital">
                                                                 <label>
                                                                     <i class="icon-Hospitalmedicalsignalofacrossinacircle"></i>
                                                                     hospital<span class="count">7</span>
@@ -152,7 +750,7 @@
                                                 <li id="dir-125">
                                                     <div class="tg-checkbox user-selection">
                                                         <div class="tg-packages">
-                                                            <a href="dir-search/index3a88.html?directoryType=clinic">
+                                                            <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=clinic">
                                                                 <label>
                                                                     <i class="icon-Clinichistorymedicalpaperonclipboard"></i>
                                                                     clinic<span class="count">9</span>
@@ -164,7 +762,7 @@
                                                 <li id="dir-123">
                                                     <div class="tg-checkbox user-selection">
                                                         <div class="tg-packages">
-                                                            <a href="dir-search/index679e.html?directoryType=pharmacy">
+                                                            <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=pharmacy">
                                                                 <label>
                                                                     <i class="icon-Pills"></i>
                                                                     Pharmacy<span class="count">8</span>
@@ -176,7 +774,7 @@
                                                 <li id="dir-122">
                                                     <div class="tg-checkbox user-selection">
                                                         <div class="tg-packages">
-                                                            <a href="dir-search/index0565.html?directoryType=blood-bank">
+                                                            <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=blood-bank">
                                                                 <label>
                                                                     <i class="icon-BloodDonation"></i>
                                                                     Blood Bank<span class="count">9</span>
@@ -188,7 +786,7 @@
                                                 <li id="dir-121">
                                                     <div class="tg-checkbox user-selection">
                                                         <div class="tg-packages">
-                                                            <a href="dir-search/index2e50.html?directoryType=fitness-center">
+                                                            <a href="https://themographics.com/wordpress/docdirect/dir-search/?directory_type=fitness-center">
                                                                 <label>
                                                                     <i class="icon-hairs"></i>
                                                                     Fitness Center<span class="count">9</span>
@@ -204,35 +802,17 @@
                             </div>
                         </div>
                     </section>
-                    <section class="tg-main-section haslayout tg-areuadoctor stretch_section" style="padding-bottom:0px;background-repeat:no-repeat;background-position:0% 100%" data-speed="0.5" data-bleed="0" data-appear-top-offset="600" data-parallax="scroll" data-position="center 0" data-image-src="~/Content/wp-content/uploads/2016/03/bgparallax-01.jpg">
+                    <section class="tg-main-section haslayout  stretch_section" style="background-image: url(&quot;https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/bgparallax-03.jpg&quot;); padding: 50px 89.5px; background-repeat: no-repeat; background-position: 0% 100%; background-size: cover; position: relative; left: -89.5px; box-sizing: border-box; width: 1349px;">
                         <div class="builder-items">
-                            <div class="col-xs-12 col-md-6 builder-column col-sm-12 col-lg-6  pull-right">
-
-                                <div class="sc-about-us tg-healthcareonthego">
-                                    <div class="tg-contentbox tg-haslayout">
-                                        <div class="tg-heading-border">
-                                            <h2>ARE YOU A DOCTOR?</h2>
-
-                                            <h3>REGISTER NOW AND REACH THOUSANDS OF PATIENTS</h3>
-                                        </div>
-                                        <div class="tg-description">
-                                            <p>We know how much it takes to become a qualified doctor so we have taken away all your hassle to look out for your patients once you have qualified. DocDirect will give you an easy reach to all the patients, all you need is to sign up!</p>
-                                        </div>
-
-                                        <div class="tg-btns">
-                                            <a class="tg-btn" href="#">signup now</a>
-                                        </div>
-
-                                    </div>
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="tg-buynowbox">
+                                    <h3 style="color:#5d5955">ONE OF THE VERY FEW USER BASE DIRECTORY THEMES AVAILABLE.</h3>
+                                    <a class="tg-btn" style="color:#5d5955" href="#">Read more</a>
                                 </div>
-                            </div>
-                            <div class="col-xs-12 col-md-6 builder-column col-sm-12 col-lg-6  pull-left">
-
-                                <figure class="frame-img"><img src="~/Content/wp-content/uploads/2016/03/img-01.png" alt="Image Frame" /></figure>
                             </div>
                         </div>
                     </section>
-                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default" style="padding-bottom:0px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default">
                         <div class="builder-items">
                             <div class="col-xs-12 col-md-6 builder-column ">
 
@@ -259,161 +839,109 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-md-6 builder-column col-lg-6  pull-left">
-
-                                <figure class="frame-img"><img src="~/Content/wp-content/uploads/2016/03/img-02.png" alt="Image Frame" /></figure>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="tg-main-section haslayout  stretch_section" data-speed="0.5" data-bleed="0" data-appear-top-offset="600" data-parallax="scroll" data-position="center 0" data-image-src="~/Content/wp-content/uploads/2016/03/bgparallax-01.jpg">
-                        <div class="builder-items">
-                            <div class="col-xs-12 col-md-12 builder-column ">
-                                <div class="sc-review">
-                                    <div class="tg-patientfeedbacks tg-haslayout">
-                                        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-                                            <div class="tg-theme-heading">
-                                                <h2>PATIENT FEEDBACK</h2>
-                                                <span class="tg-roundbox"></span>
-
-                                                <div class="tg-description">
-                                                    <p>We know how much it takes to become a qualified doctor so we have taken away all your hassle to look out for your patients once you have qualified. DocDirect will give you an easy reach to all the patients, all you need is to sign up!</p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-6 tg-feedbackwidht">
-                                            <div class="tg-patientfeedback">
-                                                <figure class="tg-patient-pic">
-                                                    <a href="user/steve/index.html"><img src="~/Content/wp-content/uploads/2016/04/img-01-1-150x150.jpg" alt="Reviewer"></a>
-                                                </figure>
-                                                <div class="tg-patient-message">
-                                                    <span class="tg-patient-name"><a href="user/steve/index.html">Dr Steve</a></span>
-                                                    <span class="tg-doctor-name">For <a href="user/professional/index.html">Demo Professional</a></span>
-                                                    <div class="tg-stars star-rating">
-                                                        <span style="width:80%"></span>
-                                                    </div>
-                                                    <div class="tg-description">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-sm-6 col-xs-6 tg-feedbackwidht">
-                                            <div class="tg-patientfeedback">
-                                                <figure class="tg-patient-pic">
-                                                    <a href="user/steve/index.html"><img src="~/Content/wp-content/uploads/2016/04/img-01-1-150x150.jpg" alt="Reviewer"></a>
-                                                </figure>
-                                                <div class="tg-patient-message">
-                                                    <span class="tg-patient-name"><a href="user/steve/index.html">Dr Steve</a></span>
-                                                    <span class="tg-doctor-name">For <a href="user/carol/index.html">Dr.Carol</a></span>
-                                                    <div class="tg-stars star-rating">
-                                                        <span style="width:100%"></span>
-                                                    </div>
-                                                    <div class="tg-description">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="col-xs-12 col-md-6 builder-column ">
+                                <div class="sc-video ">
+                                    <div class="tg-videobox">
+                                        <figure>
+                                            <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/aboutus-img.jpg" alt="video 1">
+                                            <figcaption>
+                                                <a class="tg-playbtn" href="https://www.youtube.com/watch?v=HLFzP1D7PKk" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]"><i class="fa fa-play"></i></a>
+                                            </figcaption>
+                                        </figure>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-                    <div class="section-current-width"></div>    <section class="tg-main-section haslayout  default">
+                    <section class="tg-main-section haslayout  stretch_section" data-speed="0.2" data-bleed="0" data-appear-top-offset="600" data-parallax="scroll" data-position="center 0" data-image-src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/bgparallax-04.jpg" style="position: relative; left: -89.5px; box-sizing: border-box; width: 1349px; padding-left: 89.5px; padding-right: 89.5px;">
                         <div class="builder-items">
-                            <div class="col-xs-12 col-md-12 builder-column ">
-
-                                <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-                                    <div class="tg-theme-heading">
-                                        <h2>find healthcare by</h2>
-                                        <span class="tg-roundbox"></span>
-                                        <div class="tg-description">
-                                            <p>In just three simple steps, DocDirect will help you find your nearest healthcare setting without having to signup. We aim to facilitate you in finding your right doctor with just three clicks without having to ask around or wander to find your nearest healthcare facility.</p>
+                            <div class="col-xs-12 col-md-6 builder-column ">
+                                <div class="sc-counters tg-counter-facts">
+                                    <div id="tg-counters-6" class="tg-counterarea">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="tg-counter">
+                                                    <i class="fa fa-star-o"></i>
+                                                    <div class="tg-contentbox">
+                                                        <div class="tg-heading-border">
+                                                            <span class="timer" data-from="0" data-to="1600" data-speed="8002" data-refresh-interval="50">1600</span>
+                                                            <h3>happy-clients</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="tg-counter">
+                                                    <i class="fa fa-trophy"></i>
+                                                    <div class="tg-contentbox">
+                                                        <div class="tg-heading-border">
+                                                            <span class="timer" data-from="0" data-to="960" data-speed="8008" data-refresh-interval="50">960</span>
+                                                            <h3>earn-awards</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="tg-counter">
+                                                    <i class="icon-Clinichistorymedicalpaperonclipboard"></i>
+                                                    <div class="tg-contentbox">
+                                                        <div class="tg-heading-border">
+                                                            <span class="timer" data-from="0" data-to="637" data-speed="8044" data-refresh-interval="50">637</span>
+                                                            <h3>packages</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="tg-counter">
+                                                    <i class="fa fa-users"></i>
+                                                    <div class="tg-contentbox">
+                                                        <div class="tg-heading-border">
+                                                            <span class="timer" data-from="0" data-to="423" data-speed="8134" data-refresh-interval="50">423</span>
+                                                            <h3>partners</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <script>
+        jQuery(document).ready(function () {
+
+            /* -------------------------------------
+             COUNTER
+             -------------------------------------- */
+            try {
+                jQuery('#tg-counters-6').appear(function () {
+                    jQuery('.timer').countTo()
+                });
+            } catch (err) {
+            }
+        });
+
+                                    </script>
                                 </div>
+
                             </div>
                             <div class="col-xs-12 col-md-6 builder-column ">
-                                <div class="sc-dir-search">
-                                    <div class="tg-findbycategory">
-                                        <div class="tg-box">
-                                            <div class="tg-heading-border tg-small">
-                                                <i class="icon-map"></i>
-                                                <h3>Location</h3>
-                                            </div>
-                                            <ul>
-                                                <li><a href="dir-search/index9b30.html?location=aberdeen">Aberdeen</a></li>
-                                                <li><a href="dir-search/index124e.html?location=aldershot">Aldershot</a></li>
-                                                <li><a href="dir-search/indexbb82.html?location=altrincham">Altrincham</a></li>
-                                                <li><a href="dir-search/index5fb7.html?location=aylesbury">Aylesbury</a></li>
-                                                <li><a href="dir-search/index92c6.html?location=bamber">Bamber</a></li>
-                                                <li><a href="dir-search/indexd00b.html?location=bangor">Bangor</a></li>
-                                                <li><a href="dir-search/indexd030.html?location=batley">Batley</a></li>
-                                                <li><a href="dir-search/index465b.html?location=bebingto">Bebingto</a></li>
-                                                <li><a href="dir-search/index64b6.html?location=bedford">Bedford</a></li>
-                                                <li><a href="dir-search/indexc7d3.html?location=birmingham">Birmingham</a></li>
-                                                <li><a href="dir-search/indexaf94.html?location=blackpool">Blackpool</a></li>
-                                                <li><a href="dir-search/indexb294.html?location=brentwood">Brentwood</a></li>
-                                                <li><a href="dir-search/index85e5.html?location=bristol">Bristol</a></li>
-                                                <li><a href="dir-search/index0a3c.html?location=cardiff">Cardiff</a></li>
-                                                <li><a href="dir-search/index0d11.html?location=carlisle">Carlisle</a></li>
-                                                <li><a href="dir-search/indexe274.html?location=crawley">Crawley</a></li>
-                                                <li><a href="dir-search/indexe9c7.html?location=darlington">Darlington</a></li>
-                                                <li><a href="dir-search/indexbd74.html?location=eastleigh">Eastleigh</a></li>
-                                                <li><a href="dir-search/index586a.html?location=edinburg">Edinburg</a></li>
-                                                <li><a href="dir-search/index5338.html?location=esher">Esher</a></li>
-                                                <li><a href="dir-search/indexf6a6.html?location=glasgow-sco">Glasgow SCO</a></li>
-                                                <li><a href="dir-search/index4074.html?location=guildford">Guildford</a></li>
-                                                <li><a href="dir-search/index5c88.html?location=halesowen">Halesowen</a></li>
-                                                <li><a href="dir-search/index6403.html?location=halifax">Halifax</a></li>
-                                                <li><a href="dir-search/index2133.html?location=hamilton">Hamilton</a></li>
-                                                <li><a href="dir-search/index70b2.html?location=leeds">Leeds</a></li>
-                                            </ul>
+
+                                <div class="sc-about-us tg-healthcareonthego">
+                                    <div class="tg-contentbox tg-haslayout">
+                                        <div class="tg-heading-border">
+                                            <h2>SOME AMAZING FACTS</h2>
+
+                                            <h3>CUSTOMER LOVE US</h3>
                                         </div>
+
+                                        <ul>
+                                            <li>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</li>
+                                            <li>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</li>
+                                            <li>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</li>
+                                            <li>Consectetur adipisicing elit sed do eiusmod tempor incididunt.</li>
+
+                                        </ul>
+
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-md-6 builder-column ">
-                                <div class="sc-dir-search sc-specialities">
-                                    <div class="tg-findbycategory">
-                                        <div class="tg-box">
-                                            <div class="tg-heading-border tg-small">
-                                                <i class="fa fa-medkit"></i>
-                                                <h3>Speciality</h3>
-                                            </div>
-                                            <ul>
-                                                <li><a href="dir-search/index3a5c.html?speciality=aerobic-centers">Aerobic Centers</a></li>
-                                                <li><a href="dir-search/indexb992.html?speciality=associazione-volontari-italiani-sangue">Associazione Volontari</a></li>
-                                                <li><a href="dir-search/index2804.html?speciality=athletic-clubs">Athletic Clubs</a></li>
-                                                <li><a href="dir-search/indexe328.html?speciality=blood-services">Blood Services</a></li>
-                                                <li><a href="dir-search/indexa96e.html?speciality=blood-services-center-for-biologics-evaluation-and-research">Blood Services Center</a></li>
-                                                <li><a href="dir-search/index2571.html?speciality=cancer-hospital">Cancer Hospital</a></li>
-                                                <li><a href="dir-search/index80e0.html?speciality=cardiologist">Cardiologist</a></li>
-                                                <li><a href="dir-search/index1ef1.html?speciality=cardiology-clinic">Cardiology clinic</a></li>
-                                                <li><a href="dir-search/index5bb4.html?speciality=children-clinic">Children clinic</a></li>
-                                                <li><a href="dir-search/indexd0d2.html?speciality=children-hospital">Children Hospital</a></li>
-                                                <li><a href="dir-search/indexcaa3.html?speciality=clinical-pharmacy">Clinical pharmacy</a></li>
-                                                <li><a href="dir-search/indexdf0c.html?speciality=colorectal-surgeon">Colorectal surgeon</a></li>
-                                                <li><a href="dir-search/index5ff6.html?speciality=community-blood-services">Community Blood Services</a></li>
-                                                <li><a href="dir-search/indexbae4.html?speciality=community-pharmacy">Community pharmacy</a></li>
-                                                <li><a href="dir-search/index0acd.html?speciality=compliance-medicine">Compliance (medicine)</a></li>
-                                                <li><a href="dir-search/indexac12.html?speciality=cord-blood-registry">Cord Blood Registry</a></li>
-                                                <li><a href="dir-search/index7fa1.html?speciality=country-clubs">Country Clubs</a></li>
-                                                <li><a href="dir-search/indexfd9f.html?speciality=dance-centers">Dance Centers</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="tg-main-section haslayout  stretch_section" style="background-image:url(/Content/wp-content/uploads/2016/08/bgparallax-03.jpg);padding-top:50px;padding-bottom:50px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
-                        <div class="builder-items">
-                            <div class="col-xs-12 col-md-12 builder-column ">
-                                <div class="tg-buynowbox">
-                                    <h3 style="color:#5d5955">ONE OF THE VERY FEW USER BASE DIRECTORY THEMES AVAILABLE.</h3>
-                                    <a class="tg-btn" style="color:#5d5955" href="#">Read more</a>
                                 </div>
                             </div>
                         </div>
@@ -438,7 +966,7 @@
                                             <div class="col-sm-4">
                                                 <div class="tg-member">
                                                     <figure>
-                                                        <img src="~/Content/wp-content/uploads/2016/08/img-01.jpg" alt="team">
+                                                        <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/img-01.jpg" alt="team">
                                                         <figcaption class="tg-share-icons">
                                                             <ul class="tg-socialicon">
                                                                 <li class="tg-facebook"><a style="background:#3b5998" href="#"><i class="fa fa-facebook"></i></a></li>
@@ -456,7 +984,7 @@
                                             <div class="col-sm-4">
                                                 <div class="tg-member">
                                                     <figure>
-                                                        <img src="~/Content/wp-content/uploads/2016/08/img-02.jpg" alt="team">
+                                                        <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/img-02.jpg" alt="team">
                                                         <figcaption class="tg-share-icons">
                                                             <ul class="tg-socialicon">
                                                                 <li class="tg-facebook"><a style="background:#3b5998" href="#"><i class="fa fa-facebook"></i></a></li>
@@ -474,7 +1002,7 @@
                                             <div class="col-sm-4">
                                                 <div class="tg-member">
                                                     <figure>
-                                                        <img src="~/Content/wp-content/uploads/2016/08/img-03-1.jpg" alt="team">
+                                                        <img src="//themographics.com/wordpress/docdirect/wp-content/uploads/2016/08/img-03-1.jpg" alt="team">
                                                         <figcaption class="tg-share-icons">
                                                             <ul class="tg-socialicon">
                                                                 <li class="tg-facebook"><a style="background:#3b5998" href="#"><i class="fa fa-facebook"></i></a></li>
