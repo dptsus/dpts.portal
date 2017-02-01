@@ -9,22 +9,20 @@ namespace DPTS.Web.Models
     {
         public DefaultNotificationSettingsViewModel()
         {
-            AvailableCountry = new List<SelectListItem>();
+            AvailableEmailCategory = new List<SelectListItem>();
         }
-        public int Id { get; set; }
+        public int Id { get; set; } 
+        [Display(Name = "Email Category")]
+        public int EmailCategoryId { get; set; }
 
-        [Display(Name = "Country")]
-        public int CountryId { get; set; }
-
-        public string CountryName { get; set; }
+        public string EmailCategory { get; set; }
 
         [Required]
         [Display(Name = "Name")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         public string Name { get; set; }
 
-        [Display(Name = "Abbreviation")]
-        public string Abbreviation { get; set; }
+        [Display(Name = "Message")]
+        public string Message { get; set; }
 
         [Display(Name = "Published")]
         public bool Published { get; set; }
@@ -35,9 +33,10 @@ namespace DPTS.Web.Models
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
 
+
         [Display(Name = "Date Updated")]
         public DateTime DateUpdated { get; set; }
 
-        public IList<SelectListItem> AvailableCountry { get; set; }
+        public IList<SelectListItem> AvailableEmailCategory { get; set; }
     }
 }

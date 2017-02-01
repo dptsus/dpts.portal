@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace DPTS.Domain.Entities
+namespace DPTS.Domain.Entities.Notification
 {
     public partial class DefaultNotificationSettings : BaseEntityWithDateTime
     {
@@ -8,11 +6,11 @@ namespace DPTS.Domain.Entities
         { 
         }
 
-        public int CountryId { get; set; }
+        public int CategoryId { get; set; }
 
         public string Name { get; set; }
 
-        public string Abbreviation { get; set; }
+        public string Message { get; set; }
 
         public bool Published { get; set; }
 

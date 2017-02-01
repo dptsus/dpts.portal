@@ -5,53 +5,41 @@ namespace DPTS.EmailSmsNotifications.Services
 {
     public class NotificationServiceConfig
     {
-        public NotificationServiceConfig() { }
-
         /// <summary>
         /// Get the SMS gateway url
         /// </summary>
-        public string SmsUrl
-        {
-            get { return getAppSetting(typeof(string), "SmsUrl").ToString(); }
-        }
+        public string SmsUrl => GetAppSetting(typeof(string), "SmsUrl").ToString();
 
         /// <summary>
         /// Get the SMS Auth key
         /// </summary>
-        public string SmsAuthKey
-        {
-            get { return getAppSetting(typeof(string), "SmsAuthKey").ToString(); }
-        }
+        public string SmsAuthKey => GetAppSetting(typeof(string), "SmsAuthKey").ToString();
 
         /// <summary>
         /// Get the SMS Auth key
         /// </summary>
-        public string SendGridAPIKey
-        {
-            get { return getAppSetting(typeof(string), "SendGridAPIKey").ToString(); }
-        }
+        public string SendGridApiKey => GetAppSetting(typeof(string), "SendGridApiKey").ToString();
 
-        private static object getAppSetting(Type expectedType, string key)
+        private static object GetAppSetting(Type expectedType, string key)
         {
             string value = ConfigurationManager.AppSettings[key]; //.Get(key);
 
             if (value == null)
             {
                 throw new Exception(
-                    string.Format("The config file does not have the key '{0}' defined in the AppSetting section.", key));
+                    $"The config file does not have the key '{key}' defined in the AppSetting section.");
             }
 
-            if (expectedType.Equals(typeof(int)))
+            if (expectedType == typeof(int))
             {
                 return int.Parse(value);
             }
 
-            if (expectedType.Equals(typeof(string)))
+            if (expectedType == typeof(string))
             {
                 return value;
             }
-            else
-                throw new Exception("Type not supported.");
+            throw new Exception("Type not supported.");
         }
     }
 }
