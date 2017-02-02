@@ -22,6 +22,8 @@ namespace DPTS.Web.Models
         public string LastIpAddress { get; set; }
         public DateTime CreatedOnUtc { get; set; }
         public DateTime? LastLoginDateUtc { get; set; }
+        public bool IsEmailUnsubscribed { get; set; }
+        public bool IsPhoneNumberUnsubscribed { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

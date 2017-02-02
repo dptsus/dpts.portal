@@ -7,13 +7,13 @@ namespace DPTS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UpdateAppointmentSchedule1 : IMigrationMetadata
+    public sealed partial class InitialMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateAppointmentSchedule1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201701230506377_UpdateAppointmentSchedule1"; }
+            get { return "201702020854305_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source

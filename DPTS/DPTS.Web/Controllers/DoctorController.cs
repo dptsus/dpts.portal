@@ -13,6 +13,7 @@ using DPTS.Domain.Entities;
 using Microsoft.AspNet.Identity;
 using static System.DateTime;
 using DPTS.Domain.Core.Appointment;
+using System.Xml.Linq;
 
 namespace DPTS.Web.Controllers
 {
@@ -167,6 +168,29 @@ namespace DPTS.Web.Controllers
             Friday = 5,
             Saturday = 6,
         }
+        [NonAction]
+        private Dictionary<string, double> GetGeoCoordinate(string address)
+        {
+            Dictionary<string, double> dictionary = new Dictionary<string, double>();
+            try
+            {
+                string requestUri = string.Format("http://maps.google.com/maps/api/geocode/xml?address={0}&sensor=false", address);
+                var request = System.Net.WebRequest.Create(requestUri);
+                var response = request.GetResponse();
+                var xdoc = XDocument.Load(response.GetResponseStream());
+                var result = xdoc.Element("GeocodeResponse").Element("result");
+                if (result != null)
+                {
+                    var locationElement = result.Element("geometry").Element("location");
+                    dictionary.Add("lat", Double.Parse(locationElement.Element("lat").Value));
+                    dictionary.Add("lng", Double.Parse(locationElement.Element("lng").Value));
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return dictionary;
+        }
 
         #endregion
 
@@ -292,7 +316,13 @@ namespace DPTS.Web.Controllers
                 if (address.StateProvinceId == 0)
                     address.StateProvinceId = null;
 
-                 _addressService.AddAddress(address);
+                var geoCoodrinate = GetGeoCoordinate(model.ZipPostalCode.ToString());
+                if (geoCoodrinate.Count == 2)
+                {
+                    address.Latitude = geoCoodrinate["lat"];
+                    address.Longitude = geoCoodrinate["lng"];
+                }
+                _addressService.AddAddress(address);
                 if (user != null)
                 {
                     var addrMap = new AddressMapping

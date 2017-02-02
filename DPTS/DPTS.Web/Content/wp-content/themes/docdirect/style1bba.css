@@ -8,9 +8,9 @@ Version: 3.5
 Tags: one-column, two-columns, right-sidebar,sticky-post,theme-options, custom-background, custom-menu, editor-style, featured-images, threaded-comments, translation-ready, footer-widgets
 Text Domain: docdirect
 Domain Path: /languages
-License: 
+License:
 License URI:
- 
+
  This files contents are outlined below.
  01.	Theme Reset Style
  02.	Global Elements
@@ -1054,7 +1054,7 @@ form fieldset .form-group.tg-checkbox input.form-control[type='checkbox'] {
 	margin: -7px 0 0;
 	position: absolute;
 	background: #5d5955;
-	
+
 }
 .tg-nav ul li span{display: none;}
 .tg-nav #tg-navigation > ul > li:last-child{padding-right: 0;}
@@ -1876,7 +1876,7 @@ body.tg-comming-soon #main{
 	padding: 0;
 	text-align: left;
 	margin: 0 0 12px;
-	
+
 }
 .tg-widget ul li .tg-docinfo .tg-stars .tg-stars{
 	margin:3px 0 0;
@@ -3359,7 +3359,7 @@ textarea.form-control{
 .tg-regardsleft{float: left;}
 
 .tg-regardsleft em{
-	
+
 	font-style: normal;
 	color: #5d5955;
 }
@@ -3587,7 +3587,7 @@ div.canvas{
 }
 .tg-otherphotos .tg-otherimg li{
 	width: 112px;
-	height:112px;	
+	height:112px;
 	float: left;
 	padding: 5px;
 	list-style-type: none;
@@ -4156,7 +4156,7 @@ button[type="button"] .fa-refresh.fa-spin{
 	display:block;
 	width:100%;
 	height:auto;
-	/*border:3px solid;*/ 
+	/*border:3px solid;*/
 }
 .tg-map-marker .tg-docimg{
 	overflow:hidden;
@@ -4832,13 +4832,13 @@ button[type="button"] .fa-refresh.fa-spin{
 	width: 100%;
 	float: left;
 }
-.sc-dir-types label{ 
+.sc-dir-types label{
 	float: left;
 	text-align:left;
 	text-transform:capitalize;
 	font-weight:normal;
 }
-.sc-dir-types label i{ 
+.sc-dir-types label i{
 	float: left;
 	line-height: 27px;
 	padding-right: 15px;
@@ -4867,7 +4867,7 @@ button[type="button"] .fa-refresh.fa-spin{
 	top: 19px;
 	right: 29px;
 }
-.geo-locate-me{ fill:#5d5955; margin-top:3px;}
+.geo-locate-me{ fill:#5d5955; margin-top:-5px;}
 .locate-me-wrap .geodistance i{
 	color: #5d5955;
 	font-size: 16px;
@@ -5552,7 +5552,7 @@ input#location-address{
 .notification_wrap{
 	float:left;
 	width:100%;
-} 
+}
 .notification_text.alert{
 	border: 2px solid;
     border-radius: 0;
@@ -5560,7 +5560,7 @@ input#location-address{
 .catagories-types .tg-packages a,
 .catagories-types .tg-packages a i{color:#5d5955;}
 .catagories-types .tg-packages a label{
-	padding:20px !important;	
+	padding:20px !important;
 	font-size:16px;
 	font-family: 'Montserrat', Arial, Helvetica, sans-serif;
 	text-transform:uppercase;
@@ -5605,7 +5605,7 @@ input#location-address{
 	margin-bottom:30px;
 }
 .system-gateway ul li ul li{
-	
+
     float: left;
     width: 100%;
     padding: 10px 0;
@@ -6780,7 +6780,7 @@ div.docdirect-loader-wrap {
 	line-height:14px;
 }
 /*=============================================
-			Services 
+			Services
 =============================================*/
 .tg-buynow{
 	width:100%;
@@ -7241,7 +7241,7 @@ div.docdirect-loader-wrap {
     position: relative;
     width: 96px;
     height: 36px;
-	margin-right:10px;	
+	margin-right:10px;
 }
 .tg-widget .tg-imgdoc{
 	background:#FFF;
@@ -7279,10 +7279,10 @@ div.docdirect-loader-wrap {
 }
 
 @keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
+  0%, 80%, 100% {
     -webkit-transform: scale(0);
     transform: scale(0);
-  } 40% { 
+  } 40% {
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
@@ -9105,7 +9105,7 @@ select option:disabled {
 .tg-inner-header-v2 .tg-navigationarea{border:0;}
 .tg-userdetail .tg-widget > div{
 	padding: 0;
-    border: 0; 
+    border: 0;
 }
 .tg-userreviews .tg-stars.star-rating{
 	position: relative;
@@ -9122,16 +9122,16 @@ select option:disabled {
 }
 .tg-likestars .feature-rating.user-star-rating{
 	padding:0;
-    background: none; 
-    text-align: left; 
+    background: none;
+    text-align: left;
     box-shadow: none;
 	margin:0;
-	line-height:16px; 
+	line-height:16px;
 }
 .tg-likestars .feature-rating.user-star-rating em{
 	display:none;
 }
-.tg-likestars .feature-rating.user-star-rating span:before, 
+.tg-likestars .feature-rating.user-star-rating span:before,
 .tg-likestars .feature-rating.user-star-rating:before{
 	font-size:16px;
 }
