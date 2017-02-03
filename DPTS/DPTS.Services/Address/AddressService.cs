@@ -12,13 +12,17 @@ namespace DPTS.Services.Address
         #region Fields
         private readonly IRepository<Domain.Entities.Address> _addressRepository;
         private readonly IRepository<AddressMapping> _addressMappingRepository;
+        private readonly IRepository<ZipCodes> _zipCodeRepository;
         #endregion
 
         #region Constructor
-        public AddressService(IRepository<Domain.Entities.Address> addressRepository, IRepository<AddressMapping> addressMappingRepository)
+        public AddressService(IRepository<Domain.Entities.Address> addressRepository, 
+            IRepository<AddressMapping> addressMappingRepository,
+            IRepository<ZipCodes> zipCodeRepository)
         {
             _addressRepository = addressRepository;
             _addressMappingRepository = addressMappingRepository;
+            _zipCodeRepository = zipCodeRepository;
         }
         #endregion
 
@@ -120,6 +124,25 @@ namespace DPTS.Services.Address
                 query = query.Where(c => c.UserId == UserId && c.AddressId == AddressId);
 
             return query.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Get All Zip Codes
+        /// </summary>
+        /// <returns></returns>
+        public IList<ZipCodes> GetAllZipCodes()
+        {
+            return _zipCodeRepository.TableNoTracking.ToList();
+        }
+
+        public void InsertZipCode(ZipCodes zipcode)
+        {
+            _zipCodeRepository.Insert(zipcode);
+        }
+
+        public ZipCodes GetZipCodeInfo(string zipcode)
+        {
+            return _zipCodeRepository.TableNoTracking.FirstOrDefault(z => z.ZipCode == zipcode);
         }
 
         #endregion

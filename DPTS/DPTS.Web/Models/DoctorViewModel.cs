@@ -28,6 +28,8 @@ namespace DPTS.Web.Models
 
         public string MobileNumber { get; set; }
 
+        public double Distance { get; set; }
+
 
     }
 }

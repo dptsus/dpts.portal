@@ -78,6 +78,7 @@
     <Compile Include="Entities\Notification\DefaultNotificationSettings.cs" />
     <Compile Include="Entities\StateProvince.cs" />
     <Compile Include="Entities\SubSpeciality.cs" />
+    <Compile Include="Entities\ZipCodes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

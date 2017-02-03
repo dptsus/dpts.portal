@@ -4,11 +4,22 @@
     ViewBag.Title = "Search | DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/Scripts/searchdealer.js"></script>
+
+<style>
+    #map {
+    height: 400px;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 50px;
+}
+</style>
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div class="container">
         <div class="row">
             <div class="container">
                 <div class="row">
+                    
                     <form>
                         <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
                             <div class="tg-doctors-list tg-haslayout">
@@ -16,11 +27,28 @@
                                     <div class="tg-heading-border tg-small">
                                         <h2>refine search</h2>
                                     </div>
-                                    @Html.Partial("_SearchNavigation", Model.SearchModel)
+                                    @*@Html.Partial("_SearchNavigation", Model.SearchModel)*@
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
+                            <div id="map"></div>
+                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6s4UEHBQtENKCpt2GExEQyLpXcQdfUo"></script>
+                            @*@Scripts.Render("~/bundles/jquery")*@
+
+                            <script>
+    $(document).ready(function () {
+        //if (searchResult.length > 0) {
+        $("#map").displaySearchResultOnMap("tk", "422010", "50")
+        //}
+        @*var searchToggle = "@Model.doctorsModel.Any()";
+        if (searchToggle == "True") {
+            $(".search-page").removeClass("search-page").addClass("search-page-toggle");
+        }*@
+    });
+                            </script>
+
+
                             <div class="tg-doctors-list tg-haslayout">
                                 <div class="tg-doclisthead">
                                     <div class="row">

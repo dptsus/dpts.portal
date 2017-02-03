@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201702020854305_InitialMigration.Designer.cs">
       <DependentUpon>201702020854305_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702021649475_createZipCodeTable.cs" />
+    <Compile Include="Migrations\201702021649475_createZipCodeTable.Designer.cs">
+      <DependentUpon>201702021649475_createZipCodeTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -71,6 +75,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201702020854305_InitialMigration.resx">
       <DependentUpon>201702020854305_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702021649475_createZipCodeTable.resx">
+      <DependentUpon>201702021649475_createZipCodeTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

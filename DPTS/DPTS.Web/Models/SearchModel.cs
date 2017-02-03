@@ -17,11 +17,13 @@ namespace DPTS.Web.Models
 
         public bool NoResults { get; set; }
 
-        public string ZipCode { get; set; }
+        public string geo_location { get; set; }
 
         public string keyword { get; set; }
 
         public string directory_type { get; set; }
+
+        public int geo_distance { get; set; }
 
     }
 }
