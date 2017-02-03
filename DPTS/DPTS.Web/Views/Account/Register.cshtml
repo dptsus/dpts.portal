@@ -58,7 +58,7 @@
                             <div class="form-group tg-checkbox">
                                 <input name="terms" type="hidden" value="0">
                                 <label>
-                                    <input name="terms" class="form-control" type="checkbox">
+                                    <input name="terms" id="terms" class="form-control" type="checkbox">
                                     I agree with the terms and conditions
                                 </label>
                             </div>
@@ -66,10 +66,10 @@
                                 @ReCaptcha.GetHtml(@ViewBag.publicKey)
                                 @if (ViewBag.RecaptchaLastErrors != null)
                                 {
-                                    <div>Oops! Invalid reCAPTCHA =(</div>
+                                    <div>Oops! Invalid Captcha</div>
                                 }
                             </div>
-                            <input type="submit" class="tg-btn tg-btn-lg  do-register-button" value="Register" />
+                            <input type="submit" class="tg-btn tg-btn-lg  do-register-button" onclick="javascript:return AcceptTermAndcondition();" value="Register" />
                         </fieldset>
                         }
                     </div>
@@ -92,6 +92,15 @@
             }
         });
     });
+    function AcceptTermAndcondition() {
+        if ($("#terms").is(':checked')) {
+            return true;
+        }
+        else {
+            alert("Please accept term and condition");
+            return false;
+        }
+    }
 </script>
 
 

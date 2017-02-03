@@ -118,8 +118,12 @@ namespace DPTS.Web.Controllers
             {
                 if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
                 {
+                    
                     if (!ModelState.IsValid)
                     {
+                        ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                        ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+
                         ViewBag.ReturnUrl = returnUrl;
                         return View(model);
                     }
@@ -140,16 +144,18 @@ namespace DPTS.Web.Controllers
                         case SignInStatus.Failure:
                         default:
                             ModelState.AddModelError("", "Invalid login attempt.");
+                            ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
                             ViewBag.ReturnUrl = returnUrl;
                             return View(model);
                     }
 
                 }
 
+
                 ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
 
                 ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
-
                 return View(model);
             }
             catch (Exception)
@@ -254,8 +260,8 @@ namespace DPTS.Web.Controllers
                         sms.route = 4; //route 4 is for transactional sms
                         sms.senderId = "DOCPTS";
                         Session["otp"] = _smsService.GenerateOTP();
-                        sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
-                        _smsService.SendSms(sms);
+                        //sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                       // _smsService.SendSms(sms);
                         TempData["regmodel"] = model;
                         return RedirectToAction("ConfirmRegistration", "Account");
                     }
@@ -280,6 +286,8 @@ namespace DPTS.Web.Controllers
         {
             RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
             ConfirmRegisterViewModel model = new ConfirmRegisterViewModel {RegistrationDetails = regModel};
+            //if u want to otp then comment follws line
+            model.CnfirmOTP = Session["otp"].ToString();
             return View(model);
         }
 
@@ -557,7 +565,7 @@ namespace DPTS.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Search", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         //

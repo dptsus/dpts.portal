@@ -9,6 +9,7 @@
     <a id="backToResults" href="javascript:;"><i class="fa fa-backward" aria-hidden="true"></i> BackToResults</a>
     <script>
         $(document).ready(function () {
+            $("#directions-panel").css("display", "none");
             $("#backToResults").on("click", function () {
                 $("#directions-panel").css("display", "none");
             });
@@ -127,24 +128,26 @@
     }
 </style>
 <main id="main" class="tg-page-wrapper tg-haslayout">
-    <div class="map-top">
-
-        <div class="row tg-divheight">
-            <div class="tg-mapbox">
-                <div class="map-wrapper">
-                    <div id="all-shops-map-holder" style="height: 500px"></div>
-                    <input id="shop-address-input" style="width:30%" type="text" placeholder="SearchMyLocation" />
+    @if (Model.doctorsModel.Any())
+    {
+        <div class="map-top">
+            <div class="row tg-divheight">
+                <div class="tg-mapbox">
+                    <div class="map-wrapper">
+                        <div id="all-shops-map-holder" style="height: 500px"></div>
+                        <input id="shop-address-input" style="width: 30%; left: 30px !important; top: 55px !important;" type="text" placeholder="SearchMyLocation" />
+                    </div>
+                    <input type="hidden" class="shop-resources"
+                           data-youarehere="You are here"
+                           data-accuracy="Accuracy"
+                           data-geolocationnotsupported="Geolocation is not supported by your browser."
+                           data-pathtoimages="http://demos.nop-templates.com/Plugins/SevenSpikes.Nop.Plugins.StoreLocator/Images"
+                           data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
                 </div>
-
-                <input type="hidden" class="shop-resources"
-                       data-youarehere="You are here"
-                       data-accuracy="Accuracy"
-                       data-geolocationnotsupported="Geolocation is not supported by your browser."
-                       data-pathtoimages="http://demos.nop-templates.com/Plugins/SevenSpikes.Nop.Plugins.StoreLocator/Images"
-                       data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
             </div>
         </div>
-    </div>
+    }
+    
     <div class="container">
         <div class="row">
             <div class="container">

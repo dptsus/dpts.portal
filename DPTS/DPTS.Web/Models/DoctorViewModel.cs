@@ -10,6 +10,7 @@ namespace DPTS.Web.Models
             doctor = new Doctor();
             Addresses = new List<Address>();
             Specialitys = new List<Speciality>();
+            Schedule=new List<Schedule>();
 
         }
         public string Id { get; set; }
@@ -19,6 +20,8 @@ namespace DPTS.Web.Models
         public virtual IList<Address> Addresses { get; set; }
 
         public virtual IList<Speciality> Specialitys { get; set; }
+
+        public virtual IList<Schedule> Schedule { get; set; }
 
         public string Email { get; set; }
 

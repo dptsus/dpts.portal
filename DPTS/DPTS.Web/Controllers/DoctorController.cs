@@ -196,19 +196,21 @@ namespace DPTS.Web.Controllers
 
         #region Methods
 
-        public ActionResult Info()
-        {
-            return View();
-        }
+        //public ActionResult Info()
+        //{
+        //    return View();
+        //}
 
         public ActionResult ProfileSetting()
         {
-            var model = new DoctorProfileSettingViewModel();
-            if (Request.IsAuthenticated)
-            {
-               // var user = context.Users.a(u => u.id).Where(u => u.id == id).FirstOrDefault();
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
 
-                var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var model = new DoctorProfileSettingViewModel();
+            if (Request.IsAuthenticated && User.IsInRole("Doctor"))
+            {
+                var userId = User.Identity.GetUserId();
+                var user = context.Users.SingleOrDefault(u => u.Id == userId);
                 if (user != null)
                 {
                     var doctor = _doctorService.GetDoctorbyId(user.Id);
@@ -245,6 +247,9 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
             // var doctorSpec = GetAllSpecialities(model.id).Select(c => c.Selected == true);
             if (model.SelectedSpeciality.Count > 0)
             {
@@ -275,12 +280,12 @@ namespace DPTS.Web.Controllers
             doctor.YearsOfExperience = model.NoOfYearExperience;
             _doctorService.UpdateDoctor(doctor);
 
-            return RedirectToAction("Info");
+            return RedirectToAction("ProfileSetting");
         }
 
         public ActionResult AddressAdd()
         {
-            if (string.IsNullOrEmpty(User.Identity.Name))
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
 
             var model = new AddressViewModel();
@@ -291,12 +296,13 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult AddressAdd(AddressViewModel model)
         {
-            if (string.IsNullOrEmpty(User.Identity.Name))
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                var userId = User.Identity.GetUserId();
+                var user = context.Users.SingleOrDefault(u => u.Id == userId);
 
                 var address = new Address
                 {
@@ -316,11 +322,24 @@ namespace DPTS.Web.Controllers
                 if (address.StateProvinceId == 0)
                     address.StateProvinceId = null;
 
-                var geoCoodrinate = GetGeoCoordinate(model.ZipPostalCode.ToString());
+                string state = (address.StateProvinceId == 0)
+                    ? string.Empty
+                    : _stateProvinceService.GetStateProvinceById(model.StateProvinceId).Name;
+                string docAddress = model.Address1 + ", " + model.City + ", " + state + ", " + model.ZipPostalCode;
+                var geoCoodrinate = GetGeoCoordinate(docAddress);
                 if (geoCoodrinate.Count == 2)
                 {
                     address.Latitude = geoCoodrinate["lat"];
                     address.Longitude = geoCoodrinate["lng"];
+                }
+                else
+                {
+                    var geoCoodrinates = GetGeoCoordinate(model.ZipPostalCode.ToString());
+                    if (geoCoodrinates.Count == 2)
+                    {
+                        address.Latitude = geoCoodrinates["lat"];
+                        address.Longitude = geoCoodrinates["lng"];
+                    }
                 }
                 _addressService.AddAddress(address);
                 if (user != null)
@@ -342,8 +361,9 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult AddressDelete(int addressId)
         {
-            if (string.IsNullOrEmpty(User.Identity.Name))
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
+
             var userId = User.Identity.GetUserId();
             var user = context.Users.SingleOrDefault(u => u.Id == userId);
             if (user == null)
@@ -375,11 +395,11 @@ namespace DPTS.Web.Controllers
 
         public ActionResult Addresses()
         {
-            if (string.IsNullOrEmpty(User.Identity.Name))
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
 
-
-            var user = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var userId = User.Identity.GetUserId();
+            var user = context.Users.SingleOrDefault(u => u.Id == userId);
             var model = new List<AddressViewModel>();
 
             if (user != null)
@@ -405,7 +425,7 @@ namespace DPTS.Web.Controllers
 
         public ActionResult AddressEdit(int id)
         {
-            if (string.IsNullOrEmpty(User.Identity.Name))
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
 
             var address = _addressService.GetAddressbyId(id);
@@ -426,13 +446,14 @@ namespace DPTS.Web.Controllers
                 Website=address.Website,
                 ZipPostalCode=address.ZipPostalCode,
                 AvailableCountry=GetCountryList(),
-              //  AvailableStateProvince= GetStatesByCountryId(address.CountryId)
+                //AvailableStateProvince= GetStatesByCountryId(address.CountryId,true)
 
             };
 
-                //states
+            model.AvailableCountry = GetCountryList();
 
-                var states = _stateProvinceService
+            //states
+            var states = _stateProvinceService
                     .GetStateProvincesByCountryId(model.CountryId)
                     .ToList();
                 if (states.Any())
@@ -464,24 +485,78 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult AddressEdit(AddressViewModel model)
         {
-            if (string.IsNullOrEmpty(User.Identity.Name))
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
 
-            var address = _addressService.GetAddressbyId(model.Id);
-            address.Id = model.Id;
-            address.Address1 = model.Address1;
-            address.Address2 = model.Address2;
-            address.City = model.City;
-            address.CountryId = model.CountryId;
-            address.FaxNumber = model.FaxNumber;
-            address.Hospital = model.Hospital;
-            address.PhoneNumber = model.LandlineNumber;
-            address.StateProvinceId = model.StateProvinceId;
-            address.Website = model.Website;
-            address.ZipPostalCode = model.ZipPostalCode;
+            if (ModelState.IsValid)
+            {
+                var address = _addressService.GetAddressbyId(model.Id);
+                address.Id = model.Id;
+                address.Address1 = model.Address1;
+                address.Address2 = model.Address2;
+                address.City = model.City;
+                address.CountryId = model.CountryId;
+                address.FaxNumber = model.FaxNumber;
+                address.Hospital = model.Hospital;
+                address.PhoneNumber = model.LandlineNumber;
+                address.StateProvinceId = model.StateProvinceId;
+                address.Website = model.Website;
+                address.ZipPostalCode = model.ZipPostalCode;
 
-            _addressService.UpdateAddress(address);
-            return RedirectToAction("Addresses");
+                string state = (address.StateProvinceId == 0)
+                    ? string.Empty
+                    : _stateProvinceService.GetStateProvinceById(model.StateProvinceId).Name;
+                string docAddress = model.Address1 + ", " + model.City + ", " + state + ", " + model.ZipPostalCode;
+                var geoCoodrinate = GetGeoCoordinate(docAddress);
+                if (geoCoodrinate.Count == 2)
+                {
+                    address.Latitude = geoCoodrinate["lat"];
+                    address.Longitude = geoCoodrinate["lng"];
+                }
+                else
+                {
+                    var geoCoodrinates = GetGeoCoordinate(model.ZipPostalCode.ToString());
+                    if (geoCoodrinates.Count == 2)
+                    {
+                        address.Latitude = geoCoodrinates["lat"];
+                        address.Longitude = geoCoodrinates["lng"];
+                    }
+                }
+
+                _addressService.UpdateAddress(address);
+                return RedirectToAction("Addresses");
+            }
+            //states
+
+            model.AvailableCountry = GetCountryList();
+
+            var states = _stateProvinceService
+                .GetStateProvincesByCountryId(model.CountryId)
+                .ToList();
+            if (states.Any())
+            {
+                model.AvailableStateProvince.Add(new SelectListItem { Text = "Select state", Value = "0" });
+
+                foreach (var s in states)
+                {
+                    model.AvailableStateProvince.Add(new SelectListItem
+                    {
+                        Text = s.Name,
+                        Value = s.Id.ToString(),
+                        Selected = s.Id == model.StateProvinceId
+                    });
+                }
+            }
+            else
+            {
+                bool anyCountrySelected = model.AvailableCountry.Any(x => x.Selected);
+                model.AvailableStateProvince.Add(new SelectListItem
+                {
+                    Text = anyCountrySelected ? "None" : "Select State",
+                    Value = "0"
+                });
+            }
+            return View(model);
         }
 
         public ActionResult Favourites()
@@ -496,6 +571,9 @@ namespace DPTS.Web.Controllers
 
         public ActionResult DoctorSchedules()
         {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
             try
             {
                 var lst = new List<SheduleViewModel>();
@@ -604,6 +682,9 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult DoctorSchedules(FormCollection form)
         {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
             try
             {
                 if (!Request.IsAuthenticated)
@@ -809,6 +890,9 @@ namespace DPTS.Web.Controllers
 
         public ActionResult BookingListings(DoctorScheduleListingViewModel model)
         {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
             try
             {
                 if (Request.IsAuthenticated && User.IsInRole("Doctor"))
@@ -983,7 +1067,7 @@ namespace DPTS.Web.Controllers
                 model.doctor = doctor;
                 model.Addresses = _addressService.GetAllAddressByUser(doctor.DoctorId);
                 model.Specialitys = _specialityService.GetDoctorSpecilities(doctor.DoctorId);
-
+                model.Schedule = _scheduleService.GetScheduleByDoctorId(doctor.DoctorId);
                 return View(model);
             }
             return View();

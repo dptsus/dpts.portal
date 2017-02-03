@@ -15,7 +15,8 @@
                 <div class="tab-content tg-haslayout">
                     <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signin-formarea">
                         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "tg-form-modal tg-form-signin do-login-form", role = "form" }))
-                       {
+                        {
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                             @Html.AntiForgeryToken()
                             <fieldset>
                                 <div class="form-group">

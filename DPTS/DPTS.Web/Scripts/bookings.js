@@ -170,41 +170,54 @@ jQuery(document).ready(function ($) {
 
 				}
 			});
-		}  else if(
-			Z_Steps.booking_step	== 3
-		) {
-			jQuery('.booking-model-contents').append(loder_html);
-			var serialize_data	= jQuery('.appointment-form').serialize();
-			var dataString = serialize_data+'&data_id='+data_id+'&action=docdirect_do_process_booking';
-			jQuery.ajax({
-				type: "POST",
-				url: "/Appointment/FinishBooking/",
-				data: serialize_data,
-				dataType:"json",
-				success: function(response) {
-				    jQuery('body').find('.docdirect-loader-wrap').remove();
-				    if (response.result == "fail") {
-				        jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
-				        return false;
-				    } else {
-				        //jQuery('.step-four-contents').html(response.data);
-				        Z_Steps.booking_step = 1;
-				        jQuery('.bk-step-4').trigger('click');
-				        docdirect_appointment_tabs(4);
-				        jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
-				        jQuery('.booking-step-button').find('.bk-step-prev').remove();
-				        jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
-				        jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
-				    }
-				}
-			});
-		}
+		} else if (
+	        !bk_subject
+			||
+			!bk_name
+			||
+			!bk_userphone
+			||
+			!bk_useremail
+			||
+			!bk_booking_note && Z_Steps.booking_step == 2
+	    ) {
+		    jQuery.sticky("all fields are mandatory !!", { classList: 'important', speed: 200, autoclose: 5000 });
+	    } else if (
+	        Z_Steps.booking_step == 3
+	    ) {
+	        jQuery('.booking-model-contents').append(loder_html);
+	        var serialize_data = jQuery('.appointment-form').serialize();
+	        var dataString = serialize_data + '&data_id=' + data_id + '&action=docdirect_do_process_booking';
+	        jQuery.ajax({
+	            type: "POST",
+	            url: "/Appointment/FinishBooking/",
+	            data: serialize_data,
+	            dataType: "json",
+	            success: function(response) {
+	                jQuery('body').find('.docdirect-loader-wrap').remove();
+	                if (response.result == "fail") {
+	                    jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
+	                    return false;
+	                } else {
+	                    //jQuery('.step-four-contents').html(response.data);
+	                    Z_Steps.booking_step = 1;
+	                    jQuery('.bk-step-4').trigger('click');
+	                    docdirect_appointment_tabs(4);
+	                    jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
+	                    jQuery('.booking-step-button').find('.bk-step-prev').remove();
+	                    jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
+	                    jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
+	                }
+	            }
+	        });
+	    }
 
 	});
 
 	//Finish Booking
-	jQuery(document).on('click','.bk-step-next.finish-booking',function(e){
-		window.location.reload();
+	jQuery(document).on('click', '.bk-step-next.finish-booking', function (e) {
+	    //var redirectPath = $('#RedirectUrl').val();
+	    window.location.href = '/Home';
 	});
 
 	//Prev step

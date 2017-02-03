@@ -139,6 +139,7 @@ function showDistancesFromShopsToUser() {
 }
 
 function getDistanceToPosition(a, b) {
+    $(".distance-line").css("display", "block");
     var c = "Imperial" == $(".shop-resources").attr("data-units"),
         d = 6371e3,
         e = Math.toRadians(userMarker.position.lat()),

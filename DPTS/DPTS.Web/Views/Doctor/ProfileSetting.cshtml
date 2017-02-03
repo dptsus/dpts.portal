@@ -4,159 +4,159 @@
 @{
     ViewBag.Title = "Profile Setting";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
-<main id="main" class="tg-page-wrapper tg-haslayout">
+@if (Request.IsAuthenticated && User.IsInRole("Doctor"))
+{
+    <main id="main" class="tg-page-wrapper tg-haslayout">
     <div class="container">
-        <div class="row">
-            @Html.Partial("AccountNavigation")
-            <style>
-                .progress {
-                    height: 35px;
-                    margin-bottom: 0;
-                }
-            </style>
+    <div class="row">
+    @Html.Partial("AccountNavigation")
+    <style>
+        .progress {
+            height: 35px;
+            margin-bottom: 0;
+        }
+    </style>
 
-            <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
-                @using (Html.BeginForm("ProfileSetting", "Doctor",
-                    new { },
-                    FormMethod.Post, new { @class = "tg-formeditprofile tg-haslayout do-account-setitngs" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(model => model.Id)
+    <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
+    @using (Html.BeginForm("ProfileSetting", "Doctor",
+        new {},
+        FormMethod.Post, new {@class = "tg-formeditprofile tg-haslayout do-account-setitngs"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
 
-                    <fieldset>
-                        <div class="tg-editprofile tg-haslayout">
-                            <div class="col-md-12 col-sm-12 col-xs-12 tg-findheatlhwidth">
-                                <div class="row">
-                                    <div class="tg-editimg">
-                                        <div class="tg-editimg-avatar">
-                                            <div class="tg-heading-border tg-small">
-                                                <h3>upload photo</h3>
-                                            </div>
-                                            <figure class="tg-docimg">
-                                                <span class="user-avatar">
+        <fieldset>
+        <div class="tg-editprofile tg-haslayout">
+            <div class="col-md-12 col-sm-12 col-xs-12 tg-findheatlhwidth">
+                <div class="row">
+                    <div class="tg-editimg">
+                        <div class="tg-editimg-avatar">
+                            <div class="tg-heading-border tg-small">
+                                <h3>upload photo</h3>
+                            </div>
+                            <figure class="tg-docimg">
+                                <span class="user-avatar">
                                                     <img id="user-profile" alt="Avatar">
                                                     <div>
-                                                        <div class="progress progress-striped active" style="float:left;width:85%;">
+                                                        <div class="progress progress-striped active" style="float: left; width: 85%;">
                                                             <div id="progressfrontprofile" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                                                                 <span class="sr-only">0% Complete (success)</span>
                                                             </div>
                                                         </div>
-                                                        <span class="btn btn-success fileinput-button" style="float:right">
+                                                        <span class="btn btn-success fileinput-button" style="float: right">
                                                             <i class="fa fa-upload"></i>
                                                             <input id="fileuploadprofile" type="file" name="files[]" multiple>
                                                         </span>
                                                     </div>
 
-                                            </figure>
-                                            <div class="tg-uploadtips">
-                                                <h4>tips for uploading</h4>
-                                                <ul class="tg-instructions">
-                                                    <li>Max Upload Size: 10.00 MB</li>
-                                                    <li>Dimensions: 370x377</li>
-                                                    <li>Extensions: JPG,JPEG,PNG,GIF</li>
-                                                </ul>
-                                            </div>
-                                            <div id="errors-log">HTTP Error.</div>
-                                        </div>
-                                        <div class="tg-editimg-banner">
-                                            <div class="tg-heading-border tg-small">
-                                                <h3>Upload Banner</h3>
-                                            </div>
+                            </figure>
+                            <div class="tg-uploadtips">
+                                <h4>tips for uploading</h4>
+                                <ul class="tg-instructions">
+                                    <li>Max Upload Size: 10.00 MB</li>
+                                    <li>Dimensions: 370x377</li>
+                                    <li>Extensions: JPG</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tg-editimg-banner">
+                            <div class="tg-heading-border tg-small">
+                                <h3>Upload Banner</h3>
+                            </div>
 
-                                            <figure class="tg-docimg">
-                                                <span class="user-banner"><img id="prodfront" alt="Avatar"></span>
-                                                <div>
-                                                    <div class="progress progress-striped active" style="float:left;width:85%;">
-                                                        <div id="progressfront" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                                            <span class="sr-only">0% Complete (success)</span>
-                                                        </div>
-                                                    </div>
-                                                    <span class="btn btn-success fileinput-button" style="float:right">
+                            <figure class="tg-docimg">
+                                <span class="user-banner"><img id="prodfront" alt="Avatar"></span>
+                                <div>
+                                    <div class="progress progress-striped active" style="float: left; width: 85%;">
+                                        <div id="progressfront" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                            <span class="sr-only">0% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                    <span class="btn btn-success fileinput-button" style="float: right">
                                                         <i class="fa fa-upload"></i>
                                                         <input id="fileuploadfront" type="file" name="files[]" multiple>
                                                     </span>
-                                                </div>
-                                            </figure>
+                                </div>
+                            </figure>
 
-                                            <div class="tg-uploadtips">
-                                                <h4>tips for uploading</h4>
-                                                <ul class="tg-instructions">
-                                                    <li>Max Upload Size: 10.00 MB</li>
-                                                    <li>Dimensions: 1920x450</li>
-                                                    <li>Extensions: JPG,JPEG,PNG,GIF</li>
-                                                </ul>
+                            <div class="tg-uploadtips">
+                                <h4>tips for uploading</h4>
+                                <ul class="tg-instructions">
+                                    <li>Max Upload Size: 10.00 MB</li>
+                                    <li>Dimensions: 1920x450</li>
+                                    <li>Extensions: JPG</li>
+                                </ul>
+                            </div>
+                            <div id="errors-log"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tg-bordertop tg-haslayout">
+            <div class="tg-formsection">
+                <div class="tg-heading-border tg-small">
+                    <h3>Specialities</h3>
+                </div>
+                <div class="row">
+                    <div class="specialities-list">
+                        <ul>
+                            @foreach (var item in Model.AvailableSpeciality)
+                            {
+                                if (item.Selected == true)
+                                {
+                                    <li>
+                                        <div class="tg-checkbox user-selection">
+                                            <div class="tg-packages active-user-type specialities-type">
+                                                <input type="checkbox" checked="" name="SelectedSpeciality" value="@item.Value" id="@item.Text">
+                                                <label for="@item.Text">@item.Text</label>
                                             </div>
-                                            <div id="errors-log"></div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tg-bordertop tg-haslayout">
-                            <div class="tg-formsection">
-                                <div class="tg-heading-border tg-small">
-                                    <h3>Specialities</h3>
-                                </div>
-                                <div class="row">
-                                    <div class="specialities-list">
-                                        <ul>
-                                            @foreach (var item in Model.AvailableSpeciality)
-                                            {
-                                                if (item.Selected == true)
-                                                {
-                                                    <li>
-                                                        <div class="tg-checkbox user-selection">
-                                                            <div class="tg-packages active-user-type specialities-type">
-                                                                <input type="checkbox" checked="" name="SelectedSpeciality" value="@item.Value" id="@item.Text">
-                                                                <label for="@item.Text">@item.Text</label>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                }
-                                                else
-                                                {
-                                                    <li>
-                                                        <div class="tg-checkbox user-selection">
-                                                            <div class="tg-packages active-user-type specialities-type">
-                                                                <input type="checkbox" name="SelectedSpeciality" value="@item.Value" id="@item.Text">
-                                                                <label for="@item.Text">@item.Text</label>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                }
-                                            }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <div class="tg-checkbox user-selection">
+                                            <div class="tg-packages active-user-type specialities-type">
+                                                <input type="checkbox" name="SelectedSpeciality" value="@item.Value" id="@item.Text">
+                                                <label for="@item.Text">@item.Text</label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
 
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tg-bordertop tg-haslayout">
+            <div class="tg-formsection">
+                <div class="tg-heading-border tg-small">
+                    <h3>Basic Information</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FirstName)
+                            @Html.EditorFor(model => model.FirstName, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.FirstName)
                         </div>
-                        <div class="tg-bordertop tg-haslayout">
-                            <div class="tg-formsection">
-                                <div class="tg-heading-border tg-small">
-                                    <h3>Basic Information</h3>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.FirstName)
-                                            @Html.EditorFor(model => model.FirstName, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.FirstName)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.LastName)
-                                            @Html.EditorFor(model => model.LastName, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.LastName)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <label>Date Of Birth</label>
-                                            @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LastName)
+                            @Html.EditorFor(model => model.LastName, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.LastName)
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Date Of Birth</label>
+                            @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
                                 Html.FieldNameFor(x => x.DateOfBirthMonth),
                                 Html.FieldNameFor(x => x.DateOfBirthYear),
                                 DateTime.Now.Year - 110,
@@ -165,169 +165,174 @@
                                 Model.DateOfBirthMonth,
                                 Model.DateOfBirthYear)
 
-                                            @Html.ValidationMessageFor(model => model.DateOfBirthDay)
-                                            @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
-                                            @Html.ValidationMessageFor(model => model.DateOfBirthYear)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Gender)
-                                            @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as IEnumerable<SelectListItem>)
-                                            @Html.ValidationMessageFor(model => model.Gender)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Email)
-                                            @Html.EditorFor(model => model.Email, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.Email)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.PhoneNumber)
-                                            @Html.EditorFor(model => model.PhoneNumber, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.PhoneNumber)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ShortProfile)
-                                            @Html.TextAreaFor(model => model.ShortProfile, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.ShortProfile)
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                            @Html.ValidationMessageFor(model => model.DateOfBirthYear)
                         </div>
-                        <div class="tg-bordertop tg-haslayout">
-                            <div class="tg-formsection">
-                                <div class="tg-heading-border tg-small">
-                                    <h3>EDUCATION</h3>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.Qualifications)
-                                            @Html.EditorFor(model => model.Qualifications, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.Qualifications)
-                                        </div>
-                                    </div>
-                                    <br />
-                                </div>
-                            </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Gender)
+                            @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as IEnumerable<SelectListItem>)
+                            @Html.ValidationMessageFor(model => model.Gender)
                         </div>
-                        <div class="tg-bordertop tg-haslayout">
-                            <div class="tg-formsection">
-                                <div class="tg-heading-border tg-small">
-                                    <h3>Experience &Aacute; Registration Number</h3>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.NoOfYearExperience)
-                                            @Html.EditorFor(model => model.NoOfYearExperience, new { @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.NoOfYearExperience)
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.RegistrationNumber)
-                                            @Html.EditorFor(model => model.RegistrationNumber, new { @class = "form-control", @palceholder = "G-56707" })
-                                            @Html.ValidationMessageFor(model => model.RegistrationNumber)
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email)
+                            @Html.EditorFor(model => model.Email, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.Email)
                         </div>
-
-                        <button type="submit" class="tg-btn process-account-settings">update</button>
-                    </fieldset>
-                }
-            </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PhoneNumber)
+                            @Html.EditorFor(model => model.PhoneNumber, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.PhoneNumber)
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShortProfile)
+                            @Html.TextAreaFor(model => model.ShortProfile, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.ShortProfile)
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="tg-bordertop tg-haslayout">
+            <div class="tg-formsection">
+                <div class="tg-heading-border tg-small">
+                    <h3>EDUCATION</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Qualifications)
+                            @Html.EditorFor(model => model.Qualifications, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.Qualifications)
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </div>
+        <div class="tg-bordertop tg-haslayout">
+            <div class="tg-formsection">
+                <div class="tg-heading-border tg-small">
+                    <h3>Experience & Registration Number</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NoOfYearExperience)
+                            @Html.EditorFor(model => model.NoOfYearExperience, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.NoOfYearExperience)
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RegistrationNumber)
+                            @Html.EditorFor(model => model.RegistrationNumber, new {@class = "form-control", @palceholder = "G-56707"})
+                            @Html.ValidationMessageFor(model => model.RegistrationNumber)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="tg-btn process-account-settings">update</button>
+        </fieldset>
+    }
+    </div>
+    </div>
+    </div>
     </main>
-            <link href="~/Content/jquery.fileupload.css" rel="stylesheet" />
+    <link href="~/Content/jquery.fileupload.css" rel="stylesheet"/>
 
-            @Scripts.Render("~/bundles/jquery")
-            <script type="text/javascript">
-    $(function () {
-        var BannerId="@Model.Id" + "_banner";
-        $.get('../../Uploads/'+BannerId+'.jpg')
-            .done(function () {
-                $("#prodfront").attr("src", '../../Uploads/'+BannerId+'.jpg?' + new Date().getTime());
-            }).fail(function () {
-                $("#prodfront").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
-            });
-        $('#fileuploadfront').fileupload({
-            dataType: 'json',
-            url: '/Doctor/UploadFiles?pid='+BannerId,
-            autoUpload: true,
-            done: function (e, data) {
-                $("#prodfront").attr("src", '../../Uploads/' + data.result.name);
-            }
-        }).on('fileuploadprogressall', function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progressfront').css('width', progress + '%');
-        });
-
-        // profile pic
-
-        var ProfilePicId = "@Model.Id" + "_profile";
-        $.get('../../Uploads/' + ProfilePicId + '.jpg')
-            .done(function () {
-                $("#user-profile").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
-                $("#profile-picture").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
-            }).fail(function () {
-                $("#user-profile").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
-                $("#profile-picture").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
-            });
-        $('#fileuploadprofile').fileupload({
-            dataType: 'json',
-            url: '/Doctor/UploadFiles?pid=' + ProfilePicId,
-            autoUpload: true,
-            done: function (e, data) {
-                $("#user-profile").attr("src", '../../Uploads/' + data.result.name);
-                $("#profile-picture").attr("src", '../../Uploads/' + data.result.name);
-            }
-        }).on('fileuploadprogressallprofile', function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progressfrontprofile').css('width', progress + '%');
-        });
-        $("#Qualifications").tagEditor({
-            autocomplete: {
-                delay: 0,
-                maxLength: 3,
-                position: { collision: 'flip' },
-                //source: initialSocialTags
-            },
-            delimiter: ',',
-            placeholder: 'Enter qualifications ...'
-        });
-        $("#CountryId").change(function () {
-            var selectedItem = $(this).val();
-            var ddlStates = $("#StateProvinceId");
-            //  var statesProgress = $("#states-loading-progress");
-            // statesProgress.show();
-            $.ajax({
-                cache: false,
-                type: "GET",
-                url: "@(Url.RouteUrl("GetStatesByCountryId"))",
-                data: { "countryId": selectedItem, "addSelectStateItem": "true" },
-            success: function (data) {
-                ddlStates.html('');
-                $.each(data, function (id, option) {
-                    ddlStates.append($('<option></option>').val(option.id).html(option.name));
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript">
+        $(function() {
+            var BannerId = "@Model.Id" + "_banner";
+            $.get('../../Uploads/' + BannerId + '.jpg')
+                .done(function() {
+                    $("#prodfront").attr("src", '../../Uploads/' + BannerId + '.jpg?' + new Date().getTime());
+                }).fail(function() {
+                    $("#prodfront").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
                 });
-                statesProgress.hide();
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('Failed to retrieve states.');
-               // statesProgress.hide();
-            }
+            $('#fileuploadfront').fileupload({
+                dataType: 'json',
+                url: '/Doctor/UploadFiles?pid=' + BannerId,
+                autoUpload: true,
+                done: function(e, data) {
+                    $("#prodfront").attr("src", '../../Uploads/' + data.result.name);
+                }
+            }).on('fileuploadprogressall', function(e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progressfront').css('width', progress + '%');
+            });
+
+            // profile pic
+
+            var ProfilePicId = "@Model.Id" + "_profile";
+            $.get('../../Uploads/' + ProfilePicId + '.jpg')
+                .done(function() {
+                    $("#user-profile").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
+                    $("#profile-picture").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
+                }).fail(function() {
+                    $("#user-profile").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
+                    $("#profile-picture").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
+                });
+            $('#fileuploadprofile').fileupload({
+                dataType: 'json',
+                url: '/Doctor/UploadFiles?pid=' + ProfilePicId,
+                autoUpload: true,
+                done: function(e, data) {
+                    $("#user-profile").attr("src", '../../Uploads/' + data.result.name);
+                    $("#profile-picture").attr("src", '../../Uploads/' + data.result.name);
+                }
+            }).on('fileuploadprogressallprofile', function(e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progressfrontprofile').css('width', progress + '%');
+            });
+            $("#Qualifications").tagEditor({
+                autocomplete: {
+                    delay: 0,
+                    maxLength: 3,
+                    position: { collision: 'flip' },
+                    //source: initialSocialTags
+                },
+                delimiter: ',',
+                placeholder: 'Enter qualifications ...'
+            });
+            $("#CountryId").change(function() {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#StateProvinceId");
+                //  var statesProgress = $("#states-loading-progress");
+                // statesProgress.show();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                    data: { "countryId": selectedItem, "addSelectStateItem": "true" },
+                    success: function(data) {
+                        ddlStates.html('');
+                        $.each(data, function(id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        statesProgress.hide();
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                        // statesProgress.hide();
+                    }
+                });
+            });
         });
-    });
-    });
-            </script>
+    </script>
+}
+else
+{
+    <h3>Access Diened !!</h3>
+}

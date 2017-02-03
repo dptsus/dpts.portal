@@ -3,7 +3,7 @@
     @{
         int ind = 0;
 }
-@if (Model.Count() > 0)
+@if (Model.Any())
 {
 <div class="tg-view tg-list-view" style="border-bottom:none">
     <div class="row">
@@ -30,31 +30,46 @@
                                         <span style="width:80%"></span>
                                     </span>
                                     <em>4.0<sub>/5</sub></em>*@
-                                    <a class="tg-btn tg-btn-lg make-appointment-btn" style="font-size: 13px;" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new { doctorId = item.doctor.DoctorId }))">MAKE AN APPOINTMENT!</a>
+                                    <a class="tg-btn tg-btn-lg make-appointment-btn" style="font-size: 13px" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new { doctorId = item.doctor.DoctorId }))">MAKE AN APPOINTMENT!</a>
                                 </div>
                             </figure>
                             <div class="tg-docprofile-content">
-                                <div class="tg-heading-border tg-small">
+                                <div class="tg-heading-border tg-small" style="margin: 0">
                                     <h3><a href="@Url.Action("DoctorDetails", "Doctor", new { doctorId = item.doctor.DoctorId })">Dr. @item.FirstName @item.LastName</a></h3>
                                 </div>
                                 <div class="tg-description">
-                                    <p>@item.doctor.ShortProfile </p>
-                                    <br />
                                     <div class="distance-line">
                                         <label class="distance-label">Distance from your location:</label>
                                         <span class="distance-value">@item.Distance.ToString("0.0")</span>
                                     </div>
+                                    <script>
+                                        $(document).ready(function () {
+                                                $(".distance-line").css("display", "none");
+                                        });
+                                    </script>
                                     <br />
                                     <a class="show-directions" href="javascript:;"><i class="fa fa-compass" aria-hidden="true"></i> Show Directions</a>
                                 </div>
                                 <div class="short-description">
                                     <ul class="tg-doccontactinfo">
+                                        @if (!string.IsNullOrWhiteSpace(item.doctor.Qualifications))
+                                        {
+                                            <li><i class="fa fa-graduation-cap" aria-hidden="true"></i><span><b>@item.doctor.Qualifications.ToUpper()</b></span></li>
+                                        }
+                                        @if (item.doctor.YearsOfExperience > 0)
+                                        {
+                                            <li><i class="fa fa-flask" aria-hidden="true"></i><span><b>@item.doctor.YearsOfExperience</b> years experience</span></li>
+                                        }
+                                        @if (item.doctor.YearsOfExperience > 0 || !string.IsNullOrWhiteSpace(item.doctor.Qualifications))
+                                        {
+                                            <li><hr/></li>
+                                        }
                                         @{
                                             var addr = item.Addresses.FirstOrDefault();
                                             if (addr != null)
                                             {
                                                 <li>
-                                                    <input type="hidden" class="shop-coordinates" data-latitude="@addr.Latitude" data-longitude="@addr.Longitude" data-shop-title="Dr @item.FirstName @item.LastName" value="1" />
+                                                    <input type="hidden" class="shop-coordinates" data-latitude="@addr.Latitude" data-longitude="@addr.Longitude" data-shop-title="Dr @item.FirstName @item.LastName" value="1"/>
 
                                                     <i class="fa fa-map-marker"></i><address>
                                                         <p>

@@ -166,8 +166,6 @@ namespace DPTS.Web.Controllers
             {
                 firstZipCodeLocation = CalculateLatLngForZipCode(zipcode);
             }
-
-           // var searchResult = new List<DealerModel>();
             foreach (var doc in data)
             {
                 var addr = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault();
@@ -198,7 +196,7 @@ namespace DPTS.Web.Controllers
                         Email = user.Email,
                         FirstName =user.FirstName,
                         LastName = user.LastName,
-                        MobileNumber = user.PhoneNumber,
+                        MobileNumber = user.PhoneNumber
                     });
                 }
             }
