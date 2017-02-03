@@ -4,53 +4,156 @@
     ViewBag.Title = "Search | DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/Scripts/searchdealer.js"></script>
+<script src="~/Scripts/searchdoc.js"></script>
+<div id="directions-panel">
+    <a id="backToResults" href="javascript:;"><i class="fa fa-backward" aria-hidden="true"></i> BackToResults</a>
+    <script>
+        $(document).ready(function () {
+            $("#backToResults").on("click", function () {
+                $("#directions-panel").css("display", "none");
+            });
+        });
+    </script>
+</div>
+@*<div class="page all-shops-page">
+    <div class="page-title store-locator-title">
+        <h1>T("SevenSpikes.StoreLocator.Public.Title")</h1>
+    </div>
+    <div class="page-body">
 
+
+
+        <div class="shops-sorting-filtering-wrapper">
+            <div class="shops-sorting-options">
+                <label for="sortingSelect">Sort by</label>
+                <select id="sortingSelect">
+                    <option value="sortbydistance">Distance</option>
+                    <option value="sortbyname">Name</option>
+                    <option value="sortbyid" selected="selected">Display Order</option>
+                </select>
+            </div>
+            <div id="searchRadiusWrapper" class="radiusFilterWrapper">
+                <label>Search for shops in radius of</label>
+                <input type="number" value="1000" id="searchRadius" />
+                <span class="units">km.</span>
+            </div>
+            <div class="searchbytags-wrapper">
+                <label for="searchByTagsInput">Search By Tag</label>
+                <input type="text" value="" id="searchByTagsInput" />
+            </div>
+            <div class="shops-filtering-buttons">
+                <a class="clear-filtered-shops" id="clearShopFilters">Clear Filters</a>
+                <div class="button-wrap">
+                    <button class="filter-shops-button" id="searchForFilteredShops">Search</button>
+                </div>
+            </div>
+
+            @*<ul class="shops-list">
+                @foreach (var item in Model.doctorsModel)
+                {
+                    string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
+                    string profilePicPath = Server.MapPath("~/Uploads/" + item.Id + "_profile.jpg");
+                    if (File.Exists(profilePicPath))
+                    {
+                        picturePath = "../../Uploads/" + item.Id + "_profile.jpg";
+                    }
+                    <li class="shops-item visible" data-ind="0">
+                        <div class="picture-wrap">
+                            <a class="picture-link" href="/london-shop" title="London">
+                                <img class="picture-img" src="@picturePath" alt="shop" title="shop" />
+                            </a>
+                        </div>
+                        <div class="info-wrap">
+                            <h2 class="shop-name">
+                                <a class="shop-link" href="#" title="London">Dr @item.FirstName @item.LastName</a>
+                            </h2>
+                            <input type="hidden" class="distanceToShopValue" value="0" />
+                            <div class="distance-line">
+                                <label class="distance-label">Distance:</label>
+                                <span class="distance-value">0 km.</span>
+                            </div>
+                            <a class="show-directions">Show Directions</a>
+                            <div class="short-description">
+                                @{
+                                    var addr = item.Addresses.FirstOrDefault();
+                                    if (addr != null)
+                                    {
+                                        <p><span class="setter">ADDRESS:</span></p>
+                                        <p>@addr.Address1, @addr.City</p>
+                                        <p><span class="setter">WORKING HOURS:</span></p>
+                                        <p>Monday - Friday: 10:00 - 20:00<br />Saturday: 10:00 - 19:00<br />Sunday: 10:30 - 18:30</p>
+                                        <input type="hidden" class="shop-coordinates" data-latitude="@addr.Latitude" data-longitude="@addr.Longitude" data-shop-title="London" value="1" />
+                                        <input type="hidden" class="shop-tags-hidden-field" value="london,sports,football,tennis,swimming,bikes,fitness,spa" />
+                                    }
+                                }
+
+</div>
+                            <div class="tags">
+                                <label class="tags-label">Tags</label>
+                                <ul class="tag-list">
+                                    <li class="tag-item">london</li>
+                                    <li class="tag-item">sports</li>
+                                    <li class="tag-item">football</li>
+                                    <li class="tag-item">tennis</li>
+                                    <li class="tag-item">swimming</li>
+                                    <li class="tag-item">bikes</li>
+                                    <li class="tag-item">fitness</li>
+                                    <li class="tag-item">spa</li>
+                                </ul>
+                            </div>
+                            <a class="read-more" href="/london-shop" title="London">Read More</a>
+                        </div>
+
+                    </li>
+                 }
+
+            </ul>
+
+        </div>
+    </div>
+</div>*@
 <style>
-    #map {
-    height: 400px;
+    .map-top{
+      height: 500px;
+    }
+    .map-wrapper
+    {
+    height: 100%;
     width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-bottom: 50px;
-}
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(229, 227, 223);
+    }
 </style>
 <main id="main" class="tg-page-wrapper tg-haslayout">
+    <div class="map-top">
+
+        <div class="row tg-divheight">
+            <div class="tg-mapbox">
+                <div class="map-wrapper">
+                    <div id="all-shops-map-holder" style="height: 500px"></div>
+                    <input id="shop-address-input" style="width:30%" type="text" placeholder="SearchMyLocation" />
+                </div>
+
+                <input type="hidden" class="shop-resources"
+                       data-youarehere="You are here"
+                       data-accuracy="Accuracy"
+                       data-geolocationnotsupported="Geolocation is not supported by your browser."
+                       data-pathtoimages="http://demos.nop-templates.com/Plugins/SevenSpikes.Nop.Plugins.StoreLocator/Images"
+                       data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="container">
                 <div class="row">
-                    
                     <form>
-                        <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
-                            <div class="tg-doctors-list tg-haslayout">
-                                <div class="tg-refinesearcharea">
-                                    <div class="tg-heading-border tg-small">
-                                        <h2>refine search</h2>
-                                    </div>
-                                    @*@Html.Partial("_SearchNavigation", Model.SearchModel)*@
-                                </div>
-                            </div>
-                        </div>
+                        @Html.Partial("_SearchNavigation", Model.SearchModel)
                         <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
-                            <div id="map"></div>
-                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6s4UEHBQtENKCpt2GExEQyLpXcQdfUo"></script>
-                            @*@Scripts.Render("~/bundles/jquery")*@
-
-                            <script>
-    $(document).ready(function () {
-        //if (searchResult.length > 0) {
-        $("#map").displaySearchResultOnMap("tk", "422010", "50")
-        //}
-        @*var searchToggle = "@Model.doctorsModel.Any()";
-        if (searchToggle == "True") {
-            $(".search-page").removeClass("search-page").addClass("search-page-toggle");
-        }*@
-    });
-                            </script>
-
-
                             <div class="tg-doctors-list tg-haslayout">
-                                <div class="tg-doclisthead">
+                                @*<div class="tg-doclisthead">
                                     <div class="row">
                                         <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="form-group">
@@ -74,17 +177,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-4 col-xs-12">
-                                            <ul class="tg-listing-views">
-                                                <li class=""><a href="javascript:;" class="grid"><i class="fa fa-th-large"></i></a></li>
-                                                <li class="active"><a href="javascript:;" class="list"><i class="fa fa-th-list"></i></a></li>
-                                            </ul>
-                                        </div>
                                     </div>
-                                </div>
+                                </div>*@
                                 @Html.Partial("_DoctorBox", Model.doctorsModel)
-
-
                             </div>
                         </div>
                     </form>

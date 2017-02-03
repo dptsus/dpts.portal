@@ -794,7 +794,7 @@
     <Content Include="Scripts\public.onepagecheckout.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\searchdealer.js" />
+    <Content Include="Scripts\searchdoc.js" />
     <Content Include="Scripts\tagEditor\jquery.caret.min.js" />
     <Content Include="Scripts\tagEditor\jquery.tag-editor.js" />
     <Content Include="Scripts\tagEditor\jquery.tag-editor.min.js" />

@@ -79,6 +79,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         public ActionResult Index()
+
         {
             return View();
         }
@@ -308,7 +309,7 @@ namespace DPTS.Web.Controllers
             return null;
         }
 
-       
+
         public ActionResult Doctors(SearchModel model)
         {
             var data = _doctorService.GetAllDoctors();
