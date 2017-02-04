@@ -1,46 +1,13 @@
 ﻿@model SearchModel
 @using DPTS.Web.Models
 
+<script type='text/javascript'>
+/* <![CDATA[ */
+var scripts_vars = {"ajaxurl":"","award_name":"Award Name","award_date":"Award Date","award_description":"Award Description","file_upload_title":"Avatar Upload","delete_message":"Are you sure you want to delete your account?","deactivate":"Are you sure you want to deactivate your account?","delete_title":"Delete account?","deactivate_title":"Deactivate account?","docdirect_upload_nounce":"f285cd2c24","dir_close_marker":"https:\/\/themographics.com\/wordpress\/docdirect\/wp-content\/themes\/docdirect\/images\/close.png","dir_cluster_marker":"\/\/themographics.com\/wordpress\/docdirect\/wp-content\/uploads\/2016\/04\/cluster.png","dir_map_marker":{"attachment_id":"7","url":"\/\/themographics.com\/wordpress\/docdirect\/wp-content\/uploads\/2016\/03\/03.png"},"dir_cluster_color":"#505050","dir_map_type":"ROADMAP","dir_zoom":"11","dir_longitude":"-0.1262362","dir_latitude":"51.5001524","dir_datasize":"10485760","data_size_in_kb":"10240kb","dir_map_scroll":"false","map_styles":"none","site_key":"6Ld7fgcUAAAAANmJV2K3RulmACd_3DJwmYqT7bQw","rating_1":"Not Satisfied","rating_2":"Satisfied","rating_3":"Good","rating_4":"Very Good","rating_5":"Excellent","delete_award":"Delete Award","delete_award_message":"Are you sure, you want to delete this award?","delete_education":"Delete Degree","delete_education_message":"Are you sure, you want to delete this Degree?","delete_experience":"Delete Experience","delete_experience_message":"Are you sure, you want to delete this experience?","delete_category":"Delete Category","delete_category_message":"Are you sure, you want to delete this category?","delete_service":"Delete Service","delete_service_message":"Are you sure, you want to delete this service?","delete_slot":"Delete Slot","delete_slot_message":"Are you sure, you want to delete this slot?","delete_slot_date":"Delete Slot Date","delete_slot_date_message":"Are you sure, you want to delete this slot date?","approve_appointment":"Approve Appointment?","approve_appointment_message":"Are you sure, you want to approve this appointment?","cancel_appointment":"Cancel Appointment?","cancel_appointment_message":"Are you sure, you want to cancel this appointment?","booking_time":"Please select booking time.","gmap_norecod":"No Record Found.","fav_message":"Please login first.","fav_nothing":"Nothing found.","empty_category":"Please add category name.","complete_fields":"Please fill all the fields.","system_error":"Some error occur, please try again later.","valid_email":"Please add valid email address.","user_status":"false","custom_slots_dates":"Atleast one date! start or end date is required.","finish":"Finish","with_in":"within ","kilometer":" km","select_language":" Select Language"};
+/* ]]> */
+</script>
 @using (Html.BeginForm("Search", "Home", FormMethod.Get))
 {
-    @*<fieldset>
-        <div class="row">
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    <span class="select">
-                        <select class="directory_type" name="directory_type">
-                            <option value="">Category</option>
-                            <option selected="" data-dir_name="Doctor" id="127" value="doctor">Doctor</option>
-                        </select>
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    @Html.DropDownListFor(model => model.SpecialityId, Model.AvailableSpeciality, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="@Model.keyword" name="keyword" id="keyword" placeholder="Type Keyword...">
-                </div>
-            </div>
-
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="@Model.ZipCode" name="ZipCode" id="ZipCode" placeholder="Search users by zip code">
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-6">
-                <button type="submit" class="tg-btn pull-left">Search</button>
-                <input type="hidden" name="view" value="">
-            </div>
-            <div class="col-sm-6 col-xs-6">
-                <button type="reset" class="tg-btn tg-btn-reset pull-right"> <i class="fa fa-rotate-left"></i> <span>Reset</span> </button>
-            </div>
-        </div>
-    </fieldset>*@
     <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
         <div class="tg-doctors-list tg-haslayout">
             <div class="tg-refinesearcharea">
@@ -52,47 +19,49 @@
                         <div class="col-md-12 col-sm-6 col-xs-6">
                             <div class="form-group">
                                 <a class="getUserGeoLocation" href="javascript:;"><i class="fa fa-crosshairs" aria-hidden="true"></i> UseMyLocation</a>
-                                @*<div class="locate-me-wrap">
+                            </div>
+                                <div class="form-group">
+                                    <div class="locate-me-wrap">
                                         <div id="location-pickr-map" class="elm-display-none"></div>
-                                        <input type="text" autocomplete="on" id="location-address" value="" name="geo_location" placeholder="Geo location" class="form-control">
+                                        <input type="text" autocomplete="on" id="location-address" value="@Model.geo_location" name="geo_location" placeholder="Geo location" class="form-control">
                                         <a href="javascript:;" class="geolocate"><img src="https://themographics.com/wordpress/docdirect/wp-content/themes/docdirect/images/geoicon.svg" width="16" height="16" class="geo-locate-me" alt="Locate me!"></a>
                                         <a href="javascript:;" class="geodistance"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
                                         <div class="geodistance_range elm-display-none">
                                             <div class="distance-ml">Distance in&nbsp;( Miles )<span>50</span></div>
-                                            <input type="hidden" name="geo_distance" value="50" class="geo_distance" />
+                                            <input type="hidden" name="geo_distance" value="50" class="geo_distance"/>
                                             <div class="geo_distance" id="geo_distance"></div>
                                         </div>
                                     </div>
                                     <script>
-                jQuery(document).ready(function(e) {
-                    jQuery( "#geo_distance" ).slider({
-                       range: "min",
-                       min:1,
-                       max:300,
-                       value:50,
-                       animate:"slow",
-                       orientation: "horizontal",
-                       slide: function( event, ui ) {
-                          jQuery( ".distance-ml span" ).html( ui.value );
-                          jQuery( ".geo_distance" ).val( ui.value );
-                       }
-                    });
-                });
-                                    </script>*@
+                                        jQuery(document).ready(function(e) {
+                                            jQuery("#geo_distance").slider({
+                                                range: "min",
+                                                min: 1,
+                                                max: 300,
+                                                value: 50,
+                                                animate: "slow",
+                                                orientation: "horizontal",
+                                                slide: function(event, ui) {
+                                                    jQuery(".distance-ml span").html(ui.value);
+                                                    jQuery(".geo_distance").val(ui.value);
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
                             </div>
-                        </div>
                         <div class="col-md-12 col-sm-6 col-xs-6">
                             <div class="form-group">
                                 <input type="text" class="form-control" value="@Model.keyword" name="keyword" id="keyword" placeholder="Type Keyword...">
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-sm-6 col-xs-6">
+                        @*<div class="col-md-12 col-sm-6 col-xs-6">
                             <div class="form-group">
                                 <input type="text" class="form-control" value="@Model.geo_location" name="geo_location" id="geo_location" placeholder="Search users by zip code">
-                                @*<input type="text" class="form-control" value="" name="zip" placeholder="Search users by zip code">*@
+                                @*<input type="text" class="form-control" value="" name="zip" placeholder="Search users by zip cod
                             </div>
-                        </div>
+                        </div>*@
                         <div class="col-md-12 col-sm-6 col-xs-6">
                             <div class="form-group">
                                 <span class="select">

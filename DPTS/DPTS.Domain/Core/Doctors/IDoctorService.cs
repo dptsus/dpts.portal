@@ -32,12 +32,9 @@ namespace DPTS.Domain.Core.Doctors
         /// <summary>
         /// Search
         /// </summary>
-        /// <param name="keywords"></param>
-        /// <param name="specialityId"></param>
-        /// <param name="directoryType"></param>
         /// <param name="zipcode"></param>
         /// <returns></returns>
-        IList<Doctor> SearchDoctor(string keywords = null, int specialityId = 0, string directoryType = null, string zipcode = null);
+        IList<Doctor> SearchDoctor(string zipcode = null);
 
         IList<Doctor> GetAllDoctors();
     }

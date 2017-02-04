@@ -119,34 +119,11 @@ namespace DPTS.Web.Controllers
                 searchTerms = "";
             searchTerms = searchTerms.Trim();
 
-            var data = _doctorService.SearchDoctor(searchTerms,
-                model.SpecialityId,
-                model.directory_type,model.geo_location);
+            var data = _doctorService.SearchDoctor(model.geo_location);
+
+           // var data = _doctorService.GetAllDoctors();
 
             var searchVmodel = new SearchViewModel();
-
-            //if (data != null)
-            //{
-            //    foreach (var doc in data)
-            //    {
-            //        var user = GetUserById(doc.DoctorId);
-            //        if (user == null)
-            //            return null;
-
-            //        var doctor = new DoctorViewModel
-            //        {
-            //            Id = user.Id,
-            //            Email = user.Email,
-            //            FirstName = user.FirstName,
-            //            LastName = user.LastName,
-            //            MobileNumber = user.PhoneNumber,
-            //            doctor = doc
-            //        };
-            //        var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
-            //        doctor.Addresses = addr;
-            //        searchVmodel.doctorsModel.Add(doctor);
-            //    }
-            //}
 
             searchVmodel.SearchModel = new SearchModel
             {
@@ -196,21 +173,22 @@ namespace DPTS.Web.Controllers
                         Email = user.Email,
                         FirstName =user.FirstName,
                         LastName = user.LastName,
-                        MobileNumber = user.PhoneNumber
+                        MobileNumber = user.PhoneNumber,
+                        Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
+                            lat, lng),
                     });
                 }
             }
+
             searchVmodel.doctorsModel = searchVmodel.doctorsModel.Where(c => c.Distance <= Convert.ToDouble(model.geo_distance)).OrderBy(c => c.Distance).ToList();
 
+            if (model.SpecialityId > 0)
+            {
+                searchVmodel.doctorsModel = searchVmodel.doctorsModel.SelectMany(d => d.doctor.SpecialityMapping.Where(s => s.Speciality_Id.Equals(model.SpecialityId)), (d, s) => d).ToList();
+            }
+            
             return View(searchVmodel);
         }
-        //[NonAction]
-        //private IList<Dealer> GetAllDealers()
-        //{
-        //    return _cacheManager
-        //         .Get(ModelCacheEventConsumer.DEALER_PATTERN_KEY,
-        //         () => _dealerService.GetAllDealers(loadMode: 1).ToList());
-        //}
 
         [NonAction]
         private IList<ZipCodes> GetAllZipCodes()

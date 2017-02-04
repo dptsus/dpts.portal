@@ -76,18 +76,17 @@ function deleteMarkers() {
 }
 
 function createMapSearchBox() {
-    var a = document.getElementById("shop-address-input");
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(a);
+    var a = document.getElementById("location-address");
+    //map.controls[google.maps.ControlPosition.].push(a);
     var b = new google.maps.places.SearchBox(a);
     a.style.display = "block", google.maps.event.addListener(b, "places_changed", function() {
         var a = b.getPlaces();
         0 != a.length && (createUserMarker(a[0].geometry.location), userMarker.setPosition(a[0].geometry.location), map.setCenter(a[0].geometry.location), searchResultCoords = a[0].geometry.location, showDistancesFromShopsToUser())
     })
 }
-
 function createUserMarker(a) {
     if (!isUserMarkerCreated) {
-        var b = $(".shop-resources").attr("data-pathtoimages") + "/squat_marker_green_thumb.png",
+        var b = "../Content/wp-content/themes/docdirect/images/mimg.png",
             c = new google.maps.Marker({
                 position: a,
                 map: map,
