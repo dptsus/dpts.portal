@@ -46,7 +46,7 @@ namespace DPTS.Services.StateProvince
             var query = _stateProvinceRepository.Table;
             if (!showHidden)
                 query = query.Where(c => c.Published);
-            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
+           // query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
 
             var countries = query.ToList();
             return countries;
