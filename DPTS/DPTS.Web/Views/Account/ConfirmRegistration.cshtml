@@ -22,6 +22,11 @@
                             @Html.HiddenFor(m => m.RegistrationDetails.PhoneNumber)
                             @Html.HiddenFor(m => m.RegistrationDetails.Password)
                             @Html.HiddenFor(m => m.RegistrationDetails.ConfirmPassword)
+                            @Html.HiddenFor(m => m.RegistrationDetails.UserType)
+                            @Html.HiddenFor(m => m.RegistrationDetails.CreatedOnUtc)
+                            @Html.HiddenFor(m => m.RegistrationDetails.LastIpAddress)
+                            @Html.HiddenFor(m => m.RegistrationDetails.Role)
+
                             <fieldset>
                                 <div class="form-group">
                                     @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "123456" })

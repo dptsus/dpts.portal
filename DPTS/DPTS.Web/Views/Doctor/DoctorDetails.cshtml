@@ -21,14 +21,14 @@
                                         picturePath = "../../Uploads/" + Model.Id + "_profile.jpg";
                                     }
                                 }
-                                <img src="@picturePath" alt="Dr Steve">
-                                <figcaption>
+                                <img src="@picturePath" alt="Dr. Steve">
+                                @*<figcaption>
                                     <ul class="tg-featureverified">
                                         <li class="tg-featuresicon"><a href="javascript:;"><i class="fa fa-bolt"></i><span>featured</span></a></li>
                                         <li class="tg-varified"><a href="javascript:;"><i class="fa fa-shield"></i><span>Verified</span></a></li>
 
                                     </ul>
-                                </figcaption>
+                                </figcaption>*@
                             </figure>
                             <div class="tg-usercontactinfo">
                                 <h3>Contact Details</h3>
@@ -57,10 +57,6 @@
                                         </ul>
                                         }
                                     }
-                                <ul class="tg-doccontactinfo">
-                                    <li> <i class="fa fa-map-marker"></i> <address>154 Bayswater Rd, London W2 4HP, UK</address> </li>
-
-                                </ul>
                                 <ul class="tg-socialicon-v2">
                                     <li class="tg-facebook"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
                                     <li class="tg-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -68,30 +64,35 @@
                                     <li class="tg-pinterest"><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
                                     <li class="tg-googleplus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
                                     <li class="tg-instagram"><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                    <li class="tg-tumblr"><a href="#"><i class="fa fa-tumblr"></i></a></li>
-                                    <li class="tg-skype"><a href="skype:steve?call"><i class="fa fa-skype"></i></a></li>
                                 </ul>
-                                <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=154 Bayswater Rd, London W2 4HP, UK" target="_blank">get directions</a>
+                                <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.ZipPostalCode" target="_blank">get directions</a>
                                 <div class="tg-userschedule">
                                     <h3>Schedule</h3>
                                     <ul>
-                                        <li class=""><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Sunday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
-                                        <li class="current"><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Monday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
-                                        <li class=""><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Tuesday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
-                                        <li class=""><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Wednesday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
-                                        <li class=""><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Thursday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
-                                        <li class=""><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Friday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
-                                        <li class=""><a href="javascript:;" data-type="10:00 PM - 12:00 AM"><span>Saturday</span><em>10:00 PM - 12:00 AM</em></a></li>
-
+                                        @if (Model.Schedule.Any())
+                                        {
+                                            foreach (var sch in Model.Schedule)
+                                            {
+                                                var startTime = DateTime.Parse(sch.StartTime).ToString("hh:mm tt");
+                                                var endTime = DateTime.Parse(sch.EndTime).ToString("hh:mm tt");
+                                                string todayDay = DateTime.UtcNow.ToString("dddd");
+                                                if (sch.Day.Equals(todayDay))
+                                                {
+                                                    <li class="current"><a href="javascript:;" data-type="@startTime - @endTime"><span>@sch.Day</span><em>@startTime - @endTime</em></a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class=""><a href="javascript:;" data-type="@startTime - @endTime"><span>@sch.Day</span><em>@startTime - @endTime</em></a></li>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li><p>No Schedule !!</p></li>  
+                                        }
                                     </ul>
                                 </div>
-                                <div class="tg-usercontatnow">
+                                @*<div class="tg-usercontatnow">
                                     <h3>contact now</h3>
                                     <div class="tg-widgetcontent doc-contact">
                                         <form class="contact_form tg-usercontactform">
@@ -131,15 +132,15 @@
                                             </fieldset>
                                         </form>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
-                        <div class="claim-box">
+                        @*<div class="claim-box">
                             <a class="tg-btn tg-btn-lg" data-toggle="modal" data-target=".tg-user-modal" href="javascript:;">
                                 <i class="fa fa-exclamation-triangle"></i>
                                 Claim This User
                             </a>
-                        </div>
+                        </div>*@
                     </aside>
                 </div>
                 <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
@@ -147,11 +148,11 @@
                         <div class="tg-userbanner-content">
                             <h1>Dr @Model.FirstName @Model.LastName</h1>
                             <span>Doctor</span>
-                            <ul class="tg-likestars">
+                            @*<ul class="tg-likestars">
                                 <li>
                                     <div class="feature-rating user-star-rating">
                                         <span class="tg-stars star-rating">
-                                            <span style="width:80%"></span>
+                                            <span style="width: 80%"></span>
                                         </span>
 
                                         <em>4.0<sub>/5</sub></em>
@@ -159,9 +160,11 @@
                                 </li>
                                 <li><a class="tg-like add-to-fav" data-wl_id="330" href="javascript:;"><i class="fa fa-heart"></i></a></li>
                                 <li><span>1272&nbsp;view(s)</span></li>
-                            </ul>
-                            <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new { doctorId = Model.Id }))">MAKE AN APPOINTMENT!</a>
-                            @*<button  type="button"></button>*@
+                            </ul>*@
+                            @if (Model.Schedule.Any())
+                            {
+                                <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new { doctorId = Model.Id }))">MAKE AN APPOINTMENT!</a>
+                            }
                         </div>
 
                         <div class="tg-section-map">
@@ -238,117 +241,66 @@
                             </div>
                             <div class="tg-doctor-profile">
                                 <ul class="tg-tags">
-                                    @foreach (var sp in Model.Specialitys)
+                                    @if (Model.Specialitys.Any())
                                     {
-                                        <li><a href="javascript:;" class="tg-btn">@sp.Title</a></li>
+                                        foreach (var sp in Model.Specialitys)
+                                         {
+                                             <li><a href="javascript:;" class="tg-btn">@sp.Title</a></li>
+                                         }
                                     }
                                 </ul>
 
                             </div>
                         </div>
 
-                        <!--In network Insurance-->
-                        <div class="tg-innetworkinsurrance tg-tagsstyle tg-listview-v3 user-section-style">
-                            <div class="tg-userheading">
-                                <h2>In-Network Insurance</h2>
-                            </div>
-                            <div class="see-more-info">
-                                <p><a href="javascript:;">See which insurance(s) covers your care.                    <span><i class="fa fa-plus"></i></span></a></p>
-                            </div>
-                            <ul class="elm-display-none insurance-wrap">
-                                <li>
-                                    <span>Kaiser Foundation Group</span>
-                                    <span class="insurance_logo"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/12/partner-1.png"></span>
-                                </li>
-                                <li>
-                                    <span>UnitedHealth Group</span>
-                                    <span class="insurance_logo"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/12/partner-2.png"></span>
-                                </li>
-                                <li>
-                                    <span>Wellpoint Inc. Group</span>
-                                    <span class="insurance_logo"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/12/partner-3.png"></span>
-                                </li>
-                            </ul>
-                        </div>
-
                         <!--Experience-->
-                        <div class="tg-userexperience">
-                            <div class="tg-userheading">
-                                <h2><i class="fa fa-briefcase"></i>Experience</h2>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Lecturer, Department of gastroenterology&nbsp;&nbsp;(May, 2010&nbsp;-&nbsp;Jul, 2012)</h3>
-                                        <span>Co-ed/Women/Boys</span>
+                            @if (Model.doctor.YearsOfExperience > 0)
+                            {
+                                <div class="tg-userexperience">
+                                    <div class="tg-userheading">
+                                        <h2><i class="fa fa-briefcase"></i>Experience</h2>
                                     </div>
-                                    <div class="tg-description">
-                                        <p>The Cardiovascular &amp; Respiratory Systems category covers resources concerned with all aspects of cardiovascular and thoracic surgery and respiratory diseases. Topics include circulation, cardiovascular technology and measurement, cardiovascular pharmacology and therapy, hypertension, heart and lung transplantation, arteries, arteriosclerosis, thrombosis, angiology, perfusion, stroke, as well as all types of respiratory and lung diseases.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Sr Consultant at Gastroentology Hospital&nbsp;&nbsp;(Sep, 2012&nbsp;-&nbsp;Aug, 2014)</h3>
-                                        <span>Adams State College</span>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>The Clinical Immunology &amp; Infectious Diseases category covers resources that focus on basic research in clinical and applied allergy, immunology, and infectious disease. Microbiology and virology resources are included in this category as are resources on HIV, AIDS, sexually transmitted diseases (STDs), and hospital infections.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Present Consultant, Department of Gastroenterology at Apollo Hospital&nbsp;&nbsp;(Mar, 2014&nbsp;-&nbsp;Aug, 2016)</h3>
-                                        <span>Florida Hospital College of Health Sciences</span>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>Oral Surgery &amp; Medicine resources are concerned with basic, applied, and clinical aspects of oral infections and diseases, including their epidemiology, diagnosis, treatment, and rehabilitation. Specialties such as oral pathology/biology, oral epidemiology, oral rehabilitation, and oral implants are also included. Facial pain and craniomandibular resources are also covered in this category.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                                    <ul>
+                                        <li>
+                                            <div class="tg-dotstyletitle">
+                                                <h3>@Model.doctor.YearsOfExperience years</h3>
+                                                @*<span>Co-ed/Women/Boys</span>*@
+                                            </div>
+                                            @*<div class="tg-description">
+                                                    <p>The Cardiovascular &amp; Respiratory Systems category covers resources concerned with all aspects of cardiovascular and thoracic surgery and respiratory diseases. Topics include circulation, cardiovascular technology and measurement, cardiovascular pharmacology and therapy, hypertension, heart and lung transplantation, arteries, arteriosclerosis, thrombosis, angiology, perfusion, stroke, as well as all types of respiratory and lung diseases.</p>
+                                                </div>*@
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+
 
                         <!--Education-->
-                        <div class="tg-userexperience tg-userqualification">
-                            <div class="tg-userheading">
-                                <h2><i class="fa fa-graduation-cap"></i>Education</h2>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Bachelor of Medicine, Bachelor of Surgery<strong>&nbsp;&nbsp;</strong>(Jan, 2011&nbsp;-&nbsp;Jan, 2013)</h3>
-                                        <span>Medical School - New York University</span>
+                            @if (!string.IsNullOrWhiteSpace(Model.doctor.Qualifications))
+                            {
+                                <div class="tg-userexperience tg-userqualification">
+                                    <div class="tg-userheading">
+                                        <h2><i class="fa fa-graduation-cap"></i>Education</h2>
                                     </div>
-                                    <div class="tg-description">
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Bachelor of Medical Sciences<strong>&nbsp;&nbsp;</strong>(Jan, 2013&nbsp;-&nbsp;Jan, 2014)</h3>
-                                        <span>Medical School - New York University</span>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>New York University, Residency in Internal Medicine<strong>&nbsp;&nbsp;</strong>(Jan, 2014&nbsp;-&nbsp;Jan, 2015)</h3>
-                                        <span>Medical School - New York University</span>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                                    <ul>
+                                        <li>
+                                            <div class="tg-dotstyletitle">
+                                                <h3>@Model.doctor.Qualifications.ToUpper()</h3>
+                                                @*<span>Medical School - New York University</span>*@
+                                            </div>
+                                            @*<div class="tg-description">
+                                                    <p>
+                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                                    </p>
+                                                </div>*@
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                        
 
                         <!--Awards-->
-                        <div class="tg-userexperience tg-honourawards">
+                        @*<div class="tg-userexperience tg-honourawards">
                             <div class="tg-userheading">
                                 <h2><i class="fa fa-trophy"></i>Honours &amp; Awards</h2>
                             </div>
@@ -382,18 +334,18 @@
                                     </div>
                                 </li>
                             </ul>
-                        </div>
+                        </div>*@
 
                         <!--Video URL-->
-                        <div class="tg-presentationvideo">
+                        @*<div class="tg-presentationvideo">
                             <div class="tg-userheading">
                                 <h2>Presentation Video</h2>
                             </div>
                             <div class="video"><iframe width="368" height="200" src="https://www.youtube.com/embed/0aNNYEUARAk" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></div>
-                        </div>
+                        </div>*@
 
                         <!--Video URL-->
-                        <div class="tg-userphotogallery">
+                        @*<div class="tg-userphotogallery">
                             <div class="tg-userheading">
                                 <h2>Photo Gallery</h2>
                             </div>
@@ -439,11 +391,13 @@
                                     </figure>
                                 </li>
                             </ul>
-                        </div>
+                        </div>*@
 
                         <!--Reviews-->
-                        <div class="tg-userreviews">
+                        @*<div class="tg-userreviews">
                             <div class="tg-userheading">
+                                <h2>1&nbsp;&nbsp;Review(s)</h2>
+                                <h2>1&nbsp;&nbsp;Review(s)</h2>
                                 <h2>1&nbsp;&nbsp;Review(s)</h2>
                             </div>
                             <div class="tg-ratingbox">
@@ -537,7 +491,7 @@
                                 </div>
                                 <span><a href="javascript:;" class="tg-btn" data-toggle="modal" data-target=".tg-user-modal">Please Login To add Review</a></span>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>

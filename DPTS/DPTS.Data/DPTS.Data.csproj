@@ -52,69 +52,13 @@
   <ItemGroup>
     <Compile Include="Context\DPTSDbContext.cs" />
     <Compile Include="IdentityEntities\User.cs" />
-    <Compile Include="Migrations\201701080558082_CreateInit.cs" />
-    <Compile Include="Migrations\201701080558082_CreateInit.Designer.cs">
-      <DependentUpon>201701080558082_CreateInit.cs</DependentUpon>
+    <Compile Include="Migrations\201702020854305_InitialMigration.cs" />
+    <Compile Include="Migrations\201702020854305_InitialMigration.Designer.cs">
+      <DependentUpon>201702020854305_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201701080808406_UpdateDoctorDOB.cs" />
-    <Compile Include="Migrations\201701080808406_UpdateDoctorDOB.Designer.cs">
-      <DependentUpon>201701080808406_UpdateDoctorDOB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701081008448_UpdateDoctorMapAddr.cs" />
-    <Compile Include="Migrations\201701081008448_UpdateDoctorMapAddr.Designer.cs">
-      <DependentUpon>201701081008448_UpdateDoctorMapAddr.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701110632196_CreateAppointmentScheduleMap.cs" />
-    <Compile Include="Migrations\201701110632196_CreateAppointmentScheduleMap.Designer.cs">
-      <DependentUpon>201701110632196_CreateAppointmentScheduleMap.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701120626091_EmailCategory.cs" />
-    <Compile Include="Migrations\201701120626091_EmailCategory.Designer.cs">
-      <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701121122484_EmailCategory1.cs" />
-    <Compile Include="Migrations\201701121122484_EmailCategory1.Designer.cs">
-      <DependentUpon>201701121122484_EmailCategory1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701121155176_DefaultNotificationSettings.cs" />
-    <Compile Include="Migrations\201701121155176_DefaultNotificationSettings.Designer.cs">
-      <DependentUpon>201701121155176_DefaultNotificationSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701160455277_updateScheduleTable.cs" />
-    <Compile Include="Migrations\201701160455277_updateScheduleTable.Designer.cs">
-      <DependentUpon>201701160455277_updateScheduleTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701210938294_UpdateAppointmentSchedule.cs" />
-    <Compile Include="Migrations\201701210938294_UpdateAppointmentSchedule.Designer.cs">
-      <DependentUpon>201701210938294_UpdateAppointmentSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701211040273_UpdateAppointmentStatus.cs" />
-    <Compile Include="Migrations\201701211040273_UpdateAppointmentStatus.Designer.cs">
-      <DependentUpon>201701211040273_UpdateAppointmentStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.cs" />
-    <Compile Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.Designer.cs">
-      <DependentUpon>201701211205218_UpdateAppointmentScheduleTimeSpan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701230506377_UpdateAppointmentSchedule1.cs" />
-    <Compile Include="Migrations\201701230506377_UpdateAppointmentSchedule1.Designer.cs">
-      <DependentUpon>201701230506377_UpdateAppointmentSchedule1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701270649451_namechange2.cs" />
-    <Compile Include="Migrations\201701270649451_namechange2.Designer.cs">
-      <DependentUpon>201701270649451_namechange2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701270711050_LatLongAdded.cs" />
-    <Compile Include="Migrations\201701270711050_LatLongAdded.Designer.cs">
-      <DependentUpon>201701270711050_LatLongAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701270714591_DocRating.cs" />
-    <Compile Include="Migrations\201701270714591_DocRating.Designer.cs">
-      <DependentUpon>201701270714591_DocRating.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701290809491_TableUpdated.cs" />
-    <Compile Include="Migrations\201701290809491_TableUpdated.Designer.cs">
-      <DependentUpon>201701290809491_TableUpdated.cs</DependentUpon>
+    <Compile Include="Migrations\201702021649475_createZipCodeTable.cs" />
+    <Compile Include="Migrations\201702021649475_createZipCodeTable.Designer.cs">
+      <DependentUpon>201702021649475_createZipCodeTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -129,53 +73,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201701080558082_CreateInit.resx">
-      <DependentUpon>201701080558082_CreateInit.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201702020854305_InitialMigration.resx">
+      <DependentUpon>201702020854305_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701080808406_UpdateDoctorDOB.resx">
-      <DependentUpon>201701080808406_UpdateDoctorDOB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701081008448_UpdateDoctorMapAddr.resx">
-      <DependentUpon>201701081008448_UpdateDoctorMapAddr.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701110632196_CreateAppointmentScheduleMap.resx">
-      <DependentUpon>201701110632196_CreateAppointmentScheduleMap.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701120626091_EmailCategory.resx">
-      <DependentUpon>201701120626091_EmailCategory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701121122484_EmailCategory1.resx">
-      <DependentUpon>201701121122484_EmailCategory1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701121155176_DefaultNotificationSettings.resx">
-      <DependentUpon>201701121155176_DefaultNotificationSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701160455277_updateScheduleTable.resx">
-      <DependentUpon>201701160455277_updateScheduleTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701210938294_UpdateAppointmentSchedule.resx">
-      <DependentUpon>201701210938294_UpdateAppointmentSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701211040273_UpdateAppointmentStatus.resx">
-      <DependentUpon>201701211040273_UpdateAppointmentStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701211205218_UpdateAppointmentScheduleTimeSpan.resx">
-      <DependentUpon>201701211205218_UpdateAppointmentScheduleTimeSpan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701230506377_UpdateAppointmentSchedule1.resx">
-      <DependentUpon>201701230506377_UpdateAppointmentSchedule1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701270649451_namechange2.resx">
-      <DependentUpon>201701270649451_namechange2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701270711050_LatLongAdded.resx">
-      <DependentUpon>201701270711050_LatLongAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701270714591_DocRating.resx">
-      <DependentUpon>201701270714591_DocRating.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701290809491_TableUpdated.resx">
-      <DependentUpon>201701290809491_TableUpdated.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201702021649475_createZipCodeTable.resx">
+      <DependentUpon>201702021649475_createZipCodeTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
