@@ -36,7 +36,9 @@ function onMapLoad() {
     bounds = new google.maps.LatLngBounds;
     for (var a = 0; a < allShops.length; a++) null != allShops[a] && addMarker(allShops[a], !1);
     allShops.length > 1 && map.fitBounds(bounds), directionsService = new google.maps.DirectionsService, directionsDisplay = new google.maps.DirectionsRenderer, directionsDisplay.setPanel(document.getElementById("directions-panel")), $(".getUserGeoLocation").on("click", function(a) {
-        a.preventDefault(), getUserGeoLocation()
+        a.preventDefault(), getUserGeoLocation(),
+        $(".distance-line").css("display", "block"),
+        $(".distance-line").css("margin", "20px")
     })
 }
 
@@ -138,7 +140,7 @@ function showDistancesFromShopsToUser() {
 }
 
 function getDistanceToPosition(a, b) {
-    $(".distance-line").css("display", "block");
+    
     var c = "Imperial" == $(".shop-resources").attr("data-units"),
         d = 6371e3,
         e = Math.toRadians(userMarker.position.lat()),
