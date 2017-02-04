@@ -124,7 +124,21 @@ namespace DPTS.Services.Notification
 
             _defaultNotificationSettingsRepository.Update(defaultNotificationSettings);
         }
-         
+
+        /// <summary>
+        /// get default notification by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Domain.Entities.Notification.DefaultNotificationSettings GetDefaultNotificationSettingsByName(string name)
+        {
+            var query = from sp in _defaultNotificationSettingsRepository.Table
+                        where sp.Name == name
+                        select sp;
+            var defaultNotificationSettings = query.FirstOrDefault();
+            return defaultNotificationSettings;
+        }
+
         #endregion
 
     }

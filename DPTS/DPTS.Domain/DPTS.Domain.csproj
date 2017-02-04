@@ -44,12 +44,13 @@
     <Compile Include="Core\Address\IAddressService.cs" />
     <Compile Include="Core\Appointment\IAppointmentService.cs" />
     <Compile Include="Core\Notification\IDoctorNotificationSettingsService.cs" />
+    <Compile Include="Core\Notification\IRegistrationNotificationService.cs" />
     <Compile Include="Core\Notification\ISentEmailHistoryService.cs" />
     <Compile Include="Core\Notification\ISentSmsHistoryService.cs" />
     <Compile Include="Core\Notification\IEmailCategoryService.cs" />
     <Compile Include="Core\Country\ICountryService.cs" />
     <Compile Include="Core\Doctors\IDoctorService.cs" />
-    <Compile Include="Core\Notifications\IAppointmentNotificationService.cs" />
+    <Compile Include="Core\Notification\IAppointmentNotificationService.cs" />
     <Compile Include="Core\Speciality\ISpecialityService.cs" />
     <Compile Include="Core\IRepository.cs" />
     <Compile Include="Core\Notification\IDefaultNotificationSettingsService.cs" />

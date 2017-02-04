@@ -69,7 +69,8 @@
                                     <div>Oops! Invalid Captcha</div>
                                 }
                             </div>
-                            <input type="submit" class="tg-btn tg-btn-lg  do-register-button" onclick="javascript:return AcceptTermAndcondition();" value="Register" />
+                            <input type="button" class="tg-btn tg-btn-lg  do-register-button" 
+                                   onclick="javascript:return sendOTP();" value="Register" />
                         </fieldset>
                         }
                     </div>
@@ -77,6 +78,33 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="otpModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="margin-right:69%;color:black">Confirm OTP</h4>
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <p style="text-align:center;color:black;">Please enter the OTP</p>
+                    </center>
+                    <div class="form-group">
+                        <input />
+                        @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "123456" })
+                        @Html.ValidationMessageFor(model => model.CnfirmOTP, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default" href="javascript:document.getElementById('Register').submit()">Confirm</a>
+                    <input type="button" class="tg-btn tg-btn-lg  do-register-button" onclick="javascript:return AcceptTermAndcondition();" value="Register" />
+                    <button type="button" id="cnfrmLogout" class="btn btn-default" data-dismiss="modal">Re-Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 @Scripts.Render("~/bundles/jquery")
 <script type='text/javascript'>

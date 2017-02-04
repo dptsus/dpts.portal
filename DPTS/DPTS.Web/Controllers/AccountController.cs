@@ -10,11 +10,10 @@ using DPTS.Web.Models;
 using System.Collections.Generic;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Entities;
-using DPTS.EmailSmsNotifications.ServiceModels;
-using DPTS.EmailSmsNotifications.IServices;
 using reCaptcha;
 using System.Configuration;
 using System.Net;
+using DPTS.Domain.Core.Notification;
 
 namespace DPTS.Web.Controllers
 {
@@ -25,16 +24,14 @@ namespace DPTS.Web.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
-        private ISmsNotificationService _smsService;
-        private IEmailNotificationService _emailService;
+        private IRegistrationNotificationService _registrationNotificationService;
 
-        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService,
-            IEmailNotificationService emailService)
+        public AccountController(IDoctorService doctorService,
+            IRegistrationNotificationService registrationNotificationService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
-            _smsService = smsService;
-            _emailService = emailService;
+            _registrationNotificationService = registrationNotificationService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -258,13 +255,9 @@ namespace DPTS.Web.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        SmsNotificationModel sms = new SmsNotificationModel();
-                        sms.numbers = model.PhoneNumber;
-                        sms.route = 4; //route 4 is for transactional sms
-                        sms.senderId = "DOCPTS";
-                        Session["otp"] = _smsService.GenerateOTP();
-                        //sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
-                       // _smsService.SendSms(sms);
+                        //send otp
+                        Session["otp"] = _registrationNotificationService.SendRegistrationOTP(model.PhoneNumber);
+
                         TempData["regmodel"] = model;
                         return RedirectToAction("ConfirmRegistration", "Account");
                     }
@@ -279,16 +272,6 @@ namespace DPTS.Web.Controllers
             }
             catch (Exception)
             {
-                SmsNotificationModel sms = new SmsNotificationModel();
-                sms.numbers = model.PhoneNumber;
-                sms.route = 4; //route 4 is for transactional sms
-                sms.senderId = "DOCPTS";
-                Session["otp"] = _smsService.GenerateOTP();
-                sms.message = "DTPS Verification code: " + Session["otp"].ToString() + "." + 
-                    "Pls do not share with anyone. It is valid for 10 minutes.";
-                _smsService.SendSms(sms);
-                TempData["regmodel"] = model;
-                return RedirectToAction("ConfirmRegistration", "Account");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -335,6 +318,9 @@ namespace DPTS.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
                 if (result.Succeeded)
                 {
+                    //send appointment notification
+                    _registrationNotificationService.SendRegistrationNotification(model.RegistrationDetails.Email);
+
                     if (model.RegistrationDetails.UserType == "professional")
                     {
                         await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
@@ -460,7 +446,7 @@ namespace DPTS.Web.Controllers
         {
             // Request a redirect to the external login provider
             return new ChallengeResult(provider,
-                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
+                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         //
@@ -475,9 +461,9 @@ namespace DPTS.Web.Controllers
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions =
-                userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose}).ToList();
+                userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return
-                View(new SendCodeViewModel {Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe});
+                View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
@@ -498,7 +484,7 @@ namespace DPTS.Web.Controllers
                 return View("Error");
             }
             return RedirectToAction("VerifyCode",
-                new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});
+                new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
         }
 
         //

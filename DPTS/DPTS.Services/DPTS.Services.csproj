@@ -61,12 +61,13 @@
     <Compile Include="Address\AddressService.cs" />
     <Compile Include="Appointment\AppointmentService.cs" />
     <Compile Include="Notification\DoctorNotificationSettingsService.cs" />
+    <Compile Include="Notification\RegistrationNotificationService.cs" />
     <Compile Include="Notification\SentEmailHistoryService.cs" />
     <Compile Include="Notification\SentSmsHistoryService.cs" />
     <Compile Include="Notification\EmailCategoryService.cs" />
     <Compile Include="Country\CountryService.cs" />
     <Compile Include="Doctors\DoctorService.cs" />
-    <Compile Include="Notifications\AppointmentNotificationService.cs" />
+    <Compile Include="Notification\AppointmentNotificationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Speciality\SpecialityService.cs" />
@@ -82,6 +83,10 @@
     <ProjectReference Include="..\DPTS.Domain\DPTS.Domain.csproj">
       <Project>{087ef4a4-1e44-4087-8e62-76aa1e4d2e53}</Project>
       <Name>DPTS.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DPTS.EmailSmsNotifications\DPTS.EmailSmsNotifications.csproj">
+      <Project>{8FE2F61A-9327-41E1-9BFF-7507D2B37FD8}</Project>
+      <Name>DPTS.EmailSmsNotifications</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

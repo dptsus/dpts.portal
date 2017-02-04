@@ -58,5 +58,7 @@ namespace DPTS.Domain.Core.Notification
         /// </summary>
         /// <param name="defaultNotificationSettings">defaultNotificationSettings</param>
         void UpdateDefaultNotificationSettings(Entities.Notification.DefaultNotificationSettings state);
+
+        Entities.Notification.DefaultNotificationSettings GetDefaultNotificationSettingsByName(string name);
     }
 }

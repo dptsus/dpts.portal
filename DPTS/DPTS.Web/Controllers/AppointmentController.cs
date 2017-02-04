@@ -9,9 +9,7 @@ using Microsoft.AspNet.Identity;
 using DPTS.Data.Context;
 using DPTS.Domain.Entities;
 using System.Text;
-using DPTS.EmailSmsNotifications.ServiceModels;
-using DPTS.EmailSmsNotifications.IServices;
-using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Notification;
 
 namespace DPTS.Web.Controllers
 {
@@ -21,22 +19,17 @@ namespace DPTS.Web.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
         private readonly DPTSDbContext _context;
-        private ISmsNotificationService _smsService;
-        private IEmailNotificationService _emailService;
-        private readonly IAddressService _addressService;
+        private IAppointmentNotificationService _appointmentNotificationService;
         #endregion
 
         #region Contr
         public AppointmentController(IDoctorService doctorService,
-            IAppointmentService scheduleService, ISmsNotificationService smsService,
-            IEmailNotificationService emailService, IAddressService addressService)
+            IAppointmentService scheduleService, IAppointmentNotificationService appointmentNotificationService)
         {
             _doctorService = doctorService;
             _scheduleService = scheduleService;
             _context = new DPTSDbContext();
-            _smsService = smsService;
-            _emailService = emailService;
-            _addressService = addressService;
+            _appointmentNotificationService = appointmentNotificationService;
         }
 
         #endregion
@@ -267,32 +260,10 @@ namespace DPTS.Web.Controllers
 
                 _scheduleService.InsertAppointmentSchedule(booking);
 
-                //Below is the temporary code, i will update service class, interfaces
-
-                Doctor doctorDetails = _doctorService.GetDoctorbyId(booking.DoctorId);
-                string doctorName = "Dr. " + doctorDetails.AspNetUser.FirstName + doctorDetails.AspNetUser.LastName;
-                string appointmemtSchedule = booking.AppointmentDate + " " + booking.AppointmentTime;
-                string appomitmentAddress = _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().Address1 + " " +
-                    _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().Address2 + " " +
-                    _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().City + " " +
-                    _addressService.GetAllAddressByUser(booking.DoctorId).FirstOrDefault().ZipPostalCode;
-                string contactNumber = doctorDetails.AspNetUser.PhoneNumber;
-
-                SmsNotificationModel sms = new SmsNotificationModel();
-                sms.numbers = form["mobilenumber"].ToString();
-                sms.route = 4; //route 4 is for transactional sms
-                sms.senderId = "DOCPTS";
-                sms.message = "Your appointment with " + doctorName + " is scheduled for " +
-                    appointmemtSchedule + ", " + appomitmentAddress + ", " + contactNumber;
-                _smsService.SendSms(sms);
-
-                EmailNotificationModel email = new EmailNotificationModel();
-                email.from = doctorDetails.AspNetUser.Email;
-                email.to = form["useremail"].ToString();
-                email.subject = "Doc Direct Appointment Schedule.";
-                email.content = "Your appointment with " + doctorName + " is scheduled for " +
-                    appointmemtSchedule + ", " + appomitmentAddress + ", " + contactNumber;
-                _emailService.SendEmail(email);
+                //send appointment notification
+                _appointmentNotificationService.SendAppointmentSchedule(booking.DoctorId,
+                    booking.AppointmentDate, booking.AppointmentTime, form["mobilenumber"].ToString(),
+                    form["useremail"].ToString());
 
                 return Json(new
                 {
