@@ -932,7 +932,7 @@ namespace DPTS.Web.Controllers
                         AppointmentStatus status;
                         if(type.Equals("approve"))
                         {
-                            status = _scheduleService.GetAppointmentStatusByName("Approved");
+                            status = _scheduleService.GetAppointmentStatusByName("Booked");
                             if (status == null)
                                 return Json(new { action_type = "none" });
 

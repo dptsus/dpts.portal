@@ -59,7 +59,7 @@
                                                     <a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" href="javascript:;">Reschudle</a>
                                                     <a class="tg-btncheck appointment-actioned fa fa-times" style="background: crimson" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>
                                                     }
-                                                else if (item.AppointmentStatus.Name.Equals("Approved"))
+                                                else if (item.AppointmentStatus.Name.Equals("Booked"))
                                                 {
                                                     @*<a class="tg-btncheck appointment-actioned fa fa-check" style="background: crimson" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>*@
                                                     <a class="tg-btncheck appointment-actioned fa fa-check" style="background: green" onclick="approveAppoinment(@item.Id, 'visit')" href="javascript:;">Visited</a>
