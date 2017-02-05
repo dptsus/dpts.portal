@@ -77,11 +77,35 @@ namespace DPTS.Services.Doctors
         {
             return null;
         }
-        public IList<Doctor> GetAllDoctors()
+        //public IList<Doctor> GetAllDoctors()
+        //{
+        //    var query = from d in _doctorRepository.Table
+        //                select d;
+        //    return query.ToList();
+        //}
+
+        public IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount)
         {
+
             var query = from d in _doctorRepository.Table
-                        select d;
-            return query.ToList();
+                select d;
+
+            var doctors = (from d in _doctorRepository.Table
+                         orderby d.DateUpdated descending
+                         select d)
+                        .Skip(itemsPerPage * page).Take(itemsPerPage)
+                          .ToList();
+            //foreach (var doc in docLst.Doctors)
+            //{
+            //    var address = from d in _address.Table
+            //             join m in _addressMapping.Table on d.Id equals m.AddressId
+            //             where m.UserId == doc.DoctorId
+            //             select d;
+            //    docLst.Address = address.FirstOrDefault();
+            //}
+            
+            totalCount = query.Count();//return the number of pages
+            return doctors;//the query is now already executed, it is a subset of all the orders.
         }
 
         public IList<Doctor> SearchDoctor(string zipcode = null)
