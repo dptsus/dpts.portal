@@ -186,7 +186,7 @@ namespace DPTS.Web.Controllers
             {
                 searchVmodel.doctorsModel = searchVmodel.doctorsModel.SelectMany(d => d.doctor.SpecialityMapping.Where(s => s.Speciality_Id.Equals(model.SpecialityId)), (d, s) => d).ToList();
             }
-            
+
             return View(searchVmodel);
         }
 

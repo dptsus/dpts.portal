@@ -1,221 +1,34 @@
 ﻿@{
-
-    string units = "Miles";
-
-    int ind = 0;
+    ViewBag.Title = "About";
 }
-<script src="~/Scripts/searchdealer.js"></script>
+<main id="main" class="tg-page-wrapper tg-haslayout">
+    <div class="container">
+        <div class="row">
+            <div class="main-page-wrapper tg-haslayout">
+                <div class="fw-page-builder-content">
 
-<div class="page all-shops-page">
-    <div class="page-title store-locator-title">
-        <h1>T("SevenSpikes.StoreLocator.Public.Title")</h1>
-    </div>
-    <div class="page-body">
+                    <section class="tg-main-section haslayout  stretch_section">
+                        <div class="builder-items">
+                            <div class="col-xs-12 col-md-12 builder-column ">
+                                <div class="sc-services">
+                                    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                                        <div class="tg-theme-heading">
+                                            <h2>Why do we use it?</h2>
+                                            <span class="tg-roundbox"></span>
+                                            <div class="tg-description">
+                                                <p>
+                                                    It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-            <div class="current-location-wrap">
-                <a class="getUserGeoLocation">UseMyLocation</a>
-                <span class="additional-info"></span>
-            </div>
-            <div class="map-wrapper" style="height:500px">
-                <div id="all-shops-map-holder" style="height:500px"></div>
-                <input id="shop-address-input" type="text" placeholder="SearchMyLocation" />
-            </div>
-            <div id="directions-panel">
-                <a id="backToResults">BackToResults</a>
-            </div>
-
-        <input type="hidden" class="shop-resources"
-                data-youarehere="You are here"
-               data-accuracy="Accuracy"
-               data-geolocationnotsupported="Geolocation is not supported by your browser."
-               data-pathtoimages="http://demos.nop-templates.com/Plugins/SevenSpikes.Nop.Plugins.StoreLocator/Images"
-               data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
-
-        <div class="shops-sorting-filtering-wrapper">
-            <div class="shops-sorting-options">
-                <label for="sortingSelect">Sort by</label>
-                <select id="sortingSelect">
-                    <option value="sortbydistance">Distance</option>
-                    <option value="sortbyname">Name</option>
-                    <option value="sortbyid" selected="selected">Display Order</option>
-                </select>
-            </div>
-            <div id="searchRadiusWrapper" class="radiusFilterWrapper">
-                <label>Search for shops in radius of</label>
-                <input type="number" value="1000" id="searchRadius" />
-                <span class="units">km.</span>
-            </div>
-            <div class="searchbytags-wrapper">
-                <label for="searchByTagsInput">Search By Tag</label>
-                <input type="text" value="" id="searchByTagsInput" />
-            </div>
-            <div class="shops-filtering-buttons">
-                <a class="clear-filtered-shops" id="clearShopFilters">Clear Filters</a>
-                <div class="button-wrap">
-                    <button class="filter-shops-button" id="searchForFilteredShops">Search</button>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
-
-            <ul class="shops-list">
-                <li class="shops-item visible" data-ind="0">
-                    <div class="picture-wrap">
-                        <a class="picture-link" href="/london-shop" title="London">
-                            <img class="picture-img" src="http://demos.nop-templates.com/content/images/thumbs/0000226_400.jpeg" alt="shop" title="shop" />
-                        </a>
-                    </div>
-                    <div class="info-wrap">
-                        <h2 class="shop-name">
-                            <a class="shop-link" href="/london-shop" title="London">London</a>
-                        </h2>
-                        <input type="hidden" class="distanceToShopValue" value="0" />
-                        <div class="distance-line">
-                            <label class="distance-label">Distance:</label>
-                            <span class="distance-value">0 km.</span>
-                        </div>
-                        <a class="show-directions">Show Directions</a>
-                        <div class="short-description">
-                            <p><span class="setter">ADDRESS:</span></p>
-                            <p>33 Oxford&nbsp;St, London, UK</p>
-                            <p><span class="setter">WORKING HOURS:</span></p>
-                            <p>Monday - Friday: 10:00 - 20:00<br />Saturday: 10:00 - 19:00<br />Sunday: 10:30 - 18:30</p>
-                        </div>
-                        <div class="tags">
-                            <label class="tags-label">Tags</label>
-                            <ul class="tag-list">
-                                <li class="tag-item">london</li>
-                                <li class="tag-item">sports</li>
-                                <li class="tag-item">football</li>
-                                <li class="tag-item">tennis</li>
-                                <li class="tag-item">swimming</li>
-                                <li class="tag-item">bikes</li>
-                                <li class="tag-item">fitness</li>
-                                <li class="tag-item">spa</li>
-                            </ul>
-                        </div>
-                        <a class="read-more" href="/london-shop" title="London">Read More</a>
-                    </div>
-                    <input type="hidden" class="shop-coordinates" data-latitude="51.51498474888052" data-longitude="-0.1450001455077654" data-shop-title="London" value="1" />
-                    <input type="hidden" class="shop-tags-hidden-field" value="london,sports,football,tennis,swimming,bikes,fitness,spa" />
-                </li>
-                <li class="shops-item visible" data-ind="1">
-                    <div class="picture-wrap">
-                        <a class="picture-link" href="/manchester-shop" title="Manchester">
-                            <img class="picture-img" src="http://demos.nop-templates.com/content/images/thumbs/0000230_400.jpeg" alt="shop" title="shop" />
-                        </a>
-                    </div>
-                    <div class="info-wrap">
-                        <h2 class="shop-name">
-                            <a class="shop-link" href="/manchester-shop" title="Manchester">Manchester</a>
-                        </h2>
-                        <input type="hidden" class="distanceToShopValue" value="0" />
-                        <div class="distance-line">
-                            <label class="distance-label">Distance:</label>
-                            <span class="distance-value">0 km.</span>
-                        </div>
-                        <a class="show-directions">Show Directions</a>
-                        <div class="short-description">
-                            <p><span class="setter">АDDRESS:</span></p>
-                            <p>21 Coin St, Manchester, UK</p>
-                            <p><span class="setter">WORKING HOURS:</span></p>
-                            <p>Monday - Friday: 10:00 - 20:00<br />Saturday: 10:00 - 19:00<br />Sunday: 10:30 - 16:30</p>
-                        </div>
-                        <div class="tags">
-                            <label class="tags-label">Tags</label>
-                            <ul class="tag-list">
-                                <li class="tag-item">tennis</li>
-                                <li class="tag-item">swimming</li>
-                                <li class="tag-item">bikes</li>
-                                <li class="tag-item">fitness</li>
-                                <li class="tag-item">spa</li>
-                                <li class="tag-item">football</li>
-                                <li class="tag-item">manchester</li>
-                            </ul>
-                        </div>
-                        <a class="read-more" href="/manchester-shop" title="Manchester">Read More</a>
-                    </div>
-                    <input type="hidden" class="shop-coordinates" data-latitude="53.47933423032864" data-longitude="-2.2374317049980164" data-shop-title="Manchester" value="1" />
-                    <input type="hidden" class="shop-tags-hidden-field" value="tennis,swimming,bikes,fitness,spa,football,manchester" />
-                </li>
-                <li class="shops-item visible" data-ind="2">
-                    <div class="picture-wrap">
-                        <a class="picture-link" href="/glasgow-shop" title="Glasgow">
-                            <img class="picture-img" src="http://demos.nop-templates.com/content/images/thumbs/0000234_400.jpeg" alt="shop" title="shop" />
-                        </a>
-                    </div>
-                    <div class="info-wrap">
-                        <h2 class="shop-name">
-                            <a class="shop-link" href="/glasgow-shop" title="Glasgow">Glasgow</a>
-                        </h2>
-                        <input type="hidden" class="distanceToShopValue" value="0" />
-                        <div class="distance-line">
-                            <label class="distance-label">Distance:</label>
-                            <span class="distance-value">0 km.</span>
-                        </div>
-                        <a class="show-directions">Show Directions</a>
-                        <div class="short-description">
-                            <p><span class="setter">ADDRESS:</span></p>
-                            <p>33 Coin St, Glasgow&nbsp;SE1 9NR, UK</p>
-                            <p><span class="setter">WORKING HOURS:</span></p>
-                            <p>Monday - Friday: 10:00 - 20:00<br />Saturday: 10:00 - 19:00<br />Sunday: 10:30 - 18:30</p>
-                        </div>
-                        <div class="tags">
-                            <label class="tags-label">Tags</label>
-                            <ul class="tag-list">
-                                <li class="tag-item">football</li>
-                                <li class="tag-item">tennis</li>
-                                <li class="tag-item">swimming</li>
-                                <li class="tag-item">bikes</li>
-                                <li class="tag-item">fitness</li>
-                                <li class="tag-item">spa</li>
-                                <li class="tag-item">glasgow</li>
-                            </ul>
-                        </div>
-                        <a class="read-more" href="/glasgow-shop" title="Glasgow">Read More</a>
-                    </div>
-                    <input type="hidden" class="shop-coordinates" data-latitude="55.84470496638155" data-longitude="-4.226834177970886" data-shop-title="Glasgow" value="1" />
-                    <input type="hidden" class="shop-tags-hidden-field" value="football,tennis,swimming,bikes,fitness,spa,glasgow" />
-                </li>
-                <li class="shops-item visible" data-ind="3">
-                    <div class="picture-wrap">
-                        <a class="picture-link" href="/leeds-shop" title="Leeds">
-                            <img class="picture-img" src="http://demos.nop-templates.com/content/images/thumbs/0000238_400.jpeg" alt="shop" title="shop" />
-                        </a>
-                    </div>
-                    <div class="info-wrap">
-                        <h2 class="shop-name">
-                            <a class="shop-link" href="/leeds-shop" title="Leeds">Leeds</a>
-                        </h2>
-                        <input type="hidden" class="distanceToShopValue" value="0" />
-                        <div class="distance-line">
-                            <label class="distance-label">Distance:</label>
-                            <span class="distance-value">0 km.</span>
-                        </div>
-                        <a class="show-directions">Show Directions</a>
-                        <div class="short-description">
-                            <p><span class="setter">ADDRESS:</span></p>
-                            <p>12 Coin St, Leeds&nbsp;SE1 9NR, UK</p>
-                            <p><span class="setter">WORKING HOURS:</span></p>
-                            <p>Monday - Friday: 10:00 - 20:00<br />Saturday: 10:00 - 19:00<br />Sunday: 10:30 - 18:30</p>
-                        </div>
-                        <div class="tags">
-                            <label class="tags-label">Tags</label>
-                            <ul class="tag-list">
-                                <li class="tag-item">football</li>
-                                <li class="tag-item">tennis</li>
-                                <li class="tag-item">swimming</li>
-                                <li class="tag-item">bikes</li>
-                                <li class="tag-item">fitness</li>
-                                <li class="tag-item">spa</li>
-                                <li class="tag-item">leeds</li>
-                            </ul>
-                        </div>
-                        <a class="read-more" href="/leeds-shop" title="Leeds">Read More</a>
-                    </div>
-                    <input type="hidden" class="shop-coordinates" data-latitude="53.79756478062279" data-longitude="-1.5511482954025269" data-shop-title="Leeds" value="1" />
-                    <input type="hidden" class="shop-tags-hidden-field" value="football,tennis,swimming,bikes,fitness,spa,leeds" />
-                </li>
-            </ul>
-
         </div>
-        </div>
-</div>
+    </div>
+</main>

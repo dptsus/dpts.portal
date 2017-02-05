@@ -118,7 +118,7 @@ namespace DPTS.Web.Controllers
             {
                 if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
                 {
-                    
+
                     if (!ModelState.IsValid)
                     {
                         ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
@@ -287,7 +287,7 @@ namespace DPTS.Web.Controllers
             RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
             ConfirmRegisterViewModel model = new ConfirmRegisterViewModel {RegistrationDetails = regModel};
             //if u want to otp then comment follws line
-            model.CnfirmOTP = Session["otp"].ToString();
+           // model.CnfirmOTP = Session["otp"].ToString();
             return View(model);
         }
 
