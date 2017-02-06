@@ -297,6 +297,7 @@
   <ItemGroup>
     <Content Include="Content\Admin\vendor\bootstrap-datetimepicker.css" />
     <Content Include="Content\Admin\js\bootstrap-datetimepicker.js" />
+    <Content Include="Content\loader.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\wp-content\themes\docdirect\images\mimg.png" />
     <Content Include="Scripts\docdirect_functions.js" />
