@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using DPTS.Domain.Core.Notification;
-using DPTS.Domain.Entities;
 using DPTS.Domain.Entities.Notification;
 
 namespace DPTS.Web.Controllers
@@ -11,16 +10,22 @@ namespace DPTS.Web.Controllers
     public class DefaultNotificationSettingsController : BaseController
     {
         #region Fields
+
         private readonly IDefaultNotificationSettingsService _defaultNotificationSettingsService;
         private readonly IEmailCategoryService _emailCategoryService;
+
         #endregion
 
         #region Contructor
-        public DefaultNotificationSettingsController(IDefaultNotificationSettingsService defaultNotificationSettingsService, IEmailCategoryService emailCategoryService)
+
+        public DefaultNotificationSettingsController(
+            IDefaultNotificationSettingsService defaultNotificationSettingsService,
+            IEmailCategoryService emailCategoryService)
         {
             _defaultNotificationSettingsService = defaultNotificationSettingsService;
             _emailCategoryService = emailCategoryService;
         }
+
         #endregion
 
         #region Utilities
@@ -38,13 +43,16 @@ namespace DPTS.Web.Controllers
             };
             typelst.AddRange(emailCategories.ToList().Select(type => new SelectListItem
             {
-                Text = type.Name, Value = type.Id.ToString()
+                Text = type.Name,
+                Value = type.Id.ToString()
             }));
             return typelst;
         }
+
         #endregion
 
         #region Methods
+
         public ActionResult List()
         {
             var defaultNotificationSettings = _defaultNotificationSettingsService.GetAllDefaultNotificationSettings(true);
@@ -56,15 +64,20 @@ namespace DPTS.Web.Controllers
                 DisplayOrder = c.DisplayOrder,
                 Message = c.Message,
                 Published = c.Published,
-                EmailCategoryId= c.CategoryId
+                EmailCategoryId = c.CategoryId
             }).ToList();
             return View(model);
         }
+
         public ActionResult Create()
         {
-            var model = new DefaultNotificationSettingsViewModel {AvailableEmailCategory = GetDefaultNotificationSettings()};
+            var model = new DefaultNotificationSettingsViewModel
+            {
+                AvailableEmailCategory = GetDefaultNotificationSettings()
+            };
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Create(DefaultNotificationSettingsViewModel model)
         {
@@ -79,7 +92,7 @@ namespace DPTS.Web.Controllers
                     Published = model.Published,
                     DisplayOrder = model.DisplayOrder,
                     Message = model.Message,
-                    CategoryId= model.EmailCategoryId
+                    CategoryId = model.EmailCategoryId
                 };
                 _defaultNotificationSettingsService.InsertDefaultNotificationSettings(stateProvince);
                 return RedirectToAction("List");
@@ -87,6 +100,7 @@ namespace DPTS.Web.Controllers
             model.AvailableEmailCategory = GetDefaultNotificationSettings();
             return View(model);
         }
+
         public ActionResult Edit(int Id)
         {
             if (!IsValidateId(Id))
@@ -100,15 +114,16 @@ namespace DPTS.Web.Controllers
             {
                 Id = defaultNotificationSettings.Id,
                 Name = defaultNotificationSettings.Name,
-                EmailCategory= _emailCategoryService.GetEmailCategoryById(defaultNotificationSettings.Id).Name,
+                EmailCategory = _emailCategoryService.GetEmailCategoryById(defaultNotificationSettings.Id).Name,
                 DisplayOrder = defaultNotificationSettings.DisplayOrder,
                 Published = defaultNotificationSettings.Published,
                 EmailCategoryId = defaultNotificationSettings.CategoryId,
-                Message= defaultNotificationSettings.Message,
+                Message = defaultNotificationSettings.Message,
                 AvailableEmailCategory = GetDefaultNotificationSettings()
             };
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Edit(DefaultNotificationSettingsViewModel model)
         {
@@ -128,6 +143,7 @@ namespace DPTS.Web.Controllers
             model.AvailableEmailCategory = GetDefaultNotificationSettings();
             return View(model);
         }
+
         public ActionResult DeleteConfirmed(int id)
         {
             var defaultNotificationSettings = _defaultNotificationSettingsService.GetDefaultNotificationSettingsById(id);
@@ -137,6 +153,7 @@ namespace DPTS.Web.Controllers
 
             return Content("Deleted");
         }
+
         #endregion
     }
 }

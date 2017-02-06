@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using DPTS.Domain.Core.Notification;
-using DPTS.Domain.Entities;
 using DPTS.Domain.Entities.Notification;
 
 namespace DPTS.Web.Controllers
@@ -10,51 +9,58 @@ namespace DPTS.Web.Controllers
     public class EmailCategoryController : BaseController
     {
         #region Fields
+
         private readonly IEmailCategoryService _emailCategory;
+
         #endregion
 
         #region Contructor
+
         public EmailCategoryController(IEmailCategoryService emailCategoryService)
         {
             _emailCategory = emailCategoryService;
         }
+
         #endregion
 
         #region Methods
+
         public ActionResult List()
         {
             var countries = _emailCategory.GetAllEmailCategories(true);
-            var model = countries.Select(c => new EmailCategoryViewModel 
+            var model = countries.Select(c => new EmailCategoryViewModel
             {
-                Id=c.Id,
-                Name=c.Name,
-                DisplayOrder=c.DisplayOrder, 
-                Published=c.Published
-
+                Id = c.Id,
+                Name = c.Name,
+                DisplayOrder = c.DisplayOrder,
+                Published = c.Published
             }).ToList();
             return View(model);
         }
+
         public ActionResult Create()
         {
             var model = new EmailCategoryViewModel();
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Create(EmailCategoryViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var country = new EmailCategory
                 {
-                    Name=model.Name, 
-                    Published=model.Published,
-                    DisplayOrder=model.DisplayOrder
+                    Name = model.Name,
+                    Published = model.Published,
+                    DisplayOrder = model.DisplayOrder
                 };
                 _emailCategory.InsertEmailCategory(country);
                 return RedirectToAction("List");
             }
             return View(model);
         }
+
         public ActionResult Edit(int Id)
         {
             if (!IsValidateId(Id))
@@ -68,22 +74,23 @@ namespace DPTS.Web.Controllers
             {
                 Id = country.Id,
                 Name = country.Name,
-                DisplayOrder = country.DisplayOrder, 
+                DisplayOrder = country.DisplayOrder,
                 Published = country.Published
             };
 
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Edit(EmailCategoryViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var country = _emailCategory.GetEmailCategoryById(model.Id);
                 country.Id = model.Id;
                 country.Name = model.Name;
-                country.DisplayOrder = model.DisplayOrder; 
-                country.Published = model.Published; 
+                country.DisplayOrder = model.DisplayOrder;
+                country.Published = model.Published;
                 _emailCategory.UpdateEmailCategory(country);
                 return RedirectToAction("List");
             }
@@ -100,6 +107,7 @@ namespace DPTS.Web.Controllers
 
             return Content("Deleted");
         }
+
         #endregion
     }
 }

@@ -14,10 +14,15 @@
             <div class="pin"></div>
             <div class="pulse"></div>
         </div>*@
-    <div id="wrapper" class="tg-haslayout">
-        @Html.Partial("_Header")
-        @RenderBody()
-        @Html.Partial("_Footer")
+<div id="wrapper" class="tg-haslayout">
+    @Html.Partial("_Header")
+    @RenderBody()
+    @Html.Partial("_Footer")
+</div>
+    <div id="loader" class="overlay">
+        <div class="load-container load1">
+            <div class="loader">Loading... </div>
+        </div>
     </div>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("Scripts", required: false)

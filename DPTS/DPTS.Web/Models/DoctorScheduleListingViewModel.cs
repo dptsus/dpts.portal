@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Models
@@ -16,6 +13,5 @@ namespace DPTS.Web.Models
         public IList<AppointmentSchedule> AppointmentSchedule { get; set; }
 
         public string ByDate { get; set; }
-
     }
 }

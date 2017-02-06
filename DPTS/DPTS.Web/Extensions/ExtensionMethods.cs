@@ -1,12 +1,7 @@
-﻿using DPTS.Domain;
-using DPTS.Web.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
 namespace DPTS.Web.Extensions
@@ -29,10 +24,10 @@ namespace DPTS.Web.Extensions
         /// <param name="wrapTags"></param>
         /// <returns></returns>
         public static MvcHtmlString DatePickerDropDowns(this HtmlHelper html,
-           string dayName, string monthName, string yearName,
-           int? beginYear = null, int? endYear = null,
-           int? selectedDay = null, int? selectedMonth = null, int? selectedYear = null,
-           object htmlAttributes = null, bool wrapTags = false)
+            string dayName, string monthName, string yearName,
+            int? beginYear = null, int? endYear = null,
+            int? selectedDay = null, int? selectedMonth = null, int? selectedYear = null,
+            object htmlAttributes = null, bool wrapTags = false)
         {
             var daysList = new TagBuilder("select");
             var monthsList = new TagBuilder("select");
@@ -68,9 +63,9 @@ namespace DPTS.Web.Extensions
             for (int i = 1; i <= 12; i++)
             {
                 months.AppendFormat("<option value='{0}'{1}>{2}</option>",
-                                    i,
-                                    (selectedMonth.HasValue && selectedMonth.Value == i) ? " selected=\"selected\"" : null,
-                                    CultureInfo.CurrentUICulture.DateTimeFormat.GetMonthName(i));
+                    i,
+                    (selectedMonth.HasValue && selectedMonth.Value == i) ? " selected=\"selected\"" : null,
+                    CultureInfo.CurrentUICulture.DateTimeFormat.GetMonthName(i));
             }
 
 
@@ -110,7 +105,6 @@ namespace DPTS.Web.Extensions
             {
                 return MvcHtmlString.Create(string.Concat(daysList, monthsList, yearsList));
             }
-
         }
 
         /// <summary>
