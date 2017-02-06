@@ -10,40 +10,36 @@ var scripts_vars = {"ajaxurl":"","award_name":"Award Name","award_date":"Award D
 /* ]]> */
 </script>
 <main id="main" class="tg-page-wrapper tg-haslayout">
-    <div class="container">
-        <div class="row">
-            <div class="main-page-wrapper tg-haslayout">
-                <div class="fw-page-builder-content">
-                    <section class="tg-main-section haslayout  stretch_section_contents_corner stretch_section stretch_data" style="margin-top: -100px; padding-top: 0px; padding-bottom: 0px; background-repeat: no-repeat; background-position: 0% 100%; background-size: cover; position: relative; left: -89.5px; box-sizing: border-box; width: 1349px;">
-                        <div class="builder-items">
-                            <div class="col-xs-12 col-md-12 builder-column ">
-                                <div class="tg-banner-holder">
-                                    <div class="tg-banner-content">
-                                        <div class="container">
-                                            <div class="tg-heading-border">
-                                                <h1><span>find your nearest</span><div class="dynamic-title">Doctor</div></h1>
-                                            </div>
-                                            @Html.Action("SearchBox", "Home")
-                                        </div>
-                                    </div>
-                                    <div id="searchbanner-" class="tg-homeslidertwo">
-                                        <div class="item">
-                                            <figure>
-                                                <img src="~/Content/wp-content/uploads/2016/08/banner-img1.jpg" alt="Search">
-                                            </figure>
-                                        </div>
-                                        <div class="item">
-                                            <figure>
-                                                <img src="~/Content/wp-content/uploads/2016/08/banner-img2.jpg" alt="Search">
-                                            </figure>
-                                        </div>
-                                        <div class="item">
-                                            <figure>
-                                                <img src="~/Content/wp-content/uploads/2016/08/banner-img3.jpg" alt="Search">
-                                            </figure>
-                                        </div>
-                                    </div>
-                                    <script>
+    <section class="tg-main-section haslayout  stretch_section_contents_corner stretch_section stretch_data" style="margin-top:-100px;padding-top:0px;padding-bottom:0px;background-repeat:no-repeat;background-position:0% 100%; background-size: cover;">
+        <div class="builder-items">
+            <div class="col-xs-12 col-md-12 builder-column ">
+                <div class="tg-banner-holder">
+                    <div class="tg-banner-content">
+                        <div class="container">
+                            <div class="tg-heading-border">
+                                <h1><span>find your nearest</span><div class="dynamic-title">Doctor</div></h1>
+                            </div>
+                            @Html.Action("SearchBox", "Home")
+                        </div>
+                    </div>
+                    <div id="searchbanner-" class="tg-homeslidertwo">
+                        <div class="item">
+                            <figure>
+                                <img src="~/Content/wp-content/uploads/2016/08/banner-img1.jpg" alt="Search">
+                            </figure>
+                        </div>
+                        <div class="item">
+                            <figure>
+                                <img src="~/Content/wp-content/uploads/2016/08/banner-img2.jpg" alt="Search">
+                            </figure>
+                        </div>
+                        <div class="item">
+                            <figure>
+                                <img src="~/Content/wp-content/uploads/2016/08/banner-img3.jpg" alt="Search">
+                            </figure>
+                        </div>
+                    </div>
+                    <script>
 		jQuery(document).ready(function(e) {
             jQuery("#searchbanner-").owlCarousel({
 				paginationSpeed : 400,
@@ -57,13 +53,18 @@ var scripts_vars = {"ajaxurl":"","award_name":"Award Name","award_date":"Award D
 				]
 			});
         });
-                                    </script>
+                    </script>
 
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="tg-main-section haslayout  stretch_section">
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row">
+            <div class="main-page-wrapper tg-haslayout">
+                <div class="fw-page-builder-content">
+
+                    <section class="tg-main-section haslayout  stretch_section" style="margin-top:40px">
                         <div class="builder-items">
                             <div class="col-xs-12 col-md-12 builder-column ">
                                 <div class="sc-services">
@@ -136,5 +137,4 @@ var scripts_vars = {"ajaxurl":"","award_name":"Award Name","award_date":"Award D
         </div>
     </div>
 </main>
-
 

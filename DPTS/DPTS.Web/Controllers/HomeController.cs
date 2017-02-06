@@ -10,6 +10,7 @@ using DPTS.Domain.Core.Speciality;
 using System;
 using System.Xml.Linq;
 using DPTS.Domain.Entities;
+using PagedList;
 
 namespace DPTS.Web.Controllers
 {
@@ -109,23 +110,33 @@ namespace DPTS.Web.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult Search(SearchModel model)
+        public ActionResult Search(SearchModel model,int? page)
         {
+            var pageNumber = (page ?? 1) - 1;
+            var pageSize = 1;
+            int totalCount;
+
             if (model == null)
                 model = new SearchModel();
+
+            if (TempData["SearchModel"] != null)
+            {
+                model = (SearchModel) TempData["SearchModel"];
+            }
+
 
             var searchTerms = model.keyword;
             if (searchTerms == null)
                 searchTerms = "";
             searchTerms = searchTerms.Trim();
 
-            var data = _doctorService.SearchDoctor(model.geo_location);
+            var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,model.geo_location,model.SpecialityId);
 
            // var data = _doctorService.GetAllDoctors();
 
-            var searchVmodel = new SearchViewModel();
+            var searchVmodel = new List<TempDoctorViewModel>();
 
-            searchVmodel.SearchModel = new SearchModel
+            var searchModel = new SearchModel
             {
                 AvailableSpeciality = GetSpecialityList(),
                 directory_type=model.directory_type,
@@ -136,58 +147,69 @@ namespace DPTS.Web.Controllers
 
             double lat = 0, lng = 0;
             string zipcode = model.geo_location;
-          //  var searchResult = new List<SearchViewModel>
-            var firstZipCodeLocation = GetByZipCode(zipcode);
 
-            if (firstZipCodeLocation == null)
-            {
-                firstZipCodeLocation = CalculateLatLngForZipCode(zipcode);
-            }
-            foreach (var doc in data)
-            {
-                var addr = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault();
-                if (addr.Latitude == 0 && addr.Longitude == 0)
+            #region (with zipcode)
+
+                var firstZipCodeLocation = GetByZipCode(zipcode);
+                if (firstZipCodeLocation == null)
                 {
-                    var geoCoodrinateDealer = GetGeoCoordinate(addr.ZipPostalCode.Trim());
-                    if (geoCoodrinateDealer.Count == 2)
+                    firstZipCodeLocation = CalculateLatLngForZipCode(zipcode);
+                }
+                foreach (var doc in data)
+                {
+                    var addr = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault();
+                    if (addr.Latitude == 0 && addr.Longitude == 0)
                     {
-                        lat = addr.Latitude = geoCoodrinateDealer["lat"];
-                        lng = addr.Longitude = geoCoodrinateDealer["lng"];
+                        var geoCoodrinateDealer = GetGeoCoordinate(addr.ZipPostalCode.Trim());
+                        if (geoCoodrinateDealer.Count == 2)
+                        {
+                            lat = addr.Latitude = geoCoodrinateDealer["lat"];
+                            lng = addr.Longitude = geoCoodrinateDealer["lng"];
 
-                        _addressService.UpdateAddress(addr);
+                            _addressService.UpdateAddress(addr);
+                        }
                     }
-                }
-                else
-                {
-                    lat = addr.Latitude;
-                    lng = addr.Longitude;
-                }
-
-                if (firstZipCodeLocation != null && lat != 0 && lng != 0)
-                {
-                    var user = GetUserById(doc.DoctorId);
-                    searchVmodel.doctorsModel.Add(new DoctorViewModel
+                    else
                     {
-                        doctor = doc,
-                        Addresses = _addressService.GetAllAddressByUser(doc.DoctorId),
-                        Email = user.Email,
-                        FirstName =user.FirstName,
-                        LastName = user.LastName,
-                        MobileNumber = user.PhoneNumber,
-                        Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
-                            lat, lng),
-                    });
+                        lat = addr.Latitude;
+                        lng = addr.Longitude;
+                    }
+
+                    if (firstZipCodeLocation != null && lat != 0 && lng != 0)
+                    {
+                        var docModel = new TempDoctorViewModel
+                        {
+                            Doctors = doc,
+                            Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
+                            Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
+                                lat, lng)
+                        };
+                        searchVmodel.Add(docModel);
+                    }
+                    else
+                    {
+                        var docModel = new TempDoctorViewModel
+                        {
+                            Doctors = doc,
+                            Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
+                            Distance = 50
+                        };
+                         searchVmodel.Add(docModel);
+                     }
                 }
-            }
 
-            searchVmodel.doctorsModel = searchVmodel.doctorsModel.Where(c => c.Distance <= Convert.ToDouble(model.geo_distance)).OrderBy(c => c.Distance).ToList();
+                searchVmodel = searchVmodel.Where(c => c.Distance <= Convert.ToDouble(model.geo_distance)).OrderBy(c => c.Distance).ToList();
 
-            if (model.SpecialityId > 0)
-            {
-                searchVmodel.doctorsModel = searchVmodel.doctorsModel.SelectMany(d => d.doctor.SpecialityMapping.Where(s => s.Speciality_Id.Equals(model.SpecialityId)), (d, s) => d).ToList();
-            }
-            
-            return View(searchVmodel);
+            #endregion
+
+            //if (model.SpecialityId > 0)
+            //{
+            //   searchVmodel = searchVmodel.SelectMany(d => d.Doctors.SpecialityMapping.Where(s => s.Speciality_Id.Equals(model.SpecialityId)), (d, s) => d).ToList();
+            //}
+            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchVmodel, pageNumber + 1, 1, totalCount);
+            ViewBag.SearchModel = searchModel;
+
+            return View(pageDoctors);
         }
 
         [NonAction]
@@ -285,46 +307,43 @@ namespace DPTS.Web.Controllers
             return null;
         }
 
-
-        public ActionResult Doctors(SearchModel model)
+        /// <summary>
+        /// Get all doctors
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult Doctors(SearchModel model, int? page)
         {
-            var data = _doctorService.GetAllDoctors();
-
-            var searchVmodel = new SearchViewModel();
-
-            if (data != null)
+            if (Request.QueryString.Count > 0 &&
+                model.SpecialityId > 0 ||
+                !string.IsNullOrWhiteSpace(model.geo_location) ||
+                !string.IsNullOrWhiteSpace(model.keyword))
             {
-                foreach (var doc in data)
-                {
-                    var user = GetUserById(doc.DoctorId);
-                    if (user == null)
-                        return null;
-
-                    var doctor = new DoctorViewModel
-                    {
-                        Id = user.Id,
-                        Email = user.Email,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        MobileNumber = user.PhoneNumber,
-                        doctor = doc
-                    };
-                    var addr = _addressService.GetAllAddressByUser(doc.DoctorId);
-                    doctor.Addresses = addr;
-                    searchVmodel.doctorsModel.Add(doctor);
-                }
+                TempData["SearchModel"] = model;
+                return RedirectToAction("Search");
             }
 
-            searchVmodel.SearchModel = new SearchModel
+            var pageNumber = (page ?? 1) - 1;
+            var pageSize = 1;
+            int totalCount;
+
+            var data = _doctorService.GetAllDoctors(pageNumber, pageSize, out totalCount);
+
+            var doctorViews = data.Select(doc => new TempDoctorViewModel
+            {
+                Doctors = doc, Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()
+            }).ToList();
+
+            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(doctorViews, pageNumber + 1, 1, totalCount);
+
+            var searchModel = new SearchModel
             {
                 AvailableSpeciality = GetSpecialityList(),
-                directory_type = model.directory_type,
-                keyword = model.keyword,
-                SpecialityId = model.SpecialityId,
-                geo_location = model.geo_location
             };
+            ViewBag.SearchModel = searchModel;
 
-            return View(searchVmodel);
+            return View(pageDoctors);
         }
     }
 }

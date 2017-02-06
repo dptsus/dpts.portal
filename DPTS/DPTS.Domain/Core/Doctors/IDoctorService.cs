@@ -29,13 +29,24 @@ namespace DPTS.Domain.Core.Doctors
         /// get list of Doctor Name
         /// </summary>
         IList<string> GetDoctorsName(bool showhidden);
+
         /// <summary>
-        /// Search
+        /// search doctor
         /// </summary>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <param name="totalCount"></param>
         /// <param name="zipcode"></param>
         /// <returns></returns>
-        IList<Doctor> SearchDoctor(string zipcode = null);
+        IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount, string zipcode = null,int specialityId = 0);
 
-        IList<Doctor> GetAllDoctors();
+        /// <summary>
+        /// Paging with get all doctors
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount);
     }
 }

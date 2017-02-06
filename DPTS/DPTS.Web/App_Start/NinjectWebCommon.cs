@@ -1,17 +1,11 @@
-using System;
-using System.Web;
-using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
-using DPTS.Domain.Core.Appointment;
 using DPTS.Domain.Core.Country;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Core.Notification;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Core.SubSpeciality;
-using DPTS.Services;
 using DPTS.Services.Address;
-using DPTS.Services.Appointment;
 using DPTS.Services.Country;
 using DPTS.Services.Doctors;
 using DPTS.Services.Notification;
@@ -19,9 +13,6 @@ using DPTS.Services.Speciality;
 using DPTS.Services.StateProvince;
 using DPTS.Services.SubSpeciality;
 using DPTS.Web;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using Ninject;
-using Ninject.Web.Common;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof (NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof (NinjectWebCommon), "Stop")]
@@ -36,7 +27,6 @@ namespace DPTS.Web
     using Ninject;
     using Ninject.Web.Common;
     using Domain.Core;
-    using Domain.Entities;
     using Services;
     using Domain.Core.Appointment;
     using Services.Appointment;

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DPTS.Data.Context;
 using DPTS.Domain.Core.Appointment;
@@ -14,12 +11,15 @@ namespace DPTS.Web.Controllers
     public class VisitorController : BaseController
     {
         #region Fields
+
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
         private readonly DPTSDbContext _context;
+
         #endregion
 
         #region Contr
+
         public VisitorController(IDoctorService doctorService,
             IAppointmentService scheduleService)
         {
@@ -77,6 +77,5 @@ namespace DPTS.Web.Controllers
         }
 
         #endregion
-
     }
 }
