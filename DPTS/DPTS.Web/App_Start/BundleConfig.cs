@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace DPTS.Web
 {
@@ -34,9 +33,9 @@ namespace DPTS.Web
                 //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/moment1bba.js",
-              //  "~/Content/wp-content/themes/docdirect/js/bookings1bba.js",
+                //  "~/Content/wp-content/themes/docdirect/js/bookings1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/parallax1bba.js",
-                 "~/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js",
+                "~/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/appear1bba.js",
@@ -78,6 +77,11 @@ namespace DPTS.Web
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/button/static/css/styles1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/call-to-action/static/css/styles1c9b.css"
                 ));
+#if DEBUG
+            BundleTable.EnableOptimizations = false;
+#else
+        BundleTable.EnableOptimizations = true;
+#endif
         }
     }
 }

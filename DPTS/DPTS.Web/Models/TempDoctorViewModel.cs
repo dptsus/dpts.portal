@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DPTS.Domain.Entities;
+﻿using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Models
 {
@@ -13,6 +9,7 @@ namespace DPTS.Web.Models
             Doctors = new Doctor();
             Address = new Address();
         }
+
         public Doctor Doctors { get; set; }
         public Domain.Entities.Address Address { get; set; }
     }

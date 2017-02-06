@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace DPTS.Web
@@ -16,21 +12,21 @@ namespace DPTS.Web
             routes.MapRoute(
                 "Default",
                 "{controller}/{action}",
-                new { controller = "Home", action = "Index" }
-            );
+                new {controller = "Home", action = "Index"}
+                );
             //get state list by country ID  (AJAX link)
             routes.MapRoute("GetStatesByCountryId",
-                            "Doctor/GetStatesByCountryId/",
-                            new { controller = "Doctor", action = "GetStatesByCountryId" }
-                           );
+                "Doctor/GetStatesByCountryId/",
+                new {controller = "Doctor", action = "GetStatesByCountryId"}
+                );
             routes.MapRoute("DPTSSearch",
-                         "search/",
-                         new { controller = "Home", action = "Search" });
+                "search/",
+                new {controller = "Home", action = "Search"});
             routes.MapRoute(
                 "BookAppoinment",
                 "appoinment/{doctorId}",
-                new { controller = "Appointment", action = "AppointmentSchedule", doctorId = UrlParameter.Optional }
-            );
+                new {controller = "Appointment", action = "AppointmentSchedule", doctorId = UrlParameter.Optional}
+                );
 
             //routes.MapRoute(
             //    "ContactUs",
@@ -62,7 +58,6 @@ namespace DPTS.Web
             //    "manage",
             //    new { controller = "Manage", action = "index" }
             //);
-
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DPTS.Web.Models
+﻿namespace DPTS.Web.Models
 {
     public class SheduleViewModel
     {

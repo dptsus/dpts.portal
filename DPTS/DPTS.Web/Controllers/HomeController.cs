@@ -8,7 +8,6 @@ using DPTS.Domain.Core.Address;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Core.Speciality;
 using System;
-using System.Security.Permissions;
 using System.Xml.Linq;
 using DPTS.Domain.Entities;
 using PagedList;

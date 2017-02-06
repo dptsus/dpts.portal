@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Models
@@ -10,11 +9,11 @@ namespace DPTS.Web.Models
         public VisitorViewModel()
         {
             AppointmentSchedule = new List<AppointmentSchedule>();
-            AppointmentStatus =new AppointmentStatus();
+            AppointmentStatus = new AppointmentStatus();
         }
 
         public IList<AppointmentSchedule> AppointmentSchedule { get; set; }
-        
+
 
         private AppointmentStatus AppointmentStatus
         {
