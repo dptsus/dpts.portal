@@ -13,13 +13,13 @@ namespace DPTS.Web.Controllers
     public class BulkDataController : Controller
     {
         // GET: BulkData
-        public ActionResult Index()
+        public ActionResult OnBoardDoctors()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(HttpPostedFileBase fileUpload)
+        public ActionResult OnBoardDoctors(HttpPostedFileBase fileUpload)
         {
             List<string> data = new List<string>();
             if (fileUpload != null)
@@ -50,7 +50,7 @@ namespace DPTS.Web.Controllers
 
                     DataTable dtable = ds.Tables["ExcelTable"];
 
-                    string sheetName = "Sheet1";
+                    const string sheetName = "Sheet1";
 
                     var excelFile = new ExcelQueryFactory(pathToExcelFile);
                     var Doctors = from a in excelFile.Worksheet<Doctor>(sheetName) select a;

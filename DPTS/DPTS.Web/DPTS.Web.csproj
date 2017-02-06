@@ -747,7 +747,7 @@
     <Content Include="Views\Home\Doctors.cshtml" />
     <Content Include="Views\Account\Unsubscribe.cshtml" />
     <Content Include="Views\Account\Subscribe.cshtml" />
-    <Content Include="Views\BulkData\Index.cshtml" />
+    <Content Include="Views\BulkData\OnBoardDoctors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
