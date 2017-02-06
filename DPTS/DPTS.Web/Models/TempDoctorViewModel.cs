@@ -15,5 +15,6 @@ namespace DPTS.Web.Models
         }
         public Doctor Doctors { get; set; }
         public Domain.Entities.Address Address { get; set; }
+        public double Distance { get; set; }
     }
 }

@@ -103,12 +103,14 @@ namespace DPTS.Services.Doctors
             //             select d;
             //    docLst.Address = address.FirstOrDefault();
             //}
-            
+
             totalCount = query.Count();//return the number of pages
             return doctors;//the query is now already executed, it is a subset of all the orders.
         }
 
-        public IList<Doctor> SearchDoctor(string zipcode = null)
+        public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
+            string zipcode = null,
+            int specialityId = 0)
         {
             var query = from d in _doctorRepository.Table
                         select d;
@@ -117,7 +119,6 @@ namespace DPTS.Services.Doctors
 
           //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
               //  return null;
-
 
             if(!string.IsNullOrWhiteSpace(zipcode))
             {
@@ -146,18 +147,23 @@ namespace DPTS.Services.Doctors
                             select d;
                 }
             }
-            //if (specialityId > 0)
-            //{
-            //    query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
-            //}
+            if (specialityId > 0)
+            {
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
+            }
             //if (!string.IsNullOrWhiteSpace(keywords))
             //{
             //    query = query.Where(d => d.ShortProfile.Contains(keywords)
             //             || d.Subscription.Contains(keywords) || d.Qualifications.Contains(keywords));
             //}
 
-            return query.ToList();
+            var pageQuery =  query.OrderBy(d => d.DateUpdated)
+                .Skip(itemsPerPage * page).Take(itemsPerPage)
+                         .ToList();
 
+            totalCount = query.Count();
+
+            return pageQuery;
         }
 
         #endregion
