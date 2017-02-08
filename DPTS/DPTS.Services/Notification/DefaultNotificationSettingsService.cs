@@ -4,7 +4,7 @@ using System.Linq;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.Notification;
 
-namespace DPTS.Services.Notification
+namespace DPTS.Domain.Notification
 {
     /// <summary>
     /// DefaultNotificationSettings Service

@@ -22,9 +22,9 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        @using (Html.BeginForm("OnBoardDoctors", "BulkData", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <div class="form-horizontal">
+                       @using (Html.BeginForm("ImportFromXlsx", "BulkData", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                       {
+                            @*<div class="form-horizontal">
                                 <div class="form-group">
                                     <div class="control-label col-md-2">Select file to upload:</div>
                                     <div class="col-md-10">
@@ -36,8 +36,39 @@
                                         <input type="submit" value="Upload" id="btnSubmit" class="btn btn-primary" />
                                     </div>
                                 </div>
+                            </div>*@
+                        <div class="form-horizontal">
+                            <div class="modal-body">
+                                @Html.AntiForgeryToken()
+                                <ul class="common-list">
+                                    <li>
+                                        <em>ImportFromExcelTip</em>
+                                    </li>
+                                    <li>
+                                        <em>ManyRecordsWarning</em>
+                                    </li>
+                                </ul>
+                                <div class="form-group">
+                                    <div class="col-md-2">
+                                        <div class="label-wrapper">
+                                            <label class="control-label">
+                                                ExcelFile
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <input type="file" id="importexcelfile" name="importexcelfile" class="form-control" />
+                                    </div>
+                                </div>
                             </div>
-                        }
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">
+                                    ImportFromExcel
+                                </button>
+                            </div>
+                        </div>
+
+                       }
                     </div>
                 </div>
 

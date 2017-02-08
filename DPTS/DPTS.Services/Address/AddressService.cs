@@ -5,7 +5,7 @@ using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
 using DPTS.Domain.Entities;
 
-namespace DPTS.Services.Address
+namespace DPTS.Domain.Address
 {
     public class AddressService : IAddressService
     {

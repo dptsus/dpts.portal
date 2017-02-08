@@ -5,7 +5,7 @@ using DPTS.Domain.Core;
 using DPTS.Domain.Core.Notification;
 using DPTS.Domain.Entities.Notification;
 
-namespace DPTS.Services.Notification
+namespace DPTS.Domain.Notification
 {
     /// <summary>
     /// DoctorNotificationSettings Service

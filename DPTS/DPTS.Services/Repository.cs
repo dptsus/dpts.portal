@@ -8,7 +8,7 @@ using System.Linq;
 using DPTS.Domain.Entities;
 
 
-namespace DPTS.Services
+namespace DPTS.Domain
 {
     public partial class Repository<T> : IRepository<T> where T : class
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.StateProvince;
 
-namespace DPTS.Services.StateProvince
+namespace DPTS.Domain.StateProvince
 {
     /// <summary>
     /// State Service

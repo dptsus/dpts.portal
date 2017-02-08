@@ -4,7 +4,7 @@ using System.Linq;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.Country;
 
-namespace DPTS.Services.Country
+namespace DPTS.Domain.Country
 {
     /// <summary>
     /// Country service
