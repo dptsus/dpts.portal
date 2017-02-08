@@ -5,7 +5,7 @@ using DPTS.Domain.Core;
 using DPTS.Domain.Core.Appointment;
 using DPTS.Domain.Entities;
 
-namespace DPTS.Services.Appointment
+namespace DPTS.Domain.Appointment
 {
     public class AppointmentService : IAppointmentService
     {

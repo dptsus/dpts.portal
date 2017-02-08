@@ -16,17 +16,20 @@ namespace DPTS.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new RazorViewEngine());
         }
 
-        //protected void Application_AcquireRequestState(object sender, EventArgs e)
-        //{
-        //}
+        protected void Application_AcquireRequestState(object sender, EventArgs e)
+        {
+        }
 
         protected void Application_Error(object sender, EventArgs e)
         {
             var ex = Server.GetLastError();
             // Log application level exceptions
         }
+
 
         protected void Application_EndRequest()
         {

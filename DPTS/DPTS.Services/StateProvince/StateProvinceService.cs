@@ -4,7 +4,7 @@ using System.Linq;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.StateProvince;
 
-namespace DPTS.Services.StateProvince
+namespace DPTS.Domain.StateProvince
 {
     /// <summary>
     /// State Service
@@ -46,7 +46,7 @@ namespace DPTS.Services.StateProvince
             var query = _stateProvinceRepository.Table;
             if (!showHidden)
                 query = query.Where(c => c.Published);
-            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
+           // query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
 
             var countries = query.ToList();
             return countries;

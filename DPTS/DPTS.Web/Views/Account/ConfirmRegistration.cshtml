@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "ConfirmRegistration";
 }
-<h2>ConfirmRegistration</h2>
+<br/>
+<h2 style="text-align: center">Confirm Registration</h2>
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div class="container">
         <div class="row">
@@ -22,9 +23,14 @@
                             @Html.HiddenFor(m => m.RegistrationDetails.PhoneNumber)
                             @Html.HiddenFor(m => m.RegistrationDetails.Password)
                             @Html.HiddenFor(m => m.RegistrationDetails.ConfirmPassword)
+                            @Html.HiddenFor(m => m.RegistrationDetails.UserType)
+                            @Html.HiddenFor(m => m.RegistrationDetails.CreatedOnUtc)
+                            @Html.HiddenFor(m => m.RegistrationDetails.LastIpAddress)
+                            @Html.HiddenFor(m => m.RegistrationDetails.Role)
+
                             <fieldset>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "123456" })
+                                    @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "Enter OTP" })
                                     @Html.ValidationMessageFor(model => model.CnfirmOTP, "", new { @class = "text-danger" })
                                 </div>
                                 <input type="submit" class="tg-btn tg-btn-lg  do-register-button" value="ConfirmRegister" />

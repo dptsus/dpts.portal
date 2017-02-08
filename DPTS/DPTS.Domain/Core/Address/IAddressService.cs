@@ -50,5 +50,13 @@ namespace DPTS.Domain.Core.Address
 
         IList<AddressMapping> GetAllAddressMapping();
 
+        //zipcode
+
+        IList<ZipCodes> GetAllZipCodes();
+
+        void InsertZipCode(ZipCodes zipcode);
+
+        ZipCodes GetZipCodeInfo(string zipCode);
+
     }
 }

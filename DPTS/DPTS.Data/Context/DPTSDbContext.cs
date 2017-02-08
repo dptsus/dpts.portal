@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using DPTS.Domain.Entities;
+using DPTS.Domain.Entities.Notification;
 
 namespace DPTS.Data.Context
 {
@@ -27,6 +28,9 @@ namespace DPTS.Data.Context
         public virtual DbSet<DefaultNotificationSettings> DefaultNotificationSettings { get; set; }
         public virtual DbSet<ReviewComments> ReviewComments { get; set; }
         public virtual DbSet<DoctorNotificationSettings> DoctorNotificationSettings { get; set; }
+        public virtual DbSet<SentEmailHistory> SentEmailHistory { get; set; }
+        public virtual DbSet<SentSmsHistory> SentSmsHistory { get; set; }
+        public virtual DbSet<ZipCodes> ZipCodes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

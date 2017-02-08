@@ -1,44 +1,88 @@
 ﻿@model SearchModel
 @using DPTS.Web.Models
 
-@using (Html.BeginForm("Search", "Home", FormMethod.Get))
+@using (Html.BeginForm("Search", "Home", FormMethod.Post))
 {
-    <fieldset>
-        <div class="row">
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    <span class="select">
-                        <select class="directory_type" name="directory_type">
-                            <option value="">Category</option>
-                            <option selected="" data-dir_name="Doctor" id="127" value="doctor">Doctor</option>
-                        </select>
-                    </span>
+    <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
+        <div class="tg-doctors-list tg-haslayout">
+            <div class="tg-refinesearcharea">
+                <div class="tg-heading-border tg-small">
+                    <h2>refine search</h2>
                 </div>
-            </div>
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    @Html.DropDownListFor(model => model.SpecialityId, Model.AvailableSpeciality, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="@Model.keyword" name="keyword" id="keyword" placeholder="Type Keyword...">
-                </div>
-            </div>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <a class="getUserGeoLocation" href="javascript:;"><i class="fa fa-crosshairs" aria-hidden="true"></i> UseMyLocation</a>
+                            </div>
+                                <div class="form-group">
+                                    <div class="locate-me-wrap">
+                                        <div id="location-pickr-map" class="elm-display-none"></div>
+                                        <input type="text" autocomplete="on" id="location-address" value="@Model.geo_location" name="geo_location" placeholder="Geo location" class="form-control">
+                                        <a href="javascript:;" class="geolocate"><img src="https://themographics.com/wordpress/docdirect/wp-content/themes/docdirect/images/geoicon.svg" width="16" height="16" class="geo-locate-me" alt="Locate me!"></a>
+                                        <a href="javascript:;" class="geodistance"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                        <div class="geodistance_range elm-display-none">
+                                            <div class="distance-ml">Distance in&nbsp;( Miles )<span>50</span></div>
+                                            <input type="hidden" name="geo_distance" value="50" class="geo_distance"/>
+                                            <div class="geo_distance" id="geo_distance"></div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        jQuery(document).ready(function(e) {
+                                            jQuery("#geo_distance").slider({
+                                                range: "min",
+                                                min: 1,
+                                                max: 300,
+                                                value: 50,
+                                                animate: "slow",
+                                                orientation: "horizontal",
+                                                slide: function(event, ui) {
+                                                    jQuery(".distance-ml span").html(ui.value);
+                                                    jQuery(".geo_distance").val(ui.value);
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        <div class="col-md-12 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="@Model.keyword" name="keyword" id="keyword" placeholder="Type Keyword...">
+                            </div>
+                        </div>
 
-            <div class="col-md-12 col-sm-6 col-xs-6">
-                <div class="form-group">
-                    <input type="text" class="form-control" value="@Model.ZipCode" name="ZipCode" id="ZipCode" placeholder="Search users by zip code">
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-6">
-                <button type="submit" class="tg-btn pull-left">Search</button>
-                <input type="hidden" name="view" value="">
-            </div>
-            <div class="col-sm-6 col-xs-6">
-                <button type="reset" class="tg-btn tg-btn-reset pull-right"> <i class="fa fa-rotate-left"></i> <span>Reset</span> </button>
+                        @*<div class="col-md-12 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="@Model.geo_location" name="geo_location" id="geo_location" placeholder="Search users by zip code">
+                                @*<input type="text" class="form-control" value="" name="zip" placeholder="Search users by zip cod
+                            </div>
+                        </div>*@
+                        <div class="col-md-12 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <span class="select">
+                                    <select class="directory_type" name="directory_type">
+                                        <option value="">Category</option>
+                                        <option selected data-dir_name="Doctor" id="127" value="doctor">Doctor</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-6 col-xs-6">
+                            <div class="form-group">
+                                <span class="select">
+                                    @Html.DropDownListFor(model => model.SpecialityId, Model.AvailableSpeciality, new { @class = "form-control" })
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                            <button type="submit" class="tg-btn pull-left">Search</button>
+                        </div>
+                        @*<div class="col-sm-6 col-xs-6">
+                            <button type="reset" class="tg-btn tg-btn-reset pull-right"> <i class="fa fa-rotate-left"></i> <span>Reset</span> </button>
+                        </div>*@
+                    </div>
+                </fieldset>
             </div>
         </div>
-    </fieldset>
+    </div>
 }

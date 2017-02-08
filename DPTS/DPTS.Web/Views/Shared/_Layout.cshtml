@@ -14,10 +14,15 @@
             <div class="pin"></div>
             <div class="pulse"></div>
         </div>*@
-    <div id="wrapper" class="tg-haslayout">
-        @Html.Partial("_Header")
-        @RenderBody()
-        @Html.Partial("_Footer")
+<div id="wrapper" class="tg-haslayout">
+    @Html.Partial("_Header")
+    @RenderBody()
+    @Html.Partial("_Footer")
+</div>
+    <div id="loader" class="overlay">
+        <div class="load-container load1">
+            <div class="loader">Loading... </div>
+        </div>
     </div>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("Scripts", required: false)
@@ -25,5 +30,9 @@
     <script src="~/Scripts/jquery.fileupload.js"></script>
     <script src="~/Scripts/tagEditor/jquery.tag-editor.min.js"></script>
     <script src="~/Scripts/tagEditor/jquery.caret.min.js"></script>
+    <script src="~/Scripts/docdirect_functions.js"></script>
+    @*<script type='text/javascript' src='https://themographics.com/wordpress/docdirect/wp-includes/js/wp-util.min.js?ver=4.7.2'></script>
+    <script type='text/javascript' src='https://themographics.com/wordpress/docdirect/wp-content/themes/docdirect/js/docdirect_functions.js?ver=4.0'></script>*@
+
 </body>
 </html>

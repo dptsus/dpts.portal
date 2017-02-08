@@ -1,28 +1,80 @@
-﻿@model SearchViewModel
+﻿@using DPTS.Domain.Entities
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<TempDoctorViewModel>
 @using DPTS.Web.Models
 @{
     ViewBag.Title = "Search | DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/Scripts/searchdoc.js"></script>
+<div id="directions-panel">
+    <a id="backToResults" href="javascript:;"><i class="fa fa-backward" aria-hidden="true"></i> BackToResults</a>
+    <script>
+        $(document).ready(function () {
+            $("#directions-panel").css("display", "none");
+            $("#backToResults").on("click", function () {
+                $("#directions-panel").css("display", "none");
+            });
+        });
+    </script>
+</div>
+
+<style>
+    .map-top{
+      height: 500px;
+    }
+    .map-wrapper
+    {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgb(229, 227, 223);
+    }
+    #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+</style>
 <main id="main" class="tg-page-wrapper tg-haslayout">
+    @if (Model.Any())
+    {
+        <div class="map-top">
+            <div class="row tg-divheight">
+                <div class="tg-mapbox">
+                    <div class="map-wrapper">
+                        <div id="all-shops-map-holder" style="height: 500px"></div>
+                        @*<input id="pac-input" style="width: 30%; left: 30px !important; top: 55px !important;" type="text" placeholder="SearchMyLocation" />*@
+                    </div>
+                    <input type="hidden" class="shop-resources"
+                           data-youarehere="You are here"
+                           data-accuracy="Accuracy"
+                           data-geolocationnotsupported="Geolocation is not supported by your browser."
+                           data-pathtoimages="http://demos.nop-templates.com/Plugins/SevenSpikes.Nop.Plugins.StoreLocator/Images"
+                           data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="container">
         <div class="row">
             <div class="container">
                 <div class="row">
-                    <form">
-                        <div class="col-md-4 col-sm-12 col-xs-12 pull-left">
-                            <div class="tg-doctors-list tg-haslayout">
-                                <div class="tg-refinesearcharea">
-                                    <div class="tg-heading-border tg-small">
-                                        <h2>refine search</h2>
-                                    </div>
-                                    @Html.Partial("_SearchNavigation", Model.SearchModel)
-                                </div>
-                            </div>
-                        </div>
+                    <form>
+                        @Html.Partial("_SearchNavigation", (SearchModel)ViewBag.SearchModel)
                         <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
                             <div class="tg-doctors-list tg-haslayout">
-                                <div class="tg-doclisthead">
+                                @*<div class="tg-doclisthead">
                                     <div class="row">
                                         <div class="col-md-4 col-sm-4 col-xs-6">
                                             <div class="form-group">
@@ -46,20 +98,12 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-4 col-xs-12">
-                                            <ul class="tg-listing-views">
-                                                <li class=""><a href="javascript:;" class="grid"><i class="fa fa-th-large"></i></a></li>
-                                                <li class="active"><a href="javascript:;" class="list"><i class="fa fa-th-list"></i></a></li>
-                                            </ul>
-                                        </div>
                                     </div>
-                                </div>
-                                @Html.Partial("_DoctorBox", Model.doctorsModel)
-
-
+                                </div>*@
+                                @Html.Partial("_DoctorBox", Model)
                             </div>
                         </div>
-                        </form>
+                    </form>
                 </div>
             </div>
         </div>

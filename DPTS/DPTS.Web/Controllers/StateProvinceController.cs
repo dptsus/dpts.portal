@@ -51,12 +51,12 @@ namespace DPTS.Web.Controllers
         #region Methods
         public ActionResult List()
         {
-            var countries = _stateProvinceService.GetAllStateProvince(true);
+            var countries = _stateProvinceService.GetAllStateProvince();
             var model = countries.Select(c => new StateProvinceViewModel
             {
                 Id = c.Id,
                 Name = c.Name,
-                CountryName = _countryService.GetCountryById(c.Id).Name,
+                CountryName = _countryService.GetCountryById(c.CountryId).Name,
                 DisplayOrder = c.DisplayOrder,
                 Abbreviation = c.Abbreviation,
                 Published = c.Published,

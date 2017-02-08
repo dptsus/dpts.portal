@@ -6,7 +6,7 @@ using DPTS.Domain.Core;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Entities;
 
-namespace DPTS.Services.Speciality
+namespace DPTS.Domain.Speciality
 {
     public class SpecialityService : ISpecialityService
     {

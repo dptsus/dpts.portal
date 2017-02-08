@@ -1,29 +1,20 @@
-using System;
-using System.Web;
-using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
-using DPTS.Domain.Core.Appointment;
 using DPTS.Domain.Core.Country;
-using DPTS.Domain.Core.DefaultNotificationSettings;
 using DPTS.Domain.Core.Doctors;
-using DPTS.Domain.Core.EmailCategory;
+using DPTS.Domain.Core.Notification;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Core.SubSpeciality;
-using DPTS.Services;
-using DPTS.Services.Address;
-using DPTS.Services.Appointment;
-using DPTS.Services.Country;
-using DPTS.Services.DefaultNotificationSettings;
+using DPTS.Domain.Address;
+using DPTS.Domain.Core.ExportImport;
+using DPTS.Domain.Country;
+using DPTS.Domain.Notification;
+using DPTS.Domain.Speciality;
+using DPTS.Domain.StateProvince;
+using DPTS.Domain.SubSpeciality;
 using DPTS.Services.Doctors;
-using DPTS.Services.EmailCategory;
-using DPTS.Services.Speciality;
-using DPTS.Services.StateProvince;
-using DPTS.Services.SubSpeciality;
+using DPTS.Services.ExportImport;
 using DPTS.Web;
-using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using Ninject;
-using Ninject.Web.Common;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof (NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof (NinjectWebCommon), "Stop")]
@@ -38,10 +29,9 @@ namespace DPTS.Web
     using Ninject;
     using Ninject.Web.Common;
     using Domain.Core;
-    using Domain.Entities;
-    using Services;
+    using Domain;
     using Domain.Core.Appointment;
-    using Services.Appointment;
+    using Domain.Appointment;
     using EmailSmsNotifications.IServices;
     using EmailSmsNotifications.Services;
 
@@ -107,6 +97,7 @@ namespace DPTS.Web
             kernel.Bind<IDefaultNotificationSettingsService>().To<DefaultNotificationSettingsService>();
             kernel.Bind<ISmsNotificationService>().To<SmsNotificationService>();
             kernel.Bind<IEmailNotificationService>().To<EmailNotificationService>();
+            kernel.Bind<IImportManager>().To<ImportManager>();
         }
     }
 }

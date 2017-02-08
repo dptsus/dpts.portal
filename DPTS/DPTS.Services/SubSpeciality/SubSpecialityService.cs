@@ -4,7 +4,7 @@ using System.Linq;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.SubSpeciality;
 
-namespace DPTS.Services.SubSpeciality
+namespace DPTS.Domain.SubSpeciality
 {
     /// <summary>
     /// Sub Speci service

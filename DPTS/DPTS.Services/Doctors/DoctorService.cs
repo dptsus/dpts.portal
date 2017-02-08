@@ -77,44 +77,93 @@ namespace DPTS.Services.Doctors
         {
             return null;
         }
-        public IList<Doctor> GetAllDoctors()
+        //public IList<Doctor> GetAllDoctors()
+        //{
+        //    var query = from d in _doctorRepository.Table
+        //                select d;
+        //    return query.ToList();
+        //}
+
+        public IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount)
         {
+
             var query = from d in _doctorRepository.Table
-                        select d;
-            return query.ToList();
+                select d;
+
+            var doctors = (from d in _doctorRepository.Table
+                         orderby d.DateUpdated descending
+                         select d)
+                        .Skip(itemsPerPage * page).Take(itemsPerPage)
+                          .ToList();
+            //foreach (var doc in docLst.Doctors)
+            //{
+            //    var address = from d in _address.Table
+            //             join m in _addressMapping.Table on d.Id equals m.AddressId
+            //             where m.UserId == doc.DoctorId
+            //             select d;
+            //    docLst.Address = address.FirstOrDefault();
+            //}
+
+            totalCount = query.Count();//return the number of pages
+            return doctors;//the query is now already executed, it is a subset of all the orders.
         }
 
-        public IList<Doctor> SearchDoctor(string keywords = null, int specialityId = 0, string directoryType = null,string zipcode = null)
+        public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
+            string zipcode = null,
+            int specialityId = 0)
         {
             var query = from d in _doctorRepository.Table
                         select d;
 
           //  query = query.Where(p => !p.Deleted && p.IsActive);
 
-            if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
-                return null;
-
+          //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
+              //  return null;
 
             if(!string.IsNullOrWhiteSpace(zipcode))
             {
-                query = from d in _context.Doctors
+                decimal myDec;
+                var result = decimal.TryParse(zipcode, out myDec);
+                if (result)
+                {
+                    query = from d in _context.Doctors
                         join a in _context.AddressMappings on d.DoctorId equals a.UserId
                         join m in _context.Addresses on a.AddressId equals m.Id
                         where m.ZipPostalCode == zipcode
                         select d;
-             }
+                }
+                else
+                {
+                    string[] strArray = zipcode.Split(',');
+
+                    //foreach (object obj in strArray)
+                    //{
+                    //    //your insert query
+                    //}
+                    query = from d in _context.Doctors
+                            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                            join m in _context.Addresses on a.AddressId equals m.Id
+                            where m.City.ToLower() == strArray.FirstOrDefault().ToLower()
+                            select d;
+                }
+            }
             if (specialityId > 0)
             {
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
             }
-            if (!string.IsNullOrWhiteSpace(keywords))
-            {
-                query = query.Where(d => d.ShortProfile.Contains(keywords)
-                         || d.Subscription.Contains(keywords) || d.Qualifications.Contains(keywords));
-            }
+            //if (!string.IsNullOrWhiteSpace(keywords))
+            //{
+            //    query = query.Where(d => d.ShortProfile.Contains(keywords)
+            //             || d.Subscription.Contains(keywords) || d.Qualifications.Contains(keywords));
+            //}
 
-            return query.ToList();
+            var pageQuery =  query.OrderBy(d => d.DateUpdated)
+                .Skip(itemsPerPage * page).Take(itemsPerPage)
+                         .ToList();
 
+            totalCount = query.Count();
+
+            return pageQuery;
         }
 
         #endregion

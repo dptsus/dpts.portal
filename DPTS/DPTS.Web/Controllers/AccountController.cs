@@ -12,6 +12,9 @@ using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Entities;
 using DPTS.EmailSmsNotifications.ServiceModels;
 using DPTS.EmailSmsNotifications.IServices;
+using reCaptcha;
+using System.Configuration;
+using System.Net;
 
 namespace DPTS.Web.Controllers
 {
@@ -55,9 +58,11 @@ namespace DPTS.Web.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Recaptcha = ReCaptcha.GetHtml(ConfigurationManager.AppSettings["ReCaptcha:SiteKey"]);
+            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
             return View();
         }
-         
+
         [AllowAnonymous]
         public ActionResult Unsubscribe(string id)
         {
@@ -78,7 +83,7 @@ namespace DPTS.Web.Controllers
                 throw;
             }
             return View();
-        } 
+        }
         [AllowAnonymous]
         public ActionResult Subscribe(string id)
         {
@@ -97,7 +102,7 @@ namespace DPTS.Web.Controllers
                 ViewBag.UserId = id;
                 ViewBag.Message = "Subscribe unsuccessfully";
                 throw;
-            } 
+            }
             return View();
         }
 
@@ -108,31 +113,56 @@ namespace DPTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+
+            try
             {
-                ViewBag.ReturnUrl = returnUrl;
+                if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
+                {
+
+                    if (!ModelState.IsValid)
+                    {
+                        ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                        ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+
+                        ViewBag.ReturnUrl = returnUrl;
+                        return View(model);
+                    }
+
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    var result =
+                        await
+                            SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    switch (result)
+                    {
+                        case SignInStatus.Success:
+                            return RedirectToLocal(returnUrl);
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, model.RememberMe });
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+                            ViewBag.ReturnUrl = returnUrl;
+                            return View(model);
+                    }
+
+                }
+
+
+                ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+
+                ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
                 return View(model);
             }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result =
-                await
-                    SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            switch (result)
+            catch (Exception)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, model.RememberMe});
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    ViewBag.ReturnUrl = returnUrl;
-                    return View(model);
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
+
         }
 
         //
@@ -203,6 +233,8 @@ namespace DPTS.Web.Controllers
         public ActionResult Register(string returnUrl)
         {
             var model = new RegisterViewModel {UserRoleList = GetUserTypeList()};
+            ViewBag.Recaptcha = ReCaptcha.GetHtml(ConfigurationManager.AppSettings["ReCaptcha:SiteKey"]);
+            ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -214,24 +246,38 @@ namespace DPTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel model, string returnUrl)
         {
-            if (model.Role == "0" && model.UserType == "professional")
-                ModelState.AddModelError("", "Select user type");
-
-            if (ModelState.IsValid)
+            try
             {
-                SmsNotificationModel sms = new SmsNotificationModel();
-                sms.numbers = model.PhoneNumber;
-                sms.route = 4; //route 4 is for transactional sms
-                sms.senderId = "DOCPTS";
-                Session["otp"] = _smsService.GenerateOTP();
-                sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
-                _smsService.SendSms(sms);
-                TempData["regmodel"] = model;
-                return RedirectToAction("ConfirmRegistration", "Account");
+                if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
+                {
+                    if (model.Role == "0" && model.UserType == "professional")
+                        ModelState.AddModelError("", "Select user type");
+
+                    if (ModelState.IsValid)
+                    {
+                        SmsNotificationModel sms = new SmsNotificationModel();
+                        sms.numbers = model.PhoneNumber;
+                        sms.route = 4; //route 4 is for transactional sms
+                        sms.senderId = "DOCPTS";
+                        Session["otp"] = _smsService.GenerateOTP();
+                        sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                        _smsService.SendSms(sms);
+                        TempData["regmodel"] = model;
+                        return RedirectToAction("ConfirmRegistration", "Account");
+                    }
+                }
+
+                ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+
+                ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+                model.UserRoleList = GetUserTypeList();
+
+                return View(model);
             }
-            model.UserRoleList = GetUserTypeList();
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpGet]
@@ -240,6 +286,8 @@ namespace DPTS.Web.Controllers
         {
             RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
             ConfirmRegisterViewModel model = new ConfirmRegisterViewModel {RegistrationDetails = regModel};
+            //if u want to otp then comment follws line
+           // model.CnfirmOTP = Session["otp"].ToString();
             return View(model);
         }
 
@@ -248,7 +296,7 @@ namespace DPTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model, string returnUrl)
         {
-            
+
             if (ModelState.IsValid)
             {
                 if (model.CnfirmOTP != Session["otp"].ToString())
@@ -256,7 +304,7 @@ namespace DPTS.Web.Controllers
                     ViewBag.confirmFail = "Invalid OTP!!";
                     return View(model);
                 }
-                
+
                 var user = new ApplicationUser
                 {
                     UserName = model.RegistrationDetails.Email,
@@ -264,6 +312,8 @@ namespace DPTS.Web.Controllers
                     LastName = model.RegistrationDetails.LastName,
                     FirstName = model.RegistrationDetails.FirstName,
                     LastIpAddress = "192.168.225.1",
+                    IsEmailUnsubscribed = false,
+                    IsPhoneNumberUnsubscribed =true,
                     LastLoginDateUtc = DateTime.UtcNow,
                     CreatedOnUtc = DateTime.UtcNow,
                     PhoneNumber = model.RegistrationDetails.PhoneNumber,
@@ -515,7 +565,7 @@ namespace DPTS.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Search", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         //
