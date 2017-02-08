@@ -45,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=8.0.5.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.8.0.5.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
@@ -250,12 +254,12 @@
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\BulkDataController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\EmailCategoryController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ExportImportsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -748,7 +752,7 @@
     <Content Include="Views\Home\Doctors.cshtml" />
     <Content Include="Views\Account\Unsubscribe.cshtml" />
     <Content Include="Views\Account\Subscribe.cshtml" />
-    <Content Include="Views\BulkData\OnBoardDoctors.cshtml" />
+    <Content Include="Views\ExportImports\ImportDoctor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

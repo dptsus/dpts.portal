@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DPTS.Domain.Core.Country;
 using DPTS.Domain.Core.ExportImport;
-using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Entities;
-using System.Web;
 using DPTS.Data.Context;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Services.ExportImport.Help;
@@ -24,21 +19,17 @@ namespace DPTS.Services.ExportImport
         #region Fields
         private readonly IDoctorService _doctorService;
         private readonly DPTSDbContext _context;
-
         #endregion
 
         #region Ctor
-
         public ImportManager(IDoctorService doctorService)
         {
             this._doctorService = doctorService;
             _context =new DPTSDbContext();
         }
-
         #endregion
 
         #region Utilities
-
         protected virtual int GetColumnIndex(string[] properties, string columnName)
         {
             if (properties == null)
@@ -70,24 +61,28 @@ namespace DPTS.Services.ExportImport
         /// Import doctors from XLSX file
         /// </summary>
         /// <param name="stream">Stream</param>
-        public virtual void ImportDoctorsFromXlsx(Stream stream)
+        /// <param name="userId"></param>
+        /// <param name="iRow"></param>
+        public virtual void ImportDoctorsFromXlsx(Stream stream,string userId,int iRow)
         {
             //property array
             var properties = new[]
             {
-                new PropertyByName<AspNetUser>("FirstName"),
-                new PropertyByName<AspNetUser>("LastName"),
-                new PropertyByName<AspNetUser>("Email"),
-                new PropertyByName<AspNetUser>("IsEmailUnsubscribed"),
-                new PropertyByName<AspNetUser>("IsPhoneNumberUnsubscribed"),
-                new PropertyByName<AspNetUser>("IsEmailUnsubscribed"),
-              //  new PropertyByName<Doctor>("LastLoginDateUtc"),
-              //  new PropertyByName<Doctor>("CreatedOnUtc"),
-                new PropertyByName<AspNetUser>("PhoneNumber"),
-                new PropertyByName<AspNetUser>("TwoFactorEnabled"),
+                       new PropertyByName<Doctor>("FirstName"),
+                        new PropertyByName<Doctor>("LastName"),
+                        new PropertyByName<Doctor>("Email"),
+                        new PropertyByName<Doctor>("PhoneNumber"),
+
+                        new PropertyByName<Doctor>("Gender"),
+                        new PropertyByName<Doctor>("ShortProfile"),
+                        new PropertyByName<Doctor>("Qualifications"),
+                        new PropertyByName<Doctor>("YearsOfExperience"),
+                        new PropertyByName<Doctor>("RegistrationNumber"),
+                        new PropertyByName<Doctor>("DateOfBirth"),
+
             };
 
-            var manager = new PropertyManager<AspNetUser>(properties);
+            var manager = new PropertyManager<Doctor>(properties);
 
             using (var xlPackage = new ExcelPackage(stream))
             {
@@ -96,53 +91,29 @@ namespace DPTS.Services.ExportImport
                 if (worksheet == null)
                     throw new DptsException("No worksheet found");
 
-                var iRow = 2;
-
-                while (true)
+                if (userId != null && iRow > 0)
                 {
                     var allColumnsAreEmpty = manager.GetProperties
                         .Select(property => worksheet.Cells[iRow, property.PropertyOrderPosition])
                         .All(cell => cell == null || cell.Value == null || String.IsNullOrEmpty(cell.Value.ToString()));
 
                     if (allColumnsAreEmpty)
-                        break;
+                        throw new DptsException("column are empty");
 
                     manager.ReadFromXlsx(worksheet, iRow);
 
-                    //manager.GetProperty("Email").ToString()
-
-                    var doctors =
-                        _context.AspNetUsers
-                            .FirstOrDefault(d => d.Email.Equals(manager.GetProperty("Email").ToString()));
-
-                    var isNew = doctors == null;
-
-                    doctors = doctors ?? new AspNetUser();
-
-                    if (isNew)
-                        doctors.CreatedOnUtc = DateTime.UtcNow;
-
-                    doctors.FirstName = manager.GetProperty("FirstName").StringValue;
-                    doctors.LastName = manager.GetProperty("LastName").StringValue;
-                    doctors.Email = manager.GetProperty("Email").StringValue;
-                    doctors.IsEmailUnsubscribed = manager.GetProperty("IsEmailUnsubscribed").BooleanValue;
-                    doctors.IsPhoneNumberUnsubscribed = manager.GetProperty("IsPhoneNumberUnsubscribed").BooleanValue;
-                    doctors.TwoFactorEnabled = manager.GetProperty("TwoFactorEnabled").BooleanValue;
-                    doctors.LastLoginDateUtc = DateTime.UtcNow;
-                    doctors.Email = manager.GetProperty("PhoneNumber").StringValue;
-                    
-                    if (isNew)
+                    var doctor = new Doctor
                     {
-                        _context.AspNetUsers.Add(doctors);
-                        _context.SaveChanges();
-                    }
-                    else
-                    {
-                        _context.Entry(doctors).State = System.Data.Entity.EntityState.Modified;
-                        _context.SaveChanges();
-                    }
+                        DoctorId = userId,
+                        Gender = manager.GetProperty("Gender").StringValue,
+                        ShortProfile = manager.GetProperty("ShortProfile").StringValue,
+                        Qualifications = manager.GetProperty("Qualifications").StringValue,
+                        YearsOfExperience = manager.GetProperty("YearsOfExperience").IntValue,
+                        RegistrationNumber = manager.GetProperty("RegistrationNumber").StringValue,
+                        DateOfBirth = manager.GetProperty("DateOfBirth").StringValue
+                    };
 
-                    iRow++;
+                    _doctorService.AddDoctor(doctor);
                 }
             }
         }

@@ -16,6 +16,8 @@ namespace DPTS.Domain.Core.ExportImport
         /// Import products from XLSX file
         /// </summary>
         /// <param name="stream">Stream</param>
-        void ImportDoctorsFromXlsx(Stream stream);
+        /// <param name="userId"></param>
+        /// <param name="iRow"></param>
+        void ImportDoctorsFromXlsx(Stream stream,string userId,int iRow);
     }
 }
