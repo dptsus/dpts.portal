@@ -15,63 +15,87 @@
                     <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signup-formarea">
                         @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
                         {
-                        @Html.AntiForgeryToken()
-                        <fieldset>
-                            <div class="form-group">
-                                <div class="tg-radiobox user-selection active-user-type active">
-                                    <input type="radio" checked="checked" name="UserType" value="professional" id="professional">
-                                    <label for="professional">Professional</label>
+                            @Html.AntiForgeryToken()
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="tg-radiobox user-selection active-user-type active">
+                                        <input type="radio" checked="checked" name="UserType" value="professional" id="professional">
+                                        <label for="professional">Professional</label>
+                                    </div>
+                                    <div class="tg-radiobox user-selection active-user-type visitor-type active">
+                                        <input type="radio" name="UserType" value="visitor" id="visitor">
+                                        <label for="visitor">Visitor</label>
+                                    </div>
                                 </div>
-                                <div class="tg-radiobox user-selection active-user-type visitor-type active">
-                                    <input type="radio" name="UserType" value="visitor" id="visitor">
-                                    <label for="visitor">Visitor</label>
+                                <div class="form-group user-types">
+                                    @Html.DropDownListFor(model => model.Role, Model.UserRoleList)
+                                    @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            <div class="form-group user-types">
-                                @Html.DropDownListFor(model => model.Role, Model.UserRoleList)
-                                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
-                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
-                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
-                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
-                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group tg-checkbox">
-                                <input name="terms" type="hidden" value="0">
-                                <label>
-                                    <input name="terms" id="terms" class="form-control" type="checkbox">
-                                    I agree with the terms and conditions
-                                </label>
-                            </div>
-                            <div class="domain-captcha">
-                                @ReCaptcha.GetHtml(@ViewBag.publicKey)
-                                @if (ViewBag.RecaptchaLastErrors != null)
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group tg-checkbox">
+                                    <input name="terms" type="hidden" value="0">
+                                    <label>
+                                        <input name="terms" id="terms" class="form-control" type="checkbox">
+                                        I agree with the terms and conditions
+                                    </label>
+                                </div>
+                                <div class="domain-captcha">
+                                    @ReCaptcha.GetHtml(@ViewBag.publicKey)
+                                    @if (ViewBag.RecaptchaLastErrors != null)
                                 {
-                                    <div>Oops! Invalid Captcha</div>
+                                <div>Oops! Invalid Captcha</div>
                                 }
+                                </div>
+                                <input type="button" class="tg-btn tg-btn-lg  do-register-button"
+                                       onclick="javascript:return sendOTP(@Model.PhoneNumber);" value="Register" />
+                            </fieldset>
+                            <div class="modal fade" id="otpModal" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" style="margin-right:69%;color:black">Confirm OTP</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <center>
+                                                <p style="text-align:center;color:black;">Please enter the OTP</p>
+                                            </center>
+                                            <div class="form-group">
+                                                @Html.TextBoxFor(m => m.OTP, new { @class = "form-control", @placeholder = "123456" })
+                                                @Html.ValidationMessageFor(model => model.OTP, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-default" href="javascript:document.getElementById('Register').submit()">Confirm</a>
+                                            <input type="button" class="tg-btn tg-btn-lg  do-register-button" onclick="javascript:return AcceptTermAndcondition();" value="Register" />
+                                            <button type="button" id="cnfrmLogout" class="btn btn-default" data-dismiss="modal">Re-Send</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="button" class="tg-btn tg-btn-lg  do-register-button" 
-                                   onclick="javascript:return sendOTP();" value="Register" />
-                        </fieldset>
                         }
                     </div>
                 </div>
@@ -79,31 +103,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="otpModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" style="margin-right:69%;color:black">Confirm OTP</h4>
-                </div>
-                <div class="modal-body">
-                    <center>
-                        <p style="text-align:center;color:black;">Please enter the OTP</p>
-                    </center>
-                    <div class="form-group">
-                        <input />
-                        @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "123456" })
-                        @Html.ValidationMessageFor(model => model.CnfirmOTP, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a class="btn btn-default" href="javascript:document.getElementById('Register').submit()">Confirm</a>
-                    <input type="button" class="tg-btn tg-btn-lg  do-register-button" onclick="javascript:return AcceptTermAndcondition();" value="Register" />
-                    <button type="button" id="cnfrmLogout" class="btn btn-default" data-dismiss="modal">Re-Send</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 </main>
 @Scripts.Render("~/bundles/jquery")
@@ -128,6 +128,29 @@
             alert("Please accept term and condition");
             return false;
         }
+    }
+
+    function sendOTP(phoneNumber) {
+        var postData = {
+            phoneNumber: phoneNumber
+        };
+
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '@Url.Action("SendOTP", "Account")',
+            data: postData,
+            dataType: 'json',
+            success: function (data) {
+                debugger;
+                location.href = data.redirect;
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to send otp');
+            }
+        });
+
+        $("#otpModal").Show();
     }
 </script>
 

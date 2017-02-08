@@ -244,7 +244,7 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model, string returnUrl)
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
         {
             try
             {
@@ -255,12 +255,56 @@ namespace DPTS.Web.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        //send otp
-                        Session["otp"] = _registrationNotificationService.SendRegistrationOTP(model.PhoneNumber);
+                        if (model.OTP != Session["otp"].ToString())
+                        {
+                            ViewBag.confirmFail = "Invalid OTP!!";
+                            return View(model);
+                        }
 
-                        TempData["regmodel"] = model;
-                        return RedirectToAction("ConfirmRegistration", "Account");
+                        var user = new ApplicationUser
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            LastName = model.LastName,
+                            FirstName = model.FirstName,
+                            LastIpAddress = "192.168.225.1",
+                            IsEmailUnsubscribed = false,
+                            IsPhoneNumberUnsubscribed = true,
+                            LastLoginDateUtc = DateTime.UtcNow,
+                            CreatedOnUtc = DateTime.UtcNow,
+                            PhoneNumber = model.PhoneNumber,
+                            PhoneNumberConfirmed = true
+                        };
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+                        {
+                            //send appointment notification
+                            _registrationNotificationService.SendRegistrationNotification(model.Email);
+
+                            if (model.UserType == "professional")
+                            {
+                                await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+                                var doctor = new Doctor { DoctorId = user.Id };
+                                _doctorService.AddDoctor(doctor);
+                            }
+
+                            await SignInManager.SignInAsync(user, false, false);
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        ViewBag.ReturnUrl = returnUrl;
+                        AddErrors(result);
                     }
+                    return View(model);
+
+                    //if (ModelState.IsValid)
+                    //{
+                    //    //send otp
+                    //    Session["otp"] = _registrationNotificationService.SendRegistrationOTP(model.PhoneNumber);
+
+                    //    TempData["regmodel"] = model;
+                    //    return RedirectToAction("ConfirmRegistration", "Account");
+                    //}
                 }
 
                 ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
@@ -336,6 +380,21 @@ namespace DPTS.Web.Controllers
                 AddErrors(result);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SendOTP(string phoneNumber)
+        {
+            try
+            {
+                //send otp
+                Session["otp"] = _registrationNotificationService.SendRegistrationOTP(phoneNumber);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
+            return HttpNotFound();
         }
 
         //

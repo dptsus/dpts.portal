@@ -111,6 +111,9 @@ namespace DPTS.Web.Models
 
         public DateTime? LastLoginDateUtc { get; set; }
 
+        [Required]
+        [StringLength(6, ErrorMessage ="OTP {0} must be at least {2} characters long.", MinimumLength =6)]
+        public string OTP { get; set; }
     }
 
     public class ConfirmRegisterViewModel
