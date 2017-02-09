@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,7 +10,6 @@ using DPTS.Domain.Entities;
 using DPTS.Services;
 using DPTS.Services.ExportImport.Help;
 using DPTS.Web.Models;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using OfficeOpenXml;
 
@@ -20,12 +17,13 @@ namespace DPTS.Web.Controllers
 {
     public class ExportImportsController : Controller
     {
-
         #region Feilds
+
         private ApplicationUserManager _userManager;
         private readonly IImportManager _importManager;
         private readonly IDoctorService _doctorService;
         private readonly DPTSDbContext _context;
+
         #endregion
 
         #region Contructor
@@ -38,6 +36,7 @@ namespace DPTS.Web.Controllers
             _context = context;
             _doctorService = doctorService;
         }
+
         #endregion
 
         #region Utilities
@@ -62,6 +61,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Methods
+
         [HttpGet]
         public async Task<ActionResult> ImportDoctor()
         {
@@ -99,7 +99,10 @@ namespace DPTS.Web.Controllers
                         {
                             var allColumnsAreEmpty = manager.GetProperties
                                 .Select(property => worksheet.Cells[iRow, property.PropertyOrderPosition])
-                                .All(cell => cell == null || cell.Value == null || String.IsNullOrEmpty(cell.Value.ToString()));
+                                .All(
+                                    cell =>
+                                        cell == null || cell.Value == null ||
+                                        String.IsNullOrEmpty(cell.Value.ToString()));
 
                             if (allColumnsAreEmpty)
                                 break;
@@ -166,7 +169,7 @@ namespace DPTS.Web.Controllers
                 return null;
             }
         }
-        #endregion
 
+        #endregion
     }
 }

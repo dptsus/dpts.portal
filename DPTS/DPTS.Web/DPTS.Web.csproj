@@ -242,6 +242,8 @@
   <ItemGroup>
     <Compile Include="AppFilters\ExceptionLogingAttribute.cs" />
     <Compile Include="AppFilters\LogApplicationAttribute.cs" />
+    <Compile Include="AppInfra\Constants.cs" />
+    <Compile Include="AppInfra\Enum.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
