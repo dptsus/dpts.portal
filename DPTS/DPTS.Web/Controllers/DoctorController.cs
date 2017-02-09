@@ -720,33 +720,36 @@ namespace DPTS.Web.Controllers
 
         private void GetScheduleByDay(FormCollection form, string day)
         {
-            var lowerDay = day.ToLower();
-            var lowerDayStart = day.ToLower() + "_start";
-            var lowerDayEnd = day.ToLower() + "_end";
-            if (!string.IsNullOrWhiteSpace(form[lowerDayStart]) &&
-                !string.IsNullOrWhiteSpace(form[lowerDayEnd]))
+            if (!string.IsNullOrWhiteSpace(day))
             {
-                var schedule =
-                    _scheduleService
-                        .GetScheduleByDoctorId(User.Identity.GetUserId())
-                        .FirstOrDefault(s => s.Day.Equals(day));
+                var lowerDay = day.ToLower();
+                var lowerDayStart = day.ToLower() + "_start";
+                var lowerDayEnd = day.ToLower() + "_end";
+                if (!string.IsNullOrWhiteSpace(form[lowerDayStart]) &&
+                    !string.IsNullOrWhiteSpace(form[lowerDayEnd]))
+                {
+                    var schedule =
+                        _scheduleService
+                            .GetScheduleByDoctorId(User.Identity.GetUserId())
+                            .FirstOrDefault(s => s.Day.Equals(day));
 
-                if (schedule == null)
-                {
-                    var model = new Schedule
+                    if (schedule == null)
                     {
-                        Day = lowerDay,
-                        DoctorId = User.Identity.GetUserId(),
-                        StartTime = form[lowerDayStart].Trim(),
-                        EndTime = form[lowerDayEnd].Trim()
-                    };
-                    _scheduleService.InsertSchedule(model);
-                }
-                else
-                {
-                    schedule.StartTime = form[lowerDayStart].Trim();
-                    schedule.EndTime = form[lowerDayEnd].Trim();
-                    _scheduleService.UpdateSchedule(schedule);
+                        var model = new Schedule
+                        {
+                            Day = lowerDay,
+                            DoctorId = User.Identity.GetUserId(),
+                            StartTime = form[lowerDayStart].Trim(),
+                            EndTime = form[lowerDayEnd].Trim()
+                        };
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        schedule.StartTime = form[lowerDayStart].Trim();
+                        schedule.EndTime = form[lowerDayEnd].Trim();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
                 }
             }
         }
