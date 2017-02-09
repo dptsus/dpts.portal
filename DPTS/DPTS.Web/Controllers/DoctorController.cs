@@ -577,7 +577,6 @@ namespace DPTS.Web.Controllers
             return View();
         }
 
-
         public ActionResult DoctorSchedules()
         {
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
@@ -593,93 +592,29 @@ namespace DPTS.Web.Controllers
                     switch (day)
                     {
                         case AppInfra.DayOfWeek.Sunday:
-                            var scheduleSunday = schedule.FirstOrDefault(s => s.Day.Equals("Sunday"));
-                            if (scheduleSunday == null || !scheduleSunday.Day.Equals("Sunday"))
-                                obj.Day = "Sunday";
-                            else
-                            {
-                                obj.DoctorId = scheduleSunday.DoctorId;
-                                obj.Day = scheduleSunday.Day;
-                                obj.EndTime = scheduleSunday.EndTime;
-                                obj.StartTime = scheduleSunday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Sunday");
                             break;
                         case AppInfra.DayOfWeek.Monday:
-                            var scheduleMonday = schedule.FirstOrDefault(s => s.Day.Equals("Monday"));
-                            if (scheduleMonday == null || !scheduleMonday.Day.Equals("Monday"))
-                                obj.Day = "Monday";
-                            else
-                            {
-                                obj.DoctorId = scheduleMonday.DoctorId;
-                                obj.Day = scheduleMonday.Day;
-                                obj.EndTime = scheduleMonday.EndTime;
-                                obj.StartTime = scheduleMonday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Monday");
                             break;
                         case AppInfra.DayOfWeek.Tuesday:
-                            var scheduleTuesday = schedule.FirstOrDefault(s => s.Day.Equals("Tuesday"));
-                            if (scheduleTuesday == null || !scheduleTuesday.Day.Equals("Tuesday"))
-                                obj.Day = "Tuesday";
-                            else
-                            {
-                                obj.DoctorId = scheduleTuesday.DoctorId;
-                                obj.Day = scheduleTuesday.Day;
-                                obj.EndTime = scheduleTuesday.EndTime;
-                                obj.StartTime = scheduleTuesday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Tuesday");
                             break;
                         case AppInfra.DayOfWeek.Wednesday:
-                            var scheduleWednesday = schedule.FirstOrDefault(s => s.Day.Equals("Wednesday"));
-                            if (scheduleWednesday == null || !scheduleWednesday.Day.Equals("Wednesday"))
-                                obj.Day = "Wednesday";
-                            else
-                            {
-                                obj.DoctorId = scheduleWednesday.DoctorId;
-                                obj.Day = scheduleWednesday.Day;
-                                obj.EndTime = scheduleWednesday.EndTime;
-                                obj.StartTime = scheduleWednesday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Wednesday");
                             break;
                         case AppInfra.DayOfWeek.Thursday:
-                            var scheduleThursday = schedule.FirstOrDefault(s => s.Day.Equals("Thursday"));
-                            if (scheduleThursday == null || !scheduleThursday.Day.Equals("Thursday"))
-                                obj.Day = "Thursday";
-                            else
-                            {
-                                obj.DoctorId = scheduleThursday.DoctorId;
-                                obj.Day = scheduleThursday.Day;
-                                obj.EndTime = scheduleThursday.EndTime;
-                                obj.StartTime = scheduleThursday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Thursday");
                             break;
                         case AppInfra.DayOfWeek.Friday:
-                            var scheduleFriday = schedule.FirstOrDefault(s => s.Day.Equals("Friday"));
-                            if (scheduleFriday == null || !scheduleFriday.Day.Equals("Friday"))
-                                obj.Day = "Friday";
-                            else
-                            {
-                                obj.DoctorId = scheduleFriday.DoctorId;
-                                obj.Day = scheduleFriday.Day;
-                                obj.EndTime = scheduleFriday.EndTime;
-                                obj.StartTime = scheduleFriday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Friday");
                             break;
                         case AppInfra.DayOfWeek.Saturday:
-                            var scheduleSaturday = schedule.FirstOrDefault(s => s.Day.Equals("Saturday"));
-                            if (scheduleSaturday == null || !scheduleSaturday.Day.Equals("Saturday"))
-                                obj.Day = "Saturday";
-                            else
-                            {
-                                obj.DoctorId = scheduleSaturday.DoctorId;
-                                obj.Day = scheduleSaturday.Day;
-                                obj.EndTime = scheduleSaturday.EndTime;
-                                obj.StartTime = scheduleSaturday.StartTime;
-                            }
+                            GetDoctorScheduleByDay(obj, schedule, "Saturday");
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
-
                     lst.Add(obj);
                 }
 
@@ -688,6 +623,20 @@ namespace DPTS.Web.Controllers
             catch
             {
                 return null;
+            }
+        }
+
+        private static void GetDoctorScheduleByDay(SheduleViewModel obj, IList<Schedule> schedule, string day)
+        {
+            var scheduleSunday = schedule?.FirstOrDefault(s => s.Day.Equals(day));
+            if (scheduleSunday == null || !scheduleSunday.Day.Equals(day))
+                obj.Day = day;
+            else
+            {
+                obj.DoctorId = scheduleSunday.DoctorId;
+                obj.Day = scheduleSunday.Day;
+                obj.EndTime = scheduleSunday.EndTime;
+                obj.StartTime = scheduleSunday.StartTime;
             }
         }
 
