@@ -120,14 +120,8 @@ namespace DPTS.Web.Controllers
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            if (ConfigurationManager.AppSettings["MinificationEnabled"] == "true")
-            {
-                filterContext.Controller.ViewBag.MinificationEnabled = ".min";
-            }
-            else
-            {
-                filterContext.Controller.ViewBag.MinificationEnabled = "";
-            }
+            filterContext.Controller.ViewBag.MinificationEnabled =
+                ConfigurationManager.AppSettings["MinificationEnabled"] == "true" ? ".min" : "";
         }
     }
 }

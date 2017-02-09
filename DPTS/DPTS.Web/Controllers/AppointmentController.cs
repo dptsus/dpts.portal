@@ -15,12 +15,15 @@ namespace DPTS.Web.Controllers
     public class AppointmentController : BaseController
     {
         #region Fields
+
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
         private readonly DPTSDbContext _context;
+
         #endregion
 
         #region Contr
+
         public AppointmentController(IDoctorService doctorService,
             IAppointmentService scheduleService)
         {
@@ -32,9 +35,10 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Utilities
+
         private static AppointmentScheduleViewModel GenrateTimeSlots(string startTime,
             string endTime, double duration,
-            IList<AppointmentSchedule> bookedSlots )
+            IList<AppointmentSchedule> bookedSlots)
         {
             try
             {
@@ -61,11 +65,16 @@ namespace DPTS.Web.Controllers
                 }
                 return slots;
             }
-            catch { return null; }
+            catch
+            {
+                return null;
+            }
         }
+
         #endregion
 
         #region Methods
+
         [HttpGet]
         public ActionResult Booking(string doctorId, string selectedDate = null)
         {
@@ -98,10 +107,9 @@ namespace DPTS.Web.Controllers
                 // ignored
             }
             return RedirectToAction("NoSchedule");
-
         }
 
-        public JsonResult BookingScheduleByDate(string slot_date , string doctorId)
+        public JsonResult BookingScheduleByDate(string slot_date, string doctorId)
         {
             var response = new StringBuilder();
             string resultNoResultFound = string.Empty;
@@ -117,7 +125,8 @@ namespace DPTS.Web.Controllers
 
                 string todayDay = DateTime.Parse(slot_date).ToString("dddd");
                 //DateTime.UtcNow.ToString("dddd");
-                var schedule = _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
+                var schedule =
+                    _scheduleService.GetScheduleByDoctorId(doctorId).FirstOrDefault(s => s.Day.Equals(todayDay));
                 if (schedule == null)
                 {
                     return Json(new
@@ -125,19 +134,21 @@ namespace DPTS.Web.Controllers
                         result = resultNoResultFound
                     });
                 }
-                var bookedSlots = _scheduleService.GetAppointmentScheduleByDoctorId(doctorId).Where(s => s.AppointmentDate.Equals(slot_date)).ToList();
+                var bookedSlots =
+                    _scheduleService.GetAppointmentScheduleByDoctorId(doctorId)
+                        .Where(s => s.AppointmentDate.Equals(slot_date))
+                        .ToList();
 
                 bookedSlots =
-                        bookedSlots.Where(
-                            s => s.AppointmentStatus.Name == "Pending" || s.AppointmentStatus.Name == "Booked")
-                            .ToList();
+                    bookedSlots.Where(
+                        s => s.AppointmentStatus.Name == "Pending" || s.AppointmentStatus.Name == "Booked")
+                        .ToList();
 
 
                 var scheduleSlots = GenrateTimeSlots(schedule.StartTime, schedule.EndTime, 20, bookedSlots);
 
-                if(scheduleSlots == null)
+                if (scheduleSlots == null)
                 {
-
                     return Json(new
                     {
                         result = resultNoResultFound
@@ -147,13 +158,14 @@ namespace DPTS.Web.Controllers
                 foreach (var item in scheduleSlots.ScheduleSlotModel)
                 {
                     string repo = string.Empty;
-                    if(item.IsBooked)
+                    if (item.IsBooked)
                     {
                         repo = "<div class=\"tg-doctimeslot tg-booked\">";
                         repo += "<div class=\"tg-box\">";
                         repo += "<div class=\"tg-radio\">";
-                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\" disabled >";
-                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot +
+                                "\" type=\"radio\" name=\"slottime\" disabled >";
+                        repo += "<label for=\"" + item.Slot + "\">" + item.Slot + "</label>";
                         repo += "</div> </div> </div>";
                     }
                     else
@@ -161,8 +173,9 @@ namespace DPTS.Web.Controllers
                         repo = "<div class=\"tg-doctimeslot tg-available\">";
                         repo += "<div class=\"tg-box\">";
                         repo += "<div class=\"tg-radio\">";
-                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot + "\" type=\"radio\" name=\"slottime\">";
-                        repo += "<label for=\"" + item.Slot + "\">"+ item.Slot + "</label>";
+                        repo += "<input id = \"" + item.Slot + "\" value=\"" + item.Slot +
+                                "\" type=\"radio\" name=\"slottime\">";
+                        repo += "<label for=\"" + item.Slot + "\">" + item.Slot + "</label>";
                         repo += "</div> </div> </div>";
                     }
                     response.AppendLine(repo);
@@ -183,7 +196,7 @@ namespace DPTS.Web.Controllers
         {
             if (Command == "next" && !string.IsNullOrWhiteSpace(model.doctorId))
             {
-                return RedirectToAction("VisitorContactDeatils", new { doctorId = model.doctorId });
+                return RedirectToAction("VisitorContactDeatils", new {doctorId = model.doctorId});
             }
             return View();
         }
@@ -207,7 +220,7 @@ namespace DPTS.Web.Controllers
             {
                 return Json(new
                 {
-                    success =1
+                    success = 1
                 });
             }
             var fullName = visitor.FirstName + " " + visitor.LastName;
@@ -218,6 +231,7 @@ namespace DPTS.Web.Controllers
                 username = fullName
             });
         }
+
         public JsonResult PaymentMode()
         {
             return Json(new
@@ -225,11 +239,12 @@ namespace DPTS.Web.Controllers
                 success = 1
             });
         }
+
         //booking_date,"slottime" ,,"subject","username","mobilenumber","useremail","booking_note","payment"
 
         public JsonResult FinishBooking(FormCollection form)
         {
-            if(!string.IsNullOrWhiteSpace(form["booking_date"]) &&
+            if (!string.IsNullOrWhiteSpace(form["booking_date"]) &&
                 !string.IsNullOrWhiteSpace("slottime") &&
                 !string.IsNullOrWhiteSpace("subject") &&
                 !string.IsNullOrWhiteSpace("username") &&
@@ -240,7 +255,7 @@ namespace DPTS.Web.Controllers
                 !string.IsNullOrWhiteSpace("doctorId") &&
                 Request.IsAuthenticated)
             {
-                string statusFlag = "Pending";
+                const string statusFlag = "Pending";
                 var bookingStatus = _scheduleService.GetAppointmentStatusByName(statusFlag);
                 var userId = User.Identity.GetUserId();
 
@@ -266,6 +281,7 @@ namespace DPTS.Web.Controllers
                 result = "fail"
             });
         }
+
         [HttpPost]
         public ActionResult Finish(string Command)
         {
@@ -298,6 +314,7 @@ namespace DPTS.Web.Controllers
             }
             return View();
         }
+
         public JsonResult OpcSaveShipping()
         {
             return Json(new
@@ -305,13 +322,7 @@ namespace DPTS.Web.Controllers
                 action_type = "cancelled"
             });
         }
+
         #endregion
-
-    }
-
-    internal class UpdateSectionJsonModel
-    {
-        public object html { get; set; }
-        public string name { get; set; }
     }
 }

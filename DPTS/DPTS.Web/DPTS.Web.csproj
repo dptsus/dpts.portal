@@ -294,6 +294,7 @@
     <Compile Include="Models\StateProvinceViewModel.cs" />
     <Compile Include="Models\SubSpecialityViewModel.cs" />
     <Compile Include="Models\TempDoctorViewModel.cs" />
+    <Compile Include="Models\UpdateSectionJsonModel.cs" />
     <Compile Include="Models\UploadFilesResult.cs" />
     <Compile Include="Models\VisitorContactDeatilsModel.cs" />
     <Compile Include="Models\VisitorViewModel.cs" />

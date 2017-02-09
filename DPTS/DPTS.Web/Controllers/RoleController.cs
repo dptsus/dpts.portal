@@ -126,14 +126,7 @@ namespace DPTS.Web.Controllers
                         .ToList()
                         .Select(role => new SelectListItem {Value = role.Name.ToString(), Text = role.Name})
                         .ToList();
-                /*if (filter)
-                {
-                    var db = new TxAirportManagerEntities();
-                    ViewBag.Users = from c in db.AspNetRoles
-                                    join o in db.AspNetUsers on c.Id equals o.Id
-                                    select new SelectListItem { Value = o.UserName.ToString(), Text = o.UserName };
-                }
-                else*/
+
                 ViewBag.Users =
                     context.Users.OrderBy(role => role.UserName)
                         .ToList()
@@ -154,8 +147,8 @@ namespace DPTS.Web.Controllers
             try
             {
                 ApplicationUser user =
-                    context.Users.Where(usr => usr.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase))
-                        .FirstOrDefault();
+                    context.Users
+                        .FirstOrDefault(usr => usr.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase));
                 SetPageData();
                 if (user != null)
                 {
@@ -178,8 +171,8 @@ namespace DPTS.Web.Controllers
             try
             {
                 var thisRole =
-                    context.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase))
-                        .FirstOrDefault();
+                    context.Roles
+                        .FirstOrDefault(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase));
                 context.Roles.Remove(thisRole);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -196,8 +189,8 @@ namespace DPTS.Web.Controllers
             try
             {
                 var thisRole =
-                    context.Roles.Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase))
-                        .FirstOrDefault();
+                    context.Roles
+                        .FirstOrDefault(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase));
                 return View(thisRole);
             }
             catch (Exception e)
@@ -249,8 +242,8 @@ namespace DPTS.Web.Controllers
             try
             {
                 ApplicationUser user =
-                    context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase))
-                        .FirstOrDefault();
+                    context.Users
+                        .FirstOrDefault(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase));
 
                 if (UserManager.IsInRole(user.Id, RoleName))
                 {
