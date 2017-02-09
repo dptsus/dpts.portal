@@ -31,6 +31,7 @@ namespace DPTS.Data.Context
         public virtual DbSet<SentEmailHistory> SentEmailHistory { get; set; }
         public virtual DbSet<SentSmsHistory> SentSmsHistory { get; set; }
         public virtual DbSet<ZipCodes> ZipCodes { get; set; }
+        public virtual DbSet<SocialLinkInformation> SocialLinkInformation { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -97,6 +98,13 @@ namespace DPTS.Data.Context
               .HasMany(e => e.Schedules)
               .WithRequired(e => e.Doctor)
               .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Doctor>()
+               .HasMany(e => e.SocialLinkInformation)
+               .WithRequired(e => e.Doctor)
+               .HasForeignKey(e => e.DoctorId)
+               .WillCascadeOnDelete(false);
+
         }
     }
 }

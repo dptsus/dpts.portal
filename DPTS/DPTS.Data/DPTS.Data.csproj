@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201702021649475_createZipCodeTable.Designer.cs">
       <DependentUpon>201702021649475_createZipCodeTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702090207407_CreateSocialLinksInfo.cs" />
+    <Compile Include="Migrations\201702090207407_CreateSocialLinksInfo.Designer.cs">
+      <DependentUpon>201702090207407_CreateSocialLinksInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +82,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702021649475_createZipCodeTable.resx">
       <DependentUpon>201702021649475_createZipCodeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702090207407_CreateSocialLinksInfo.resx">
+      <DependentUpon>201702090207407_CreateSocialLinksInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

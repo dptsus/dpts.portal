@@ -73,6 +73,7 @@
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Doctor.cs" />
     <Compile Include="Entities\Schedule.cs" />
+    <Compile Include="Entities\SocialLinkInformation.cs" />
     <Compile Include="Entities\SpecialityMapping.cs" />
     <Compile Include="Entities\Gender.cs" />
     <Compile Include="Entities\Speciality.cs" />
