@@ -149,7 +149,7 @@ namespace DPTS.Web.Controllers
 
             totalCount = searchViewModel.Count;
 
-            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel, pageNumber + 1, 1, totalCount);
+            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel, pageNumber + 1, pageSize, totalCount);
             ViewBag.SearchModel = searchModel;
 
             return View(pageDoctors);
