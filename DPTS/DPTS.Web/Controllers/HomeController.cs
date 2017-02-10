@@ -80,7 +80,6 @@ namespace DPTS.Web.Controllers
         #endregion
 
         public ActionResult Index()
-
         {
             return View();
         }
@@ -113,7 +112,7 @@ namespace DPTS.Web.Controllers
         public ActionResult Search(SearchModel model,int? page)
         {
             var pageNumber = (page ?? 1) - 1;
-            var pageSize = 1;
+            var pageSize = 5;
             int totalCount;
 
             if (model == null)
@@ -131,7 +130,8 @@ namespace DPTS.Web.Controllers
 
             var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,
                 model.geo_location,
-                model.SpecialityId);
+                model.SpecialityId,
+                model.geo_distance);
 
             var searchModel = new SearchModel
             {
@@ -147,14 +147,15 @@ namespace DPTS.Web.Controllers
                 Doctors = doc, Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()
             }).ToList();
 
+            totalCount = searchViewModel.Count;
 
             IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel, pageNumber + 1, 1, totalCount);
             ViewBag.SearchModel = searchModel;
 
             return View(pageDoctors);
         }
-        
-        
+
+
         /// <summary>
         /// Get all doctors
         /// </summary>
@@ -173,7 +174,7 @@ namespace DPTS.Web.Controllers
             }
 
             var pageNumber = (page ?? 1) - 1;
-            var pageSize = 1;
+            var pageSize = 5;
             int totalCount;
 
             var data = _doctorService.GetAllDoctors(pageNumber, pageSize, out totalCount);
@@ -183,7 +184,7 @@ namespace DPTS.Web.Controllers
                 Doctors = doc, Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()
             }).ToList();
 
-            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(doctorViews, pageNumber + 1, 1, totalCount);
+            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(doctorViews, pageNumber + 1, pageSize, totalCount);
 
             var searchModel = new SearchModel
             {
