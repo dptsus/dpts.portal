@@ -47,6 +47,7 @@ function addMarker(a, b) {
         d = new google.maps.Marker({
             position: c,
             map: map,
+            icon:"../Content/wp-content/uploads/2016/12/02.png",
             title: a.title,
             draggable: b
         });
@@ -140,7 +141,7 @@ function showDistancesFromShopsToUser() {
 }
 
 function getDistanceToPosition(a, b) {
-    
+
     var c = "Imperial" == $(".shop-resources").attr("data-units"),
         d = 6371e3,
         e = Math.toRadians(userMarker.position.lat()),
