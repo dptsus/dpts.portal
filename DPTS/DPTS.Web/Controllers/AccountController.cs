@@ -260,8 +260,8 @@ namespace DPTS.Web.Controllers
                         sms.route = 4; //route 4 is for transactional sms
                         sms.senderId = "DOCPTS";
                         Session["otp"] = _smsService.GenerateOTP();
-                        sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
-                        _smsService.SendSms(sms);
+                       // sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
+                       // _smsService.SendSms(sms);
                         TempData["regmodel"] = model;
                         return RedirectToAction("ConfirmRegistration", "Account");
                     }
@@ -287,7 +287,7 @@ namespace DPTS.Web.Controllers
             RegisterViewModel regModel = (RegisterViewModel)TempData["regmodel"];
             ConfirmRegisterViewModel model = new ConfirmRegisterViewModel {RegistrationDetails = regModel};
             //if u want to otp then comment follws line
-           // model.CnfirmOTP = Session["otp"].ToString();
+            model.CnfirmOTP = Session["otp"].ToString();
             return View(model);
         }
 

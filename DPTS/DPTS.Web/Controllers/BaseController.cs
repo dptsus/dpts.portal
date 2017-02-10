@@ -94,34 +94,34 @@ namespace DPTS.Web.Controllers
     public class CompressFilter : ActionFilterAttribute
     {
         //FilterExecutingContext
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            var request = filterContext.HttpContext.Request;
+        //public override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    var request = filterContext.HttpContext.Request;
 
-            var acceptEncoding = request.Headers["Accept-Encoding"];
+        //    var acceptEncoding = request.Headers["Accept-Encoding"];
 
-            if (string.IsNullOrEmpty(acceptEncoding)) return;
+        //    if (string.IsNullOrEmpty(acceptEncoding)) return;
 
-            acceptEncoding = acceptEncoding.ToUpperInvariant();
+        //    acceptEncoding = acceptEncoding.ToUpperInvariant();
 
-            var response = filterContext.HttpContext.Response;
+        //    var response = filterContext.HttpContext.Response;
 
-            if (acceptEncoding.Contains("GZIP"))
-            {
-                response.AppendHeader("Content-encoding", "gzip");
-                response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
-            }
-            else if (acceptEncoding.Contains("DEFLATE"))
-            {
-                response.AppendHeader("Content-encoding", "deflate");
-                response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
-            }
-        }
+        //    if (acceptEncoding.Contains("GZIP"))
+        //    {
+        //        response.AppendHeader("Content-encoding", "gzip");
+        //        response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
+        //    }
+        //    else if (acceptEncoding.Contains("DEFLATE"))
+        //    {
+        //        response.AppendHeader("Content-encoding", "deflate");
+        //        response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);
+        //    }
+        //}
 
-        public override void OnResultExecuting(ResultExecutingContext filterContext)
-        {
-            filterContext.Controller.ViewBag.MinificationEnabled =
-                ConfigurationManager.AppSettings["MinificationEnabled"] == "true" ? ".min" : "";
-        }
+        //public override void OnResultExecuting(ResultExecutingContext filterContext)
+        //{
+        //    filterContext.Controller.ViewBag.MinificationEnabled =
+        //        ConfigurationManager.AppSettings["MinificationEnabled"] == "true" ? ".min" : "";
+        //}
     }
 }

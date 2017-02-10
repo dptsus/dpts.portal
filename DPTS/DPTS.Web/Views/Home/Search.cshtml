@@ -6,6 +6,7 @@
 @{
     ViewBag.Title = "Search | DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var SearchModel = (SearchModel)ViewBag.SearchModel;
 }
 <script src="~/Scripts/searchdoc.js"></script>
 <div id="directions-panel">
@@ -71,36 +72,46 @@
             <div class="container">
                 <div class="row">
                     <form>
-                        @Html.Partial("_SearchNavigation", (SearchModel)ViewBag.SearchModel)
+                        @Html.Partial("_SearchNavigation", SearchModel)
                         <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
                             <div class="tg-doctors-list tg-haslayout">
-                                @*<div class="tg-doclisthead">
-                                    <div class="row">
-                                        <div class="col-md-4 col-sm-4 col-xs-6">
-                                            <div class="form-group">
-                                                <span class="select">
-                                                    <select class="group sort_by" name="sort_by" id="sort_by">
-                                                        <option value="">Sort By</option>
-                                                        <option value="recent">Most recent</option>
-                                                        <option value="featured">Featured</option>
-                                                        <option value="title">Alphabetical</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-sm-4 col-xs-6">
-                                            <div class="form-group">
-                                                <span class="select">
-                                                    <select class="group order_by" name="order" id="order">
-                                                        <option value="ASC">ASC</option>
-                                                        <option value="DESC">DESC</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>*@
+                                                                @*<div class="tg-doclisthead">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        <span class="select">
+                            <select class="group sort_by" name="sort_by" id="sort_by">
+                                <option value="">Sort By</option>
+                                <option value="recent">Most recent</option>
+                                <option value="featured">Featured</option>
+                                <option value="title">Alphabetical</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <div class="form-group">
+                        <span class="select">
+                            <select class="group order_by" name="order" id="order">
+                                <option value="ASC">ASC</option>
+                                <option value="DESC">DESC</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            keyword=&geo_location=Nashik%2C+Maharashtra%2C+India&geo_distance=50&directory_type=&SpecialityId=0
+        </div>*@
                                 @Html.Partial("_DoctorBox", Model)
+                                @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page ,model = (SearchModel)ViewBag.SearchModel }))*@
+                                @Html.PagedListPager(Model, Page => Url.Action("Search", new RouteValueDictionary() {
+                                    { "page", Page },
+                                    { "geo_distance", SearchModel.geo_distance },
+                                    { "geo_location", SearchModel.geo_location },
+                                    { "keyword", SearchModel.keyword },
+                                    { "directory_type", SearchModel.directory_type },
+                                    { "SpecialityId", SearchModel.SpecialityId }
+                                }))
                             </div>
                         </div>
                     </form>

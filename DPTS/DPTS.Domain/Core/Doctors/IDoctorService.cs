@@ -38,7 +38,7 @@ namespace DPTS.Domain.Core.Doctors
         /// <param name="totalCount"></param>
         /// <param name="zipcode"></param>
         /// <returns></returns>
-        IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount, string zipcode = null,int specialityId = 0);
+        IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount, string zipcode = null,int specialityId = 0, double Geo_Distance = 50);
 
         /// <summary>
         /// Paging with get all doctors
