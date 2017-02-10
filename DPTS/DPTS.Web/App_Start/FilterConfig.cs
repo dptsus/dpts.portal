@@ -11,7 +11,7 @@ namespace DPTS.Web
             filters.Add(new HandleErrorAttribute());
             filters.Add(new ExceptionLogingAttribute());
             filters.Add(new LogApplicationAttribute());
-            filters.Add(new CompressFilter()); 
+            //filters.Add(new CompressFilter()); 
         }
     }
 }
