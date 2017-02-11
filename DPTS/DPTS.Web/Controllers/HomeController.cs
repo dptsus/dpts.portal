@@ -123,9 +123,7 @@ namespace DPTS.Web.Controllers
                 model = (SearchModel) TempData["SearchModel"];
             }
 
-            var searchTerms = model.keyword;
-            if (searchTerms == null)
-                searchTerms = "";
+            var searchTerms = model.keyword ?? "";
             searchTerms = searchTerms.Trim();
 
             var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,

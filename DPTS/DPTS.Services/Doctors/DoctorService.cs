@@ -44,72 +44,7 @@ namespace DPTS.Services.Doctors
         }
         #endregion
 
-        #region Methods
-        public void AddDoctor(Doctor doctor)
-        {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
-
-            _doctorRepository.Insert(doctor);
-        }
-
-        public void DeleteDoctor(Doctor doctor)
-        {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
-
-            _doctorRepository.Delete(doctor);
-        }
-
-
-        public Doctor GetDoctorbyId(string doctorId)
-        {
-            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == doctorId);
-        }
-
-        public void UpdateDoctor(Doctor data)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            _doctorRepository.Update(data);
-        }
-        public IList<string> GetDoctorsName(bool showhidden)
-        {
-            return null;
-        }
-        //public IList<Doctor> GetAllDoctors()
-        //{
-        //    var query = from d in _doctorRepository.Table
-        //                select d;
-        //    return query.ToList();
-        //}
-
-        public IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount)
-        {
-
-            var query = from d in _doctorRepository.Table
-                select d;
-
-            var doctors = (from d in _doctorRepository.Table
-                         orderby d.DateUpdated descending
-                         select d)
-                        .Skip(itemsPerPage * page).Take(itemsPerPage)
-                          .ToList();
-            //foreach (var doc in docLst.Doctors)
-            //{
-            //    var address = from d in _address.Table
-            //             join m in _addressMapping.Table on d.Id equals m.AddressId
-            //             where m.UserId == doc.DoctorId
-            //             select d;
-            //    docLst.Address = address.FirstOrDefault();
-            //}
-
-            totalCount = query.Count();//return the number of pages
-            return doctors;//the query is now already executed, it is a subset of all the orders.
-        }
-
-        #region sarch zip methods
+        #region Utilities
         private IList<ZipCodes> GetAllZipCodes()
         {
             return _addressService.GetAllZipCodes();
@@ -197,11 +132,79 @@ namespace DPTS.Services.Doctors
             return null;
         }
         #endregion
+
+        #region Methods
+        public void AddDoctor(Doctor doctor)
+        {
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
+
+            _doctorRepository.Insert(doctor);
+        }
+
+        public void DeleteDoctor(Doctor doctor)
+        {
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
+
+            _doctorRepository.Delete(doctor);
+        }
+
+        public Doctor GetDoctorbyId(string doctorId)
+        {
+            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == doctorId);
+        }
+
+        public void UpdateDoctor(Doctor data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            _doctorRepository.Update(data);
+        }
+
+        public IList<string> GetDoctorsName(bool showhidden)
+        {
+            return null;
+        }
+
+        //public IList<Doctor> GetAllDoctors()
+        //{
+        //    var query = from d in _doctorRepository.Table
+        //                select d;
+        //    return query.ToList();
+        //}
+
+        public IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount)
+        {
+
+            var query = from d in _doctorRepository.Table
+                select d;
+
+            var doctors = (from d in _doctorRepository.Table
+                         orderby d.DateUpdated descending
+                         select d)
+                        .Skip(itemsPerPage * page).Take(itemsPerPage)
+                          .ToList();
+            //foreach (var doc in docLst.Doctors)
+            //{
+            //    var address = from d in _address.Table
+            //             join m in _addressMapping.Table on d.Id equals m.AddressId
+            //             where m.UserId == doc.DoctorId
+            //             select d;
+            //    docLst.Address = address.FirstOrDefault();
+            //}
+
+            totalCount = query.Count();//return the number of pages
+            return doctors;//the query is now already executed, it is a subset of all the orders.
+        }
+
         public class TempAddressViewModel
         {
             public Address Address { get; set; }
             public double Distance { get; set; }
         }
+
         public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
             string zipcode = null,
             int specialityId = 0,
@@ -214,21 +217,18 @@ namespace DPTS.Services.Doctors
             //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
             //  return null;
 
-            decimal myDec;
-            var result = decimal.TryParse(zipcode, out myDec);
+            //decimal myDec;
+            //var result = decimal.TryParse(zipcode, out myDec);
 
-            if (!result)
-            {
+           // if (!result)
+            //{
                 // zipcode = GetGeoZip(zipcode);
                 var addrList = new List<TempAddressViewModel>();
                 double lat = 0, lng = 0;
                 #region (with zipcode)
 
-                var firstZipCodeLocation = GetByZipCode(zipcode);
-                if (firstZipCodeLocation == null)
-                {
-                    firstZipCodeLocation = CalculateLatLngForZipCode(zipcode);
-                }
+                var firstZipCodeLocation = GetByZipCode(zipcode) ?? CalculateLatLngForZipCode(zipcode);
+
                 var data = _addressService.GetAllAddress();
                 foreach (var addr in data)
                 {
@@ -265,11 +265,7 @@ namespace DPTS.Services.Doctors
 
                 if (addrList.Any())
                 {
-                    List<int> addrIds = new List<int>();
-                    foreach (var _address in addrList)
-                    {
-                        addrIds.Add(_address.Address.Id);
-                    }
+                    List<int> addrIds = addrList.Select(_address => _address.Address.Id).ToList();
 
                     query = from d in _context.Doctors
                             join a in _context.AddressMappings on d.DoctorId equals a.UserId
@@ -278,7 +274,7 @@ namespace DPTS.Services.Doctors
                 }
 
                 #endregion
-            }
+           // }
             if (specialityId > 0)
             {
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
