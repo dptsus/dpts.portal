@@ -2387,6 +2387,7 @@
     <Content Include="Scripts\kendo\2017.1.118\cultures\kendo.culture.zu-ZA.min.js" />
     <Content Include="Scripts\kendo\2017.1.118\cultures\kendo.culture.zu.min.js" />
     <Content Include="Scripts\kendo\2017.1.118\jquery.min.js" />
+    <Content Include="Scripts\kendo\2017.1.118\kendo.all.min.js" />
     <Content Include="Scripts\kendo\2017.1.118\kendo.angular.min.js" />
     <Content Include="Scripts\kendo\2017.1.118\kendo.autocomplete.min.js" />
     <Content Include="Scripts\kendo\2017.1.118\kendo.binder.min.js" />
