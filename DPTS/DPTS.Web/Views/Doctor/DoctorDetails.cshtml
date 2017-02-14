@@ -58,12 +58,21 @@
                     }
                 }
                 <ul class="tg-socialicon-v2">
-                    <li class="tg-facebook"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                    <li class="tg-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li class="tg-linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                    <li class="tg-pinterest"><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                    <li class="tg-googleplus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li class="tg-instagram"><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    @if (Model.doctor.SocialLinkInformation.Any())
+                    {
+                        foreach (var item in Model.doctor.SocialLinkInformation)
+                        {
+                            if (item.SocialType.Equals("Google Plus"))
+                            {
+                                <li class="tg-googleplus"><a href="@item.SocialLink"><i class="fa fa-google-plus"></i></a></li>
+                            }
+                            else
+                            {
+                                <li class="tg-@item.SocialType.ToLower().Trim()"><a href="@item.SocialLink"><i class="fa fa-@item.SocialType.ToLower().Trim()"></i></a></li>
+
+                            }
+                        }
+                    }
                 </ul>
                 <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.ZipPostalCode" target="_blank">get directions</a>
                 <div class="tg-userschedule">

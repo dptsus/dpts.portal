@@ -16,6 +16,8 @@ using DPTS.Web.Models;
 using Microsoft.AspNet.Identity;
 using Kendo.Mvc.UI;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
+using DPTS.Services;
+using Kendo.Mvc.Extensions;
 
 namespace DPTS.Web.Controllers
 {
@@ -901,13 +903,11 @@ namespace DPTS.Web.Controllers
         }
 
         #region Social Links
-
-
         [HttpPost]
         public ActionResult SocialLink_Read(DataSourceRequest command,string docterId)
         {
 
-            var socialSites = _doctorService.GetAllLinksByDoctor(docterId, command.Page - 1, command.PageSize,false);
+            var socialSites = _doctorService.GetAllLinksByDoctor(docterId, command.Page - 1, 5,false);
             var gridModel = new DataSourceResult
             {
                 Data = socialSites.Select(x => new SocialLinkInformation
@@ -923,9 +923,71 @@ namespace DPTS.Web.Controllers
             };
             return Json(gridModel);
         }
+        [HttpPost]
+        public ActionResult SocialLink_Add([Bind(Exclude = "Id")] SocialLinkInformation model, string docterId)
+        {
+            if (model.SocialType != null)
+                model.SocialType = model.SocialType.Trim();
+            if (model.SocialLink != null)
+                model.SocialLink = model.SocialLink.Trim();
+            if (docterId != null)
+                model.DoctorId = docterId;
 
+            if (!ModelState.IsValid && model.DoctorId == null)
+            {
+                return Json(new DataSourceResult { Errors = "error" });
+            }
+
+            _doctorService.InsertSocialLink(model);
+
+            return new NullJsonResult();
+        }
+        [HttpPost]
+        public ActionResult SocialLink_Update(SocialLinkInformation model, string docterId)
+        {
+            //if (model.SocialType != null)
+            //    model.SocialType = model.SocialType.Trim();
+            //if (model.SocialLink != null)
+            //    model.SocialLink = model.SocialLink.Trim();
+            //if (docterId != null)
+            //    model.DoctorId = docterId;
+
+            //if (!ModelState.IsValid && model.DoctorId == null)
+            //{
+            //    return Json(new DataSourceResult { Errors = "error" });
+            //}
+
+            var link = _doctorService.GetSocialLinkbyId(model.Id);
+            if (link == null)
+                return Content("No link could be loaded with the specified ID");
+
+            if (!link.SocialType.Equals(model.SocialType, StringComparison.InvariantCultureIgnoreCase) ||
+                link.Id != model.Id)
+            {
+                _doctorService.DeleteSocialLink(link);
+            }
+
+            link.Id = model.Id;
+            link.DoctorId = model.DoctorId;
+            link.SocialType = model.SocialType;
+            link.SocialLink = model.SocialLink;
+            link.IsActive = model.IsActive;
+            link.DisplayOrder = model.DisplayOrder;
+            _doctorService.UpdateSocialLink(link);
+
+            return new NullJsonResult();
+        }
+        [HttpPost]
+        public ActionResult SocialLink_Delete(int id)
+        {
+            var link = _doctorService.GetSocialLinkbyId(id);
+            if (link == null)
+                throw new ArgumentException("No link found with the specified id");
+            _doctorService.DeleteSocialLink(link);
+
+            return new NullJsonResult();
+        }
         #endregion
-
 
         #endregion
     }

@@ -6,7 +6,7 @@
     if (Request.IsAuthenticated)
     {
         var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-        var user = manager.FindById(User.identity.GetUserid());
+        var user = manager.FindById(User.Identity.GetUserId());
         FirstName = string.Concat(new string[] { user.FirstName });
     }
 }
@@ -78,7 +78,7 @@
 <script type="text/javascript">
     $(function () {
         // profile pic
-        var ProfilePicId = "@User.identity.GetUserid()" + "_profile";
+        var ProfilePicId = "@User.Identity.GetUserId()" + "_profile";
         $.get('../../Uploads/' + ProfilePicId + '.jpg')
             .done(function () {
                 $("#welcome").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());

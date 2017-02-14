@@ -303,7 +303,7 @@ namespace DPTS.Services.Doctors
 
         public SocialLinkInformation GetSocialLinkbyId(int id)
         {
-            if (id > 0)
+            if (id == 0)
                 throw new ArgumentNullException(nameof(id));
 
            return  _socialLinksRepository.GetById(id);
@@ -322,7 +322,7 @@ namespace DPTS.Services.Doctors
             if (link == null)
                 throw new ArgumentNullException(nameof(link));
 
-            _socialLinksRepository.Delete(link);
+            _socialLinksRepository.Update(link);
         }
 
         public IPagedList<SocialLinkInformation> GetAllLinksByDoctor(string doctorId, int pageIndex = 0,
@@ -331,13 +331,13 @@ namespace DPTS.Services.Doctors
            // return _socialLinksRepository.Table.Where(d => d.DoctorId == doctorId).ToList();
             var query = _socialLinksRepository.Table;
             if (!showHidden)
-                query = query.Where(c => c.IsActive && c.DoctorId == doctorId);
+                query = query.Where(c => c.DoctorId == doctorId);
             query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.SocialLink);
 
             query = query.OrderBy(c => c.DisplayOrder);
             return new PagedList<SocialLinkInformation>(query, pageIndex, pageSize);
         }
-#endregion
+    #endregion
         #endregion
     }
 }

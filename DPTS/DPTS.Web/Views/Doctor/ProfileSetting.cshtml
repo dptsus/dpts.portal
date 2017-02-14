@@ -16,6 +16,9 @@
             height: 35px;
             margin-bottom: 0;
         }
+        li {
+        list-style: none;
+    }
     </style>
 
     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
@@ -24,7 +27,7 @@
         FormMethod.Post, new {@class = "tg-formeditprofile tg-haslayout do-account-setitngs"}))
     {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.Id)
 
         <fieldset>
         <div class="tg-editprofile tg-haslayout">
@@ -242,6 +245,140 @@
             </div>
         </div>
 
+            <div class="tg-bordertop tg-haslayout">
+                <div id="social-media-grid"></div>
+                <script>
+                    $(document).ready(function () {
+                            $("#social-media-grid").kendoGrid({
+                                dataSource: {
+                                    type: "json",
+                                    transport: {
+                                        read: {
+                                            url: "@Url.Action("SocialLink_Read","Doctor",new { docterId = Model.Id })",
+                                            type: "POST",
+                                            dataType: "json",
+                                            contentType: "application/json"
+                                        },
+                                        create: {
+                                            url: "@Html.Raw(Url.Action("SocialLink_Add", "Doctor", new { docterId = Model.Id }))",
+                                            type: "POST",
+                                            dataType: "json",
+                                        },
+                                        update: {
+                                            url: "@Html.Raw(Url.Action("SocialLink_Update", "Doctor", new { docterId = Model.Id }))",
+                                            type: "POST",
+                                            dataType: "json",
+                                        },
+                                        destroy: {
+                                            url: "@Html.Raw(Url.Action("SocialLink_Delete", "Doctor"))",
+                                            type: "POST",
+                                            dataType: "json",
+                                        },
+                                        parameterMap: function(data, operation) {
+                                            if (operation != "read") {
+                                                return data;
+                                            } else {
+                                                //for some reasons only such "Filter" data be parsed
+                                                return JSON.stringify(data);
+                                            }
+                                        }
+                                    },
+                                    schema: {
+                                        data: "Data",
+                                        total: "Total",
+                                        errors: "Errors",
+                                        model: {
+                                            id: "Id",
+                                            fields: {
+                                                SocialType: { editable: true, type: "string" },
+                                                SocialLink: { editable: true, type: "string" },
+                                                DisplayOrder: { editable: true, type: "number" },
+                                                IsActive: { editable: true, type: "boolean" },
+                                                Id: { editable: false, type: "number" }
+                                            }
+                                        }
+                                    },
+                                    requestEnd: function(e) {
+                                        if (e.type == "create" || e.type == "update") {
+                                            this.read();
+                                        }
+                                    },
+                                    error: function(e) {
+                                        display_kendoui_grid_error(e);
+                                        // Cancel the changes
+                                        this.cancelChanges();
+                                    },
+                                    pageSize: 5,
+                                    serverPaging: true,
+                                    serverFiltering: true,
+                                    serverSorting: true
+                                },
+                                pageable: {
+                                    refresh: true,
+                                    pageSizes: 5
+                                },
+                                toolbar: [{ name: "create", text: "Add New Record" }],
+                                editable: {
+                                    confirmation: "Delete Confirmation",
+                                    mode: "inline"
+                                },
+                                scrollable: false,
+                                columns: [
+                                    {
+                                        field: "SocialType",
+                                        title: "Social Type",
+                                        width: 120,
+                                        editor: storeDropDownEditor,
+                                       // template: "#:Store#"
+                                    },
+                                    {
+                                        field: "SocialLink",
+                                        title: "Social Link",
+                                        width: 200,
+                                        template: '<a href="#=SocialLink#">#:SocialLink#</a>'
+                                    },
+                                     {
+                                         field: "DisplayOrder",
+                                         title: "Display Order",
+                                         width: 80
+                                     },
+                                     {
+                                         field: "IsActive",
+                                         title: "IsActive",
+                                         width: 80
+                                     }, {
+                                        command: [
+                                            {
+                                                name: "edit",
+                                                text: {
+                                                    edit: "Edit",
+                                                    update: "Update",
+                                                    cancel: "Cancel"
+                                                }
+                                            }, {
+                                                name: "destroy",
+                                                text: "Delete"
+                                            }
+                                        ],
+                                        width: 200
+                                    }
+                                ]
+                            });
+                        });
+
+                    function storeDropDownEditor(container, options) {
+                        $('<input required  name="' + options.field + '"/>')
+                                .appendTo(container)
+                                .kendoDropDownList({
+                                    autoBind: false,
+                                    dataSource: {
+                                        data: ["Facebook", "Twitter", "Pinterest", "Instagram", "Google Plus"]
+                                    },
+                                });
+                        }
+                </script>
+            </div>
+
         <button type="submit" class="tg-btn process-account-settings">update</button>
             <div id="grid"></div>
         </fieldset>
@@ -255,7 +392,7 @@
     @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript">
         $(function() {
-            var BannerId = "@Model.id" + "_banner";
+            var BannerId = "@Model.Id" + "_banner";
             $.get('../../Uploads/' + BannerId + '.jpg')
                 .done(function() {
                     $("#prodfront").attr("src", '../../Uploads/' + BannerId + '.jpg?' + new Date().getTime());
@@ -276,7 +413,7 @@
 
             // profile pic
 
-            var ProfilePicId = "@Model.id" + "_profile";
+            var ProfilePicId = "@Model.Id" + "_profile";
             $.get('../../Uploads/' + ProfilePicId + '.jpg')
                 .done(function() {
                     $("#user-profile").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
@@ -332,69 +469,6 @@
             });
         });
     </script>
-
-   
-            <script>
-        $(document).ready(function () {
-            $("#grid").kendoGrid({
-                dataSource: {
-                    type: "odata",
-                    transport: {
-                        read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Customers"
-                    },
-                    pageSize: 20
-                },
-                height: 550,
-                groupable: true,
-                sortable: true,
-                pageable: {
-                    refresh: true,
-                    pageSizes: true,
-                    buttonCount: 5
-                },
-                columns: [{
-                    template: "<div class='customer-photo'" +
-                                    "style='background-image: url(../content/web/Customers/#:data.CustomerID#.jpg);'></div>" +
-                                "<div class='customer-name'>#: ContactName #</div>",
-                    field: "ContactName",
-                    title: "Contact Name",
-                    width: 240
-                }, {
-                    field: "ContactTitle",
-                    title: "Contact Title"
-                }, {
-                    field: "CompanyName",
-                    title: "Company Name"
-                }, {
-                    field: "Country",
-                    width: 150
-                }]
-            });
-        });
-            </script>
-
-            <style type="text/css">
-                .customer-photo {
-                    display: inline-block;
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 50%;
-                    background-size: 32px 35px;
-                    background-position: center center;
-                    vertical-align: middle;
-                    line-height: 32px;
-                    box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
-                    margin-left: 5px;
-                }
-
-                .customer-name {
-                    display: inline-block;
-                    vertical-align: middle;
-                    line-height: 32px;
-                    padding-left: 3px;
-                }
-            </style>
-
 }
 else
 {
