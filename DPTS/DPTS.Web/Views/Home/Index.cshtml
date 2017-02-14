@@ -1,8 +1,13 @@
-﻿@using DPTS.Web.Models
+﻿@using DPTS.Web.Helpers
+@using DPTS.Web.Models
 @model SearchModel
 @{
     ViewBag.Title = "DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    //css part
+    Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/owl.carousel1bba.css");
+    //js part
+    Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js");
 }
 <script type='text/javascript'>
 /* <![CDATA[ */
