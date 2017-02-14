@@ -44,6 +44,7 @@
     <Compile Include="Core\Address\IAddressService.cs" />
     <Compile Include="Core\Appointment\IAppointmentService.cs" />
     <Compile Include="Core\ExportImport\IImportManager.cs" />
+    <Compile Include="Core\IPagedList.cs" />
     <Compile Include="Core\Notification\IDoctorNotificationSettingsService.cs" />
     <Compile Include="Core\Notification\ISentEmailHistoryService.cs" />
     <Compile Include="Core\Notification\ISentSmsHistoryService.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Entities\Country.cs" />
     <Compile Include="Entities\Doctor.cs" />
     <Compile Include="Entities\Schedule.cs" />
+    <Compile Include="Entities\SocialLinkInformation.cs" />
     <Compile Include="Entities\SpecialityMapping.cs" />
     <Compile Include="Entities\Gender.cs" />
     <Compile Include="Entities\Speciality.cs" />

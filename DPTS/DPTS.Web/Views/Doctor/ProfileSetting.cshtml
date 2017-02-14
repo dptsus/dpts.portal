@@ -16,6 +16,9 @@
             height: 35px;
             margin-bottom: 0;
         }
+        li {
+        list-style: none;
+    }
     </style>
 
     <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
@@ -242,7 +245,142 @@
             </div>
         </div>
 
+            <div class="tg-bordertop tg-haslayout">
+                <div id="social-media-grid"></div>
+                <script>
+                    $(document).ready(function () {
+                            $("#social-media-grid").kendoGrid({
+                                dataSource: {
+                                    type: "json",
+                                    transport: {
+                                        read: {
+                                            url: "@Url.Action("SocialLink_Read","Doctor",new { docterId = Model.Id })",
+                                            type: "POST",
+                                            dataType: "json",
+                                            contentType: "application/json"
+                                        },
+                                        create: {
+                                            url: "@Html.Raw(Url.Action("SocialLink_Add", "Doctor", new { docterId = Model.Id }))",
+                                            type: "POST",
+                                            dataType: "json",
+                                        },
+                                        update: {
+                                            url: "@Html.Raw(Url.Action("SocialLink_Update", "Doctor", new { docterId = Model.Id }))",
+                                            type: "POST",
+                                            dataType: "json",
+                                        },
+                                        destroy: {
+                                            url: "@Html.Raw(Url.Action("SocialLink_Delete", "Doctor"))",
+                                            type: "POST",
+                                            dataType: "json",
+                                        },
+                                        parameterMap: function(data, operation) {
+                                            if (operation != "read") {
+                                                return data;
+                                            } else {
+                                                //for some reasons only such "Filter" data be parsed
+                                                return JSON.stringify(data);
+                                            }
+                                        }
+                                    },
+                                    schema: {
+                                        data: "Data",
+                                        total: "Total",
+                                        errors: "Errors",
+                                        model: {
+                                            id: "Id",
+                                            fields: {
+                                                SocialType: { editable: true, type: "string" },
+                                                SocialLink: { editable: true, type: "string" },
+                                                DisplayOrder: { editable: true, type: "number" },
+                                                IsActive: { editable: true, type: "boolean" },
+                                                Id: { editable: false, type: "number" }
+                                            }
+                                        }
+                                    },
+                                    requestEnd: function(e) {
+                                        if (e.type == "create" || e.type == "update") {
+                                            this.read();
+                                        }
+                                    },
+                                    error: function(e) {
+                                        display_kendoui_grid_error(e);
+                                        // Cancel the changes
+                                        this.cancelChanges();
+                                    },
+                                    pageSize: 5,
+                                    serverPaging: true,
+                                    serverFiltering: true,
+                                    serverSorting: true
+                                },
+                                pageable: {
+                                    refresh: true,
+                                    pageSizes: 5
+                                },
+                                toolbar: [{ name: "create", text: "Add New Record" }],
+                                editable: {
+                                    confirmation: "Are You Sure You Want To Delete !!",
+                                    mode: "inline"
+                                },
+                                scrollable: false,
+                                columns: [
+                                    {
+                                        field: "SocialType",
+                                        title: "Social Type",
+                                        width: 120,
+                                        editor: storeDropDownEditor,
+                                       // template: "#:Store#"
+                                    },
+                                    {
+                                        field: "SocialLink",
+                                        title: "Social Link",
+                                        width: 200,
+                                        template: '<a href="#=SocialLink#">#:SocialLink#</a>'
+                                    },
+                                     {
+                                         field: "DisplayOrder",
+                                         title: "Display Order",
+                                         width: 80
+                                     },
+                                     {
+                                         field: "IsActive",
+                                         title: "IsActive",
+                                         width: 80
+                                     }, {
+                                        command: [
+                                            {
+                                                name: "edit",
+                                                text: {
+                                                    edit: "Edit",
+                                                    update: "Update",
+                                                    cancel: "Cancel"
+                                                }
+                                            }, {
+                                                name: "destroy",
+                                                text: "Delete"
+                                            }
+                                        ],
+                                        width: 200
+                                    }
+                                ]
+                            });
+                        });
+
+                    function storeDropDownEditor(container, options) {
+                        $('<input required  name="' + options.field + '"/>')
+                                .appendTo(container)
+                                .kendoDropDownList({
+                                    autoBind: false,
+                                    dataSource: {
+                                        data: ["Facebook", "Twitter", "Pinterest", "Instagram", "Google Plus"]
+                                    },
+                                });
+                        }
+                </script>
+            </div>
+
         <button type="submit" class="tg-btn process-account-settings">update</button>
+            <div id="grid"></div>
         </fieldset>
     }
     </div>
@@ -314,7 +452,7 @@
                 $.ajax({
                     cache: false,
                     type: "GET",
-                    url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                    url: "@(Url.RouteUrl("GetStatesByCountryid"))",
                     data: { "countryId": selectedItem, "addSelectStateItem": "true" },
                     success: function(data) {
                         ddlStates.html('');

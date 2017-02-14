@@ -11,53 +11,57 @@ namespace DPTS.Web.Controllers
     public class SubSpecialityController : BaseController
     {
         #region Field
+
         private readonly ISubSpecialityService _subSpecialityService;
         private readonly ISpecialityService _specialityService;
+
         #endregion
 
         #region Constructor
+
         public SubSpecialityController(ISubSpecialityService subSpecialityService, ISpecialityService specialityService)
         {
             _subSpecialityService = subSpecialityService;
             _specialityService = specialityService;
         }
+
         #endregion
 
         #region Utilities
+
         public IList<SelectListItem> GetSpecialityList()
         {
             var specialitys = _specialityService.GetAllSpeciality(false);
-            List<SelectListItem> typelst = new List<SelectListItem>();
-            typelst.Add(
-                     new SelectListItem
-                     {
-                         Text = "Select",
-                         Value = "0"
-                     });
-            foreach (var _type in specialitys.ToList())
+            List<SelectListItem> typelst = new List<SelectListItem>
             {
-                typelst.Add(
-                     new SelectListItem
-                     {
-                         Text = _type.Title,
-                         Value = _type.Id.ToString()
-                     });
-            }
+                new SelectListItem
+                {
+                    Text = "Select",
+                    Value = "0"
+                }
+            };
+            typelst.AddRange(specialitys.ToList().Select(type => new SelectListItem
+            {
+                Text = type.Title,
+                Value = type.Id.ToString()
+            }));
             return typelst;
         }
+
         #endregion
 
         #region Method
+
         public ActionResult List()
         {
             var model = _subSpecialityService.GetAllSubSpeciality(false).Select(c => new SubSpecialityViewModel
             {
-                Name=c.Name,
-                Id=c.Id,
-                IsActive=c.IsActive,
-                SpecialityId=c.SpecialityId,
-                SpecialityName= _specialityService.GetSpecialitybyId(c.SpecialityId).Title,
-                DisplayOrder=c.DisplayOrder
+                Name = c.Name,
+                Id = c.Id,
+                IsActive = c.IsActive,
+                SpecialityId = c.SpecialityId,
+                SpecialityName = _specialityService.GetSpecialitybyId(c.SpecialityId).Title,
+                DisplayOrder = c.DisplayOrder
             });
             return View(model);
         }
@@ -79,7 +83,7 @@ namespace DPTS.Web.Controllers
                     Name = model.Name,
                     DisplayOrder = model.DisplayOrder,
                     IsActive = model.IsActive,
-                    SpecialityId=model.SpecialityId
+                    SpecialityId = model.SpecialityId
                 };
                 _subSpecialityService.AddSubSpeciality(subSpeciality);
                 return RedirectToAction("List");
@@ -101,14 +105,13 @@ namespace DPTS.Web.Controllers
             {
                 Id = subSpeciality.Id,
                 Name = subSpeciality.Name,
-                SpecialityName=_specialityService.GetSpecialitybyId(subSpeciality.SpecialityId).Title,
+                SpecialityName = _specialityService.GetSpecialitybyId(subSpeciality.SpecialityId).Title,
                 IsActive = subSpeciality.IsActive,
                 DisplayOrder = subSpeciality.DisplayOrder,
-                SpecialityId=subSpeciality.SpecialityId,
-                DateUpdated=subSpeciality.DateCreated,
-                DateCreated=subSpeciality.DateCreated,
+                SpecialityId = subSpeciality.SpecialityId,
+                DateUpdated = subSpeciality.DateCreated,
+                DateCreated = subSpeciality.DateCreated,
                 AvailableSpeciality = GetSpecialityList()
-
             };
 
             return View(model);
@@ -129,6 +132,7 @@ namespace DPTS.Web.Controllers
             }
             return View(model);
         }
+
         public ActionResult DeleteConfirmed(int id)
         {
             var subSpeciality = _subSpecialityService.GetSubSpecialitybyId(id);
@@ -138,6 +142,7 @@ namespace DPTS.Web.Controllers
 
             return Content("Deleted");
         }
+
         #endregion
     }
 }

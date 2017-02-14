@@ -11,16 +11,20 @@ namespace DPTS.Web.Controllers
     public class StateProvinceController : BaseController
     {
         #region Fields
+
         private readonly IStateProvinceService _stateProvinceService;
         private readonly ICountryService _countryService;
+
         #endregion
 
         #region Contructor
+
         public StateProvinceController(IStateProvinceService stateProvinceService, ICountryService countryService)
         {
             _stateProvinceService = stateProvinceService;
             _countryService = countryService;
         }
+
         #endregion
 
         #region Utilities
@@ -28,27 +32,26 @@ namespace DPTS.Web.Controllers
         public IList<SelectListItem> GetCountryList()
         {
             var countries = _countryService.GetAllCountries(true);
-            List<SelectListItem> typelst = new List<SelectListItem>();
-            typelst.Add(
-                     new SelectListItem
-                     {
-                         Text = "Select",
-                         Value = "0"
-                     });
-            foreach (var _type in countries.ToList())
+            List<SelectListItem> typelst = new List<SelectListItem>
             {
-                typelst.Add(
-                     new SelectListItem
-                     {
-                         Text = _type.Name,
-                         Value = _type.Id.ToString()
-                     });
-            }
+                new SelectListItem
+                {
+                    Text = "Select",
+                    Value = "0"
+                }
+            };
+            typelst.AddRange(countries.ToList().Select(type => new SelectListItem
+            {
+                Text = type.Name,
+                Value = type.Id.ToString()
+            }));
             return typelst;
         }
+
         #endregion
 
         #region Methods
+
         public ActionResult List()
         {
             var countries = _stateProvinceService.GetAllStateProvince();
@@ -60,16 +63,18 @@ namespace DPTS.Web.Controllers
                 DisplayOrder = c.DisplayOrder,
                 Abbreviation = c.Abbreviation,
                 Published = c.Published,
-                CountryId=c.CountryId
+                CountryId = c.CountryId
             }).ToList();
             return View(model);
         }
+
         public ActionResult Create()
         {
             var model = new StateProvinceViewModel();
             model.AvailableCountry = GetCountryList();
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Create(StateProvinceViewModel model)
         {
@@ -84,7 +89,7 @@ namespace DPTS.Web.Controllers
                     Published = model.Published,
                     DisplayOrder = model.DisplayOrder,
                     Abbreviation = model.Abbreviation,
-                    CountryId=model.CountryId
+                    CountryId = model.CountryId
                 };
                 _stateProvinceService.InsertStateProvince(stateProvince);
                 return RedirectToAction("List");
@@ -92,6 +97,7 @@ namespace DPTS.Web.Controllers
             model.AvailableCountry = GetCountryList();
             return View(model);
         }
+
         public ActionResult Edit(int Id)
         {
             if (!IsValidateId(Id))
@@ -105,15 +111,16 @@ namespace DPTS.Web.Controllers
             {
                 Id = stateProvince.Id,
                 Name = stateProvince.Name,
-                CountryName=_countryService.GetCountryById(stateProvince.Id).Name,
+                CountryName = _countryService.GetCountryById(stateProvince.Id).Name,
                 DisplayOrder = stateProvince.DisplayOrder,
                 Published = stateProvince.Published,
-                CountryId= stateProvince.CountryId,
-                Abbreviation= stateProvince.Abbreviation,
+                CountryId = stateProvince.CountryId,
+                Abbreviation = stateProvince.Abbreviation,
                 AvailableCountry = GetCountryList()
             };
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Edit(StateProvinceViewModel model)
         {
@@ -133,6 +140,7 @@ namespace DPTS.Web.Controllers
             model.AvailableCountry = GetCountryList();
             return View(model);
         }
+
         public ActionResult DeleteConfirmed(int id)
         {
             var stateProvince = _stateProvinceService.GetStateProvinceById(id);
@@ -142,6 +150,7 @@ namespace DPTS.Web.Controllers
 
             return Content("Deleted");
         }
+
         #endregion
     }
 }

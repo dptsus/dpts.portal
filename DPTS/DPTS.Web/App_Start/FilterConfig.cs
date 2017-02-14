@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using DPTS.Web.AppFilters;
+using DPTS.Web.Controllers;
 
 namespace DPTS.Web
 {
@@ -10,6 +11,7 @@ namespace DPTS.Web
             filters.Add(new HandleErrorAttribute());
             filters.Add(new ExceptionLogingAttribute());
             filters.Add(new LogApplicationAttribute());
+            //filters.Add(new CompressFilter()); 
         }
     }
 }

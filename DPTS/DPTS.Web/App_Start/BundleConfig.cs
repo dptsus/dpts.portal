@@ -31,7 +31,7 @@ namespace DPTS.Web
                 "~/Content/wp-includes/js/underscore.min4511.js",
                 "~/Content/wp-includes/js/wp-util.min1c9b.js",
                 //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
+             // "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/moment1bba.js",
                 //  "~/Content/wp-content/themes/docdirect/js/bookings1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/parallax1bba.js",
@@ -46,9 +46,9 @@ namespace DPTS.Web
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/js/jquery.fs.wallpaper1c9b.js",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/js/scripts1c9b.js",
                 "~/Content/wp-includes/js/wp-embed.min1c9b.js",
-                "~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
+                //"~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js",
+               // "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
+               // "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
                 //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
             //      "~/Content/Admin/js/bootstrap-datetimepicker.js"));

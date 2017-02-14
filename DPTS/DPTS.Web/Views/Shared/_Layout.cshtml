@@ -3,22 +3,29 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title - Find Doctors, Diagnostic Labs</title>
+    <meta name="description" content="Find &amp; book appointments with doctors, diagnostic labs,  spas. Ask free health questions to doctors or get free tips from health experts" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
     @Styles.Render("~/Content/wp-content/themes")
     @Scripts.Render("~/bundles/modernizr")
-    <link href="~/Content/tagEditor/jquery.tag-editor.css" rel="stylesheet" />
+    <link href="~/Content/tagEditor/jquery.tag-editor.css" rel="stylesheet"/>
+    <link href="~/Content/kendo/2017.1.118/kendo.common-material.min.css" rel="stylesheet"/>
+    <link href="~/Content/kendo/2017.1.118/kendo.rtl.min.css" rel="stylesheet"/>
+    <link href="~/Content/kendo/2017.1.118/kendo.material.min.css" rel="stylesheet"/>
+    <link href="~/Content/kendo/2017.1.118/kendo.material.mobile.min.css" rel="stylesheet" />
+
 </head>
 <body class="home page page-id-2 page-template-default home  sample-page mec-home ">
     @*<div class="preloader-outer">
             <div class="pin"></div>
             <div class="pulse"></div>
         </div>*@
-<div id="wrapper" class="tg-haslayout">
-    @Html.Partial("_Header")
-    @RenderBody()
-    @Html.Partial("_Footer")
-</div>
+    <div id="wrapper" class="tg-haslayout">
+        @Html.Partial("_Header")
+        @RenderBody()
+        @Html.Partial("_Footer")
+    </div>
     <div id="loader" class="overlay">
         <div class="load-container load1">
             <div class="loader">Loading... </div>
@@ -31,8 +38,10 @@
     <script src="~/Scripts/tagEditor/jquery.tag-editor.min.js"></script>
     <script src="~/Scripts/tagEditor/jquery.caret.min.js"></script>
     <script src="~/Scripts/docdirect_functions.js"></script>
+   @*<script src="~/Scripts/kendo/2017.1.118/jquery.min.js"></script>*@
+    <script src="~/Scripts/kendo/2017.1.118/kendo.all.min.js"></script>
     @*<script type='text/javascript' src='https://themographics.com/wordpress/docdirect/wp-includes/js/wp-util.min.js?ver=4.7.2'></script>
-    <script type='text/javascript' src='https://themographics.com/wordpress/docdirect/wp-content/themes/docdirect/js/docdirect_functions.js?ver=4.0'></script>*@
+        <script type='text/javascript' src='https://themographics.com/wordpress/docdirect/wp-content/themes/docdirect/js/docdirect_functions.js?ver=4.0'></script>*@
 
 </body>
 </html>

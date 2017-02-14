@@ -285,6 +285,15 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
+                <a href="#"><i class="fa fa-user-secret"></i> Export/Import<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="@Url.Action("ImportDoctors", "ExportImports")"><i class="fa fa-dot-circle-o"></i>Import Doctors</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-gears"></i> Configuration<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -298,9 +307,6 @@
                     </li>
                     <li>
                         <a href="@Url.Action("List", "DefaultNotificationSettings")"><i class="fa fa-dot-circle-o"></i> Default Notification Settings </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("OnBoardDoctors", "BulkData")"><i class="fa fa-dot-circle-o"></i>On-board Doctors</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

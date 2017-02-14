@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using DPTS.Data.Context;
 using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
@@ -18,6 +19,7 @@ namespace DPTS.Services.Doctors
         private readonly IRepository<AddressMapping> _addressMapping;
         private readonly IRepository<Domain.Entities.Address> _address;
         private readonly IRepository<AppointmentSchedule> _appointmentScheduleRepository;
+        private readonly IRepository<SocialLinkInformation> _socialLinksRepository;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
 
@@ -30,7 +32,8 @@ namespace DPTS.Services.Doctors
             IAddressService addressService,
             IRepository<AddressMapping> addressMapping,
             IRepository<Domain.Entities.Address> address,
-            IRepository<AppointmentSchedule> appointmentScheduleRepository)
+            IRepository<AppointmentSchedule> appointmentScheduleRepository,
+            IRepository<SocialLinkInformation> socialLinksRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
@@ -39,7 +42,97 @@ namespace DPTS.Services.Doctors
             _addressMapping = addressMapping;
             _address = address;
             _appointmentScheduleRepository = appointmentScheduleRepository;
+            _socialLinksRepository = socialLinksRepository;
             _context = new DPTSDbContext();
+        }
+        #endregion
+
+        #region Utilities
+        private IList<ZipCodes> GetAllZipCodes()
+        {
+            return _addressService.GetAllZipCodes();
+        }
+
+        private ZipCodes GetByZipCode(string zipCode)
+        {
+            var zipCodes = GetAllZipCodes();
+            return zipCodes.FirstOrDefault(c => c.ZipCode == zipCode);
+
+        }
+
+        private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+        {
+            double theta = lon1 - lon2;
+            double dist = Math.Sin(Deg2Rad(lat1)) * Math.Sin(Deg2Rad(lat2)) + Math.Cos(Deg2Rad(lat1)) * Math.Cos(Deg2Rad(lat2)) * Math.Cos(Deg2Rad(theta));
+            dist = Math.Acos(dist);
+            dist = Rad2Deg(dist);
+            dist = CalculateDistanceByUnitType("Miles", dist);
+            return dist;
+        }
+
+        private static double CalculateDistanceByUnitType(string unitType, double dist)
+        {
+            dist = dist * 60 * 1.1515;
+            //if (unitType == DistanceUnitType.KiloMeters)
+            //{
+            //    dist *= 1.609344;
+            //}
+            return dist;
+        }
+
+        private static double Deg2Rad(double deg)
+        {
+            return (deg * Math.PI / 180.0);
+        }
+
+        private static double Rad2Deg(double rad)
+        {
+            return rad / Math.PI * 180.0;
+        }
+
+        private Dictionary<string, double> GetGeoCoordinate(string address)
+        {
+            Dictionary<string, double> dictionary = new Dictionary<string, double>();
+            try
+            {
+                string requestUri = string.Format("http://maps.google.com/maps/api/geocode/xml?address={0}&sensor=false", address);
+                var request = System.Net.WebRequest.Create(requestUri);
+                var response = request.GetResponse();
+                var xdoc = XDocument.Load(response.GetResponseStream());
+                var result = xdoc.Element("GeocodeResponse").Element("result");
+                if (result != null)
+                {
+                    var locationElement = result.Element("geometry").Element("location");
+                    dictionary.Add("lat", Double.Parse(locationElement.Element("lat").Value));
+                    dictionary.Add("lng", Double.Parse(locationElement.Element("lng").Value));
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return dictionary;
+        }
+
+        private ZipCodes CalculateLatLngForZipCode(string zipcode)
+        {
+            var zipCodeLatLng = GetGeoCoordinate(zipcode);
+            if (zipCodeLatLng.Count == 2)
+            {
+                //insert zipcode
+                var zipCodeLocation = new ZipCodes
+                {
+                    ZipCode = zipcode,
+                    Latitude = zipCodeLatLng["lat"],
+                    Longitude = zipCodeLatLng["lng"]
+                };
+
+                _addressService
+                    .InsertZipCode(zipCodeLocation);
+
+                return zipCodeLocation;
+            }
+
+            return null;
         }
         #endregion
 
@@ -60,7 +153,6 @@ namespace DPTS.Services.Doctors
             _doctorRepository.Delete(doctor);
         }
 
-
         public Doctor GetDoctorbyId(string doctorId)
         {
             return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == doctorId);
@@ -73,10 +165,12 @@ namespace DPTS.Services.Doctors
 
             _doctorRepository.Update(data);
         }
+
         public IList<string> GetDoctorsName(bool showhidden)
         {
             return null;
         }
+
         //public IList<Doctor> GetAllDoctors()
         //{
         //    var query = from d in _doctorRepository.Table
@@ -108,64 +202,142 @@ namespace DPTS.Services.Doctors
             return doctors;//the query is now already executed, it is a subset of all the orders.
         }
 
+        public class TempAddressViewModel
+        {
+            public Address Address { get; set; }
+            public double Distance { get; set; }
+        }
+
         public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
             string zipcode = null,
-            int specialityId = 0)
+            int specialityId = 0,
+            double Geo_Distance = 50)
         {
             var query = from d in _doctorRepository.Table
                         select d;
 
-          //  query = query.Where(p => !p.Deleted && p.IsActive);
+            //  query = query.Where(p => !p.Deleted && p.IsActive);
+            //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
+            //  return null;
 
-          //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
-              //  return null;
+            //decimal myDec;
+            //var result = decimal.TryParse(zipcode, out myDec);
 
-            if(!string.IsNullOrWhiteSpace(zipcode))
-            {
-                decimal myDec;
-                var result = decimal.TryParse(zipcode, out myDec);
-                if (result)
+           // if (!result)
+            //{
+                // zipcode = GetGeoZip(zipcode);
+                var addrList = new List<TempAddressViewModel>();
+                double lat = 0, lng = 0;
+                #region (with zipcode)
+
+                var firstZipCodeLocation = GetByZipCode(zipcode) ?? CalculateLatLngForZipCode(zipcode);
+
+                var data = _addressService.GetAllAddress();
+                foreach (var addr in data)
                 {
-                    query = from d in _context.Doctors
-                        join a in _context.AddressMappings on d.DoctorId equals a.UserId
-                        join m in _context.Addresses on a.AddressId equals m.Id
-                        where m.ZipPostalCode == zipcode
-                        select d;
+
+                    if (addr.Latitude == 0 && addr.Longitude == 0)
+                    {
+                        var geoCoodrinateDealer = GetGeoCoordinate(addr.ZipPostalCode.Trim());
+                        if (geoCoodrinateDealer.Count == 2)
+                        {
+                            lat = addr.Latitude = geoCoodrinateDealer["lat"];
+                            lng = addr.Longitude = geoCoodrinateDealer["lng"];
+
+                            _addressService.UpdateAddress(addr);
+                        }
+                    }
+                    else
+                    {
+                        lat = addr.Latitude;
+                        lng = addr.Longitude;
+                    }
+
+                    if (firstZipCodeLocation != null && lat != 0 && lng != 0)
+                    {
+                        var addrModel = new TempAddressViewModel
+                        {
+                            Address = addr,
+                            Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
+                                lat, lng)
+                        };
+                        addrList.Add(addrModel);
+                    }
                 }
-                else
-                {
-                    string[] strArray = zipcode.Split(',');
+                addrList = addrList.Where(c => c.Distance <= Convert.ToDouble(Geo_Distance)).OrderBy(c => c.Distance).ToList();
 
-                    //foreach (object obj in strArray)
-                    //{
-                    //    //your insert query
-                    //}
+                if (addrList.Any())
+                {
+                    List<int> addrIds = addrList.Select(_address => _address.Address.Id).ToList();
+
                     query = from d in _context.Doctors
                             join a in _context.AddressMappings on d.DoctorId equals a.UserId
-                            join m in _context.Addresses on a.AddressId equals m.Id
-                            where m.City.ToLower() == strArray.FirstOrDefault().ToLower()
+                            where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
                             select d;
                 }
-            }
+
+                #endregion
+           // }
             if (specialityId > 0)
             {
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
             }
-            //if (!string.IsNullOrWhiteSpace(keywords))
-            //{
-            //    query = query.Where(d => d.ShortProfile.Contains(keywords)
-            //             || d.Subscription.Contains(keywords) || d.Qualifications.Contains(keywords));
-            //}
 
             var pageQuery =  query.OrderBy(d => d.DateUpdated)
                 .Skip(itemsPerPage * page).Take(itemsPerPage)
                          .ToList();
 
-            totalCount = query.Count();
 
+            totalCount = query.Count();
             return pageQuery;
         }
 
+        #region Social links
+        public void InsertSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Insert(link);
+        }
+
+        public SocialLinkInformation GetSocialLinkbyId(int id)
+        {
+            if (id == 0)
+                throw new ArgumentNullException(nameof(id));
+
+           return  _socialLinksRepository.GetById(id);
+        }
+
+        public void DeleteSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Delete(link);
+        }
+
+        public void UpdateSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Update(link);
+        }
+
+        public IPagedList<SocialLinkInformation> GetAllLinksByDoctor(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false)
+        {
+           // return _socialLinksRepository.Table.Where(d => d.DoctorId == doctorId).ToList();
+            var query = _socialLinksRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.SocialLink);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<SocialLinkInformation>(query, pageIndex, pageSize);
+        }
+    #endregion
         #endregion
     }
 }
