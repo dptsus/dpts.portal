@@ -31,7 +31,7 @@
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                     {
                         @Html.AntiForgeryToken()
-                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
+                        <a href="javascript:document.getElementByid('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
                     }
                 </li>
             </ul>
@@ -44,7 +44,7 @@
 <script type="text/javascript">
     $(function () {
         // profile pic
-        var ProfilePicId = "@User.Identity.GetUserId()" + "_profile";
+        var ProfilePicId = "@User.identity.GetUserid()" + "_profile";
         $.get('../../Uploads/' + ProfilePicId + '.jpg')
             .done(function () {
                 $("#profile-picture").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());

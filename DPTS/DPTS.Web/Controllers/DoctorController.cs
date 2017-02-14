@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
 using DPTS.Domain.Core.Appointment;
 using DPTS.Domain.Core.Country;
@@ -13,6 +14,8 @@ using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Entities;
 using DPTS.Web.Models;
 using Microsoft.AspNet.Identity;
+using Kendo.Mvc.UI;
+using HttpVerbs = System.Web.Mvc.HttpVerbs;
 
 namespace DPTS.Web.Controllers
 {
@@ -896,6 +899,33 @@ namespace DPTS.Web.Controllers
             }
             return View();
         }
+
+        #region Social Links
+
+
+        [HttpPost]
+        public ActionResult SocialLink_Read(DataSourceRequest command,string docterId)
+        {
+
+            var socialSites = _doctorService.GetAllLinksByDoctor(docterId, command.Page - 1, command.PageSize,false);
+            var gridModel = new DataSourceResult
+            {
+                Data = socialSites.Select(x => new SocialLinkInformation
+                {
+                    Id = x.Id,
+                    IsActive = x.IsActive,
+                    DisplayOrder = x.DisplayOrder,
+                    DoctorId = x.DoctorId,
+                    SocialLink = x.SocialLink,
+                    SocialType = x.SocialType
+                }),
+                Total = socialSites.TotalCount
+            };
+            return Json(gridModel);
+        }
+
+        #endregion
+
 
         #endregion
     }

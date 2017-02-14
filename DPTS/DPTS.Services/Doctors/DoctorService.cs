@@ -19,6 +19,7 @@ namespace DPTS.Services.Doctors
         private readonly IRepository<AddressMapping> _addressMapping;
         private readonly IRepository<Domain.Entities.Address> _address;
         private readonly IRepository<AppointmentSchedule> _appointmentScheduleRepository;
+        private readonly IRepository<SocialLinkInformation> _socialLinksRepository;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
 
@@ -31,7 +32,8 @@ namespace DPTS.Services.Doctors
             IAddressService addressService,
             IRepository<AddressMapping> addressMapping,
             IRepository<Domain.Entities.Address> address,
-            IRepository<AppointmentSchedule> appointmentScheduleRepository)
+            IRepository<AppointmentSchedule> appointmentScheduleRepository,
+            IRepository<SocialLinkInformation> socialLinksRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
@@ -40,6 +42,7 @@ namespace DPTS.Services.Doctors
             _addressMapping = addressMapping;
             _address = address;
             _appointmentScheduleRepository = appointmentScheduleRepository;
+            _socialLinksRepository = socialLinksRepository;
             _context = new DPTSDbContext();
         }
         #endregion
@@ -289,6 +292,52 @@ namespace DPTS.Services.Doctors
             return pageQuery;
         }
 
+        #region Social links
+        public void InsertSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Insert(link);
+        }
+
+        public SocialLinkInformation GetSocialLinkbyId(int id)
+        {
+            if (id > 0)
+                throw new ArgumentNullException(nameof(id));
+
+           return  _socialLinksRepository.GetById(id);
+        }
+
+        public void DeleteSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Delete(link);
+        }
+
+        public void UpdateSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Delete(link);
+        }
+
+        public IPagedList<SocialLinkInformation> GetAllLinksByDoctor(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false)
+        {
+           // return _socialLinksRepository.Table.Where(d => d.DoctorId == doctorId).ToList();
+            var query = _socialLinksRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.IsActive && c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.SocialLink);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<SocialLinkInformation>(query, pageIndex, pageSize);
+        }
+#endregion
         #endregion
     }
 }

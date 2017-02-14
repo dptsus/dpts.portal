@@ -16,7 +16,7 @@
             <div class="tab-content tg-appointmenttabcontent" data-id="332">
                 <div class="tab-pane step-one-contents" id="one" style="display: block;">
                     <div class="bk-booking-schedules">
-                        <input type="hidden" id="doctorId" name="doctorId" value="@Model.doctorId">
+                        <input type="hidden" id="doctorId" name="doctorid" value="@Model.doctorId">
                         <div class="tg-appointmenttime">
                             <div class="tg-dayname booking-pickr">
                                 <strong></strong>
@@ -59,7 +59,7 @@
                     <div class="bk-customer-form">
                         @if (Request.IsAuthenticated)
                         {
-                            @*<input type="hidden" name="doctorId">*@
+                            @*<input type="hidden" name="doctorid">*@
                             <div class="form-group">
                                 <input type="text" class="form-control" name="subject" placeholder="Subject*">
                             </div>

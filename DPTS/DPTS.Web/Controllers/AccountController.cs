@@ -116,8 +116,8 @@ namespace DPTS.Web.Controllers
 
             try
             {
-                if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
-                {
+               // if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
+                //{
 
                     if (!ModelState.IsValid)
                     {
@@ -150,13 +150,13 @@ namespace DPTS.Web.Controllers
                             return View(model);
                     }
 
-                }
+              //  }
 
 
-                ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                ////ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
 
-                ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
-                return View(model);
+                ////ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+                ////return View(model);
             }
             catch (Exception)
             {
