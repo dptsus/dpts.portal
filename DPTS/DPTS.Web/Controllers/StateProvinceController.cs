@@ -8,6 +8,7 @@ using DPTS.Domain.Entities;
 
 namespace DPTS.Web.Controllers
 {
+    [Authorize]
     public class StateProvinceController : BaseController
     {
         #region Fields

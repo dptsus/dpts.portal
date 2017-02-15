@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Linq;
-using DPTS.Domain.Core;
 using DPTS.Domain.Core.Address;
 using DPTS.Domain.Core.Appointment;
 using DPTS.Domain.Core.Country;
@@ -17,7 +16,6 @@ using Microsoft.AspNet.Identity;
 using Kendo.Mvc.UI;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
 using DPTS.Services;
-using Kendo.Mvc.Extensions;
 
 namespace DPTS.Web.Controllers
 {
@@ -903,11 +901,11 @@ namespace DPTS.Web.Controllers
         }
 
         #region Social Links
-        [HttpPost]
-        public ActionResult SocialLink_Read(DataSourceRequest command,string docterId)
-        {
 
-            var socialSites = _doctorService.GetAllLinksByDoctor(docterId, command.Page - 1, 5,false);
+        [HttpPost]
+        public ActionResult SocialLink_Read(DataSourceRequest command, string docterId)
+        {
+            var socialSites = _doctorService.GetAllLinksByDoctor(docterId, command.Page - 1, 5, false);
             var gridModel = new DataSourceResult
             {
                 Data = socialSites.Select(x => new SocialLinkInformation
@@ -923,6 +921,7 @@ namespace DPTS.Web.Controllers
             };
             return Json(gridModel);
         }
+
         [HttpPost]
         public ActionResult SocialLink_Add([Bind(Exclude = "Id")] SocialLinkInformation model, string docterId)
         {
@@ -935,13 +934,14 @@ namespace DPTS.Web.Controllers
 
             if (!ModelState.IsValid && model.DoctorId == null)
             {
-                return Json(new DataSourceResult { Errors = "error" });
+                return Json(new DataSourceResult {Errors = "error"});
             }
 
             _doctorService.InsertSocialLink(model);
 
             return new NullJsonResult();
         }
+
         [HttpPost]
         public ActionResult SocialLink_Update(SocialLinkInformation model, string docterId)
         {
@@ -977,6 +977,7 @@ namespace DPTS.Web.Controllers
 
             return new NullJsonResult();
         }
+
         [HttpPost]
         public ActionResult SocialLink_Delete(int id)
         {
@@ -987,6 +988,7 @@ namespace DPTS.Web.Controllers
 
             return new NullJsonResult();
         }
+
         #endregion
 
         #endregion
