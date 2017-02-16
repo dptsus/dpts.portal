@@ -34,6 +34,8 @@ namespace DPTS.Web
     using Domain.Appointment;
     using EmailSmsNotifications.IServices;
     using EmailSmsNotifications.Services;
+    using Domain.Core.ReviewComments;
+    using Domain.ReviewComments;
 
     public static class NinjectWebCommon
     {
@@ -98,6 +100,7 @@ namespace DPTS.Web
             kernel.Bind<ISmsNotificationService>().To<SmsNotificationService>();
             kernel.Bind<IEmailNotificationService>().To<EmailNotificationService>();
             kernel.Bind<IImportManager>().To<ImportManager>();
+            kernel.Bind<IReviewCommentsService>().To<ReviewCommentsService>();
         }
     }
 }

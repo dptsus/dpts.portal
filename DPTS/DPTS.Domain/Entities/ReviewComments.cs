@@ -8,11 +8,9 @@ namespace DPTS.Domain.Entities
     {
         public ReviewComments()
         {
-            CommentForId = Doctor.Id;
-            CommentOwnerId = AspNetUser.Id;
-
+            
         }
-        public int CommentForId { get; set; }
+        public string CommentForId { get; set; }
         public string CommentOwnerId { get; set; }
         public string Comment { get; set; }
         public decimal Rating { get; set; }

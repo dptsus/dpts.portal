@@ -13,6 +13,7 @@ using DPTS.Domain.Core.StateProvince;
 using DPTS.Domain.Entities;
 using DPTS.Web.Models;
 using Microsoft.AspNet.Identity;
+using DPTS.Domain.Core.ReviewComments;
 
 namespace DPTS.Web.Controllers
 {
@@ -27,6 +28,7 @@ namespace DPTS.Web.Controllers
         private readonly IAddressService _addressService;
         private readonly IAppointmentService _scheduleService;
         private readonly ApplicationDbContext _context;
+        private readonly IReviewCommentsService _reviewCommentsService;
 
         #endregion
 
@@ -35,7 +37,8 @@ namespace DPTS.Web.Controllers
         public DoctorController(IDoctorService doctorService, ISpecialityService specialityService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
-            IAddressService addressService, IAppointmentService scheduleService)
+            IAddressService addressService, IAppointmentService scheduleService,
+            IReviewCommentsService reviewCommentsService)
         {
             _doctorService = doctorService;
             _context = new ApplicationDbContext();
@@ -44,6 +47,7 @@ namespace DPTS.Web.Controllers
             _stateProvinceService = stateProvinceService;
             _addressService = addressService;
             _scheduleService = scheduleService;
+            _reviewCommentsService = reviewCommentsService;
         }
 
         #endregion
@@ -872,6 +876,7 @@ namespace DPTS.Web.Controllers
 
         public ActionResult DoctorDetails(string doctorId)
         {
+           
             var model = new DoctorViewModel();
             if (!string.IsNullOrWhiteSpace(doctorId))
             {
@@ -892,6 +897,8 @@ namespace DPTS.Web.Controllers
                 model.Addresses = _addressService.GetAllAddressByUser(doctor.DoctorId);
                 model.Specialitys = _specialityService.GetDoctorSpecilities(doctor.DoctorId);
                 model.Schedule = _scheduleService.GetScheduleByDoctorId(doctor.DoctorId);
+                model.ReviewComments = _reviewCommentsService.GetAllAprovedReviewCommentsByUser(doctor.DoctorId);
+
                 return View(model);
             }
             return View();

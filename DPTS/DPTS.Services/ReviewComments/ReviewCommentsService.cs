@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DPTS.Domain.ReviewComments
 {
-    public class ReviewCommentsService : IReviewComments
+    public class ReviewCommentsService : IReviewCommentsService
     {
         #region Fields
         private readonly IRepository<Domain.Entities.ReviewComments> _reviewComments;
@@ -18,10 +18,12 @@ namespace DPTS.Domain.ReviewComments
         {
             _reviewComments = reviewComments;
         }
+
+        
         #endregion
 
         #region Methods
-        IList<Entities.ReviewComments> IReviewComments.GetAllAprovedReviewCommentsByUser(string UserId)
+        IList<Entities.ReviewComments> IReviewCommentsService.GetAllAprovedReviewCommentsByUser(string UserId)
         {
             if (string.IsNullOrWhiteSpace(UserId))
                 return null;
