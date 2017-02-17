@@ -742,7 +742,7 @@
                                         title: "Year",
                                         width: 200,
                                         type: "date",
-                                        format: "{0:dd MMMM yyyy}"
+                                        template: '#= kendo.toString(StartDate, "MMMM yyyy") # - #= kendo.toString(EndDate, "MMMM yyyy") #'
 
                                     },
                                     {
@@ -781,7 +781,7 @@
 
             </div>
         </div>
-            <div class="tg-formsection">
+        <div class="tg-formsection">
                 <div class="email-settings-tabs">
                     <div class="tg-heading-border tg-small">
                         <h3>Experience </h3>
@@ -835,139 +835,139 @@
                             </div>
                         </script>
                         <script>
-                        $(document).ready(function () {
+                            $(document).ready(function () {
 
-                            $("#experience-grid").kendoGrid({
-                                dataSource: {
-                                    type: "json",
-                                    transport: {
-                                        read: {
-                                            url: "@Url.Action("Experience_Read", "Doctor",new { docterId = Model.Id })",
-                                            type: "POST",
-                                            dataType: "json",
-                                            contentType: "application/json"
-                                        },
-                                        create: {
-                                            url: "@Html.Raw(Url.Action("Experience_Add", "Doctor", new { docterId = Model.Id }))",
-                                            type: "POST",
-                                            dataType: "json",
-                                            contentType: "application/json"
-                                        },
-                                        update: {
-                                            url: "@Html.Raw(Url.Action("Experience_Update", "Doctor", new { docterId = Model.Id }))",
-                                            type: "POST",
-                                            dataType: "json",
-                                            contentType: "application/json"
-                                        },
-                                        destroy: {
-                                            url: "@Html.Raw(Url.Action("Experience_Delete", "Doctor"))",
-                                            type: "POST",
-                                            dataType: "json",
-                                            contentType: "application/json"
-                                        },
-                                        parameterMap: function (data, operation) {
-                                            if (operation != "read") {
-                                                return JSON.stringify({ experience: data });
-                                            } else {
-                                                return JSON.stringify({ experience: data });
-                                            }
-                                        }
-                                    },
-                                    schema: {
-                                        data: "Data",
-                                        total: "Total",
-                                        errors: "Errors",
-                                        model: {
-                                            id: "Id",
-                                            fields: {
-                                                Title: { editable: true, type: "string" },
-                                                Description: { editable: true, type: "string" },
-                                                Organization: { editable: true, type: "string" },
-                                                StartDate: { editable: true, type: "date" },
-                                                EndDate: { editable: true, type: "date" },
-                                                DisplayOrder: { editable: true, type: "number" },
-                                                IsActive: { editable: true, type: "boolean" },
-                                                Id: { editable: false, type: "number" }
-                                            }
-                                        }
-                                    },
-                                    requestEnd: function(e) {
-                                        if (e.type == "create" || e.type == "update") {
-                                            this.read();
-                                        }
-                                    },
-                                    error: function(e) {
-                                        display_kendoui_grid_error(e);
-                                        // Cancel the changes
-                                        this.cancelChanges();
-                                    },
-                                    pageSize: 5,
-                                    serverPaging: true,
-                                    serverFiltering: true,
-                                    serverSorting: true
-                                },
-                                pageable: {
-                                    refresh: true,
-                                    pageSizes: 5
-                                },
-                                toolbar: [{ name: "create", text: "Add New Record" }],
-                                editable: {
-                                    confirmation: "Are You Sure You Want To Delete !!",
-                                    mode: "popup",
-                                  template: kendo.template($("#popup_editor_expr").html())
-                                },
-                                scrollable: false,
-                                columns: [
-                                    {
-                                        field: "Title",
-                                        title: "Experience Title",
-                                        width: 200
-                                    },
-                                    {
-                                        field: "Organization",
-                                        title: "Organization",
-                                        width: 200
-                                    },
-                                     {
-                                         field: "StartDate",
-                                         title: "Year",
-                                         width: 200,
-                                         type: "date",
-                                         format: "{0:dd MMMM yyyy}"
-
-                                     },
-                                     {
-                                         field: "DisplayOrder",
-                                         title: "Display Order",
-                                         width: 80
-                                     },
-                                     {
-                                         field: "IsActive",
-                                         title: "IsActive",
-                                         width: 80,
-                                         template: '# if(IsActive) {# <i class="fa fa-check true-icon"></i> #} else {# <i class="fa fa-close false-icon"></i> #} #'
-                                     }, {
-                                        command: [
-                                            {
-                                                name: "edit",
-                                                text: {
-                                                    edit: "Edit",
-                                                    update: "Update",
-                                                    cancel: "Cancel"
+                                $("#experience-grid").kendoGrid({
+                                    dataSource: {
+                                        type: "json",
+                                        transport: {
+                                            read: {
+                                                url: "@Url.Action("Experience_Read", "Doctor",new { docterId = Model.Id })",
+                                                type: "POST",
+                                                dataType: "json",
+                                                contentType: "application/json"
+                                            },
+                                            create: {
+                                                url: "@Html.Raw(Url.Action("Experience_Add", "Doctor", new { docterId = Model.Id }))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                contentType: "application/json"
+                                            },
+                                            update: {
+                                                url: "@Html.Raw(Url.Action("Experience_Update", "Doctor", new { docterId = Model.Id }))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                contentType: "application/json"
+                                            },
+                                            destroy: {
+                                                url: "@Html.Raw(Url.Action("Experience_Delete", "Doctor"))",
+                                                type: "POST",
+                                                dataType: "json",
+                                                contentType: "application/json"
+                                            },
+                                            parameterMap: function (data, operation) {
+                                                if (operation != "read") {
+                                                    return JSON.stringify({ experience: data });
+                                                } else {
+                                                    return JSON.stringify({ experience: data });
                                                 }
-                                            }, {
-                                                name: "destroy",
-                                                text: "Delete"
                                             }
-                                        ],
-                                        width: 200
-                                    }
-                                ]
+                                        },
+                                        schema: {
+                                            data: "Data",
+                                            total: "Total",
+                                            errors: "Errors",
+                                            model: {
+                                                id: "Id",
+                                                fields: {
+                                                    Title: { editable: true, type: "string" },
+                                                    Description: { editable: true, type: "string" },
+                                                    Organization: { editable: true, type: "string" },
+                                                    StartDate: { editable: true, type: "date" },
+                                                    EndDate: { editable: true, type: "date" },
+                                                    DisplayOrder: { editable: true, type: "number" },
+                                                    IsActive: { editable: true, type: "boolean" },
+                                                    Id: { editable: false, type: "number" }
+                                                }
+                                            }
+                                        },
+                                        requestEnd: function (e) {
+                                            if (e.type == "create" || e.type == "update") {
+                                                this.read();
+                                            }
+                                        },
+                                        error: function (e) {
+                                            display_kendoui_grid_error(e);
+                                            // Cancel the changes
+                                            this.cancelChanges();
+                                        },
+                                        pageSize: 5,
+                                        serverPaging: true,
+                                        serverFiltering: true,
+                                        serverSorting: true
+                                    },
+                                    pageable: {
+                                        refresh: true,
+                                        pageSizes: 5
+                                    },
+                                    toolbar: [{ name: "create", text: "Add New Record" }],
+                                    editable: {
+                                        confirmation: "Are You Sure You Want To Delete !!",
+                                        mode: "popup",
+                                        template: kendo.template($("#popup_editor_expr").html())
+                                    },
+                                    scrollable: false,
+                                    columns: [
+                                        {
+                                            field: "Title",
+                                            title: "Experience Title",
+                                            width: 200
+                                        },
+                                        {
+                                            field: "Organization",
+                                            title: "Organization",
+                                            width: 200
+                                        },
+                                        {
+                                            field: "StartDate",
+                                            title: "Year",
+                                            width: 200,
+                                            type: "date",
+                                            format: "{0:dd MMMM yyyy}",
+                                            template: '#= kendo.toString(StartDate, "MMMM yyyy") # - #= kendo.toString(EndDate, "MMMM yyyy") #'
+                                        },
+                                        {
+                                            field: "DisplayOrder",
+                                            title: "Display Order",
+                                            width: 80
+                                        },
+                                        {
+                                            field: "IsActive",
+                                            title: "IsActive",
+                                            width: 80,
+                                            template: '# if(IsActive) {# <i class="fa fa-check true-icon"></i> #} else {# <i class="fa fa-close false-icon"></i> #} #'
+                                        }, {
+                                            command: [
+                                                {
+                                                    name: "edit",
+                                                    text: {
+                                                        edit: "Edit",
+                                                        update: "Update",
+                                                        cancel: "Cancel"
+                                                    }
+                                                }, {
+                                                    name: "destroy",
+                                                    text: "Delete"
+                                                }
+                                            ],
+                                            width: 200
+                                        }
+                                    ]
+                                });
                             });
-                    });
 
+</script>
 
-                        </script>
                     </div>
 
                 </div>
