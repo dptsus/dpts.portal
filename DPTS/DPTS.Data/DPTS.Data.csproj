@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201702170507144_UpdateHonorsAwardsTbl.Designer.cs">
       <DependentUpon>201702170507144_UpdateHonorsAwardsTbl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702171707310_AddEducationTable.cs" />
+    <Compile Include="Migrations\201702171707310_AddEducationTable.Designer.cs">
+      <DependentUpon>201702171707310_AddEducationTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -99,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702170507144_UpdateHonorsAwardsTbl.resx">
       <DependentUpon>201702170507144_UpdateHonorsAwardsTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702171707310_AddEducationTable.resx">
+      <DependentUpon>201702171707310_AddEducationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
