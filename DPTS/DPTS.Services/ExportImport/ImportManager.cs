@@ -108,7 +108,6 @@ namespace DPTS.Services.ExportImport
                         Gender = manager.GetProperty("Gender").StringValue,
                         ShortProfile = manager.GetProperty("ShortProfile").StringValue,
                         Language = manager.GetProperty("Qualifications").StringValue,
-                        YearsOfExperience = manager.GetProperty("YearsOfExperience").IntValue,
                         RegistrationNumber = manager.GetProperty("RegistrationNumber").StringValue,
                         DateOfBirth = manager.GetProperty("DateOfBirth").StringValue
                     };

@@ -190,6 +190,7 @@
                             @Html.ValidationMessageFor(model => model.DateOfBirthYear)
                         </div>
                     </div>
+                    
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Gender)
@@ -209,6 +210,13 @@
                             @Html.LabelFor(model => model.PhoneNumber)
                             @Html.EditorFor(model => model.PhoneNumber, new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.PhoneNumber)
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RegistrationNumber)
+                            @Html.EditorFor(model => model.RegistrationNumber, new { @class = "form-control", @palceholder = "G-56707" })
+                            @Html.ValidationMessageFor(model => model.RegistrationNumber)
                         </div>
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -241,26 +249,21 @@
         <div class="tg-bordertop tg-haslayout">
             <div class="tg-formsection">
                 <div class="tg-heading-border tg-small">
-                    <h3>Experience & Registration Number</h3>
+                    <h3>Professional Statements</h3>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.NoOfYearExperience)
-                            @Html.EditorFor(model => model.NoOfYearExperience, new {@class = "form-control"})
-                            @Html.ValidationMessageFor(model => model.NoOfYearExperience)
+                            @Html.LabelFor(model => model.ProfessionalStatements)
+                            @Html.TextAreaFor(model => model.ProfessionalStatements, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.ProfessionalStatements)
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.RegistrationNumber)
-                            @Html.EditorFor(model => model.RegistrationNumber, new {@class = "form-control", @palceholder = "G-56707"})
-                            @Html.ValidationMessageFor(model => model.RegistrationNumber)
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
+        <button type="submit" class="tg-btn process-account-settings">update</button>
 
         <div class="tg-formsection">
             <div class="email-settings-tabs">
@@ -410,7 +413,6 @@
                 <div class="tg-heading-border tg-small">
                     <h3>Honors & Awards</h3>
                 </div>
-
                 <div class="tab-data" style="display: block;">
                     <div id="honors-awards-grid"></div>
                     <script id="popup_editor" type="text/x-kendo-template">
@@ -525,7 +527,7 @@
                                     refresh: true,
                                     pageSizes: 5
                                 },
-                                toolbar: [{ name: "create", text: "Add New Record" }],
+                                toolbar: [{ name: "create", text: "Add Awards" }],
                                 editable: {
                                     confirmation: "Are You Sure You Want To Delete !!",
                                     mode: "popup",
@@ -584,7 +586,6 @@
 
                     </script>
                 </div>
-
             </div>
         </div>
         <div class="tg-formsection">
@@ -673,11 +674,8 @@
                                         },
                                         parameterMap: function(data, operation) {
                                             if (operation != "read") {
-                                                // return data;
                                                 return JSON.stringify({ education: data });
                                             } else {
-                                                //for some reasons only such "Filter" data be parsed
-                                                // return JSON.stringify(data);
                                                 return JSON.stringify({ education: data });
                                             }
                                         }
@@ -719,7 +717,7 @@
                                     refresh: true,
                                     pageSizes: 5
                                 },
-                                toolbar: [{ name: "create", text: "Add New Record" }],
+                                toolbar: [{ name: "create", text: "Add Education" }],
                                 editable: {
                                     confirmation: "Are You Sure You Want To Delete !!",
                                     mode: "popup",
@@ -910,7 +908,7 @@
                                         refresh: true,
                                         pageSizes: 5
                                     },
-                                    toolbar: [{ name: "create", text: "Add New Record" }],
+                                    toolbar: [{ name: "create", text: "Add Experience" }],
                                     editable: {
                                         confirmation: "Are You Sure You Want To Delete !!",
                                         mode: "popup",
@@ -972,8 +970,7 @@
 
                 </div>
             </div>
-        <button type="submit" class="tg-btn process-account-settings">update</button>
-            <div id="grid"></div>
+        
         </fieldset>
     }
     </div>
@@ -1026,6 +1023,14 @@
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progressfrontprofile').css('width', progress + '%');
             });
+            
+            // statement rich box
+            $("#ProfessionalStatements").kendoEditor({
+                resizable: {
+                    content: true,
+                    toolbar: true
+                }
+            });
             //tag using languages
             $("#Language").tagEditor({
                 autocomplete: {
@@ -1037,6 +1042,7 @@
                 delimiter: ',',
                 placeholder: 'Enter Languages ...'
             });
+
             $("#CountryId").change(function() {
                 var selectedItem = $(this).val();
                 var ddlStates = $("#StateProvinceId");

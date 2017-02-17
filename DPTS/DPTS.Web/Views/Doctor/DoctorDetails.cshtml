@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <main id="main" class="tg-page-wrapper tg-haslayout">
-<div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll" data-image-src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/10/DOCTOR.jpg">
+<div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll">
 </div>
 <div class="container">
 <div class="row">
@@ -225,129 +225,140 @@
         <h2>About&nbsp;Dr @Model.FirstName</h2>
 
     </div>
+@if (!string.IsNullOrWhiteSpace(Model.doctor.ShortProfile))
+{
     <div class="tg-description">
         <p>@Model.doctor.ShortProfile</p>
     </div>
+}
+   
+    @if (!string.IsNullOrWhiteSpace(Model.doctor.ProfessionalStatements))
+    {
+        <div class="professional-statements">
+            @Html.Raw(Model.doctor.ProfessionalStatements)
+        </div>
+    }
+    
 </div>
 
 <!--Languages-->
-@*<div class="tg-honourawards tg-listview-v3 user-section-style">
-                            <div class="tg-userheading">
-                                <h2>Languages</h2>
-                            </div>
-                            <div class="tg-doctor-profile">
-                                <ul class="tg-tags">
-                                    <li><a href="javascript:;" class="tg-btn">Hindi</a></li>
-                                    <li><a href="javascript:;" class="tg-btn">Danish</a></li>
-                                    <li><a href="javascript:;" class="tg-btn">English</a></li>
-                                </ul>
-                            </div>
-                        </div>*@
+    @if (!string.IsNullOrWhiteSpace(Model.doctor.Language))
+    {
+        string[] lgs = Model.doctor.Language.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        <div class="tg-honourawards tg-listview-v3 user-section-style">
+            <div class="tg-userheading">
+                <h2>Languages</h2>
+            </div>
+            <div class="tg-doctor-profile">
+                <ul class="tg-tags">
+                    @foreach (var lg in lgs)
+                    {
+                        <li><a href="javascript:;" class="tg-btn">@lg</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
 
 <!--Specialities-->
-<div class="tg-honourawards tg-listview-v3 user-section-style">
-    <div class="tg-userheading">
-        <h2>Specialties</h2>
-    </div>
-    <div class="tg-doctor-profile">
-        <ul class="tg-tags">
-            @if (Model.Specialitys.Any())
-            {
-                foreach (var sp in Model.Specialitys)
+@if (Model.Specialitys.Any())
+{
+    <div class="tg-honourawards tg-listview-v3 user-section-style">
+        <div class="tg-userheading">
+            <h2>Specialties</h2>
+        </div>
+        <div class="tg-doctor-profile">
+            <ul class="tg-tags">
+                @foreach (var sp in Model.Specialitys)
                 {
-                    <li><a href="javascript:;" class="tg-btn">@sp.Title</a></li>
+                 <li><a href="javascript:;" class="tg-btn">@sp.Title</a></li>
                 }
-            }
-        </ul>
+            </ul>
 
+        </div>
     </div>
-</div>
-
+}
 <!--Experience-->
-@if (Model.doctor.YearsOfExperience > 0)
+@if (Model.doctor.Experience.Any())
 {
     <div class="tg-userexperience">
         <div class="tg-userheading">
-            <h2><i class="fa fa-briefcase"></i>Experience
-            </h2>
+            <h2><i class="fa fa-briefcase"></i>Experience</h2>
         </div>
         <ul>
-            <li>
-                <div class="tg-dotstyletitle">
-                    <h3>@Model.doctor.YearsOfExperience years</h3>
-                    @*<span>Co-ed/Women/Boys</span>*@
-                </div>
-                @*<div class="tg-description">
-                                                    <p>The Cardiovascular &amp; Respiratory Systems category covers resources concerned with all aspects of cardiovascular and thoracic surgery and respiratory diseases. Topics include circulation, cardiovascular technology and measurement, cardiovascular pharmacology and therapy, hypertension, heart and lung transplantation, arteries, arteriosclerosis, thrombosis, angiology, perfusion, stroke, as well as all types of respiratory and lung diseases.</p>
-                                                </div>*@
-            </li>
+            @foreach (var expr in Model.doctor.Experience)
+            {
+                <li>
+                    <div class="tg-dotstyletitle">
+                        <h3>@expr.Title&nbsp;&nbsp;(@expr.StartDate.ToString("MMMM, yyyy")&nbsp;-&nbsp;@expr.EndDate.ToString("MMMM, yyyy"))</h3>
+                        <span>@expr.Organization</span>
+                    </div>
+                    <div class="tg-description">
+                        <p>@expr.Description</p>
+                    </div>
+                </li>
+            }
         </ul>
     </div>
 }
 
 
 <!--Education-->
-@if (!string.IsNullOrWhiteSpace(Model.doctor.Qualifications))
+@if (Model.doctor.Education.Any())
 {
     <div class="tg-userexperience tg-userqualification">
         <div class="tg-userheading">
-            <h2><i class="fa fa-graduation-cap"></i>Education
-            </h2>
+            <h2><i class="fa fa-graduation-cap"></i>Education</h2>
         </div>
         <ul>
-            <li>
-                <div class="tg-dotstyletitle">
-                    <h3>@Model.doctor.Qualifications.ToUpper()</h3>
-                    @*<span>Medical School - New York University</span>*@
-                </div>
-                @*<div class="tg-description">
-                                                    <p>
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                                    </p>
-                                                </div>*@
-            </li>
+            @foreach (var edu in Model.doctor.Education)
+            {
+                <li>
+                    <div class="tg-dotstyletitle">
+                        <h3>
+                            @edu.Title<strong>&nbsp;&nbsp;</strong>(@edu.StartDate.ToString("MMMM, yyyyy") &nbsp;-&nbsp;@edu.EndDate.ToString("MMMM, yyyyy"))
+                        </h3>
+                        <span>@edu.Institute</span>
+                    </div>
+                    <div class="tg-description">
+                        <p>
+                            @edu.Description
+                        </p>
+                    </div>
+                </li>
+            }
         </ul>
     </div>
 }
 
 
 <!--Awards-->
-@*<div class="tg-userexperience tg-honourawards">
-                            <div class="tg-userheading">
-                                <h2><i class="fa fa-trophy"></i>Honours &amp; Awards</h2>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Summa Cum Laude, Yale University&nbsp;&nbsp;(April 04, 2015)</h3>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Summa Cum Laude, Yale University &nbsp;&nbsp;(September 09, 2012)</h3>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="tg-dotstyletitle">
-                                        <h3>Summa Cum Laude, Yale University &nbsp;&nbsp;(August 08, 2013)</h3>
-                                    </div>
-                                    <div class="tg-description">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>*@
-
+    @if (Model.doctor.HonorsAwards.Any())
+    {
+        <div class="tg-userexperience tg-honourawards">
+            <div class="tg-userheading">
+                <h2><i class="fa fa-trophy"></i>Honours &amp; Awards
+                </h2>
+            </div>
+            <ul>
+                @foreach (var awd in Model.doctor.HonorsAwards)
+                {
+                    <li>
+                        <div class="tg-dotstyletitle">
+                            <h3>@awd.Name &nbsp;&nbsp;(@awd.AwardDate.ToString("MMMM, yyyy"))</h3>
+                        </div>
+                        <div class="tg-description">
+                            <p>
+                                @awd.AwardDate
+                            </p>
+                        </div>
+                    </li>
+                }
+                
+            </ul>
+        </div>
+    }
 <!--Video URL-->
 @*<div class="tg-presentationvideo">
                             <div class="tg-userheading">

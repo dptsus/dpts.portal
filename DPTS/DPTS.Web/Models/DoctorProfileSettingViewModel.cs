@@ -71,13 +71,6 @@ namespace DPTS.Web.Models
         [Display(Name = "Registration Number")]
         public string RegistrationNumber { get; set; }
 
-        /// <summary>
-        /// NoOfYearExperience
-        /// </summary>
-        [Display(Name = "Experience [/yrs]")]
-        [Range(0, Int32.MaxValue)]
-        public int NoOfYearExperience { get; set; }
-
 
         public DateTime DateCreated { get; set; }
 
@@ -94,6 +87,9 @@ namespace DPTS.Web.Models
 
         [Display(Name = "Year")]
         public int? DateOfBirthYear { get; set; }
+
+        [Display(Name = "It will be shown in user detail page below user short description.")]
+        public string ProfessionalStatements { get; set; }
 
         public DateTime? ParseDateOfBirth()
         {

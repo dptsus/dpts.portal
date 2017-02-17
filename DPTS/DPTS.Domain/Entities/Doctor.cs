@@ -26,8 +26,6 @@ namespace DPTS.Domain.Entities
 
         public string RegistrationNumber { get; set; }
 
-        public int? YearsOfExperience { get; set; }
-
         public string ShortProfile { get; set; }
 
         public string Expertise { get; set; }
@@ -46,6 +44,8 @@ namespace DPTS.Domain.Entities
         public string DateOfBirth { get; set; }
 
         public decimal Rating { get; set; }
+
+        public string ProfessionalStatements { get; set; }
 
         public virtual AspNetUser AspNetUser { get; set; }
 

@@ -51,18 +51,24 @@
                                     </div>
                                     <div class="short-description">
                                         <ul class="tg-doccontactinfo">
-                                            @if (!string.IsNullOrWhiteSpace(item.Doctors.Qualifications))
+                                            @if (item.Doctors.Education.Any())
                                             {
-                                                <li><i class="fa fa-graduation-cap" aria-hidden="true"></i><span><b>@item.Doctors.Qualifications.ToUpper()</b></span></li>
+                                                string educationLst = string.Empty;
+                                                foreach (var edu in item.Doctors.Education)
+                                                {
+                                                    educationLst += edu.Title + ",";
+                                                }
+                                                if (!string.IsNullOrWhiteSpace(educationLst))
+                                                {
+                                                    <li><i class="fa fa-graduation-cap" aria-hidden="true"></i><span><b>@educationLst</b></span></li>
+                                                    <li><hr /></li>
+                                                }
                                             }
-                                            @if (item.Doctors.YearsOfExperience > 0)
+                                            @*@if (item.Doctors.Experience.Any())
                                             {
                                                 <li><i class="fa fa-flask" aria-hidden="true"></i><span><b>@item.Doctors.YearsOfExperience</b> years experience</span></li>
-                                            }
-                                            @if (item.Doctors.YearsOfExperience > 0 || !string.IsNullOrWhiteSpace(item.Doctors.Qualifications))
-                                            {
-                                                <li><hr /></li>
-                                            }
+                                            }*@
+                                           
                                             @{
                                                 var addr = item.Address;
                                                 if (addr != null)
