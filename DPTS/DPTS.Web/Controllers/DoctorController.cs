@@ -897,12 +897,22 @@ namespace DPTS.Web.Controllers
                 model.Addresses = _addressService.GetAllAddressByUser(doctor.DoctorId);
                 model.Specialitys = _specialityService.GetDoctorSpecilities(doctor.DoctorId);
                 model.Schedule = _scheduleService.GetScheduleByDoctorId(doctor.DoctorId);
-                model.ReviewComments = _reviewCommentsService.GetAllAprovedReviewCommentsByUser(doctor.DoctorId);
+                model.listReviewComments = _reviewCommentsService.GetAllAprovedReviewCommentsByUser(doctor.DoctorId);
 
+                TempData["CommentForId"] = doctorId;
                 return View(model);
             }
             return View();
         }
+
+        [HttpPost]
+        public ActionResult SaveReivewComment(FormCollection form)
+        {
+            string CommentForId = TempData["CommentForId"].ToString();
+            string CommentOwnerId = User.Identity.GetUserId();
+            return RedirectToAction("DoctorDetails",new { doctorId = CommentForId });
+        }
+        
 
         #endregion
     }

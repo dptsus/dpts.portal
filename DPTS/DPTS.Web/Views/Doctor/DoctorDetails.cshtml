@@ -397,7 +397,7 @@
                             <!--Reviews-->
                             <div class="tg-userreviews">
                                 <div class="tg-userheading">
-                                    <h2>@Model.ReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
+                                    <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
                                     @*<h2>1&nbsp;&nbsp;Review(s)</h2>
                                         <h2>1&nbsp;&nbsp;Review(s)</h2>*@
                                 </div>
@@ -490,8 +490,19 @@
                                     <div class="tg-userheading">
                                         <h2>Leave Your Review</h2>
                                     </div>
+
+                                    @using (Html.BeginForm("SaveReivewComment", "Doctor",FormMethod.Post))
+                                    {
+                                        <div class="form-group">
+                                            <input type='text' name="UserComment" class="form-control" placeholder="Type our comment" required />
+                                        </div>
+                                        
+
+                                        <button type="submit" class="tg-btn process-account-settings">Submit</button>
+                                    }
+
+
                                     <span>
-                                        <a class="tg-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new { doctorId = Model.Id }))">Submit</a>
                                         @*<a href="javascript:;" class="tg-btn" data-toggle="modal" data-target=".tg-user-modal">Submit</a>*@
                                     </span>
                                 </div>
