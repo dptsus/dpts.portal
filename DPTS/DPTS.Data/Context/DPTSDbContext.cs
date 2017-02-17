@@ -34,6 +34,7 @@ namespace DPTS.Data.Context
         public virtual DbSet<SocialLinkInformation> SocialLinkInformation { get; set; }
         public virtual DbSet<HonorsAwards> HonorsAwards { get; set; }
         public virtual DbSet<Education> Education { get; set; }
+        public virtual DbSet<Experience> Experience { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

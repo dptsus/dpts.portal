@@ -90,5 +90,18 @@ namespace DPTS.Domain.Core.Doctors
         IPagedList<Education> GetAllEducation(string doctorId, int pageIndex = 0,
             int pageSize = Int32.MaxValue, bool showHidden = false);
         #endregion
+
+        #region Experience
+        void InsertExperience(Experience experience);
+
+        Experience GetExperiencebyId(int id);
+
+        void DeleteExperience(Experience experience);
+
+        void UpdateExperience(Experience experience);
+
+        IPagedList<Experience> GetAllExperience(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false);
+        #endregion
     }
 }

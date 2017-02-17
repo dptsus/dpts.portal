@@ -1168,6 +1168,90 @@ namespace DPTS.Web.Controllers
         }
         #endregion
 
+        #region Experience
+        [HttpPost]
+        public ActionResult Experience_Read(DataSourceRequest command, string docterId)
+        {
+            var experience = _doctorService.GetAllExperience(docterId, command.Page - 1, 5, false);
+            var gridModel = new DataSourceResult
+            {
+                Data = experience.Select(x => new Experience
+                {
+                    Id = x.Id,
+                    IsActive = x.IsActive,
+                    DisplayOrder = x.DisplayOrder,
+                    DoctorId = x.DoctorId,
+                    Title = x.Title,
+                    Description = x.Description,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Organization = x.Organization
+                }),
+                Total = experience.TotalCount
+            };
+            return Json(gridModel);
+        }
+        [HttpPost]
+        public ActionResult Experience_Add([Bind(Exclude = "Id")] Experience experience, string docterId)
+        {
+            if (experience.Title != null)
+                experience.Title = experience.Title.Trim();
+            if (experience.Description != null)
+                experience.Description = experience.Description.Trim();
+            if (experience.Organization != null)
+                experience.Organization = experience.Organization.Trim();
+            if (docterId != null)
+                experience.DoctorId = docterId;
+
+            if (!ModelState.IsValid && experience.DoctorId == null)
+            {
+                return Json(new DataSourceResult { Errors = "error" });
+            }
+
+            _doctorService.InsertExperience(experience);
+
+            return new NullJsonResult();
+        }
+        [HttpPost]
+        public ActionResult Experience_Update(Experience experience, string docterId)
+        {
+            var expr = _doctorService.GetExperiencebyId(experience.Id);
+            if (expr == null)
+                return Content("No Experience could be loaded with the specified ID");
+
+            if (!experience.Title.Equals(expr.Title, StringComparison.InvariantCultureIgnoreCase) ||
+                experience.Id != expr.Id)
+            {
+                _doctorService.DeleteExperience(expr);
+            }
+
+            expr.Id = experience.Id;
+            expr.DoctorId = experience.DoctorId;
+            expr.Title = experience.Title;
+            expr.Description = experience.Description;
+            expr.IsActive = experience.IsActive;
+            expr.DisplayOrder = experience.DisplayOrder;
+            expr.Organization = experience.Organization;
+            expr.StartDate = experience.StartDate;
+            expr.EndDate = experience.EndDate;
+            _doctorService.UpdateExperience(expr);
+
+            return new NullJsonResult();
+        }
+        [HttpPost]
+        public ActionResult Experience_Delete(Experience experience)
+        {
+            if (experience.Id > 0)
+            {
+                var expr = _doctorService.GetExperiencebyId(experience.Id);
+                if (expr == null)
+                    throw new ArgumentException("No Experience found with the specified id");
+                _doctorService.DeleteExperience(expr);
+            }
+
+            return new NullJsonResult();
+        }
+        #endregion
         #endregion
     }
 }

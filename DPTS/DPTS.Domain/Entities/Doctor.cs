@@ -15,6 +15,7 @@ namespace DPTS.Domain.Entities
             SocialLinkInformation =new HashSet<SocialLinkInformation>();
             HonorsAwards = new HashSet<HonorsAwards>();
             Education =new HashSet<Education>();
+            Experience = new HashSet<Experience>();
         }
 
         public Guid DoctorGuid { get; set; }
@@ -61,6 +62,8 @@ namespace DPTS.Domain.Entities
         public virtual ICollection<HonorsAwards> HonorsAwards { get; set; }
 
         public virtual ICollection<Education> Education { get; set; }
+
+        public virtual ICollection<Experience> Experience { get; set; }
 
     }
 }
