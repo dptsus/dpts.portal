@@ -22,7 +22,7 @@ namespace DPTS.Domain.Entities
 
         public string Gender { get; set; }
 
-        public string Qualifications { get; set; }
+        public string Language { get; set; }
 
         public string RegistrationNumber { get; set; }
 

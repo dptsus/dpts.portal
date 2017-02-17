@@ -80,6 +80,10 @@
     <Compile Include="Migrations\201702171841149_AddExperienceTable.Designer.cs">
       <DependentUpon>201702171841149_AddExperienceTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702171945261_UpdateDoctorTable.cs" />
+    <Compile Include="Migrations\201702171945261_UpdateDoctorTable.Designer.cs">
+      <DependentUpon>201702171945261_UpdateDoctorTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702171841149_AddExperienceTable.resx">
       <DependentUpon>201702171841149_AddExperienceTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702171945261_UpdateDoctorTable.resx">
+      <DependentUpon>201702171945261_UpdateDoctorTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -284,7 +284,7 @@ namespace DPTS.Web.Controllers
                         }
                         model.Gender = doctor.Gender;
                         model.ShortProfile = doctor.ShortProfile;
-                        model.Qualifications = doctor.Qualifications;
+                        model.Language = doctor.Language;
                         model.NoOfYearExperience = doctor.YearsOfExperience.GetValueOrDefault();
                         model.RegistrationNumber = doctor.RegistrationNumber;
                     }
@@ -334,7 +334,7 @@ namespace DPTS.Web.Controllers
             var dateOfBirth = model.ParseDateOfBirth();
             doctor.DateOfBirth = dateOfBirth.ToString();
             doctor.DateUpdated = DateTime.UtcNow;
-            doctor.Qualifications = model.Qualifications;
+            doctor.Language = model.Language;
             doctor.RegistrationNumber = model.RegistrationNumber;
             doctor.YearsOfExperience = model.NoOfYearExperience;
             _doctorService.UpdateDoctor(doctor);

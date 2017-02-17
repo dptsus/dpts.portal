@@ -224,14 +224,14 @@
         <div class="tg-bordertop tg-haslayout">
             <div class="tg-formsection">
                 <div class="tg-heading-border tg-small">
-                    <h3>EDUCATION</h3>
+                    <h3>Language</h3>
                 </div>
                 <div class="row">
                     <div class="col-md-8 col-sm-6 col-xs-12">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Qualifications)
-                            @Html.EditorFor(model => model.Qualifications, new {@class = "form-control"})
-                            @Html.ValidationMessageFor(model => model.Qualifications)
+                            @Html.LabelFor(model => model.Language)
+                            @Html.EditorFor(model => model.Language, new {@class = "form-control"})
+                            @Html.ValidationMessageFor(model => model.Language)
                         </div>
                     </div>
                     <br/>
@@ -1026,7 +1026,8 @@
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progressfrontprofile').css('width', progress + '%');
             });
-            $("#Qualifications").tagEditor({
+            //tag using languages
+            $("#Language").tagEditor({
                 autocomplete: {
                     delay: 0,
                     maxLength: 3,
@@ -1034,7 +1035,7 @@
                     //source: initialSocialTags
                 },
                 delimiter: ',',
-                placeholder: 'Enter qualifications ...'
+                placeholder: 'Enter Languages ...'
             });
             $("#CountryId").change(function() {
                 var selectedItem = $(this).val();

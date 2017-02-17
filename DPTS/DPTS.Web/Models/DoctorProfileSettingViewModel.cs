@@ -62,8 +62,8 @@ namespace DPTS.Web.Models
         /// <summary>
         /// Qualifications
         /// </summary>
-        [Display(Name = "Qualifications")]
-        public string Qualifications { get; set; }
+        [Display(Name = "Language")]
+        public string Language { get; set; }
 
         /// <summary>
         /// Registration Number
