@@ -1080,6 +1080,94 @@ namespace DPTS.Web.Controllers
         }
         #endregion
 
+        #region Education
+        [HttpPost]
+        public ActionResult Education_Read(DataSourceRequest command, string docterId)
+        {
+            var education = _doctorService.GetAllEducation(docterId, command.Page - 1, 5, false);
+            var gridModel = new DataSourceResult
+            {
+                Data = education.Select(x => new Education
+                {
+                    Id = x.Id,
+                    IsActive = x.IsActive,
+                    DisplayOrder = x.DisplayOrder,
+                    DoctorId = x.DoctorId,
+                    Title = x.Title,
+                    Description = x.Description,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Institute = x.Institute
+                }),
+                Total = education.TotalCount
+            };
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult Education_Add([Bind(Exclude = "Id")] Education education, string docterId)
+        {
+            if (education.Title != null)
+                education.Title = education.Title.Trim();
+            if (education.Description != null)
+                education.Description = education.Description.Trim();
+            if (education.Institute != null)
+                education.Institute = education.Institute.Trim();
+            if (docterId != null)
+                education.DoctorId = docterId;
+
+            if (!ModelState.IsValid && education.DoctorId == null)
+            {
+                return Json(new DataSourceResult { Errors = "error" });
+            }
+
+            _doctorService.InsertEducation(education);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult Education_Update(Education education, string docterId)
+        {
+            var edu = _doctorService.GetEducationbyId(education.Id);
+            if (edu == null)
+                return Content("No education could be loaded with the specified ID");
+
+            if (!education.Title.Equals(edu.Title, StringComparison.InvariantCultureIgnoreCase) ||
+                education.Id != edu.Id)
+            {
+                _doctorService.DeleteEducation(edu);
+            }
+
+            edu.Id = education.Id;
+            edu.DoctorId = education.DoctorId;
+            edu.Title = education.Title;
+            edu.Description = education.Description;
+            edu.IsActive = education.IsActive;
+            edu.DisplayOrder = education.DisplayOrder;
+            edu.Institute = education.Institute;
+            edu.StartDate = education.StartDate;
+            edu.EndDate = education.EndDate;
+            _doctorService.UpdateEducation(edu);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult Education_Delete(Education education)
+        {
+            if (education.Id > 0)
+            {
+                var edu = _doctorService.GetEducationbyId(education.Id);
+                if (edu == null)
+                    throw new ArgumentException("No education found with the specified id");
+                _doctorService.DeleteEducation(edu);
+            }
+
+            return new NullJsonResult();
+        }
+        #endregion
+
         #endregion
     }
 }

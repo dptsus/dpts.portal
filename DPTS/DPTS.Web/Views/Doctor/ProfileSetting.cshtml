@@ -405,15 +405,15 @@
 
             </div>
         </div>
-            <div class="tg-formsection">
-                <div class="email-settings-tabs">
-                    <div class="tg-heading-border tg-small">
-                        <h3>Honors & Awards</h3>
-                    </div>
+        <div class="tg-formsection">
+            <div class="email-settings-tabs">
+                <div class="tg-heading-border tg-small">
+                    <h3>Honors & Awards</h3>
+                </div>
 
-                    <div class="tab-data" style="display: block;">
-                        <div id="honors-awards-grid"></div>
-                        <script id="popup_editor" type="text/x-kendo-template">
+                <div class="tab-data" style="display: block;">
+                    <div id="honors-awards-grid"></div>
+                    <script id="popup_editor" type="text/x-kendo-template">
                             <div class="k-edit-label">
                                 <label for="Name">Name</label>
                             </div>
@@ -448,27 +448,27 @@
                         </script>
 
 
-                        <script>
-                        $(document).ready(function () {
+                    <script>
+                        $(document).ready(function() {
 
-                        $("#honors-awards-grid").kendoGrid({
+                            $("#honors-awards-grid").kendoGrid({
                                 dataSource: {
                                     type: "json",
                                     transport: {
                                         read: {
-                                            url: "@Url.Action("HonorsAwards_Read", "Doctor",new { docterId = Model.Id })",
+                                            url: "@Url.Action("HonorsAwards_Read", "Doctor", new {docterId = Model.Id})",
                                             type: "POST",
                                             dataType: "json",
                                             contentType: "application/json"
                                         },
                                         create: {
-                                            url: "@Html.Raw(Url.Action("HonorsAwards_Add", "Doctor", new { docterId = Model.Id }))",
+                                            url: "@Html.Raw(Url.Action("HonorsAwards_Add", "Doctor", new {docterId = Model.Id}))",
                                             type: "POST",
                                             dataType: "json",
                                             contentType: "application/json"
                                         },
                                         update: {
-                                            url: "@Html.Raw(Url.Action("HonorsAwards_Update", "Doctor", new { docterId = Model.Id }))",
+                                            url: "@Html.Raw(Url.Action("HonorsAwards_Update", "Doctor", new {docterId = Model.Id}))",
                                             type: "POST",
                                             dataType: "json",
                                             contentType: "application/json"
@@ -479,14 +479,14 @@
                                             dataType: "json",
                                             contentType: "application/json"
                                         },
-                                        parameterMap: function (data, operation) {
+                                        parameterMap: function(data, operation) {
                                             if (operation != "read") {
-                                               // return data;
+                                                // return data;
                                                 return JSON.stringify({ awards: data });
                                             } else {
                                                 //for some reasons only such "Filter" data be parsed
-                                               // return JSON.stringify(data);
-                                                return JSON.stringify({ awards : data });
+                                                // return JSON.stringify(data);
+                                                return JSON.stringify({ awards: data });
                                             }
                                         }
                                     },
@@ -529,7 +529,7 @@
                                 editable: {
                                     confirmation: "Are You Sure You Want To Delete !!",
                                     mode: "popup",
-                                  template: kendo.template($("#popup_editor").html())
+                                    template: kendo.template($("#popup_editor").html())
                                 },
                                 scrollable: false,
                                 columns: [
@@ -543,9 +543,203 @@
                                     //    title: "Description",
                                     //    width: 200
                                     //},
+                                    {
+                                        field: "AwardDate",
+                                        title: "AwardDate",
+                                        width: 200,
+                                        type: "date",
+                                        format: "{0:dd MMMM yyyy}"
+
+                                    },
+                                    {
+                                        field: "DisplayOrder",
+                                        title: "Display Order",
+                                        width: 80
+                                    },
+                                    {
+                                        field: "IsActive",
+                                        title: "IsActive",
+                                        width: 80,
+                                        template: '# if(IsActive) {# <i class="fa fa-check true-icon"></i> #} else {# <i class="fa fa-close false-icon"></i> #} #'
+                                    }, {
+                                        command: [
+                                            {
+                                                name: "edit",
+                                                text: {
+                                                    edit: "Edit",
+                                                    update: "Update",
+                                                    cancel: "Cancel"
+                                                }
+                                            }, {
+                                                name: "destroy",
+                                                text: "Delete"
+                                            }
+                                        ],
+                                        width: 200
+                                    }
+                                ]
+                            });
+                        });
+
+
+                    </script>
+                </div>
+
+            </div>
+        </div>
+            <div class="tg-formsection">
+                <div class="email-settings-tabs">
+                    <div class="tg-heading-border tg-small">
+                        <h3>Education</h3>
+                    </div>
+
+                    <div class="tab-data" style="display: block;">
+                        <div id="education-grid"></div>
+                        <script id="popup_editor_edu" type="text/x-kendo-template">
+                            <div class="k-edit-label">
+                                <label for="Title">Title</label>
+                            </div>
+                            <div data-container-for="Title" class="k-edit-field">
+                                <input type="text" class="k-input k-textbox" name="Title" data-bind="value:Title">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="Institute">Institute</label>
+                            </div>
+                            <div data-container-for="Institute" class="k-edit-field">
+                                <input type="text" class="k-input k-textbox" name="Institute" data-bind="value:Institute">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="Description">Description</label>
+                            </div>
+                            <div data-container-for="Description" class="k-edit-field">
+                                @*<input type="text" class="k-input k-textbox" name="Description" data-bind="value:Description">*@
+                                <textarea class="k-input" name="Description" data-bind="value:Description" />
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="StartDate">Start Date</label>
+                            </div>
+                            <div data-container-for="StartDate" class="k-edit-field">
+                                <input type="date" class="k-input" name="StartDate" data-bind="value:StartDate">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="EndDate">End Date</label>
+                            </div>
+                            <div data-container-for="EndDate" class="k-edit-field">
+                                <input type="date" class="k-input" name="EndDate" data-bind="value:EndDate">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="DisplayOrder">Display Order</label>
+                            </div>
+                            <div data-container-for="DisplayOrder" class="k-edit-field">
+                                <input type="number" class="k-input" name="DisplayOrder" data-bind="value:DisplayOrder">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="IsActive">IsActive</label>
+                            </div>
+                            <div data-container-for="IsActive" class="k-edit-field">
+                                <input type="checkbox" class="k-input" name="IsActive" data-type="boolean" data-bind="checked:IsActive">
+                            </div>
+                        </script>
+                        <script>
+                        $(document).ready(function () {
+
+                            $("#education-grid").kendoGrid({
+                                dataSource: {
+                                    type: "json",
+                                    transport: {
+                                        read: {
+                                            url: "@Url.Action("Education_Read", "Doctor",new { docterId = Model.Id })",
+                                            type: "POST",
+                                            dataType: "json",
+                                            contentType: "application/json"
+                                        },
+                                        create: {
+                                            url: "@Html.Raw(Url.Action("Education_Add", "Doctor", new { docterId = Model.Id }))",
+                                            type: "POST",
+                                            dataType: "json",
+                                            contentType: "application/json"
+                                        },
+                                        update: {
+                                            url: "@Html.Raw(Url.Action("Education_Update", "Doctor", new { docterId = Model.Id }))",
+                                            type: "POST",
+                                            dataType: "json",
+                                            contentType: "application/json"
+                                        },
+                                        destroy: {
+                                            url: "@Html.Raw(Url.Action("Education_Delete", "Doctor"))",
+                                            type: "POST",
+                                            dataType: "json",
+                                            contentType: "application/json"
+                                        },
+                                        parameterMap: function (data, operation) {
+                                            if (operation != "read") {
+                                               // return data;
+                                                return JSON.stringify({ education: data });
+                                            } else {
+                                                //for some reasons only such "Filter" data be parsed
+                                               // return JSON.stringify(data);
+                                                return JSON.stringify({ education: data });
+                                            }
+                                        }
+                                    },
+                                    schema: {
+                                        data: "Data",
+                                        total: "Total",
+                                        errors: "Errors",
+                                        model: {
+                                            id: "Id",
+                                            fields: {
+                                                Title: { editable: true, type: "string" },
+                                                Description: { editable: true, type: "string" },
+                                                Institute: { editable: true, type: "string" },
+                                                StartDate: { editable: true, type: "date" },
+                                                EndDate: { editable: true, type: "date" },
+                                                DisplayOrder: { editable: true, type: "number" },
+                                                IsActive: { editable: true, type: "boolean" },
+                                                Id: { editable: false, type: "number" }
+                                            }
+                                        }
+                                    },
+                                    requestEnd: function(e) {
+                                        if (e.type == "create" || e.type == "update") {
+                                            this.read();
+                                        }
+                                    },
+                                    error: function(e) {
+                                        display_kendoui_grid_error(e);
+                                        // Cancel the changes
+                                        this.cancelChanges();
+                                    },
+                                    pageSize: 5,
+                                    serverPaging: true,
+                                    serverFiltering: true,
+                                    serverSorting: true
+                                },
+                                pageable: {
+                                    refresh: true,
+                                    pageSizes: 5
+                                },
+                                toolbar: [{ name: "create", text: "Add New Record" }],
+                                editable: {
+                                    confirmation: "Are You Sure You Want To Delete !!",
+                                    mode: "popup",
+                                  template: kendo.template($("#popup_editor_edu").html())
+                                },
+                                scrollable: false,
+                                columns: [
+                                    {
+                                        field: "Title",
+                                        title: "Degree/Education",
+                                        width: 200
+                                    },
+                                    {
+                                        field: "Institute",
+                                        title: "Institute",
+                                        width: 200
+                                    },
                                      {
-                                         field: "AwardDate",
-                                         title: "AwardDate",
+                                         field: "StartDate",
+                                         title: "Year",
                                          width: 200,
                                          type: "date",
                                          format: "{0:dd MMMM yyyy}"
