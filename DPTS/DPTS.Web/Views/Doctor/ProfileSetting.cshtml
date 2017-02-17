@@ -262,34 +262,40 @@
             </div>
         </div>
 
-        <div class="tg-bordertop tg-haslayout">
-                <div id="social-media-grid"></div>
-                <script>
-                    $(document).ready(function () {
+        <div class="tg-formsection">
+            <div class="email-settings-tabs">
+                <div class="tg-heading-border tg-small">
+                    <h3>Social Media Links</h3>
+                </div>
+
+                <div class="tab-data" style="display: block;">
+                    <div id="social-media-grid"></div>
+                    <script>
+                        $(document).ready(function() {
                             $("#social-media-grid").kendoGrid({
                                 dataSource: {
                                     type: "json",
                                     transport: {
                                         read: {
-                                            url: "@Url.Action("SocialLink_Read","Doctor",new { docterId = Model.Id })",
+                                            url: "@Url.Action("SocialLink_Read", "Doctor", new {docterId = Model.Id})",
                                             type: "POST",
                                             dataType: "json",
                                             contentType: "application/json"
                                         },
                                         create: {
-                                            url: "@Html.Raw(Url.Action("SocialLink_Add", "Doctor", new { docterId = Model.Id }))",
+                                            url: "@Html.Raw(Url.Action("SocialLink_Add", "Doctor", new {docterId = Model.Id}))",
                                             type: "POST",
-                                            dataType: "json",
+                                            dataType: "json"
                                         },
                                         update: {
-                                            url: "@Html.Raw(Url.Action("SocialLink_Update", "Doctor", new { docterId = Model.Id }))",
+                                            url: "@Html.Raw(Url.Action("SocialLink_Update", "Doctor", new {docterId = Model.Id}))",
                                             type: "POST",
-                                            dataType: "json",
+                                            dataType: "json"
                                         },
                                         destroy: {
                                             url: "@Html.Raw(Url.Action("SocialLink_Delete", "Doctor"))",
                                             type: "POST",
-                                            dataType: "json",
+                                            dataType: "json"
                                         },
                                         parameterMap: function(data, operation) {
                                             if (operation != "read") {
@@ -346,7 +352,7 @@
                                         title: "Social Type",
                                         width: 120,
                                         editor: storeDropDownEditor,
-                                       // template: "#:Store#"
+                                        // template: "#:Store#"
                                     },
                                     {
                                         field: "SocialLink",
@@ -354,16 +360,17 @@
                                         width: 200,
                                         template: '<a href="#=SocialLink#">#:SocialLink#</a>'
                                     },
-                                     {
-                                         field: "DisplayOrder",
-                                         title: "Display Order",
-                                         width: 80
-                                     },
-                                     {
-                                         field: "IsActive",
-                                         title: "IsActive",
-                                         width: 80
-                                     }, {
+                                    {
+                                        field: "DisplayOrder",
+                                        title: "Display Order",
+                                        width: 80
+                                    },
+                                    {
+                                        field: "IsActive",
+                                        title: "IsActive",
+                                        width: 80,
+                                        template: '# if(IsActive) {# <i class="fa fa-check true-icon"></i> #} else {# <i class="fa fa-close false-icon"></i> #} #'
+                                    }, {
                                         command: [
                                             {
                                                 name: "edit",
@@ -383,8 +390,8 @@
                             });
                         });
 
-                    function storeDropDownEditor(container, options) {
-                        $('<input required  name="' + options.field + '"/>')
+                        function storeDropDownEditor(container, options) {
+                            $('<input required  name="' + options.field + '"/>')
                                 .appendTo(container)
                                 .kendoDropDownList({
                                     autoBind: false,
@@ -393,21 +400,57 @@
                                     },
                                 });
                         }
-                </script>
+                    </script>
+                </div>
+
             </div>
-        <div class="tg-bordertop tg-haslayout">
-                <div class="tg-formsection tg-honor-awards">
+        </div>
+            <div class="tg-formsection">
+                <div class="email-settings-tabs">
                     <div class="tg-heading-border tg-small">
-                        <h3>Honors &amp; Awards</h3>
+                        <h3>Honors & Awards</h3>
                     </div>
-                    <div id="honors-awards-grid"></div>
-                    <script>
+
+                    <div class="tab-data" style="display: block;">
+                        <div id="honors-awards-grid"></div>
+                        <script id="popup_editor" type="text/x-kendo-template">
+                            <div class="k-edit-label">
+                                <label for="Name">Name</label>
+                            </div>
+                            <div data-container-for="Name" class="k-edit-field">
+                                <input type="text" class="k-input k-textbox" name="Name" data-bind="value:Name">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="Description">Description</label>
+                            </div>
+                            <div data-container-for="Description" class="k-edit-field">
+                                @*<input type="text" class="k-input k-textbox" name="Description" data-bind="value:Description">*@
+                                <textarea class="k-input" name="Description" data-bind="value:Description" />
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="AwardDate">AwardDate</label>
+                            </div>
+                            <div data-container-for="AwardDate" class="k-edit-field">
+                                <input type="date" class="k-input" name="AwardDate" data-bind="value:AwardDate">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="DisplayOrder">Display Order</label>
+                            </div>
+                            <div data-container-for="DisplayOrder" class="k-edit-field">
+                                <input type="number" class="k-input" name="DisplayOrder" data-bind="value:DisplayOrder">
+                            </div>
+                            <div class="k-edit-label">
+                                <label for="IsActive">IsActive</label>
+                            </div>
+                            <div data-container-for="IsActive" class="k-edit-field">
+                                <input type="checkbox" class="k-input" name="IsActive" data-type="boolean" data-bind="checked:IsActive">
+                            </div>
+                        </script>
 
 
+                        <script>
                         $(document).ready(function () {
-                            var _dateToString = function (date) {
-                                return kendo.toString(kendo.parseDate(date), "G");
-                            };
+
                         $("#honors-awards-grid").kendoGrid({
                                 dataSource: {
                                     type: "json",
@@ -422,16 +465,19 @@
                                             url: "@Html.Raw(Url.Action("HonorsAwards_Add", "Doctor", new { docterId = Model.Id }))",
                                             type: "POST",
                                             dataType: "json",
+                                            contentType: "application/json"
                                         },
                                         update: {
                                             url: "@Html.Raw(Url.Action("HonorsAwards_Update", "Doctor", new { docterId = Model.Id }))",
                                             type: "POST",
                                             dataType: "json",
+                                            contentType: "application/json"
                                         },
                                         destroy: {
                                             url: "@Html.Raw(Url.Action("HonorsAwards_Delete", "Doctor"))",
                                             type: "POST",
                                             dataType: "json",
+                                            contentType: "application/json"
                                         },
                                         parameterMap: function (data, operation) {
                                             if (operation != "read") {
@@ -440,15 +486,9 @@
                                             } else {
                                                 //for some reasons only such "Filter" data be parsed
                                                // return JSON.stringify(data);
-                                                return JSON.stringify({ data });
+                                                return JSON.stringify({ awards : data });
                                             }
                                         }
-                                        //parameterMap: function (data, operation) {
-                                        //    if (operation === "update" || operation === "create") {
-                                        //        return JSON.stringify({ awards: data });
-                                        //    }
-                                        //    return data;
-                                        //}
                                     },
                                     schema: {
                                         data: "Data",
@@ -488,7 +528,8 @@
                                 toolbar: [{ name: "create", text: "Add New Record" }],
                                 editable: {
                                     confirmation: "Are You Sure You Want To Delete !!",
-                                    mode: "inline"
+                                    mode: "popup",
+                                  template: kendo.template($("#popup_editor").html())
                                 },
                                 scrollable: false,
                                 columns: [
@@ -497,16 +538,17 @@
                                         title: "Name",
                                         width: 120
                                     },
-                                    {
-                                        field: "Description",
-                                        title: "Description",
-                                        width: 200
-                                    },
+                                    //{
+                                    //    field: "Description",
+                                    //    title: "Description",
+                                    //    width: 200
+                                    //},
                                      {
                                          field: "AwardDate",
                                          title: "AwardDate",
                                          width: 200,
-                                         type: "date"
+                                         type: "date",
+                                         format: "{0:dd MMMM yyyy}"
 
                                      },
                                      {
@@ -540,10 +582,11 @@
                     });
 
 
-                    </script>
+                        </script>
+                    </div>
+
                 </div>
             </div>
-
         <button type="submit" class="tg-btn process-account-settings">update</button>
             <div id="grid"></div>
         </fieldset>
@@ -634,319 +677,7 @@
         });
     </script>
 
-    /*---------------------------*/
-    <!----------------------------------------------------
-    * Undercore HTML Tempaltes
-    ------------------------------------------------- -->
-    <script type="text/template" id="tmpl-load-gallery">
-        <figure>
-            <a href="javascript:;"><img height="56" width="56" src="{{data.url}}"></a>
-            <div class="tg-img-hover" data-attachment_id="{{data.attachment_id}}">
-                <a href="javascript:;" data-attachment="{{data.attachment_id}}"><i class="fa fa-plus"></i><i class="fa fa-refresh fa-spin"></i></a>
-            </div>
-            <input type="hidden" value="{{data.attachment_id}}" name="user_gallery[{{data.attachment_id}}][attachment_id]">
-            <input type="hidden" value="{{data.url}}" name="user_gallery[{{data.attachment_id}}][url]">
-        </figure>
-    </script>
-    <!--Awards-->
-    <script type="text/template" id="tmpl-load-awards">
-        <tbody class="awards_item new-added">
-            <tr>
-                <td data-title="Code">
-                    Award Title		  <div class="tg-table-hover award-action">
-                        <a href="javascript:;" class="delete-me"><i class="tg-delete fa fa-close"></i></a>
-                        <a href="javascript:;" class="edit-me"><i class="tg-edit fa fa-pencil"></i></a>
-                    </div>
-                </td>
-                <td data-title="Company">January 01, 2020</td>
-            </tr>
-            <tr>
-                <td class="award-data edit-me-row" colspan="2">
-                    <div class="tg-education-form tg-haslayout">
-                        <div class="award-data">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <input class="form-control" value="" name="awards[{{data}}][name]" type="text" placeholder="Award Name">
-                                </div>
-                            </div>
-                            <div class="col-md-8 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <input class="form-control award_datepicker" id="award_datepicker" value="" name="awards[{{data}}][date]" type="text" placeholder="Award Date">
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <textarea class="form-control" name="awards[{{data}}][description]" placeholder="Award Description"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </script>
-    <script type="text/template" id="tmpl-append-awards">
-        <# if( _.isArray(data) && ! _.isEmpty(data) ) { #>
-            <table class="table-striped awards_wrap">
-                <thead class="cf">
-                    <tr>
-                        <th>Title</th>
-                        <th>Year</th>
-                    </tr>
-                </thead>
-                <# _.each( data , function( element, index, attr ) { #>
-
-                    <tbody class="awards_item new-added">
-                        <tr>
-                            <td data-title="Code">
-                                {{element.name}}
-                                <div class="tg-table-hover award-action">
-                                    <a href="javascript:;" class="delete-me"><i class="tg-delete fa fa-close"></i></a>
-                                    <a href="javascript:;" class="edit-me"><i class="tg-edit fa fa-pencil"></i></a>
-                                </div>
-                            </td>
-                            <td data-title="Company">{{element.date_formated}}</td>
-                        </tr>
-                        <tr>
-                            <td class="award-data edit-me-row" colspan="2">
-                                <div class="tg-education-form tg-haslayout">
-                                    <div class="award-data">
-                                        <div class="col-md-4 col-sm-6 col-xs-12">
-                                            <div class="form-group">
-                                                <input class="form-control" value="{{element.name}}" name="awards[{{index}}][name]" type="text" placeholder="Award Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8 col-sm-6 col-xs-12">
-                                            <div class="form-group">
-                                                <input class="form-control award_datepicker" id="award_datepicker" value="{{element.date}}" name="awards[{{index}}][date]" type="text" placeholder="Award Date">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <textarea class="form-control" name="awards[{{index}}][description]" placeholder="Award Description">{{element.description}}</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                    <# } ); #>
-                        <# } #>
-    </script>
-    <!--Education-->
-    <script type="text/template" id="tmpl-load-educations">
-        <tbody class="educations_item">
-            <tr>
-                <td data-title="Code">
-                    Title here		  <div class="tg-table-hover education-action">
-                        <a href="javascript:;" class="delete-me"><i class="tg-delete fa fa-close"></i></a>
-                        <a href="javascript:;" class="edit-me"><i class="tg-edit fa fa-pencil"></i></a>
-                    </div>
-                </td>
-                <td data-title="Company">Institute here</td>
-                <td data-title="Price" class="numeric">Jan,2020 - Jan,2021</td>
-            </tr>
-            <tr>
-                <td class="education-data edit-me-row" colspan="3">
-                    <div class="education-data-wrap">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control" value="" name="education[{{data}}][title]" type="text" placeholder="Title">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control" value="" name="education[{{data}}][institute]" type="text" placeholder="Institute">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control edu_start_date_{{data}}" id="edu_start_date" value="" name="education[{{data}}][start_date]" type="text" placeholder="Start Date">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control edu_end_date_{{data}}" id="edu_end_date" value="" name="education[{{data}}][end_date]" type="text" placeholder="End Date">
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <textarea class="form-control" name="education[{{data}}][description]" placeholder="Education Description"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </script>
-    <script type="text/template" id="tmpl-append-educations">
-        <# if( _.isArray(data) && ! _.isEmpty(data) ) { #>
-            <table class="table-striped educations_wrap" id="table-striped">
-                <thead class="cf">
-                    <tr>
-                        <th>Degree / Education Title</th>
-                        <th>Institute</th>
-                        <th class="numeric">Year</th>
-                    </tr>
-                </thead>
-                <# _.each( data , function( element, index, attr ) { #>
-                    <tbody class="educations_item">
-                        <tr>
-                            <td data-title="Code">
-                                {{element.title}}
-                                <div class="tg-table-hover education-action">
-                                    <a href="javascript:;" class="delete-me"><i class="tg-delete fa fa-close"></i></a>
-                                    <a href="javascript:;" class="edit-me"><i class="tg-edit fa fa-pencil"></i></a>
-                                </div>
-                            </td>
-                            <td data-title="Company">{{element.institute}}</td>
-                            <td data-title="Price" class="numeric">{{element.start_date_formated}} - {{element.end_date_formated}}</td>
-                        </tr>
-                        <tr>
-                            <td class="education-data edit-me-row" colspan="3">
-                                <div class="education-data-wrap">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control" value="{{element.title}}" name="education[{{index}}][title]" type="text" placeholder="Title">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control" value="{{element.institute}}" name="education[{{index}}][institute]" type="text" placeholder="Institute">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control edu_start_date_{{index}}" id="edu_start_date" value="{{element.start_date}}" name="education[{{index}}][start_date]" type="text" placeholder="Start Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control edu_end_date_{{index}}" id="edu_end_date" value="{{element.end_date}}" name="education[{{index}}][end_date]" type="text" placeholder="End Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <textarea class="form-control" name="education[{{index}}][description]" placeholder="Education Description">{{element.description}}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <# } ); #>
-                        <# } #>
-    </script>
-    <!--Experience-->
-    <script type="text/template" id="tmpl-load-experiences">
-        <tbody class="experiences_item">
-            <tr>
-                <td data-title="Code">
-                    Title here		  <div class="tg-table-hover experience-action">
-                        <a href="javascript:;" class="delete-me"><i class="tg-delete fa fa-close"></i></a>
-                        <a href="javascript:;" class="edit-me"><i class="tg-edit fa fa-pencil"></i></a>
-                    </div>
-                </td>
-                <td data-title="Company">Company/Organization Name</td>
-                <td data-title="Price" class="numeric">Jan,2020 - Jan,2021</td>
-            </tr>
-            <tr>
-                <td class="experience-data edit-me-row" colspan="3">
-                    <div class="experience-data-wrap">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control" value="" name="experience[{{data}}][title]" type="text" placeholder="Title">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control" value="" name="experience[{{data}}][company]" type="text" placeholder="Company/Organization">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control exp_start_date_{{data}}" id="exp_start_date" value="" name="experience[{{data}}][start_date]" type="text" placeholder="Start Date">
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <input class="form-control exp_end_date_{{data}}" id="exp_end_date" value="" name="experience[{{data}}][end_date]" type="text" placeholder="End Date">
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <textarea class="form-control" name="experience[{{data}}][description]" placeholder="Experience Description"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </script>
-    <script type="text/template" id="tmpl-append-experiences">
-        <# if( _.isArray(data) && ! _.isEmpty(data) ) { #>
-            <table class="table-striped experience_wrap" id="table-striped">
-                <thead class="cf">
-                    <tr>
-                        <th>Experience Title</th>
-                        <th>Company/Organization</th>
-                        <th class="numeric">Year</th>
-                    </tr>
-                </thead>
-                <# _.each( data , function( element, index, attr ) { #>
-                    <tbody class="experiences_item">
-                        <tr>
-                            <td data-title="Code">
-                                {{element.title}}
-                                <div class="tg-table-hover experience-action">
-                                    <a href="javascript:;" class="delete-me"><i class="tg-delete fa fa-close"></i></a>
-                                    <a href="javascript:;" class="edit-me"><i class="tg-edit fa fa-pencil"></i></a>
-                                </div>
-                            </td>
-                            <td data-title="Company">{{element.company}}</td>
-                            <td data-title="Price" class="numeric">{{element.start_date_formated}} - <# if(! _.isEmpty(element.end_date) ) { #>{{element.end_date_formated}} <# } else { #>Current<# } #></td>
-                        </tr>
-                        <tr>
-                            <td class="experience-data edit-me-row" colspan="3">
-                                <div class="experience-data-wrap">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control" value="{{element.title}}" name="experience[{{index}}][title]" type="text" placeholder="Title">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control" value="{{element.company}}" name="experience[{{index}}][company]" type="text" placeholder="Company/Organization">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control edu_start_date_{{index}}" id="exp_start_date" value="{{element.start_date}}" name="experience[{{index}}][start_date]" type="text" placeholder="Start Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="form-group">
-                                            <input class="form-control exp_end_date_{{index}}" id="exp_end_date" value="{{element.end_date}}" name="experience[{{index}}][end_date]" type="text" placeholder="End Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group">
-                                            <textarea class="form-control" name="experience[{{index}}][description]" placeholder="Experience Description">{{element.description}}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <# } ); #>
-                        <# } #>
-    </script>
-
-
-
-     /**---------------------------------**/
+   
 }
 else
 {

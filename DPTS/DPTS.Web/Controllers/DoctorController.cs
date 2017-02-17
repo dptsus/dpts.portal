@@ -1041,37 +1041,40 @@ namespace DPTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult HonorsAwards_Update(HonorsAwards model, string docterId)
+        public ActionResult HonorsAwards_Update(HonorsAwards awards, string docterId)
         {
-            var award = _doctorService.GetHonorsAwardsbyId(model.Id);
+            var award = _doctorService.GetHonorsAwardsbyId(awards.Id);
             if (award == null)
                 return Content("No link could be loaded with the specified ID");
 
-            if (!award.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase) ||
-                award.Id != model.Id)
+            if (!award.Name.Equals(awards.Name, StringComparison.InvariantCultureIgnoreCase) ||
+                award.Id != awards.Id)
             {
                 _doctorService.DeleteHonorsAwards(award);
             }
 
-            award.Id = model.Id;
-            award.DoctorId = model.DoctorId;
-            award.Name = model.Name;
-            award.Description = model.Description;
-            award.AwardDate = model.AwardDate;
-            award.IsActive = model.IsActive;
-            award.DisplayOrder = model.DisplayOrder;
+            award.Id = awards.Id;
+            award.DoctorId = awards.DoctorId;
+            award.Name = awards.Name;
+            award.Description = awards.Description;
+            award.AwardDate = awards.AwardDate;
+            award.IsActive = awards.IsActive;
+            award.DisplayOrder = awards.DisplayOrder;
             _doctorService.UpdateHonorsAwards(award);
 
             return new NullJsonResult();
         }
 
         [HttpPost]
-        public ActionResult HonorsAwards_Delete(int id)
+        public ActionResult HonorsAwards_Delete(HonorsAwards awards)
         {
-            var award = _doctorService.GetHonorsAwardsbyId(id);
-            if (award == null)
-                throw new ArgumentException("No Awards found with the specified id");
-            _doctorService.DeleteHonorsAwards(award);
+            if (awards.Id > 0)
+            {
+                var award = _doctorService.GetHonorsAwardsbyId(awards.Id);
+                if (award == null)
+                    throw new ArgumentException("No Awards found with the specified id");
+                _doctorService.DeleteHonorsAwards(award);
+            }
 
             return new NullJsonResult();
         }
