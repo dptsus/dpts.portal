@@ -30,13 +30,13 @@ namespace DPTS.Web
                 "~/Content/wp-includes/js/jquery/ui/slider.mine899.js",
                 "~/Content/wp-includes/js/underscore.min4511.js",
                 "~/Content/wp-includes/js/wp-util.min1c9b.js",
-                //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
-             // "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
+              //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/moment1bba.js",
                 //  "~/Content/wp-content/themes/docdirect/js/bookings1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/parallax1bba.js",
-                //"~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js",
+              //"~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js",
+              "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
+
                 "~/Content/wp-content/themes/docdirect/js/appear1bba.js",
               //  "~/Content/wp-content/themes/docdirect/js/countTo1bba.js",
               //  "~/Content/wp-content/themes/docdirect/js/sticky_message1bba.js",
@@ -45,12 +45,14 @@ namespace DPTS.Web
                // "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/js/jquery.fs.wallpaper1c9b.js",
                 //"~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/js/scripts1c9b.js",
                 "~/Content/wp-includes/js/wp-embed.min1c9b.js",
-                //"~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js",
-               // "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
-               // "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
+                //"~/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js"ffileupload,
+                // "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
+                // "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
                 //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
+                "~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
             //      "~/Content/Admin/js/bootstrap-datetimepicker.js"));
+
 
             bundles.Add(new StyleBundle("~/Content/wp-content/themes").Include(
                 "~/Content/wp-content/themes/docdirect/css/bootstrap.min1bba.css",
@@ -65,7 +67,7 @@ namespace DPTS.Web
                 "~/Content/wp-content/themes/docdirect/css/responsive1bba.css",
                 "~/Content/wp-content/themes/docdirect/css/jquery-ui1bba.css",
                 "~/Content/wp-content/themes/docdirect/css/color1bba.css",
-//"~/Content/wp-content/themes/docdirect/css/datetimepicker1bba.css",
+                "~/Content/wp-content/themes/docdirect/css/datetimepicker1bba.css",
                 "~/Content/wp-content/themes/docdirect/css/chosen1bba.css",
                 "~/Content/wp-content/themes/docdirect/framework-customizations/extensions/breadcrumbs/static/css/style1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/builder/static/css/frontend-grid578f.css",

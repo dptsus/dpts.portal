@@ -203,6 +203,56 @@ namespace DPTS.Web.Controllers
             }
         }
 
+        private static void GetDoctorScheduleByDay(SheduleViewModel obj, IList<Schedule> schedule, string day)
+        {
+            var scheduleSunday = schedule?.FirstOrDefault(s => s.Day.Equals(day));
+            if (scheduleSunday == null || !scheduleSunday.Day.Equals(day))
+                obj.Day = day;
+            else
+            {
+                obj.DoctorId = scheduleSunday.DoctorId;
+                obj.Day = scheduleSunday.Day;
+                obj.EndTime = scheduleSunday.EndTime;
+                obj.StartTime = scheduleSunday.StartTime;
+            }
+        }
+
+        private void GetScheduleByDay(FormCollection form, string day)
+        {
+            if (!string.IsNullOrWhiteSpace(day))
+            {
+                var lowerDay = day.ToLower();
+                var lowerDayStart = day.ToLower() + "_start";
+                var lowerDayEnd = day.ToLower() + "_end";
+                if (!string.IsNullOrWhiteSpace(form[lowerDayStart]) &&
+                    !string.IsNullOrWhiteSpace(form[lowerDayEnd]))
+                {
+                    var schedule =
+                        _scheduleService
+                            .GetScheduleByDoctorId(User.Identity.GetUserId())
+                            .FirstOrDefault(s => s.Day.Equals(day));
+
+                    if (schedule == null)
+                    {
+                        var model = new Schedule
+                        {
+                            Day = lowerDay,
+                            DoctorId = User.Identity.GetUserId(),
+                            StartTime = form[lowerDayStart].Trim(),
+                            EndTime = form[lowerDayEnd].Trim()
+                        };
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        schedule.StartTime = form[lowerDayStart].Trim();
+                        schedule.EndTime = form[lowerDayEnd].Trim();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -291,6 +341,8 @@ namespace DPTS.Web.Controllers
 
             return RedirectToAction("ProfileSetting");
         }
+
+        #region Address
 
         public ActionResult AddressAdd()
         {
@@ -570,6 +622,9 @@ namespace DPTS.Web.Controllers
             return View(model);
         }
 
+        #endregion
+
+        #region Favourites & Invoices
         public ActionResult Favourites()
         {
             return View();
@@ -579,7 +634,9 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region Schedule
         public ActionResult DoctorSchedules()
         {
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
@@ -629,20 +686,6 @@ namespace DPTS.Web.Controllers
             }
         }
 
-        private static void GetDoctorScheduleByDay(SheduleViewModel obj, IList<Schedule> schedule, string day)
-        {
-            var scheduleSunday = schedule?.FirstOrDefault(s => s.Day.Equals(day));
-            if (scheduleSunday == null || !scheduleSunday.Day.Equals(day))
-                obj.Day = day;
-            else
-            {
-                obj.DoctorId = scheduleSunday.DoctorId;
-                obj.Day = scheduleSunday.Day;
-                obj.EndTime = scheduleSunday.EndTime;
-                obj.StartTime = scheduleSunday.StartTime;
-            }
-        }
-
         [HttpPost]
         public ActionResult DoctorSchedules(FormCollection form)
         {
@@ -670,41 +713,9 @@ namespace DPTS.Web.Controllers
             }
         }
 
-        private void GetScheduleByDay(FormCollection form, string day)
-        {
-            if (!string.IsNullOrWhiteSpace(day))
-            {
-                var lowerDay = day.ToLower();
-                var lowerDayStart = day.ToLower() + "_start";
-                var lowerDayEnd = day.ToLower() + "_end";
-                if (!string.IsNullOrWhiteSpace(form[lowerDayStart]) &&
-                    !string.IsNullOrWhiteSpace(form[lowerDayEnd]))
-                {
-                    var schedule =
-                        _scheduleService
-                            .GetScheduleByDoctorId(User.Identity.GetUserId())
-                            .FirstOrDefault(s => s.Day.Equals(day));
+        #endregion
 
-                    if (schedule == null)
-                    {
-                        var model = new Schedule
-                        {
-                            Day = lowerDay,
-                            DoctorId = User.Identity.GetUserId(),
-                            StartTime = form[lowerDayStart].Trim(),
-                            EndTime = form[lowerDayEnd].Trim()
-                        };
-                        _scheduleService.InsertSchedule(model);
-                    }
-                    else
-                    {
-                        schedule.StartTime = form[lowerDayStart].Trim();
-                        schedule.EndTime = form[lowerDayEnd].Trim();
-                        _scheduleService.UpdateSchedule(schedule);
-                    }
-                }
-            }
-        }
+        #region Booking
 
         public ActionResult BookingListings(DoctorScheduleListingViewModel model)
         {
@@ -818,6 +829,14 @@ namespace DPTS.Web.Controllers
             return View();
         }
 
+        public ActionResult BookingSettings()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Security & Privacy
         public ActionResult SecuritySettings()
         {
             return View();
@@ -827,12 +846,9 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+        #endregion
 
-        public ActionResult BookingSettings()
-        {
-            return View();
-        }
-
+        #region Profile Image
         public ContentResult UploadFiles()
         {
             try
@@ -872,7 +888,9 @@ namespace DPTS.Web.Controllers
                 return null;
             }
         }
+        #endregion
 
+        #region Details
         public ActionResult DoctorDetails(string doctorId)
         {
             var model = new DoctorViewModel();
@@ -899,6 +917,7 @@ namespace DPTS.Web.Controllers
             }
             return View();
         }
+        #endregion
 
         #region Social Links
 
@@ -945,18 +964,6 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult SocialLink_Update(SocialLinkInformation model, string docterId)
         {
-            //if (model.SocialType != null)
-            //    model.SocialType = model.SocialType.Trim();
-            //if (model.SocialLink != null)
-            //    model.SocialLink = model.SocialLink.Trim();
-            //if (docterId != null)
-            //    model.DoctorId = docterId;
-
-            //if (!ModelState.IsValid && model.DoctorId == null)
-            //{
-            //    return Json(new DataSourceResult { Errors = "error" });
-            //}
-
             var link = _doctorService.GetSocialLinkbyId(model.Id);
             if (link == null)
                 return Content("No link could be loaded with the specified ID");
@@ -989,6 +996,85 @@ namespace DPTS.Web.Controllers
             return new NullJsonResult();
         }
 
+        #endregion
+
+        #region Honors & Awards
+        [HttpPost]
+        public ActionResult HonorsAwards_Read(DataSourceRequest command, string docterId)
+        {
+            var awardsHonars = _doctorService.GetAllHonorsAwards(docterId, command.Page - 1, 5, false);
+            var gridModel = new DataSourceResult
+            {
+                Data = awardsHonars.Select(x => new HonorsAwards
+                {
+                    Id = x.Id,
+                    IsActive = x.IsActive,
+                    DisplayOrder = x.DisplayOrder,
+                    DoctorId = x.DoctorId,
+                    Name = x.Name,
+                    Description = x.Description,
+                    AwardDate = x.AwardDate
+                }),
+                Total = awardsHonars.TotalCount
+            };
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult HonorsAwards_Add([Bind(Exclude = "Id")] HonorsAwards awards, string docterId)
+        {
+            if (awards.Name != null)
+                awards.Name = awards.Name.Trim();
+            if (awards.Description != null)
+                awards.Description = awards.Description.Trim();
+            if (docterId != null)
+                awards.DoctorId = docterId;
+
+            if (!ModelState.IsValid && awards.DoctorId == null)
+            {
+                return Json(new DataSourceResult { Errors = "error" });
+            }
+
+            _doctorService.InsertHonorsAwards(awards);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult HonorsAwards_Update(HonorsAwards model, string docterId)
+        {
+            var award = _doctorService.GetHonorsAwardsbyId(model.Id);
+            if (award == null)
+                return Content("No link could be loaded with the specified ID");
+
+            if (!award.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase) ||
+                award.Id != model.Id)
+            {
+                _doctorService.DeleteHonorsAwards(award);
+            }
+
+            award.Id = model.Id;
+            award.DoctorId = model.DoctorId;
+            award.Name = model.Name;
+            award.Description = model.Description;
+            award.AwardDate = model.AwardDate;
+            award.IsActive = model.IsActive;
+            award.DisplayOrder = model.DisplayOrder;
+            _doctorService.UpdateHonorsAwards(award);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult HonorsAwards_Delete(int id)
+        {
+            var award = _doctorService.GetHonorsAwardsbyId(id);
+            if (award == null)
+                throw new ArgumentException("No Awards found with the specified id");
+            _doctorService.DeleteHonorsAwards(award);
+
+            return new NullJsonResult();
+        }
         #endregion
 
         #endregion

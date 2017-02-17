@@ -64,5 +64,18 @@ namespace DPTS.Domain.Core.Doctors
             int pageSize = Int32.MaxValue, bool showHidden = false);
 
         #endregion
+
+        #region HonorsAwards
+        void InsertHonorsAwards(HonorsAwards award);
+
+        HonorsAwards GetHonorsAwardsbyId(int id);
+
+        void DeleteHonorsAwards(HonorsAwards award);
+
+        void UpdateHonorsAwards(HonorsAwards award);
+
+        IPagedList<HonorsAwards> GetAllHonorsAwards(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false);
+        #endregion
     }
 }

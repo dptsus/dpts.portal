@@ -32,6 +32,7 @@ namespace DPTS.Data.Context
         public virtual DbSet<SentSmsHistory> SentSmsHistory { get; set; }
         public virtual DbSet<ZipCodes> ZipCodes { get; set; }
         public virtual DbSet<SocialLinkInformation> SocialLinkInformation { get; set; }
+        public virtual DbSet<HonorsAwards> HonorsAwards { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

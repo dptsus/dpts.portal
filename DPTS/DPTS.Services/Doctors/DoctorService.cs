@@ -20,6 +20,7 @@ namespace DPTS.Services.Doctors
         private readonly IRepository<Domain.Entities.Address> _address;
         private readonly IRepository<AppointmentSchedule> _appointmentScheduleRepository;
         private readonly IRepository<SocialLinkInformation> _socialLinksRepository;
+        private readonly IRepository<HonorsAwards> _honorsAwardsRepository;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
 
@@ -33,7 +34,8 @@ namespace DPTS.Services.Doctors
             IRepository<AddressMapping> addressMapping,
             IRepository<Domain.Entities.Address> address,
             IRepository<AppointmentSchedule> appointmentScheduleRepository,
-            IRepository<SocialLinkInformation> socialLinksRepository)
+            IRepository<SocialLinkInformation> socialLinksRepository,
+            IRepository<HonorsAwards> honorsAwardsRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
@@ -43,6 +45,7 @@ namespace DPTS.Services.Doctors
             _address = address;
             _appointmentScheduleRepository = appointmentScheduleRepository;
             _socialLinksRepository = socialLinksRepository;
+            _honorsAwardsRepository = honorsAwardsRepository;
             _context = new DPTSDbContext();
         }
         #endregion
@@ -337,7 +340,54 @@ namespace DPTS.Services.Doctors
             query = query.OrderBy(c => c.DisplayOrder);
             return new PagedList<SocialLinkInformation>(query, pageIndex, pageSize);
         }
-    #endregion
+
+        #region HonorsAwards
+
+        public void InsertHonorsAwards(HonorsAwards award)
+        {
+            if (award == null)
+                throw new ArgumentNullException(nameof(award));
+
+            _honorsAwardsRepository.Insert(award);
+        }
+
+        public HonorsAwards GetHonorsAwardsbyId(int id)
+        {
+            if (id == 0)
+                throw new ArgumentNullException(nameof(id));
+
+            return _honorsAwardsRepository.GetById(id);
+        }
+
+        public void DeleteHonorsAwards(HonorsAwards award)
+        {
+            if (award == null)
+                throw new ArgumentNullException(nameof(award));
+
+            _honorsAwardsRepository.Delete(award);
+        }
+
+        public void UpdateHonorsAwards(HonorsAwards award)
+        {
+            if (award == null)
+                throw new ArgumentNullException(nameof(award));
+
+            _honorsAwardsRepository.Update(award);
+        }
+
+        public IPagedList<HonorsAwards> GetAllHonorsAwards(string doctorId, int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
+        {
+            var query = _honorsAwardsRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<HonorsAwards>(query, pageIndex, pageSize);
+        }
+        #endregion
+
+        #endregion
         #endregion
     }
 }

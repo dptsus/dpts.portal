@@ -66,6 +66,7 @@
     <Compile Include="Entities\AspNetUserLogin.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
+    <Compile Include="Entities\HonorsAwards.cs" />
     <Compile Include="Entities\Notification\DoctorNotificationSettings.cs" />
     <Compile Include="Entities\Notification\EmailCategory.cs" />
     <Compile Include="Entities\Notification\SentEmailHistory.cs" />

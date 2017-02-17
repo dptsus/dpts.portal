@@ -13,15 +13,15 @@ jQuery(document).ready(function ($) {
 	var dir_datasize	= scripts_vars.dir_datasize;
 	var data_size_in_kb	= scripts_vars.data_size_in_kb;
 	var loder_html	= '<div class="docdirect-site-wrap"><div class="docdirect-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
-	
+
 	//Update User schedules
 	jQuery(document).on('click','.update-schedules',function(e){
 		e.preventDefault();
 		var $this 	= jQuery(this);
-		
+
 		var serialize_data	= jQuery('#form-docschedule').serialize();
 		var dataString = serialize_data+'&action=docdirect_update_schedules';
-		
+
 		jQuery('body').append(loder_html);
 		jQuery.ajax({
 			type: "POST",
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
 			dataType:"json",
 			success: function(response) {
 				jQuery('body').find('.docdirect-site-wrap').remove();
-				
+
 				if( response.type == 'error' ) {
 					jQuery.sticky(response.message, {classList: 'important', speed: 200, autoclose: 5000});
 				} else{
@@ -39,9 +39,9 @@ jQuery(document).ready(function ($) {
 			}
 		});
 		return false;
-		
+
 	});
-	
+
 	/*********************************************************
 	 * @Profile Uploader
 	 * @User profile image update code
@@ -63,11 +63,11 @@ jQuery(document).ready(function ($) {
 			max_file_size: data_size_in_kb,
 			prevent_duplicates: true
 		}
-		
+
 	});
-	 
+
 	 uploader.init();
-	
+
 	 // Process Duraing Upload
 	 uploader.bind('FilesAdded', function(up, files) {
 		var html = '';
@@ -78,13 +78,13 @@ jQuery(document).ready(function ($) {
 		up.refresh();
 		uploader.start();
 	});
-	
+
 	/* File percentage */
 	uploader.bind('UploadProgress', function(up, file) {
 		jQuery('.tg-docimg .user-avatar').find('.avatar-percentage').remove();
 		jQuery('.user-avatar').append('<span class="avatar-percentage">'+file.percent+"%</span>");
 	});
-		
+
 	/* In case of error */
 	uploader.bind('Error', function( up, err ) {
 		jQuery('#errors-log').html(err.message);
@@ -101,9 +101,9 @@ jQuery(document).ready(function ($) {
 			console.log ( response );
 		}
 	});
-	
-	
-	
+
+
+
 	/*********************************************************
 	 * @Profile Banner
 	 * @User profile banner image update code
@@ -125,11 +125,11 @@ jQuery(document).ready(function ($) {
 			max_file_size: data_size_in_kb,
 			prevent_duplicates: true
 		}
-		
+
 	});
-	 
+
 	 banner_uploader.init();
-	
+
 	 // Process Duraing Upload
 	 banner_uploader.bind('FilesAdded', function(up, files) {
 		var html = '';
@@ -140,13 +140,13 @@ jQuery(document).ready(function ($) {
 		up.refresh();
 		banner_uploader.start();
 	});
-	
+
 	/* File percentage */
 	banner_uploader.bind('UploadProgress', function(up, file) {
 		jQuery('.tg-docimg .user-banner').find('.banner-percentage').remove();
 		jQuery('.user-banner').append('<span class="banner-percentage">'+file.percent+"%</span>");
 	});
-		
+
 	/* In case of error */
 	banner_uploader.bind('Error', function( up, err ) {
 		jQuery('#errors-log').html(err.message);
@@ -162,7 +162,7 @@ jQuery(document).ready(function ($) {
 			console.log ( response );
 		}
 	});
-	
+
 	/*********************************************************
 	 * @Email Uploader
 	 * @User profile image update code
@@ -184,11 +184,11 @@ jQuery(document).ready(function ($) {
 			max_file_size: data_size_in_kb,
 			prevent_duplicates: true
 		}
-		
+
 	});
-	 
+
 	 email_uploader.init();
-	
+
 	 // Process Duraing Upload
 	 email_uploader.bind('FilesAdded', function(up, files) {
 		var html = '';
@@ -199,13 +199,13 @@ jQuery(document).ready(function ($) {
 		up.refresh();
 		email_uploader.start();
 	});
-	
+
 	/* File percentage */
 	email_uploader.bind('UploadProgress', function(up, file) {
 		jQuery('.tg-docimg .user-email').find('.avatar-percentage').remove();
 		jQuery('.user-email').append('<span class="avatar-percentage">'+file.percent+"%</span>");
 	});
-		
+
 	/* In case of error */
 	email_uploader.bind('Error', function( up, err ) {
 		jQuery('#errors-log').html(err.message);
@@ -221,12 +221,12 @@ jQuery(document).ready(function ($) {
 			console.log ( response );
 		}
 	});
-	
+
 	/*********************************************************
 	 * @Gallery Images Uploader
 	 * @Gallery images update code
 	 ********************************************************/
-	 
+
 	$( "#gallery-sortable-container" ).sortable({
 		revert: 100,
 		placeholder: "sortable-placeholder",
@@ -250,7 +250,7 @@ jQuery(document).ready(function ($) {
 			prevent_duplicates: true
 		}
 	};
-	
+
 	var GalleryUploader = new plupload.Uploader( uploaderArguments );
 	GalleryUploader.init();
 
@@ -261,12 +261,12 @@ jQuery(document).ready(function ($) {
 		plupload.each(files, function(file) {
 			 galleryThumbnail += '<li class="gallery-item gallery-thumb-item" id="thumb-' + file.id + '">' + '' + '</li>';
 		});
-		
+
 		jQuery('.doc-user-gallery').append(galleryThumbnail);
 		up.refresh();
 		GalleryUploader.start();
 	});
-	
+
 	/* Run during upload */
 	GalleryUploader.bind('UploadProgress', function(up, file) {
 		jQuery(".doc-user-gallery #thumb-" + file.id).html('<span class="gallery-percentage">' + file.percent + "%</span>");
@@ -281,7 +281,7 @@ jQuery(document).ready(function ($) {
 
 	/* If files are uploaded successfully */
 	GalleryUploader.bind('FileUploaded', function ( up, file, ajax_response ) {
-		var response = $.parseJSON( ajax_response.response );	
+		var response = $.parseJSON( ajax_response.response );
 		if ( response.success ) {
 			var load_gallery = wp.template( 'load-gallery' );
 			var _thumb	= load_gallery(response);
@@ -293,14 +293,14 @@ jQuery(document).ready(function ($) {
 			console.log ( response );
 		}
 	});
-	
+
 	//Delete Gallery Image
 	jQuery(document).on('click','.doc-user-gallery .tg-img-hover a',function(e){
 		e.preventDefault();
 		var $this 	= jQuery(this);
 		$this.parents('.gallery-item').remove();
 	});
-	
+
 	//Update User Password
 	jQuery('.form-resetpassword').on('click','.do-change-password',function(e){
 		e.preventDefault();
@@ -327,7 +327,7 @@ jQuery(document).ready(function ($) {
 		});
 		return false;
 	});
-	
+
 	//Delete Avatar
 	jQuery('.tg-docimg').on('click','.del-avatar',function(e){
 		e.preventDefault();
@@ -353,7 +353,7 @@ jQuery(document).ready(function ($) {
 		});
 		return false;
 	});
-	
+
 	//Delete banner
 	jQuery('.tg-docimg').on('click','.del-banner',function(e){
 		e.preventDefault();
@@ -378,7 +378,7 @@ jQuery(document).ready(function ($) {
 		});
 		return false;
 	});
-	
+
 	//Delete Email Logo
 	jQuery('.tg-docimg').on('click','.del-email',function(e){
 		e.preventDefault();
@@ -403,28 +403,28 @@ jQuery(document).ready(function ($) {
 		});
 		return false;
 	});
-	
-	
+
+
 	//Add Awards
 	jQuery(document).on('click','.add-new-awards',function(){
 		var load_awards = wp.template( 'load-awards' );
 		var counter	= jQuery( '.awards_wrap > tbody' ).length;
 		var load_awards	= load_awards(counter);
 		jQuery( '.awards_wrap' ).append(load_awards);
-		
+
 		//init date
-		jQuery('.award_datepicker').datetimepicker({
-		  format:'Y-m-d',
-		  timepicker:false
-		});
+		//jQuery('.award_datepicker').datetimepicker({
+		//  format:'Y-m-d',
+		//  timepicker:false
+		//});
 	});;
-	
+
 	//init date
 	jQuery('.award_datepicker').datetimepicker({
 	  format:'Y-m-d',
 	  timepicker:false
 	});
-		 
+
 	//Delete Awards
 	jQuery(document).on('click','.award-action .delete-me',function(){
 		var _this	= jQuery(this);
@@ -447,21 +447,21 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	});
-	
+
 	//Edit Awards
 	jQuery(document).on('click','.award-action .edit-me',function(){
 		jQuery('.award-data').hide();
 		jQuery(this).parents('.awards_item').find('.award-data').toggle();
 	});
-	
-	
+
+
 	//Add Educations
 	jQuery(document).on('click','.add-new-educations',function(){
 		var load_educations = wp.template( 'load-educations' );
 		var counter	= jQuery( '.educations_wrap > tbody' ).length;
 		var load_educations	= load_educations(counter);
 		jQuery( '.educations_wrap' ).append(load_educations);
-		
+
 		jQuery('.edu_start_date_'+counter).datetimepicker({
 		   format:'Y-m-d',
 		  onShow:function( ct ){
@@ -480,9 +480,9 @@ jQuery(document).ready(function ($) {
 		  },
 		  timepicker:false
 		 });
-	
+
 	});
-	
+
 	//Delete Education
 	jQuery(document).on('click','.education-action .delete-me',function(){
 		var _this	= jQuery(this);
@@ -504,16 +504,16 @@ jQuery(document).ready(function ($) {
 				}
 			}
 		});
-		
+
 	});
-	
+
 	//Add Experience
 	jQuery(document).on('click','.add-new-experiences',function(){
 		var load_educations = wp.template( 'load-experiences' );
 		var counter	= jQuery( '.experiences_wrap > tbody' ).length;
 		var load_educations	= load_educations(counter);
 		jQuery( '.experiences_wrap' ).append(load_educations);
-		
+
 		jQuery('.exp_start_date_'+counter).datetimepicker({
 		   format:'Y-m-d',
 		  onShow:function( ct ){
@@ -532,9 +532,9 @@ jQuery(document).ready(function ($) {
 		  },
 		  timepicker:false
 		 });
-	
+
 	});
-	
+
 	//Delete Experience
 	jQuery(document).on('click','.experience-action .delete-me',function(){
 		var _this	= jQuery(this);
@@ -556,46 +556,46 @@ jQuery(document).ready(function ($) {
 				}
 			}
 		});
-		
+
 	});
-	
+
 	//Awards Sortable
 	jQuery( ".awards_wrap" ).sortable({
 		cursor: "move"
 	});
-	
+
 	//Education Sortable
 	jQuery( ".educations_wrap" ).sortable({
 		cursor: "move"
 	});
-	
+
 	//Experience Sortable
 	jQuery( ".experiences_wrap" ).sortable({
 		cursor: "move"
 	});
-	
+
 	//Edit Education
 	jQuery(document).on('click','.education-action .edit-me',function(){
 		jQuery('.education-data').hide();
 		jQuery(this).parents('tr').next('tr').find('.education-data').toggle();
 	});
-	
+
 	//Edit Experience
 	jQuery(document).on('click','.experience-action .edit-me',function(){
 		jQuery('.experience-data').hide();
 		jQuery(this).parents('tr').next('tr').find('.experience-data').toggle();
 	});
-	
+
 
 	//Do Process Account Settings
 	jQuery(document).on('click','.process-account-settings',function(e){
 		e.preventDefault();
-		
+
 		tinyMCE.triggerSave();
 		var $this 	= jQuery(this);
 		var serialize_data	= jQuery('.do-account-setitngs').serialize();
 		var dataString = serialize_data+'&action=docdirect_account_settings';
-		
+
 		jQuery('body').append(loder_html);
 		jQuery.ajax({
 			type: "POST",
@@ -617,27 +617,27 @@ jQuery(document).ready(function ($) {
 						var append_awards	= append_awards(response.awards);
 						jQuery( '.awards_wrap' ).html(append_awards);
 					}
-					
+
 					if( response.experience ){
 						var append_experiences = wp.template( 'append-experiences' );
 						var load_experiences	= append_experiences(response.experience);
 						jQuery( '.experiences_wrap' ).html(load_experiences);
 					}
-					
+
 					jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000,position: 'top-right',});
 				}
 			}
 		});
 		return false;
 	});
-	
-	
-	_.toDate = function(epoch, format, locale) {    
+
+
+	_.toDate = function(epoch, format, locale) {
 		var date = new Date(epoch),
 			format = format || 'dd/mm/YY',
 			locale = locale || 'en'
 			dow = {};
-	
+
 		dow.en = [
 			'Sunday',
 			'Monday',
@@ -647,7 +647,7 @@ jQuery(document).ready(function ($) {
 			'Friday',
 			'Saturday'
 		];
-	
+
 		var formatted = format
 			.replace('D', dow[locale][date.getDay()])
 			.replace('dd', ("0" + date.getDate()).slice(-2))
@@ -656,7 +656,7 @@ jQuery(document).ready(function ($) {
 			.replace('yy', (''+date.getFullYear()).slice(-2))
 			.replace('hh', date.getHours())
 			.replace('mn', date.getMinutes());
-	
+
 		return formatted;
 	}
 
@@ -667,7 +667,7 @@ jQuery(document).ready(function ($) {
 		event.preventDefault();
 		var $this	= jQuery(this);
 		var process_type	= $this.data('action');
-		
+
 		if( process_type == 'deleteme' ){
 			var message	= delete_message;
 			var title	= delete_title;
@@ -678,8 +678,8 @@ jQuery(document).ready(function ($) {
 			var message	= delete_message;
 			var title	= delete_title;
 		}
-		
-		
+
+
 		if( process_type == 'activateme' ){
 			jQuery('body').append(loder_html);
 			jQuery.ajax({
@@ -735,7 +735,7 @@ jQuery(document).ready(function ($) {
 			});
 		}
 	});
-	
+
 	/* ---------------------------------------
      Renew Package
      --------------------------------------- */
@@ -759,7 +759,7 @@ jQuery(document).ready(function ($) {
 						jQuery.each(response, function(index, element) {
 							obj[index] = element;
 						});
-						
+
 						var handler = StripeCheckout.configure({
 							key: obj.key,
 							token: function(token) {
@@ -767,7 +767,7 @@ jQuery(document).ready(function ($) {
 								 jQuery.ajax({
 									type: "POST",
 									url: scripts_vars.ajaxurl,
-									data: { 
+									data: {
 										'action': 'docdirect_complete_stripe_payment',
 										'first_name': obj.first_name,
 										'last_name': obj.last_name,
@@ -794,11 +794,11 @@ jQuery(document).ready(function ($) {
 										if (response.type == 'success') {
 											jQuery('.notification_wrap').find('.notification_text').html(response.message);
 											jQuery('.notification_wrap').find('.notification_text').addClass('alert alert-success').show();
-                    						
+
 										} else if (response.type == 'error') {
-											jQuery('.notification_wrap').find('.notification_text').addClass('alert alert-danger').show(); 
+											jQuery('.notification_wrap').find('.notification_text').addClass('alert alert-danger').show();
                     						jQuery('.notification_wrap').find('.notification_text').html(response.message);
-										} 
+										}
 									}
 								});
 							}
@@ -818,22 +818,22 @@ jQuery(document).ready(function ($) {
 							//Reload
 						  }
 						});
-						
+
 
 						/*jQuery(window).on('popstate', function() {
 							handler.close();
 						});*/
 					} else{
 						jQuery('body').append( response.form_data );
-					} 
-					
+					}
+
 				} else {
-					
+
 				}
 			}
 	   });
 	});
-	
+
 	/* ---------------------------------------
     Language Choosen
      --------------------------------------- */
@@ -844,11 +844,11 @@ jQuery(document).ready(function ($) {
       '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
       '.chosen-select-width'     : {width:"95%"}
     }
-	
+
     for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
-	
+
 	/* ---------------------------------------
     Language Search
      --------------------------------------- */
@@ -859,11 +859,11 @@ jQuery(document).ready(function ($) {
       '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
       '.chosen-select-width'     : {width:"95%"}
     }
-	
+
     for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
-	
+
 	/* ---------------------------------------
     	Location Choosen
      --------------------------------------- */
@@ -874,40 +874,40 @@ jQuery(document).ready(function ($) {
       '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
       '.chosen-select-width'     : {width:"95%"}
     }
-    
+
 	for (var selector in config) {
       $(selector).chosen(config[selector]);
     }
-	
+
 	//Package active
 	jQuery('.packages-payments').on('click','.selected-package',function(){
 		jQuery(this).parents('.packages-payments').find('.tg-packages').removeClass('active');
 		jQuery(this).parents('.tg-packages').addClass('active');
 	});
-	
+
 	//User active
 	jQuery(document).on('click','.active-user-type',function(){
 		jQuery(this).parents('.form-group').find('.tg-packages').removeClass('active');
 		jQuery(this).addClass('active');
-		
+
 		jQuery('.user-types').show();
 		if( jQuery(this).hasClass('visitor-type') ){
 			jQuery('.user-types').hide();
 		}
 	});
-	
+
 	//Emails Tabs
 	jQuery(document).on('click','.doc-tab-link',function(){
-		
+
 		if( jQuery(this).hasClass('active') ){
 			jQuery(this).removeClass('active');
 		} else{
 			jQuery(this).addClass('active');
 		}
-		
+
 		jQuery(this).parents('.booking-email-wrap').find('.tab-data').slideToggle('slow');
 	});
-	
+
 	//Update Email settings
 	jQuery(document).on('click','.update-email-settings',function(e){
 		e.preventDefault();
@@ -932,7 +932,7 @@ jQuery(document).ready(function ($) {
 		});
 		return false;
 	});
-	
+
 });
 
 /* ---------------------------------------
@@ -941,25 +941,25 @@ jQuery(document).ready(function ($) {
 (function ($) {
 
 		$.confirm = function (params) {
-	
+
 			if ($('#confirmOverlay').length) {
 				// A confirm is already shown on the page:
 				return false;
 			}
-	
+
 			var buttonHTML = '';
 			$.each(params.buttons, function (name, obj) {
-	
+
 				// Generating the markup for the buttons:
-	
+
 				buttonHTML += '<a href="#" class="button ' + obj['class'] + '">' + name + '<span></span></a>';
-	
+
 				if (!obj.action) {
 					obj.action = function () {
 					};
 				}
 			});
-	
+
 			var markup = [
 				'<div id="confirmOverlay">',
 				'<div id="confirmBox">',
@@ -969,29 +969,29 @@ jQuery(document).ready(function ($) {
 				buttonHTML,
 				'</div></div></div>'
 			].join('');
-	
+
 			$(markup).hide().appendTo('body').fadeIn();
-	
+
 			var buttons = $('#confirmBox .button'),
 					i = 0;
-	
+
 			$.each(params.buttons, function (name, obj) {
 				buttons.eq(i++).click(function () {
-	
+
 					// Calling the action attribute when a
 					// click occurs, and hiding the confirm.
-	
+
 					obj.action();
 					$.confirm.hide();
 					return false;
 				});
 			});
 		}
-	
+
 		$.confirm.hide = function () {
 			$('#confirmOverlay').fadeOut(function () {
 				$(this).remove();
 			});
 		}
-	
+
 })(jQuery);

@@ -64,6 +64,14 @@
     <Compile Include="Migrations\201702090207407_CreateSocialLinksInfo.Designer.cs">
       <DependentUpon>201702090207407_CreateSocialLinksInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702170452230_AddHonorsAwardsTbl.cs" />
+    <Compile Include="Migrations\201702170452230_AddHonorsAwardsTbl.Designer.cs">
+      <DependentUpon>201702170452230_AddHonorsAwardsTbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702170507144_UpdateHonorsAwardsTbl.cs" />
+    <Compile Include="Migrations\201702170507144_UpdateHonorsAwardsTbl.Designer.cs">
+      <DependentUpon>201702170507144_UpdateHonorsAwardsTbl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,6 +93,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702090207407_CreateSocialLinksInfo.resx">
       <DependentUpon>201702090207407_CreateSocialLinksInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702170452230_AddHonorsAwardsTbl.resx">
+      <DependentUpon>201702170452230_AddHonorsAwardsTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702170507144_UpdateHonorsAwardsTbl.resx">
+      <DependentUpon>201702170507144_UpdateHonorsAwardsTbl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

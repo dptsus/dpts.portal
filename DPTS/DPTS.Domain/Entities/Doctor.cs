@@ -13,6 +13,7 @@ namespace DPTS.Domain.Entities
             AppointmentSchedules = new HashSet<AppointmentSchedule>();
             Schedules = new HashSet<Schedule>();
             SocialLinkInformation =new HashSet<SocialLinkInformation>();
+            HonorsAwards = new HashSet<HonorsAwards>();
         }
 
         public Guid DoctorGuid { get; set; }
@@ -55,6 +56,8 @@ namespace DPTS.Domain.Entities
         public virtual ICollection<Schedule> Schedules { get; set; }
 
         public virtual ICollection<SocialLinkInformation> SocialLinkInformation { get; set; }
+
+        public virtual ICollection<HonorsAwards> HonorsAwards { get; set; }
 
     }
 }
