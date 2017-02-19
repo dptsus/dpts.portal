@@ -287,6 +287,7 @@ namespace DPTS.Web.Controllers
                         model.Language = doctor.Language;
                         model.RegistrationNumber = doctor.RegistrationNumber;
                         model.ProfessionalStatements = doctor.ProfessionalStatements;
+                        model.VideoLink = doctor.VideoLink;
                     }
                 }
                 if (user != null)
@@ -337,6 +338,8 @@ namespace DPTS.Web.Controllers
             doctor.Language = model.Language;
             doctor.RegistrationNumber = model.RegistrationNumber;
             doctor.ProfessionalStatements = model.ProfessionalStatements;
+            doctor.VideoLink = model.VideoLink;
+
             _doctorService.UpdateDoctor(doctor);
 
             return RedirectToAction("ProfileSetting");
@@ -944,56 +947,79 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult SocialLink_Add([Bind(Exclude = "Id")] SocialLinkInformation model, string docterId)
         {
-            if (model.SocialType != null)
-                model.SocialType = model.SocialType.Trim();
-            if (model.SocialLink != null)
-                model.SocialLink = model.SocialLink.Trim();
-            if (docterId != null)
-                model.DoctorId = docterId;
-
-            if (!ModelState.IsValid && model.DoctorId == null)
+            try
             {
-                return Json(new DataSourceResult {Errors = "error"});
+                if (model.SocialType != null)
+                    model.SocialType = model.SocialType.Trim();
+                if (model.SocialLink != null)
+                    model.SocialLink = model.SocialLink.Trim();
+                if (docterId != null)
+                    model.DoctorId = docterId;
+
+                if (!ModelState.IsValid && model.DoctorId == null)
+                {
+                    return Json(new DataSourceResult { Errors = "error" });
+                }
+                var link = _doctorService.GetAllLinksByDoctor(docterId).FirstOrDefault(c => c.SocialType == model.SocialType);
+                if (link == null)
+                {
+                    _doctorService.InsertSocialLink(model);
+                }
+                return new NullJsonResult();
+
             }
-
-            _doctorService.InsertSocialLink(model);
-
-            return new NullJsonResult();
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
         }
 
         [HttpPost]
         public ActionResult SocialLink_Update(SocialLinkInformation model, string docterId)
         {
-            var link = _doctorService.GetSocialLinkbyId(model.Id);
-            if (link == null)
-                return Content("No link could be loaded with the specified ID");
-
-            if (!link.SocialType.Equals(model.SocialType, StringComparison.InvariantCultureIgnoreCase) ||
-                link.Id != model.Id)
+            try
             {
-                _doctorService.DeleteSocialLink(link);
+                var link = _doctorService.GetSocialLinkbyId(model.Id);
+                if (link == null)
+                    return Content("No link could be loaded with the specified ID");
+
+                if (!link.SocialType.Equals(model.SocialType, StringComparison.InvariantCultureIgnoreCase) ||
+                    link.Id != model.Id)
+                {
+                    _doctorService.DeleteSocialLink(link);
+                }
+
+                link.Id = model.Id;
+                link.DoctorId = model.DoctorId;
+                link.SocialType = model.SocialType;
+                link.SocialLink = model.SocialLink;
+                link.IsActive = model.IsActive;
+                link.DisplayOrder = model.DisplayOrder;
+                _doctorService.UpdateSocialLink(link);
+                return new NullJsonResult();
             }
-
-            link.Id = model.Id;
-            link.DoctorId = model.DoctorId;
-            link.SocialType = model.SocialType;
-            link.SocialLink = model.SocialLink;
-            link.IsActive = model.IsActive;
-            link.DisplayOrder = model.DisplayOrder;
-            _doctorService.UpdateSocialLink(link);
-
-            return new NullJsonResult();
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
         }
 
         [HttpPost]
         public ActionResult SocialLink_Delete(int id)
         {
-            var link = _doctorService.GetSocialLinkbyId(id);
-            if (link == null)
-                throw new ArgumentException("No link found with the specified id");
-            _doctorService.DeleteSocialLink(link);
+            try
+            {
+                var link = _doctorService.GetSocialLinkbyId(id);
+                if (link == null)
+                    throw new ArgumentException("No link found with the specified id");
+                _doctorService.DeleteSocialLink(link);
 
-            return new NullJsonResult();
+                return new NullJsonResult();
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
         }
 
         #endregion
@@ -1002,81 +1028,112 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult HonorsAwards_Read(DataSourceRequest command, string docterId)
         {
-            var awardsHonars = _doctorService.GetAllHonorsAwards(docterId, command.Page - 1, 5, false);
-            var gridModel = new DataSourceResult
+            try
             {
-                Data = awardsHonars.Select(x => new HonorsAwards
+                var awardsHonars = _doctorService.GetAllHonorsAwards(docterId, command.Page - 1, 5, false);
+                var gridModel = new DataSourceResult
                 {
-                    Id = x.Id,
-                    IsActive = x.IsActive,
-                    DisplayOrder = x.DisplayOrder,
-                    DoctorId = x.DoctorId,
-                    Name = x.Name,
-                    Description = x.Description,
-                    AwardDate = x.AwardDate
-                }),
-                Total = awardsHonars.TotalCount
-            };
-            return Json(gridModel);
+                    Data = awardsHonars.Select(x => new HonorsAwards
+                    {
+                        Id = x.Id,
+                        IsActive = x.IsActive,
+                        DisplayOrder = x.DisplayOrder,
+                        DoctorId = x.DoctorId,
+                        Name = x.Name,
+                        Description = x.Description,
+                        AwardDate = x.AwardDate
+                    }),
+                    Total = awardsHonars.TotalCount
+                };
+                return Json(gridModel);
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+          
         }
 
         [HttpPost]
         public ActionResult HonorsAwards_Add([Bind(Exclude = "Id")] HonorsAwards awards, string docterId)
         {
-            if (awards.Name != null)
-                awards.Name = awards.Name.Trim();
-            if (awards.Description != null)
-                awards.Description = awards.Description.Trim();
-            if (docterId != null)
-                awards.DoctorId = docterId;
-
-            if (!ModelState.IsValid && awards.DoctorId == null)
+            try
             {
-                return Json(new DataSourceResult { Errors = "error" });
+                if (awards.Name != null)
+                    awards.Name = awards.Name.Trim();
+                if (awards.Description != null)
+                    awards.Description = awards.Description.Trim();
+                if (docterId != null)
+                    awards.DoctorId = docterId;
+
+                if (!ModelState.IsValid && awards.DoctorId == null)
+                {
+                    return Json(new DataSourceResult { Errors = "error" });
+                }
+
+                _doctorService.InsertHonorsAwards(awards);
+
+                return new NullJsonResult();
             }
-
-            _doctorService.InsertHonorsAwards(awards);
-
-            return new NullJsonResult();
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+          
         }
 
         [HttpPost]
         public ActionResult HonorsAwards_Update(HonorsAwards awards, string docterId)
         {
-            var award = _doctorService.GetHonorsAwardsbyId(awards.Id);
-            if (award == null)
-                return Content("No link could be loaded with the specified ID");
-
-            if (!award.Name.Equals(awards.Name, StringComparison.InvariantCultureIgnoreCase) ||
-                award.Id != awards.Id)
+            try
             {
-                _doctorService.DeleteHonorsAwards(award);
+                var award = _doctorService.GetHonorsAwardsbyId(awards.Id);
+                if (award == null)
+                    return Content("No link could be loaded with the specified ID");
+
+                if (!award.Name.Equals(awards.Name, StringComparison.InvariantCultureIgnoreCase) ||
+                    award.Id != awards.Id)
+                {
+                    _doctorService.DeleteHonorsAwards(award);
+                }
+
+                award.Id = awards.Id;
+                award.DoctorId = awards.DoctorId;
+                award.Name = awards.Name;
+                award.Description = awards.Description;
+                award.AwardDate = awards.AwardDate;
+                award.IsActive = awards.IsActive;
+                award.DisplayOrder = awards.DisplayOrder;
+                _doctorService.UpdateHonorsAwards(award);
+
+                return new NullJsonResult();
             }
-
-            award.Id = awards.Id;
-            award.DoctorId = awards.DoctorId;
-            award.Name = awards.Name;
-            award.Description = awards.Description;
-            award.AwardDate = awards.AwardDate;
-            award.IsActive = awards.IsActive;
-            award.DisplayOrder = awards.DisplayOrder;
-            _doctorService.UpdateHonorsAwards(award);
-
-            return new NullJsonResult();
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+           
         }
 
         [HttpPost]
         public ActionResult HonorsAwards_Delete(HonorsAwards awards)
         {
-            if (awards.Id > 0)
+            try
             {
-                var award = _doctorService.GetHonorsAwardsbyId(awards.Id);
-                if (award == null)
-                    throw new ArgumentException("No Awards found with the specified id");
-                _doctorService.DeleteHonorsAwards(award);
-            }
+                if (awards.Id > 0)
+                {
+                    var award = _doctorService.GetHonorsAwardsbyId(awards.Id);
+                    if (award == null)
+                        throw new ArgumentException("No Awards found with the specified id");
+                    _doctorService.DeleteHonorsAwards(award);
+                }
 
-            return new NullJsonResult();
+                return new NullJsonResult();
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
         }
         #endregion
 

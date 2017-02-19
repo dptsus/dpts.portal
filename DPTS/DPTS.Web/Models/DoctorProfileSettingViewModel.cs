@@ -71,6 +71,10 @@ namespace DPTS.Web.Models
         [Display(Name = "Registration Number")]
         public string RegistrationNumber { get; set; }
 
+        /// <summary>
+        /// Video Link
+        /// </summary>
+        public string VideoLink { get; set; }
 
         public DateTime DateCreated { get; set; }
 

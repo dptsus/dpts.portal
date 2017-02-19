@@ -259,10 +259,29 @@
                             @Html.ValidationMessageFor(model => model.ProfessionalStatements)
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
+            <div class="tg-bordertop tg-haslayout">
+                <div class="tg-formsection tg-videoprofile">
+                    <div class="tg-heading-border tg-small">
+                        <h3>video link</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.VideoLink)
+                                        @Html.EditorFor(model => model.VideoLink, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.VideoLink)
+                                    </div>
+                            @*<div class="form-group">
+                                <input class="form-control" name="video_url" value="https://www.youtube.com/embed/0aNNYEUARAk" type="url" placeholder="Enter Url">
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
         <button type="submit" class="tg-btn process-account-settings">update</button>
 
         <div class="tg-formsection">
@@ -317,7 +336,12 @@
                                             id: "Id",
                                             fields: {
                                                 SocialType: { editable: true, type: "string" },
-                                                SocialLink: { editable: true, type: "string" },
+                                                SocialLink: {
+                                                    editable: true, type: "string",
+                                                    validation: {
+                                                        required: true
+                                                    }
+                                                },
                                                 DisplayOrder: { editable: true, type: "number" },
                                                 IsActive: { editable: true, type: "boolean" },
                                                 Id: { editable: false, type: "number" }
@@ -400,7 +424,7 @@
                                     autoBind: false,
                                     dataSource: {
                                         data: ["Facebook", "Twitter", "Pinterest", "Instagram", "Google Plus"]
-                                    },
+                                    }
                                 });
                         }
                     </script>
@@ -420,7 +444,7 @@
                                 <label for="Name">Name</label>
                             </div>
                             <div data-container-for="Name" class="k-edit-field">
-                                <input type="text" class="k-input k-textbox" name="Name" data-bind="value:Name">
+                                <input type="text" class="k-input k-textbox" name="Name" required data-bind="value:Name">
                             </div>
                             <div class="k-edit-label">
                                 <label for="Description">Description</label>
@@ -433,7 +457,7 @@
                                 <label for="AwardDate">AwardDate</label>
                             </div>
                             <div data-container-for="AwardDate" class="k-edit-field">
-                                <input type="date" class="k-input" name="AwardDate" data-bind="value:AwardDate">
+                                <input type="date" class="k-input" required name="AwardDate" data-bind="value:AwardDate">
                             </div>
                             <div class="k-edit-label">
                                 <label for="DisplayOrder">Display Order</label>
@@ -449,10 +473,8 @@
                             </div>
                         </script>
 
-
                     <script>
                         $(document).ready(function() {
-
                             $("#honors-awards-grid").kendoGrid({
                                 dataSource: {
                                     type: "json",
@@ -601,13 +623,13 @@
                                 <label for="Title">Title</label>
                             </div>
                             <div data-container-for="Title" class="k-edit-field">
-                                <input type="text" class="k-input k-textbox" name="Title" data-bind="value:Title">
+                                <input type="text" required class="k-input k-textbox" name="Title" data-bind="value:Title">
                             </div>
                             <div class="k-edit-label">
                                 <label for="Institute">Institute</label>
                             </div>
                             <div data-container-for="Institute" class="k-edit-field">
-                                <input type="text" class="k-input k-textbox" name="Institute" data-bind="value:Institute">
+                                <input type="text" required class="k-input k-textbox" name="Institute" data-bind="value:Institute">
                             </div>
                             <div class="k-edit-label">
                                 <label for="Description">Description</label>
@@ -620,13 +642,13 @@
                                 <label for="StartDate">Start Date</label>
                             </div>
                             <div data-container-for="StartDate" class="k-edit-field">
-                                <input type="date" class="k-input" name="StartDate" data-bind="value:StartDate">
+                                <input type="date" required class="k-input" name="StartDate" data-bind="value:StartDate">
                             </div>
                             <div class="k-edit-label">
                                 <label for="EndDate">End Date</label>
                             </div>
                             <div data-container-for="EndDate" class="k-edit-field">
-                                <input type="date" class="k-input" name="EndDate" data-bind="value:EndDate">
+                                <input type="date" required class="k-input" name="EndDate" data-bind="value:EndDate">
                             </div>
                             <div class="k-edit-label">
                                 <label for="DisplayOrder">Display Order</label>
@@ -792,13 +814,13 @@
                                 <label for="Title">Title</label>
                             </div>
                             <div data-container-for="Title" class="k-edit-field">
-                                <input type="text" class="k-input k-textbox" name="Title" data-bind="value:Title">
+                                <input type="text" required class="k-input k-textbox" name="Title" data-bind="value:Title">
                             </div>
                             <div class="k-edit-label">
                                 <label for="Institute">Organization</label>
                             </div>
                             <div data-container-for="Organization" class="k-edit-field">
-                                <input type="text" class="k-input k-textbox" name="Organization" data-bind="value:Organization">
+                                <input type="text" required class="k-input k-textbox" name="Organization" data-bind="value:Organization">
                             </div>
                             <div class="k-edit-label">
                                 <label for="Description">Description</label>
@@ -811,13 +833,13 @@
                                 <label for="StartDate">Start Date</label>
                             </div>
                             <div data-container-for="StartDate" class="k-edit-field">
-                                <input type="date" class="k-input" name="StartDate" data-bind="value:StartDate">
+                                <input type="date" required class="k-input" name="StartDate" data-bind="value:StartDate">
                             </div>
                             <div class="k-edit-label">
                                 <label for="EndDate">End Date</label>
                             </div>
                             <div data-container-for="EndDate" class="k-edit-field">
-                                <input type="date" class="k-input" name="EndDate" data-bind="value:EndDate">
+                                <input type="date" required class="k-input" name="EndDate" data-bind="value:EndDate">
                             </div>
                             <div class="k-edit-label">
                                 <label for="DisplayOrder">Display Order</label>

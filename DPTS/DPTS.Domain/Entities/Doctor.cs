@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace DPTS.Domain.Entities
 {
@@ -46,6 +47,8 @@ namespace DPTS.Domain.Entities
         public decimal Rating { get; set; }
 
         public string ProfessionalStatements { get; set; }
+
+        public string VideoLink { get; set; }
 
         public virtual AspNetUser AspNetUser { get; set; }
 

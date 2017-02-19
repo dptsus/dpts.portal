@@ -235,7 +235,7 @@
     @if (!string.IsNullOrWhiteSpace(Model.doctor.ProfessionalStatements))
     {
         <div class="professional-statements">
-            @Html.Raw(Model.doctor.ProfessionalStatements)
+            @Html.Raw(HttpUtility.HtmlDecode(Model.doctor.ProfessionalStatements))
         </div>
     }
     
@@ -360,12 +360,16 @@
         </div>
     }
 <!--Video URL-->
-@*<div class="tg-presentationvideo">
-                            <div class="tg-userheading">
-                                <h2>Presentation Video</h2>
-                            </div>
-                            <div class="video"><iframe width="368" height="200" src="https://www.youtube.com/embed/0aNNYEUARAk" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></div>
-                        </div>*@
+    @if (!string.IsNullOrWhiteSpace(Model.doctor.VideoLink))
+    {
+        <div class="tg-presentationvideo">
+            <div class="tg-userheading">
+                <h2>Presentation Video</h2>
+            </div>
+            <div class="video"><iframe width="368" height="200" src="@Model.doctor.VideoLink" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe></div>
+        </div>
+    }
+
 
 <!--Video URL-->
 @*<div class="tg-userphotogallery">
