@@ -3216,6 +3216,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DPTS.Common\DPTS.Common.csproj">
+      <Project>{9498cb3e-86ae-4951-b4b7-d393d8ec6ac5}</Project>
+      <Name>DPTS.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DPTS.Data\DPTS.Data.csproj">
       <Project>{29514e8e-fdc6-44c8-8a0a-b45ec060c272}</Project>
       <Name>DPTS.Data</Name>
