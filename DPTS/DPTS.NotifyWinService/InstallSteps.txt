@@ -1,7 +1,0 @@
-﻿ 
-Local
-sc.exe create "NotifyWinService" binPath= D:\Project\KanobiProjects\DPTS.NotifyWinServiceDPTS.NotifyWinService\bin\Debug\DPTS.NotifyWinService.exe start= auto
-net start NotifyWinService 
-
-sc.exe delete "NotifyWinService" binPath= D:\Project\KanobiProjects\DPTS.NotifyWinServiceDPTS.NotifyWinService\bin\Debug\DPTS.NotifyWinService.exe start= auto
- 
