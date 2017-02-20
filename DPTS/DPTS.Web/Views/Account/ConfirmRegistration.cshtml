@@ -30,10 +30,11 @@
 
                             <fieldset>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(m => m.CnfirmOTP, new { @class = "form-control", @placeholder = "Enter OTP" })
-                                    @Html.ValidationMessageFor(model => model.CnfirmOTP, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(m => m.ConfirmOtp, new { @class = "form-control", @placeholder = "Enter OTP" })
+                                    @Html.ValidationMessageFor(model => model.ConfirmOtp, "", new { @class = "text-danger" })
                                 </div>
                                 <input type="submit" class="tg-btn tg-btn-lg  do-register-button" value="ConfirmRegister" />
+                                <a class="tg-btn tg-btn-lg  do-register-button" href="@Url.Action("ConfirmRegistration","Account")">Resend OTP</a>
                             </fieldset>
                         }
                     </div>

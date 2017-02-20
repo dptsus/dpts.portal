@@ -256,16 +256,7 @@ namespace DPTS.Web.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        SmsNotificationModel sms = new SmsNotificationModel
-                        {
-                            numbers = model.PhoneNumber,
-                            route = 4,
-                            senderId = "DOCPTS"
-                        };
-                        //route 4 is for transactional sms
-                        Session["otp"] = _smsService.GenerateOTP();
-                        // sms.message = "DTPS Verification code: " + Session["otp"] + "." + "Pls do not share with anyone. It is valid for 10 minutes.";
-                        // _smsService.SendSms(sms);
+                        //SendOtp(model.PhoneNumber);
                         TempData["regmodel"] = model;
                         return RedirectToAction("ConfirmRegistration", "Account");
                     }
@@ -284,6 +275,21 @@ namespace DPTS.Web.Controllers
             }
         }
 
+        private void SendOtp(string phoneNumber)
+        {
+            var sms = new SmsNotificationModel
+            {
+                numbers = phoneNumber,
+                route = 4,
+                //route 4 is for transactional sms
+                senderId = "DOCPTS"
+            };
+            Session["otp"] = _smsService.GenerateOTP();
+            sms.message = "DTPS Verification code: " + Session["otp"] + "." +
+                          "Pls do not share with anyone. It is valid for 10 minutes.";
+            _smsService.SendSms(sms);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult ConfirmRegistration()
@@ -292,7 +298,7 @@ namespace DPTS.Web.Controllers
             ConfirmRegisterViewModel model = new ConfirmRegisterViewModel
             {
                 RegistrationDetails = regModel,
-                CnfirmOTP = Session["otp"].ToString()
+                ConfirmOtp = Session["otp"].ToString()
             };
             //if u want to otp then comment follws line
             return View(model);
@@ -305,7 +311,7 @@ namespace DPTS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.CnfirmOTP != Session["otp"].ToString())
+                if (model.ConfirmOtp != Session["otp"].ToString())
                 {
                     ViewBag.confirmFail = "Invalid OTP!!";
                     return View(model);
@@ -331,7 +337,7 @@ namespace DPTS.Web.Controllers
                     if (model.RegistrationDetails.UserType == "professional")
                     {
                         await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
-                        var doctor = new Doctor {DoctorId = user.Id,RegistrationNumber = model.RegistrationNumber };
+                        var doctor = new Doctor {DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber};
                         _doctorService.AddDoctor(doctor);
                     }
 

@@ -125,7 +125,7 @@ namespace DPTS.Web.Models
     {
         public RegisterViewModel RegistrationDetails { get; set; }
 
-        public string CnfirmOTP { get; set; }
+        public string ConfirmOtp { get; set; }
         public string RegistrationNumber { get; set; }
     }
 
