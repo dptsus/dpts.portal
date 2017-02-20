@@ -33,6 +33,7 @@ namespace DPTS.Web.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Remember this browser?")]
@@ -67,10 +68,13 @@ namespace DPTS.Web.Models
     public class RegisterViewModel
     {
         public RegisterViewModel()
-        { UserRoleList = new List<SelectListItem>(); }
+        {
+            UserRoleList = new List<SelectListItem>();
+        }
 
         [Display(Name = "User Type")]
         public string Role { get; set; }
+
         public IList<SelectListItem> UserRoleList { get; set; }
 
         public string UserType { get; set; }
@@ -91,7 +95,8 @@ namespace DPTS.Web.Models
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            ErrorMessage = "Not a valid Phone number")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -102,7 +107,8 @@ namespace DPTS.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password",
+            ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string LastIpAddress { get; set; }
@@ -111,6 +117,8 @@ namespace DPTS.Web.Models
 
         public DateTime? LastLoginDateUtc { get; set; }
 
+        [Display(Name = "Registration Number")]
+        public string RegistrationNumber { get; set; }
     }
 
     public class ConfirmRegisterViewModel
@@ -118,6 +126,7 @@ namespace DPTS.Web.Models
         public RegisterViewModel RegistrationDetails { get; set; }
 
         public string CnfirmOTP { get; set; }
+        public string RegistrationNumber { get; set; }
     }
 
     public class ResetPasswordViewModel
@@ -135,7 +144,8 @@ namespace DPTS.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password",
+            ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
