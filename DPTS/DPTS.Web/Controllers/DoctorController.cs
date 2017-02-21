@@ -900,6 +900,7 @@ namespace DPTS.Web.Controllers
                 model.listReviewComments = _reviewCommentsService.GetAllAprovedReviewCommentsByUser(doctor.DoctorId);
 
                 TempData["CommentForId"] = doctorId;
+                ViewBag.User = User.Identity.GetUserId().ToString();
                 return View(model);
             }
             return View();
@@ -908,9 +909,20 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult SaveReivewComment(FormCollection form)
         {
-            string CommentForId = TempData["CommentForId"].ToString();
-            string CommentOwnerId = User.Identity.GetUserId();
-            return RedirectToAction("DoctorDetails",new { doctorId = CommentForId });
+            ReviewComments ReviewComments = new ReviewComments();
+            ReviewComments.CommentForId = TempData["CommentForId"].ToString();
+            ReviewComments.CommentOwnerId = User.Identity.GetUserId();
+            ReviewComments.CommentOwnerUser = User.Identity.Name;
+            ReviewComments.Comment = form["UserComment"];
+            ReviewComments.Rating = Convert.ToDecimal(form["starrating"])*20;
+            ReviewComments.DateCreated = DateTime.Now;
+            ReviewComments.IsApproved = false;
+            ReviewComments.IsActive = true;
+
+            if(_reviewCommentsService.InsertReviewComment(ReviewComments))
+                return RedirectToAction("DoctorDetails",new { doctorId = TempData["CommentForId"].ToString() });
+
+            return null;
         }
         
 

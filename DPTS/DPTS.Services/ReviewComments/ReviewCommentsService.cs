@@ -18,8 +18,6 @@ namespace DPTS.Domain.ReviewComments
         {
             _reviewComments = reviewComments;
         }
-
-        
         #endregion
 
         #region Methods
@@ -29,7 +27,8 @@ namespace DPTS.Domain.ReviewComments
                 return null;
             try
             {
-                return _reviewComments.Table.Where(c => c.IsApproved == true && c.IsActive == true).ToList();
+
+                return _reviewComments.Table.Where(c => c.IsApproved == true && c.IsActive == true && c.CommentForId==UserId).ToList();
             }
             catch (Exception)
             {
@@ -37,6 +36,38 @@ namespace DPTS.Domain.ReviewComments
                 return null;
             }
         }
+
+        public bool InsertReviewComment(Entities.ReviewComments ReviewComments)
+        {
+            try
+            {
+                if (ReviewComments == null)
+                    throw new ArgumentNullException(nameof(ReviewComments));
+
+                _reviewComments.Insert(ReviewComments);
+
+                return true;
+            }
+            catch {
+                return false;
+            }
+        }
+
+        //public decimal GetAverageScoreByUser(string UserId)
+        //{
+        //    from r in _reviewComments.Table
+        //    where r.IsActive == true
+        //        && r.IsApproved == true
+        //        && r.CommentForId == UserId
+        //    select r.Rating;
+            
+        //    //return _reviewComments.Table.Where(c => c.IsApproved == true && c.IsActive == true && c.CommentForId == UserId).ToList();
+        //}
+
+        //public IList<RatingDetails> GetRatingDetailsScoreByUser(string UserId)
+        //{
+        //    throw new NotImplementedException();
+        //}
         #endregion
     }
 }
