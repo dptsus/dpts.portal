@@ -19,6 +19,10 @@ namespace DPTS.Services.Doctors
         private readonly IRepository<AddressMapping> _addressMapping;
         private readonly IRepository<Domain.Entities.Address> _address;
         private readonly IRepository<AppointmentSchedule> _appointmentScheduleRepository;
+        private readonly IRepository<SocialLinkInformation> _socialLinksRepository;
+        private readonly IRepository<HonorsAwards> _honorsAwardsRepository;
+        private readonly IRepository<Education> _educationRepository;
+        private readonly IRepository<Experience> _experienceRepository;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
 
@@ -31,7 +35,11 @@ namespace DPTS.Services.Doctors
             IAddressService addressService,
             IRepository<AddressMapping> addressMapping,
             IRepository<Domain.Entities.Address> address,
-            IRepository<AppointmentSchedule> appointmentScheduleRepository)
+            IRepository<AppointmentSchedule> appointmentScheduleRepository,
+            IRepository<SocialLinkInformation> socialLinksRepository,
+            IRepository<HonorsAwards> honorsAwardsRepository,
+            IRepository<Education> educationRepository,
+            IRepository<Experience> experienceRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
@@ -40,76 +48,15 @@ namespace DPTS.Services.Doctors
             _addressMapping = addressMapping;
             _address = address;
             _appointmentScheduleRepository = appointmentScheduleRepository;
+            _socialLinksRepository = socialLinksRepository;
+            _honorsAwardsRepository = honorsAwardsRepository;
+            _educationRepository = educationRepository;
+            _experienceRepository = experienceRepository;
             _context = new DPTSDbContext();
         }
         #endregion
 
-        #region Methods
-        public void AddDoctor(Doctor doctor)
-        {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
-
-            _doctorRepository.Insert(doctor);
-        }
-
-        public void DeleteDoctor(Doctor doctor)
-        {
-            if (doctor == null)
-                throw new ArgumentNullException(nameof(doctor));
-
-            _doctorRepository.Delete(doctor);
-        }
-
-
-        public Doctor GetDoctorbyId(string doctorId)
-        {
-            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == doctorId);
-        }
-
-        public void UpdateDoctor(Doctor data)
-        {
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-
-            _doctorRepository.Update(data);
-        }
-        public IList<string> GetDoctorsName(bool showhidden)
-        {
-            return null;
-        }
-        //public IList<Doctor> GetAllDoctors()
-        //{
-        //    var query = from d in _doctorRepository.Table
-        //                select d;
-        //    return query.ToList();
-        //}
-
-        public IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount)
-        {
-
-            var query = from d in _doctorRepository.Table
-                select d;
-
-            var doctors = (from d in _doctorRepository.Table
-                         orderby d.DateUpdated descending
-                         select d)
-                        .Skip(itemsPerPage * page).Take(itemsPerPage)
-                          .ToList();
-            //foreach (var doc in docLst.Doctors)
-            //{
-            //    var address = from d in _address.Table
-            //             join m in _addressMapping.Table on d.Id equals m.AddressId
-            //             where m.UserId == doc.DoctorId
-            //             select d;
-            //    docLst.Address = address.FirstOrDefault();
-            //}
-
-            totalCount = query.Count();//return the number of pages
-            return doctors;//the query is now already executed, it is a subset of all the orders.
-        }
-
-        #region sarch zip methods
+        #region Utilities
         private IList<ZipCodes> GetAllZipCodes()
         {
             return _addressService.GetAllZipCodes();
@@ -197,11 +144,79 @@ namespace DPTS.Services.Doctors
             return null;
         }
         #endregion
+
+        #region Methods
+        public void AddDoctor(Doctor doctor)
+        {
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
+
+            _doctorRepository.Insert(doctor);
+        }
+
+        public void DeleteDoctor(Doctor doctor)
+        {
+            if (doctor == null)
+                throw new ArgumentNullException(nameof(doctor));
+
+            _doctorRepository.Delete(doctor);
+        }
+
+        public Doctor GetDoctorbyId(string doctorId)
+        {
+            return _doctorRepository.Table.FirstOrDefault(d => d.DoctorId == doctorId);
+        }
+
+        public void UpdateDoctor(Doctor data)
+        {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            _doctorRepository.Update(data);
+        }
+
+        public IList<string> GetDoctorsName(bool showhidden)
+        {
+            return null;
+        }
+
+        //public IList<Doctor> GetAllDoctors()
+        //{
+        //    var query = from d in _doctorRepository.Table
+        //                select d;
+        //    return query.ToList();
+        //}
+
+        public IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount)
+        {
+
+            var query = from d in _doctorRepository.Table
+                select d;
+
+            var doctors = (from d in _doctorRepository.Table
+                         orderby d.DateUpdated descending
+                         select d)
+                        .Skip(itemsPerPage * page).Take(itemsPerPage)
+                          .ToList();
+            //foreach (var doc in docLst.Doctors)
+            //{
+            //    var address = from d in _address.Table
+            //             join m in _addressMapping.Table on d.Id equals m.AddressId
+            //             where m.UserId == doc.DoctorId
+            //             select d;
+            //    docLst.Address = address.FirstOrDefault();
+            //}
+
+            totalCount = query.Count();//return the number of pages
+            return doctors;//the query is now already executed, it is a subset of all the orders.
+        }
+
         public class TempAddressViewModel
         {
             public Address Address { get; set; }
             public double Distance { get; set; }
         }
+
         public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
             string zipcode = null,
             int specialityId = 0,
@@ -214,21 +229,18 @@ namespace DPTS.Services.Doctors
             //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
             //  return null;
 
-            decimal myDec;
-            var result = decimal.TryParse(zipcode, out myDec);
+            //decimal myDec;
+            //var result = decimal.TryParse(zipcode, out myDec);
 
-            if (!result)
-            {
+           // if (!result)
+            //{
                 // zipcode = GetGeoZip(zipcode);
                 var addrList = new List<TempAddressViewModel>();
                 double lat = 0, lng = 0;
                 #region (with zipcode)
 
-                var firstZipCodeLocation = GetByZipCode(zipcode);
-                if (firstZipCodeLocation == null)
-                {
-                    firstZipCodeLocation = CalculateLatLngForZipCode(zipcode);
-                }
+                var firstZipCodeLocation = GetByZipCode(zipcode) ?? CalculateLatLngForZipCode(zipcode);
+
                 var data = _addressService.GetAllAddress();
                 foreach (var addr in data)
                 {
@@ -265,11 +277,7 @@ namespace DPTS.Services.Doctors
 
                 if (addrList.Any())
                 {
-                    List<int> addrIds = new List<int>();
-                    foreach (var _address in addrList)
-                    {
-                        addrIds.Add(_address.Address.Id);
-                    }
+                    List<int> addrIds = addrList.Select(_address => _address.Address.Id).ToList();
 
                     query = from d in _context.Doctors
                             join a in _context.AddressMappings on d.DoctorId equals a.UserId
@@ -278,7 +286,7 @@ namespace DPTS.Services.Doctors
                 }
 
                 #endregion
-            }
+           // }
             if (specialityId > 0)
             {
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
@@ -292,6 +300,192 @@ namespace DPTS.Services.Doctors
             totalCount = query.Count();
             return pageQuery;
         }
+
+        #region Social links
+        public void InsertSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Insert(link);
+        }
+
+        public SocialLinkInformation GetSocialLinkbyId(int id)
+        {
+            if (id == 0)
+                throw new ArgumentNullException(nameof(id));
+
+           return  _socialLinksRepository.GetById(id);
+        }
+
+        public void DeleteSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Delete(link);
+        }
+
+        public void UpdateSocialLink(SocialLinkInformation link)
+        {
+            if (link == null)
+                throw new ArgumentNullException(nameof(link));
+
+            _socialLinksRepository.Update(link);
+        }
+
+        public IPagedList<SocialLinkInformation> GetAllLinksByDoctor(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false)
+        {
+           // return _socialLinksRepository.Table.Where(d => d.DoctorId == doctorId).ToList();
+            var query = _socialLinksRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.SocialLink);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<SocialLinkInformation>(query, pageIndex, pageSize);
+        }
+        #endregion
+
+        #region HonorsAwards
+
+        public void InsertHonorsAwards(HonorsAwards award)
+        {
+            if (award == null)
+                throw new ArgumentNullException(nameof(award));
+
+            _honorsAwardsRepository.Insert(award);
+        }
+
+        public HonorsAwards GetHonorsAwardsbyId(int id)
+        {
+            if (id == 0)
+                throw new ArgumentNullException(nameof(id));
+
+            return _honorsAwardsRepository.GetById(id);
+        }
+
+        public void DeleteHonorsAwards(HonorsAwards award)
+        {
+            if (award == null)
+                throw new ArgumentNullException(nameof(award));
+
+            _honorsAwardsRepository.Delete(award);
+        }
+
+        public void UpdateHonorsAwards(HonorsAwards award)
+        {
+            if (award == null)
+                throw new ArgumentNullException(nameof(award));
+
+            _honorsAwardsRepository.Update(award);
+        }
+
+        public IPagedList<HonorsAwards> GetAllHonorsAwards(string doctorId, int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
+        {
+            var query = _honorsAwardsRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<HonorsAwards>(query, pageIndex, pageSize);
+        }
+
+
+        #endregion
+
+        #region Education
+        public void InsertEducation(Education education)
+        {
+            if (education == null)
+                throw new ArgumentNullException(nameof(education));
+
+            _educationRepository.Insert(education);
+        }
+
+        public Education GetEducationbyId(int id)
+        {
+            if (id == 0)
+                throw new ArgumentNullException(nameof(id));
+
+            return _educationRepository.GetById(id);
+        }
+
+        public void DeleteEducation(Education education)
+        {
+            if (education == null)
+                throw new ArgumentNullException(nameof(education));
+
+            _educationRepository.Delete(education);
+        }
+
+        public void UpdateEducation(Education education)
+        {
+            if (education == null)
+                throw new ArgumentNullException(nameof(education));
+
+            _educationRepository.Update(education);
+        }
+
+        public IPagedList<Education> GetAllEducation(string doctorId, int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
+        {
+            var query = _educationRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Title);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<Education>(query, pageIndex, pageSize);
+        }
+        #endregion
+
+        #region Experience
+
+        public void InsertExperience(Experience experience)
+        {
+            if (experience == null)
+                throw new ArgumentNullException(nameof(experience));
+
+            _experienceRepository.Insert(experience);
+        }
+
+        public Experience GetExperiencebyId(int id)
+        {
+            if (id == 0)
+                throw new ArgumentNullException(nameof(id));
+
+            return _experienceRepository.GetById(id);
+        }
+
+        public void DeleteExperience(Experience experience)
+        {
+            if (experience == null)
+                throw new ArgumentNullException(nameof(experience));
+
+            _experienceRepository.Delete(experience);
+        }
+
+        public void UpdateExperience(Experience experience)
+        {
+            if (experience == null)
+                throw new ArgumentNullException(nameof(experience));
+
+            _experienceRepository.Update(experience);
+        }
+
+        public IPagedList<Experience> GetAllExperience(string doctorId, int pageIndex = 0, int pageSize = int.MaxValue, bool showHidden = false)
+        {
+            var query = _experienceRepository.Table;
+            if (!showHidden)
+                query = query.Where(c => c.DoctorId == doctorId);
+            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Title);
+
+            query = query.OrderBy(c => c.DisplayOrder);
+            return new PagedList<Experience>(query, pageIndex, pageSize);
+        }
+        #endregion
 
         #endregion
     }

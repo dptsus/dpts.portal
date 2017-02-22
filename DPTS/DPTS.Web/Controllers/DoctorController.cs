@@ -14,6 +14,9 @@ using DPTS.Domain.Entities;
 using DPTS.Web.Models;
 using Microsoft.AspNet.Identity;
 using DPTS.Domain.Core.ReviewComments;
+using Kendo.Mvc.UI;
+using HttpVerbs = System.Web.Mvc.HttpVerbs;
+using DPTS.Services;
 
 namespace DPTS.Web.Controllers
 {
@@ -204,6 +207,56 @@ namespace DPTS.Web.Controllers
             }
         }
 
+        private static void GetDoctorScheduleByDay(SheduleViewModel obj, IList<Schedule> schedule, string day)
+        {
+            var scheduleSunday = schedule?.FirstOrDefault(s => s.Day.Equals(day));
+            if (scheduleSunday == null || !scheduleSunday.Day.Equals(day))
+                obj.Day = day;
+            else
+            {
+                obj.DoctorId = scheduleSunday.DoctorId;
+                obj.Day = scheduleSunday.Day;
+                obj.EndTime = scheduleSunday.EndTime;
+                obj.StartTime = scheduleSunday.StartTime;
+            }
+        }
+
+        private void GetScheduleByDay(FormCollection form, string day)
+        {
+            if (!string.IsNullOrWhiteSpace(day))
+            {
+                var lowerDay = day.ToLower();
+                var lowerDayStart = day.ToLower() + "_start";
+                var lowerDayEnd = day.ToLower() + "_end";
+                if (!string.IsNullOrWhiteSpace(form[lowerDayStart]) &&
+                    !string.IsNullOrWhiteSpace(form[lowerDayEnd]))
+                {
+                    var schedule =
+                        _scheduleService
+                            .GetScheduleByDoctorId(User.Identity.GetUserId())
+                            .FirstOrDefault(s => s.Day.Equals(day));
+
+                    if (schedule == null)
+                    {
+                        var model = new Schedule
+                        {
+                            Day = lowerDay,
+                            DoctorId = User.Identity.GetUserId(),
+                            StartTime = form[lowerDayStart].Trim(),
+                            EndTime = form[lowerDayEnd].Trim()
+                        };
+                        _scheduleService.InsertSchedule(model);
+                    }
+                    else
+                    {
+                        schedule.StartTime = form[lowerDayStart].Trim();
+                        schedule.EndTime = form[lowerDayEnd].Trim();
+                        _scheduleService.UpdateSchedule(schedule);
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -235,9 +288,10 @@ namespace DPTS.Web.Controllers
                         }
                         model.Gender = doctor.Gender;
                         model.ShortProfile = doctor.ShortProfile;
-                        model.Qualifications = doctor.Qualifications;
-                        model.NoOfYearExperience = doctor.YearsOfExperience.GetValueOrDefault();
+                        model.Language = doctor.Language;
                         model.RegistrationNumber = doctor.RegistrationNumber;
+                        model.ProfessionalStatements = doctor.ProfessionalStatements;
+                        model.VideoLink = doctor.VideoLink;
                     }
                 }
                 if (user != null)
@@ -285,13 +339,17 @@ namespace DPTS.Web.Controllers
             var dateOfBirth = model.ParseDateOfBirth();
             doctor.DateOfBirth = dateOfBirth.ToString();
             doctor.DateUpdated = DateTime.UtcNow;
-            doctor.Qualifications = model.Qualifications;
+            doctor.Language = model.Language;
             doctor.RegistrationNumber = model.RegistrationNumber;
-            doctor.YearsOfExperience = model.NoOfYearExperience;
+            doctor.ProfessionalStatements = model.ProfessionalStatements;
+            doctor.VideoLink = model.VideoLink;
+
             _doctorService.UpdateDoctor(doctor);
 
             return RedirectToAction("ProfileSetting");
         }
+
+        #region Address
 
         public ActionResult AddressAdd()
         {
@@ -571,6 +629,9 @@ namespace DPTS.Web.Controllers
             return View(model);
         }
 
+        #endregion
+
+        #region Favourites & Invoices
         public ActionResult Favourites()
         {
             return View();
@@ -580,7 +641,9 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region Schedule
         public ActionResult DoctorSchedules()
         {
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
@@ -630,20 +693,6 @@ namespace DPTS.Web.Controllers
             }
         }
 
-        private static void GetDoctorScheduleByDay(SheduleViewModel obj, IList<Schedule> schedule, string day)
-        {
-            var scheduleSunday = schedule?.FirstOrDefault(s => s.Day.Equals(day));
-            if (scheduleSunday == null || !scheduleSunday.Day.Equals(day))
-                obj.Day = day;
-            else
-            {
-                obj.DoctorId = scheduleSunday.DoctorId;
-                obj.Day = scheduleSunday.Day;
-                obj.EndTime = scheduleSunday.EndTime;
-                obj.StartTime = scheduleSunday.StartTime;
-            }
-        }
-
         [HttpPost]
         public ActionResult DoctorSchedules(FormCollection form)
         {
@@ -671,41 +720,9 @@ namespace DPTS.Web.Controllers
             }
         }
 
-        private void GetScheduleByDay(FormCollection form, string day)
-        {
-            if (!string.IsNullOrWhiteSpace(day))
-            {
-                var lowerDay = day.ToLower();
-                var lowerDayStart = day.ToLower() + "_start";
-                var lowerDayEnd = day.ToLower() + "_end";
-                if (!string.IsNullOrWhiteSpace(form[lowerDayStart]) &&
-                    !string.IsNullOrWhiteSpace(form[lowerDayEnd]))
-                {
-                    var schedule =
-                        _scheduleService
-                            .GetScheduleByDoctorId(User.Identity.GetUserId())
-                            .FirstOrDefault(s => s.Day.Equals(day));
+        #endregion
 
-                    if (schedule == null)
-                    {
-                        var model = new Schedule
-                        {
-                            Day = lowerDay,
-                            DoctorId = User.Identity.GetUserId(),
-                            StartTime = form[lowerDayStart].Trim(),
-                            EndTime = form[lowerDayEnd].Trim()
-                        };
-                        _scheduleService.InsertSchedule(model);
-                    }
-                    else
-                    {
-                        schedule.StartTime = form[lowerDayStart].Trim();
-                        schedule.EndTime = form[lowerDayEnd].Trim();
-                        _scheduleService.UpdateSchedule(schedule);
-                    }
-                }
-            }
-        }
+        #region Booking
 
         public ActionResult BookingListings(DoctorScheduleListingViewModel model)
         {
@@ -819,6 +836,14 @@ namespace DPTS.Web.Controllers
             return View();
         }
 
+        public ActionResult BookingSettings()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Security & Privacy
         public ActionResult SecuritySettings()
         {
             return View();
@@ -828,12 +853,9 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+        #endregion
 
-        public ActionResult BookingSettings()
-        {
-            return View();
-        }
-
+        #region Profile Image
         public ContentResult UploadFiles()
         {
             try
@@ -873,7 +895,9 @@ namespace DPTS.Web.Controllers
                 return null;
             }
         }
+        #endregion
 
+        #region Details
         public ActionResult DoctorDetails(string doctorId)
         {
            
@@ -905,26 +929,167 @@ namespace DPTS.Web.Controllers
             }
             return View();
         }
+        #endregion
+
+        #region Social Links
 
         [HttpPost]
-        public ActionResult SaveReivewComment(FormCollection form)
+        public ActionResult SocialLink_Read(DataSourceRequest command, string docterId)
         {
-            ReviewComments ReviewComments = new ReviewComments();
-            ReviewComments.CommentForId = TempData["CommentForId"].ToString();
-            ReviewComments.CommentOwnerId = User.Identity.GetUserId();
-            ReviewComments.CommentOwnerUser = User.Identity.Name;
-            ReviewComments.Comment = form["UserComment"];
-            ReviewComments.Rating = Convert.ToDecimal(form["starrating"])*20;
-            ReviewComments.DateCreated = DateTime.Now;
-            ReviewComments.IsApproved = false;
-            ReviewComments.IsActive = true;
-
-            if(_reviewCommentsService.InsertReviewComment(ReviewComments))
-                return RedirectToAction("DoctorDetails",new { doctorId = TempData["CommentForId"].ToString() });
-
-            return null;
+            var socialSites = _doctorService.GetAllLinksByDoctor(docterId, command.Page - 1, 5, false);
+            var gridModel = new DataSourceResult
+            {
+                Data = socialSites.Select(x => new SocialLinkInformation
+                {
+                    Id = x.Id,
+                    IsActive = x.IsActive,
+                    DisplayOrder = x.DisplayOrder,
+                    DoctorId = x.DoctorId,
+                    SocialLink = x.SocialLink,
+                    SocialType = x.SocialType
+                }),
+                Total = socialSites.TotalCount
+            };
+            return Json(gridModel);
         }
-        
+
+        [HttpPost]
+        public ActionResult SocialLink_Add([Bind(Exclude = "Id")] SocialLinkInformation model, string docterId)
+        {
+            try
+            {
+                if (model.SocialType != null)
+                    model.SocialType = model.SocialType.Trim();
+                if (model.SocialLink != null)
+                    model.SocialLink = model.SocialLink.Trim();
+                if (docterId != null)
+                    model.DoctorId = docterId;
+
+                if (!ModelState.IsValid && model.DoctorId == null)
+                {
+                    return Json(new DataSourceResult { Errors = "error" });
+                }
+                var link = _doctorService.GetAllLinksByDoctor(docterId).FirstOrDefault(c => c.SocialType == model.SocialType);
+                if (link == null)
+                {
+                    _doctorService.InsertSocialLink(model);
+                }
+                return new NullJsonResult();
+
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SocialLink_Update(SocialLinkInformation model, string docterId)
+        {
+            try
+            {
+                var link = _doctorService.GetSocialLinkbyId(model.Id);
+                if (link == null)
+                    return Content("No link could be loaded with the specified ID");
+
+                if (!link.SocialType.Equals(model.SocialType, StringComparison.InvariantCultureIgnoreCase) ||
+                    link.Id != model.Id)
+                {
+                    _doctorService.DeleteSocialLink(link);
+                }
+
+                link.Id = model.Id;
+                link.DoctorId = model.DoctorId;
+                link.SocialType = model.SocialType;
+                link.SocialLink = model.SocialLink;
+                link.IsActive = model.IsActive;
+                link.DisplayOrder = model.DisplayOrder;
+                _doctorService.UpdateSocialLink(link);
+                return new NullJsonResult();
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SocialLink_Delete(int id)
+        {
+            try
+            {
+                var link = _doctorService.GetSocialLinkbyId(id);
+                if (link == null)
+                    throw new ArgumentException("No link found with the specified id");
+                _doctorService.DeleteSocialLink(link);
+
+                return new NullJsonResult();
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+        }
+
+        #endregion
+
+        #region Honors & Awards
+        [HttpPost]
+        public ActionResult HonorsAwards_Read(DataSourceRequest command, string docterId)
+        {
+            try
+            {
+                var awardsHonars = _doctorService.GetAllHonorsAwards(docterId, command.Page - 1, 5, false);
+                var gridModel = new DataSourceResult
+                {
+                    Data = awardsHonars.Select(x => new HonorsAwards
+                    {
+                        Id = x.Id,
+                        IsActive = x.IsActive,
+                        DisplayOrder = x.DisplayOrder,
+                        DoctorId = x.DoctorId,
+                        Name = x.Name,
+                        Description = x.Description,
+                        AwardDate = x.AwardDate
+                    }),
+                    Total = awardsHonars.TotalCount
+                };
+                return Json(gridModel);
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+          
+        }
+
+        [HttpPost]
+        public ActionResult HonorsAwards_Add([Bind(Exclude = "Id")] HonorsAwards awards, string docterId)
+        {
+            try
+            {
+                if (awards.Name != null)
+                    awards.Name = awards.Name.Trim();
+                if (awards.Description != null)
+                    awards.Description = awards.Description.Trim();
+                if (docterId != null)
+                    awards.DoctorId = docterId;
+
+                if (!ModelState.IsValid && awards.DoctorId == null)
+                {
+                    return Json(new DataSourceResult { Errors = "error" });
+                }
+
+                _doctorService.InsertHonorsAwards(awards);
+
+                return new NullJsonResult();
+            }
+            catch (Exception)
+            {
+                return new NullJsonResult();
+            }
+          
+        }
 
         #endregion
     }

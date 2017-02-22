@@ -6,6 +6,7 @@ using DPTS.Domain.Entities.Notification;
 
 namespace DPTS.Web.Controllers
 {
+    [Authorize]
     public class EmailCategoryController : BaseController
     {
         #region Fields

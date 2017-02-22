@@ -15,6 +15,7 @@ using OfficeOpenXml;
 
 namespace DPTS.Web.Controllers
 {
+    [Authorize]
     public class ExportImportsController : Controller
     {
         #region Feilds

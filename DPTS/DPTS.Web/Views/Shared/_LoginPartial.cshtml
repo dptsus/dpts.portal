@@ -2,39 +2,38 @@
 @using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.EntityFramework
 @{
-    string FirstName = string.Empty;
+    string firstName = string.Empty;
+    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
     if (Request.IsAuthenticated)
     {
-        var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-        var user = manager.FindById(User.Identity.GetUserId());
-        FirstName = string.Concat(new string[] { user.FirstName });
+        firstName = manager.FindById(User.Identity.GetUserId()).FirstName;
     }
 }
 <div class="doc-menu">
     <ul class="tg-login-logout">
         @if (Request.IsAuthenticated)
-        {
+        {   
             if (User.IsInRole("Doctor"))
             {
                 <li class="session-user-info">
-                    <a href="javascript:;"><span class="s-user">@FirstName</span><img alt="Welcome" id="welcome"></a>
+                    <a href="javascript:;"><span class="s-user">@firstName</span><img alt="Welcome" id="welcome"></a>
                     <ul>
                         @*<li class="active"><a href="@Url.Action("Info", "Doctor")"><i class="fa fa-line-chart"></i>Profile</a></li>*@
                         <li class="active"><a href="@Url.Action("ProfileSetting", "Doctor")">Profile Settings</a></li>
                         <li class=""><a href="@Url.Action("Addresses", "Doctor")">Addresses</a></li>
-                        @*<li class=""><a href="@Url.Action("Favourites", "Doctor")">Favourites</a></li>*@
-                        @*<li class=""><a href="@Url.Action("InvoicesPackages", "Doctor")">Invoices &amp; Packages</a></li>*@
+                        <li class=""><a href="@Url.Action("Favourites", "Doctor")">Favourites</a></li>
+                        <li class=""><a href="@Url.Action("InvoicesPackages", "Doctor")">Invoices &amp; Packages</a></li>
                         <li class=""><a href="@Url.Action("DoctorSchedules", "Doctor")">My Schedules</a></li>
                         <li class=""><a href="@Url.Action("BookingListings", "Doctor")">Booking Listings</a></li>
                         @*<li class=""><a href="@Url.Action("BookingSchedules", "Doctor")">Booking Schedules</a></li>*@
-                        @*<li class=""><a href="@Url.Action("BookingSettings", "Doctor")">Booking Settings</a></li>*@
-                        @*<li class=""><a href="@Url.Action("SecuritySettings", "Doctor")">Security Settings</a></li>*@
-                        @*<li class=""><a href="@Url.Action("PrivacySettings", "Doctor")">Privacy Settings</a></li>*@
+                        <li class=""><a href="@Url.Action("BookingSettings", "Doctor")">Booking Settings</a></li>
+                        <li class=""><a href="@Url.Action("SecuritySettings", "Doctor")">Security Settings</a></li>
+                        <li class=""><a href="@Url.Action("PrivacySettings", "Doctor")">Privacy Settings</a></li>
                         <li>
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
+                                <a href="javascript:document.getElementById('logoutForm').submit();"><i class="fa fa-sign-in"></i>Logout</a>
                             }
                         </li>
                     </ul>
@@ -43,7 +42,7 @@
             else
             {
                 <li class="session-user-info">
-                    <a href="javascript:;"><span class="s-user">@FirstName</span><img alt="Welcome" id="welcome"></a>
+                    <a href="javascript:;"><span class="s-user">@firstName</span><img alt="Welcome" id="welcome"></a>
                     <ul>
                         <li class="active">
                             <a href="@Url.Action("AppointmentList", "Visitor")">
@@ -57,7 +56,7 @@
                             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
+                                <a href="javascript:document.getElementById('logoutForm').submit();"><i class="fa fa-sign-in"></i>Logout</a>
                             }
                         </li>
                     </ul>
@@ -77,11 +76,10 @@
 @Scripts.Render("~/bundles/jquery")
 <script type="text/javascript">
     $(function () {
-        // profile pic
-        var ProfilePicId = "@User.Identity.GetUserId()" + "_profile";
-        $.get('../../Uploads/' + ProfilePicId + '.jpg')
+        var profilePicId = "@User.Identity.GetUserId()" + "_profile";
+        $.get('../../Uploads/' + profilePicId + '.jpg')
             .done(function () {
-                $("#welcome").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
+                $("#welcome").attr("src", '../../Uploads/' + profilePicId + '.jpg?' + new Date().getTime());
             }).fail(function () {
                 $("#welcome").attr("src", '/Content/wp-content/themes/docdirect/images/singin_icon.png?' + new Date().getTime());
             });

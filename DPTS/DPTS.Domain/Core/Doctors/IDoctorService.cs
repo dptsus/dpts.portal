@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DPTS.Domain.Entities;
 
 namespace DPTS.Domain.Core.Doctors
@@ -11,12 +12,12 @@ namespace DPTS.Domain.Core.Doctors
         void AddDoctor(Doctor doctor);
 
         /// <summary>
-        /// Get Doctor by Id
+        /// Get Doctor by id
         /// </summary>
         Doctor GetDoctorbyId(string doctorId);
 
         /// <summary>
-        /// Delete Doctor by Id
+        /// Delete Doctor by id
         /// </summary>
         void DeleteDoctor(Doctor Doctor);
 
@@ -48,5 +49,59 @@ namespace DPTS.Domain.Core.Doctors
         /// <param name="totalCount"></param>
         /// <returns></returns>
         IList<Doctor> GetAllDoctors(int page, int itemsPerPage, out int totalCount);
+
+        #region Social links
+
+        void InsertSocialLink(SocialLinkInformation link);
+
+        SocialLinkInformation GetSocialLinkbyId(int id);
+
+        void DeleteSocialLink(SocialLinkInformation link);
+
+        void UpdateSocialLink(SocialLinkInformation link);
+
+        IPagedList<SocialLinkInformation> GetAllLinksByDoctor(string doctorId,int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false);
+
+        #endregion
+
+        #region HonorsAwards
+        void InsertHonorsAwards(HonorsAwards award);
+
+        HonorsAwards GetHonorsAwardsbyId(int id);
+
+        void DeleteHonorsAwards(HonorsAwards award);
+
+        void UpdateHonorsAwards(HonorsAwards award);
+
+        IPagedList<HonorsAwards> GetAllHonorsAwards(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false);
+        #endregion
+
+        #region Education
+        void InsertEducation(Education education);
+
+        Education GetEducationbyId(int id);
+
+        void DeleteEducation(Education education);
+
+        void UpdateEducation(Education education);
+
+        IPagedList<Education> GetAllEducation(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false);
+        #endregion
+
+        #region Experience
+        void InsertExperience(Experience experience);
+
+        Experience GetExperiencebyId(int id);
+
+        void DeleteExperience(Experience experience);
+
+        void UpdateExperience(Experience experience);
+
+        IPagedList<Experience> GetAllExperience(string doctorId, int pageIndex = 0,
+            int pageSize = Int32.MaxValue, bool showHidden = false);
+        #endregion
     }
 }

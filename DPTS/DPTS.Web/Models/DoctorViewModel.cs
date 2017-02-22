@@ -13,6 +13,7 @@ namespace DPTS.Web.Models
             Schedule=new List<Schedule>();
             listReviewComments = new List<ReviewComments>();
             ReviewComments = new ReviewComments();
+            SocialLinkInformation = new List<SocialLinkInformation>();
         }
         public string Id { get; set; }
 
@@ -23,6 +24,8 @@ namespace DPTS.Web.Models
         public virtual IList<Speciality> Specialitys { get; set; }
 
         public virtual IList<Schedule> Schedule { get; set; }
+
+        public virtual IList<SocialLinkInformation> SocialLinkInformation { get; set; }
 
         public string Email { get; set; }
 

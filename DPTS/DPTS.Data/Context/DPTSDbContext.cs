@@ -32,6 +32,9 @@ namespace DPTS.Data.Context
         public virtual DbSet<SentSmsHistory> SentSmsHistory { get; set; }
         public virtual DbSet<ZipCodes> ZipCodes { get; set; }
         public virtual DbSet<SocialLinkInformation> SocialLinkInformation { get; set; }
+        public virtual DbSet<HonorsAwards> HonorsAwards { get; set; }
+        public virtual DbSet<Education> Education { get; set; }
+        public virtual DbSet<Experience> Experience { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -104,6 +107,18 @@ namespace DPTS.Data.Context
                .WithRequired(e => e.Doctor)
                .HasForeignKey(e => e.DoctorId)
                .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<Doctor>()
+            //   .HasMany(e => e.Education)
+            //   .WithRequired(e => e.Doctor)
+            //   .HasForeignKey(e => e.DoctorId)
+            //   .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<Doctor>()
+            //   .HasMany(e => e.HonorsAwards)
+            //   .WithRequired(e => e.Doctor)
+            //   .HasForeignKey(e => e.DoctorId)
+            //   .WillCascadeOnDelete(false);
 
         }
     }

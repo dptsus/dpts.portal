@@ -10,28 +10,30 @@ namespace DPTS.Web.Models
         public DoctorProfileSettingViewModel()
         {
             AvailableSpeciality = new List<SelectListItem>();
-          //  AvailableCountry = new List<SelectListItem>();
+            //  AvailableCountry = new List<SelectListItem>();
             //AvailableStateProvince = new List<SelectListItem>();
             SelectedSpeciality = new List<string>();
         }
+
         public string Id { get; set; }
+
         /// <summary>
         /// set & Get first name
         /// </summary>
-        [Display(Name ="First Name")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Set & Get last name
         /// </summary>
-        [Display(Name ="Last Name")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         /// <summary>
         /// set & get gender
         /// </summary>
         [Display(Name = "Gender")]
-        public string  Gender { get; set; }
+        public string Gender { get; set; }
 
         /// <summary>
         /// set & get date of birth
@@ -54,14 +56,14 @@ namespace DPTS.Web.Models
         /// <summary>
         /// set & get short description
         /// </summary>
-        [Display(Name ="Short Description")]
+        [Display(Name = "Short Description")]
         public string ShortProfile { get; set; }
 
         /// <summary>
         /// Qualifications
         /// </summary>
-        [Display(Name = "Qualifications")]
-        public string Qualifications { get; set; }
+        [Display(Name = "Language")]
+        public string Language { get; set; }
 
         /// <summary>
         /// Registration Number
@@ -70,12 +72,9 @@ namespace DPTS.Web.Models
         public string RegistrationNumber { get; set; }
 
         /// <summary>
-        /// NoOfYearExperience
+        /// Video Link
         /// </summary>
-        [Display(Name = "Experience [/yrs]")]
-        public int NoOfYearExperience { get; set; }
-
-
+        public string VideoLink { get; set; }
 
         public DateTime DateCreated { get; set; }
 
@@ -84,12 +83,18 @@ namespace DPTS.Web.Models
 
         // DOB
 
-        [Display(Name ="Day")]
+        [Display(Name = "Day")]
         public int? DateOfBirthDay { get; set; }
+
         [Display(Name = "Month")]
         public int? DateOfBirthMonth { get; set; }
+
         [Display(Name = "Year")]
         public int? DateOfBirthYear { get; set; }
+
+        [Display(Name = "It will be shown in user detail page below user short description.")]
+        public string ProfessionalStatements { get; set; }
+
         public DateTime? ParseDateOfBirth()
         {
             if (!DateOfBirthYear.HasValue || !DateOfBirthMonth.HasValue || !DateOfBirthDay.HasValue)
@@ -100,11 +105,11 @@ namespace DPTS.Web.Models
             {
                 dateOfBirth = new DateTime(DateOfBirthYear.Value, DateOfBirthMonth.Value, DateOfBirthDay.Value);
             }
-            catch { }
+            catch (Exception)
+            {
+                //todo log exceptions
+            }
             return dateOfBirth;
         }
-
-
     }
-
 }

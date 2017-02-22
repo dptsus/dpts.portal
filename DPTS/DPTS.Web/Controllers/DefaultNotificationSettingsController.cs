@@ -7,6 +7,7 @@ using DPTS.Domain.Entities.Notification;
 
 namespace DPTS.Web.Controllers
 {
+    [Authorize]
     public class DefaultNotificationSettingsController : BaseController
     {
         #region Fields
