@@ -360,6 +360,8 @@ namespace DPTS.Web.Controllers
             return View(model);
         }
 
+        #endregion
+
         [HttpPost]
         public ActionResult AddressAdd(AddressViewModel model)
         {
@@ -632,6 +634,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Favourites & Invoices
+
         public ActionResult Favourites()
         {
             return View();
@@ -641,9 +644,11 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+
         #endregion
 
         #region Schedule
+
         public ActionResult DoctorSchedules()
         {
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
@@ -844,6 +849,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Security & Privacy
+
         public ActionResult SecuritySettings()
         {
             return View();
@@ -853,9 +859,11 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+
         #endregion
 
         #region Profile Image
+
         public ContentResult UploadFiles()
         {
             try
@@ -895,12 +903,13 @@ namespace DPTS.Web.Controllers
                 return null;
             }
         }
+
         #endregion
 
         #region Details
+
         public ActionResult DoctorDetails(string doctorId)
         {
-           
             var model = new DoctorViewModel();
             if (!string.IsNullOrWhiteSpace(doctorId))
             {
@@ -924,11 +933,12 @@ namespace DPTS.Web.Controllers
                 model.listReviewComments = _reviewCommentsService.GetAllAprovedReviewCommentsByUser(doctor.DoctorId);
 
                 TempData["CommentForId"] = doctorId;
-                ViewBag.User = User.Identity.GetUserId().ToString();
+                ViewBag.User = User.Identity.GetUserId();
                 return View(model);
             }
             return View();
         }
+
         #endregion
 
         #region Social Links
@@ -967,15 +977,15 @@ namespace DPTS.Web.Controllers
 
                 if (!ModelState.IsValid && model.DoctorId == null)
                 {
-                    return Json(new DataSourceResult { Errors = "error" });
+                    return Json(new DataSourceResult {Errors = "error"});
                 }
-                var link = _doctorService.GetAllLinksByDoctor(docterId).FirstOrDefault(c => c.SocialType == model.SocialType);
+                var link =
+                    _doctorService.GetAllLinksByDoctor(docterId).FirstOrDefault(c => c.SocialType == model.SocialType);
                 if (link == null)
                 {
                     _doctorService.InsertSocialLink(model);
                 }
                 return new NullJsonResult();
-
             }
             catch (Exception)
             {
@@ -1034,6 +1044,7 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Honors & Awards
+
         [HttpPost]
         public ActionResult HonorsAwards_Read(DataSourceRequest command, string docterId)
         {
@@ -1060,7 +1071,6 @@ namespace DPTS.Web.Controllers
             {
                 return new NullJsonResult();
             }
-          
         }
 
         [HttpPost]
@@ -1077,7 +1087,7 @@ namespace DPTS.Web.Controllers
 
                 if (!ModelState.IsValid && awards.DoctorId == null)
                 {
-                    return Json(new DataSourceResult { Errors = "error" });
+                    return Json(new DataSourceResult {Errors = "error"});
                 }
 
                 _doctorService.InsertHonorsAwards(awards);
@@ -1088,7 +1098,6 @@ namespace DPTS.Web.Controllers
             {
                 return new NullJsonResult();
             }
-          
         }
 
         #endregion
