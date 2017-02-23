@@ -1,10 +1,6 @@
 "use strict";
 jQuery(document).ready(function ($) {
-	//Constants
-	//var empty_category	= scripts_vars.empty_category;
-	//var complete_fields	= scripts_vars.complete_fields;
-	//var system_error	= scripts_vars.system_error;
-    //var custom_slots_dates	= scripts_vars.custom_slots_dates;
+	
     var scripts_vars = {
         "ajaxurl": "",
         "award_name": "Award Name",
@@ -73,13 +69,9 @@ jQuery(document).ready(function ($) {
 
 
 	/*-------------------------------------------------
-	 * Appointment process
+	 * Rescheduling process
 	 *
 	 *-------------------------------------------------*/
-
-	//Tabs Management
-	//jQuery('.booking-model-contents .tg-navdocappointment li').not('.active').addClass('disabled');
-    //jQuery('.booking-model-contents .tg-navdocappointment li').not('.active').find('a').removeAttr("data-toggle");
 
 	//Next step
 	var Z_Steps = {};
@@ -98,119 +90,75 @@ jQuery(document).ready(function ($) {
 		//var bk_service	= _this.parents(".tg-appointmenttabcontent").find('.bk_service option:selected').val();
 
 		//Step 2 data
-		var bk_subject	     = _this.parents(".tg-appointmenttabcontent").find('input[name="subject"]').val();
-		var bk_name	   		= _this.parents(".tg-appointmenttabcontent").find('input[name="username"]').val();
-		var bk_userphone = _this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val();
-		var bk_useremail	   = _this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val();
-		var bk_booking_note	= _this.parents(".tg-appointmenttabcontent").find('textarea[name="booking_note"]').val();
+		var doctorId = _this.parents(".tg-appointmenttabcontent").find('input[name="doctorId"]').val();
+		var PatientId = _this.parents(".tg-appointmenttabcontent").find('input[name="PatientId"]').val();
+		var BookingId = _this.parents(".tg-appointmenttabcontent").find('input[name="BookingId"]').val();
 
 		if (
-			Z_Steps.booking_step	== 1
+			doctorId
+			&&
+			PatientId
+			&&
+			BookingId
+			&&
+			Z_Steps.booking_step == 1
 		) {
-			var is_time_checked	= jQuery('.step-one-slots input[name="slottime"]:checked').val();
-			if( !is_time_checked ){
-				jQuery.sticky(scripts_vars.booking_time, {classList: 'important', speed: 200, autoclose: 5000});
-				return false;
-			}
+		    var is_time_checked = jQuery('.step-one-slots input[name="slottime"]:checked').val();
+		    if (!is_time_checked) {
+		        jQuery.sticky(scripts_vars.booking_time, { classList: 'important', speed: 200, autoclose: 5000 });
+		        return false;
+		    }
 
-			jQuery('.booking-model-contents').append(loder_html);
-			var dataString = 'data_id=' + data_id + '&action=docdirect_get_booking_step_two';
-			jQuery.ajax({
-				type: "POST",
-				url: "/Appointment/VisitorContactDeatils/",
-				data: dataString,
-				dataType:"json",
-				success: function(response) {
-					jQuery('body').find('.docdirect-loader-wrap').remove();
+		    jQuery('.booking-model-contents').append(loder_html);
+		    var dataString = 'data_id=' + data_id + '&action=docdirect_get_booking_step_two';
+		    jQuery.ajax({
+		        type: "POST",
+		        url: "/Appointment/VisitorContactDeatils/",
+		        data: dataString,
+		        dataType: "json",
+		        success: function (response) {
+		            jQuery('body').find('.docdirect-loader-wrap').remove();
 
-					Z_Steps.booking_step	= 2;
-					//jQuery('.step-two-contents').html(response.data);
-					_this.parents(".tg-appointmenttabcontent").find('input[name="username"]').val(response.username);
-					_this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val(response.mobilenumber);
-					_this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val(response.useremail);
-                    //docdirect_booking_calender();
-					docdirect_appointment_tabs(2);
-					jQuery('.bk-step-2').trigger('click');
-				}
-			});
-		}  else if(
-			bk_subject
-			&&
-			bk_name
-			&&
-			bk_userphone
-			&&
-			bk_useremail
-			&&
-			bk_booking_note
-			&&
-			Z_Steps.booking_step	== 2
-		) {
-			if( !( docdirect_isValidEmailAddress(bk_useremail) ) ){
-				jQuery('body').find('.docdirect-loader-wrap').remove();
-				jQuery.sticky(scripts_vars.valid_email, {classList: 'important', speed: 200, autoclose: 5000});
-				return false;
-			}
-
-			jQuery('.booking-model-contents').append(loder_html);
-			var dataString = 'data_id='+data_id+'&action=docdirect_get_booking_step_two';
-			jQuery.ajax({
-				type: "POST",
-				url: "/Appointment/PaymentMode/",
-				data: dataString,
-				dataType:"json",
-				success: function(response) {
-					jQuery('body').find('.docdirect-loader-wrap').remove();
-
-					Z_Steps.booking_step	= 3;
-					//jQuery('.step-three-contents').html(response.data);
-					jQuery('.bk-step-3').trigger('click');
-					//docdirect_intl_tel_input();
-					docdirect_appointment_tabs(3);
-
-				}
-			});
-		} else if (
-	        !bk_subject
-			||
-			!bk_name
-			||
-			!bk_userphone
-			||
-			!bk_useremail
-			||
-			!bk_booking_note && Z_Steps.booking_step == 2
-	    ) {
-		    jQuery.sticky("all fields are mandatory !!", { classList: 'important', speed: 200, autoclose: 5000 });
-	    } else if (
-	        Z_Steps.booking_step == 3
-	    ) {
-	        jQuery('.booking-model-contents').append(loder_html);
-	        var serialize_data = jQuery('.appointment-form').serialize();
-	        var dataString = serialize_data + '&data_id=' + data_id + '&action=docdirect_do_process_booking';
-	        jQuery.ajax({
-	            type: "POST",
-	            url: "/Appointment/FinishBooking/",
-	            data: serialize_data,
-	            dataType: "json",
-	            success: function(response) {
-	                jQuery('body').find('.docdirect-loader-wrap').remove();
-	                if (response.result == "fail") {
-	                    jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
-	                    return false;
-	                } else {
-	                    //jQuery('.step-four-contents').html(response.data);
-	                    Z_Steps.booking_step = 1;
-	                    jQuery('.bk-step-4').trigger('click');
-	                    docdirect_appointment_tabs(4);
-	                    jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
-	                    jQuery('.booking-step-button').find('.bk-step-prev').remove();
-	                    jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
-	                    jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
-	                }
-	            }
-	        });
-	    }
+		            //Z_Steps.booking_step	= 2;
+		            ////jQuery('.step-two-contents').html(response.data);
+		            //_this.parents(".tg-appointmenttabcontent").find('input[name="username"]').val(response.username);
+		            //_this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val(response.mobilenumber);
+		            //_this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val(response.useremail);
+		            ////docdirect_booking_calender();
+		            //docdirect_appointment_tabs(2);
+		            //jQuery('.bk-step-2').trigger('click');
+		        }
+		    });
+		}
+		//}  else if (
+	    //    Z_Steps.booking_step == 2
+	    //) {
+	    //    jQuery('.booking-model-contents').append(loder_html);
+	    //    var serialize_data = jQuery('.appointment-form').serialize();
+	    //    var dataString = serialize_data + '&data_id=' + data_id + '&action=docdirect_do_process_booking';
+	    //    jQuery.ajax({
+	    //        type: "POST",
+	    //        url: "/Appointment/FinishBooking/",
+	    //        data: serialize_data,
+	    //        dataType: "json",
+	    //        success: function(response) {
+	    //            jQuery('body').find('.docdirect-loader-wrap').remove();
+	    //            if (response.result == "fail") {
+	    //                jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
+	    //                return false;
+	    //            } else {
+	    //                //jQuery('.step-four-contents').html(response.data);
+	    //                Z_Steps.booking_step = 1;
+	    //                jQuery('.bk-step-4').trigger('click');
+	    //                docdirect_appointment_tabs(4);
+	    //                jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
+	    //                jQuery('.booking-step-button').find('.bk-step-prev').remove();
+	    //                jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
+	    //                jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
+	    //            }
+	    //        }
+	    //    });
+	    //}
 
 	});
 
@@ -299,51 +247,6 @@ jQuery(document).ready(function ($) {
 
 	});
 
-
-	//Privacy Settings
-	jQuery(document).on('change','.privacy-switch',function(){
-
-		var _this	= jQuery(this);
-
-		var type	= _this.data('type');
-		var id	  = _this.data('id');
-
-		var serialize_data	= jQuery('.tg-form-privacy').serialize();
-
-		var dataString = serialize_data+'&action=docdirect_save_privacy_settings';
-		jQuery('.booking-model-contents').append(loder_html);
-		jQuery.ajax({
-			type: "POST",
-			url: scripts_vars.ajaxurl,
-			data: dataString,
-			dataType:"json",
-			success: function(response) {
-				jQuery('body').find('.docdirect-loader-wrap').remove();
-				jQuery.sticky(response.message, {classList: 'success', speed: 200, autoclose: 5000});
-			}
-		});
-
-	});
-
-	//Set Currency
-	jQuery(document).on('change', '.currency_symbol', function() {
-        var code = jQuery(this).val();
-        var dataString = 'code=' + code + '&action=docdirect_get_currency_symbol';
-        var _this = jQuery(this);
-		jQuery('.booking-model-contents').append(loader_fullwidth_html);
-        jQuery.ajax({
-            type: "POST",
-            url: ajaxurl,
-            data: dataString,
-            success: function(response) {
-                _this.parents('.booking-currency-wrap').find("input[name=currency_symbol]").val(response);
-                jQuery('body').find('.docdirect-site-wrap').remove();
-            }
-        });
-
-        return false;
-    });
-
 	//Booking Seach - doc
 	jQuery('.booking-search-date').datetimepicker({
 	  format:'Y-m-d',
@@ -355,8 +258,6 @@ jQuery(document).ready(function ($) {
 
 	docdirect_booking_calender(this);
 });
-
-
 
 //Input Type Phone
 function docdirect_intl_tel_input(){

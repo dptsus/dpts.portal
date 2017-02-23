@@ -11,6 +11,10 @@
             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
                 <form action="@Url.Action("Index","Manage")" method="post" class="tg-formeditprofile tg-haslayout do-account-setitngs">
                     @Html.HiddenFor(model => model.Id)
+                    @if(ViewBag.Alert != null)
+                    {
+
+                    }
                     <fieldset>
                         <div class="tg-bordertop tg-haslayout">
                             <div class="tg-formsection">

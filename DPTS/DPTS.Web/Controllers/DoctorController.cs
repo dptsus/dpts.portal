@@ -257,6 +257,7 @@ namespace DPTS.Web.Controllers
 
         #region Methods
 
+        #region Profile Settings
         public ActionResult ProfileSetting()
         {
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
@@ -344,6 +345,8 @@ namespace DPTS.Web.Controllers
 
             return RedirectToAction("ProfileSetting");
         }
+
+        #endregion
 
         #region Address
 
@@ -738,6 +741,7 @@ namespace DPTS.Web.Controllers
                         model.AppointmentSchedule = sortedByDate;
                         return View(model);
                     }
+                    ViewBag.DoctorId = userId;
                     model.AppointmentSchedule = doctorSchedule;
                 }
             }
@@ -1309,6 +1313,7 @@ namespace DPTS.Web.Controllers
             return new NullJsonResult();
         }
         #endregion
+
         #endregion
     }
 }
