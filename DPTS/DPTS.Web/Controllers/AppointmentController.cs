@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using DPTS.Data.Context;
 using DPTS.Domain.Entities;
 using System.Text;
+using DPTS.Services;
 
 namespace DPTS.Web.Controllers
 {
@@ -266,6 +267,29 @@ namespace DPTS.Web.Controllers
             });
         }
 
+        public JsonResult VerifyReScheduling(string doctorId,string patientId,int bookingId)
+        {
+            if (!Request.IsAuthenticated)
+                return new NullJsonResult();
+
+            if (string.IsNullOrEmpty(doctorId) || !User.IsInRole("Doctor") || bookingId < 0)
+                return new NullJsonResult();
+
+            var appoinment = _scheduleService.GetAppointmentScheduleById(bookingId);
+            if(appoinment.DoctorId.Equals(doctorId) 
+                && appoinment.PatientId.Equals(patientId)
+                && appoinment.Id.Equals(bookingId)
+                && !doctorId.Equals(patientId))
+            {
+                return Json(new
+                {
+                    result = "success"
+                });
+            }
+
+            return new NullJsonResult();
+        }
+
         public JsonResult PaymentMode()
         {
             return Json(new
@@ -312,6 +336,36 @@ namespace DPTS.Web.Controllers
             {
                 result = "fail"
             });
+        }
+
+        public JsonResult FinishReScheduling(FormCollection form)
+        {
+            if (!string.IsNullOrWhiteSpace(form["booking_date"]) &&
+                !string.IsNullOrWhiteSpace(form["slottime"]) &&
+                !string.IsNullOrWhiteSpace(form["DoctorId"]) &&
+                !string.IsNullOrWhiteSpace(form["PatientId"]) &&
+                !string.IsNullOrWhiteSpace(form["BookingId"]) &&
+                Request.IsAuthenticated &&
+                User.IsInRole("Doctor"))
+              {
+                const string statusFlag = "Booked";
+                var bookingStatus = _scheduleService.GetAppointmentStatusByName(statusFlag);
+
+                var appointment = _scheduleService.GetAppointmentScheduleById(int.Parse(form["BookingId"]));
+                if (appointment == null)
+                    return new NullJsonResult();
+
+                appointment.AppointmentDate = form["booking_date"];
+                appointment.AppointmentTime = form["slottime"].Trim();
+                appointment.StatusId = bookingStatus.Id;
+                _scheduleService.UpdateAppointmentSchedule(appointment);
+                
+                return Json(new
+                {
+                    result = "success"
+                });
+            }
+            return new NullJsonResult();
         }
 
         [HttpPost]

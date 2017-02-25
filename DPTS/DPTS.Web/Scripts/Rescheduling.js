@@ -2,64 +2,11 @@
 jQuery(document).ready(function ($) {
 	
     var scripts_vars = {
-        "ajaxurl": "",
-        "award_name": "Award Name",
-        "award_date": "Award Date",
-        "award_description": "Award Description",
-        "file_upload_title": "Avatar Upload",
-        "delete_message": "Are you sure you want to delete your account?",
-        "deactivate": "Are you sure you want to deactivate your account?",
-        "delete_title": "Delete account?",
-        "deactivate_title": "Deactivate account?",
-        "docdirect_upload_nounce": "1025f290a0",
-        "dir_close_marker": "https:\/\/themographics.com\/wordpress\/docdirect\/wp-content\/themes\/docdirect\/images\/close.png",
-        "dir_cluster_marker": "\/\/themographics.com\/wordpress\/docdirect\/wp-content\/uploads\/2016\/04\/cluster.png",
-        "dir_map_marker": {
-            "attachment_id": "7", "url": "\/\/themographics.com\/wordpress\/docdirect\/wp-content\/uploads\/2016\/03\/03.png"
-        }
-    ,
-        "dir_cluster_color": "#505050",
-        "dir_map_type": "ROADMAP",
-        "dir_zoom": "11",
-        "dir_longitude": "-0.1262362",
-        "dir_latitude": "51.5001524",
-        "dir_datasize": "10485760",
-        "data_size_in_kb": "10240kb",
-        "dir_map_scroll": "false",
-        "map_styles": "none",
-        "site_key": "6Ld7fgcUAAAAANmJV2K3RulmACd_3DJwmYqT7bQw",
-        "rating_1": "Not Satisfied",
-        "rating_2": "Satisfied",
-        "rating_3": "Good",
-        "rating_4": "Very Good",
-        "rating_5": "Excellent",
-        "delete_award": "Delete Award",
-        "delete_award_message": "Are you sure, you want to delete this award?",
-        "delete_education": "Delete Degree",
-        "delete_education_message": "Are you sure, you want to delete this Degree?",
-        "delete_experience": "Delete Experience",
-        "delete_experience_message": "Are you sure, you want to delete this experience?",
-        "delete_category": "Delete Category",
-        "delete_category_message": "Are you sure, you want to delete this category?",
-        "delete_service": "Delete Service",
-        "delete_service_message": "Are you sure, you want to delete this service?",
-        "delete_slot": "Delete Slot",
-        "delete_slot_message": "Are you sure, you want to delete this slot?",
-        "delete_slot_date": "Delete Slot Date",
-        "delete_slot_date_message": "Are you sure, you want to delete this slot date?",
-        "approve_appointment": "Approve Appointment?",
-        "approve_appointment_message": "Are you sure, you want to approve this appointment?",
-        "cancel_appointment": "Cancel Appointment?",
-        "cancel_appointment_message": "Are you sure, you want to cancel this appointment?",
         "booking_time": "Please select booking time.",
         "gmap_norecod": "No Record Found.",
-        "fav_message": "Please login first.",
-        "fav_nothing": "Nothing found.",
-        "empty_category": "Please add category name.",
         "complete_fields": "Please fill all the fields.",
         "system_error": "Some error occur, please try again later.",
         "valid_email": "Please add valid email address.",
-        "user_status": "true",
         "custom_slots_dates": "Atleast one date! start or end date is required.",
         "finish": "Finish"
     };
@@ -90,7 +37,7 @@ jQuery(document).ready(function ($) {
 		//var bk_service	= _this.parents(".tg-appointmenttabcontent").find('.bk_service option:selected').val();
 
 		//Step 2 data
-		var doctorId = _this.parents(".tg-appointmenttabcontent").find('input[name="doctorId"]').val();
+		var doctorId = _this.parents(".tg-appointmenttabcontent").find('input[name="DoctorId"]').val();
 		var PatientId = _this.parents(".tg-appointmenttabcontent").find('input[name="PatientId"]').val();
 		var BookingId = _this.parents(".tg-appointmenttabcontent").find('input[name="BookingId"]').val();
 
@@ -110,74 +57,64 @@ jQuery(document).ready(function ($) {
 		    }
 
 		    jQuery('.booking-model-contents').append(loder_html);
-		    var dataString = 'data_id=' + data_id + '&action=docdirect_get_booking_step_two';
+		    var dataString = 'doctorId=' + doctorId + '&patientId=' + PatientId + '&bookingId=' + BookingId + '';
 		    jQuery.ajax({
 		        type: "POST",
-		        url: "/Appointment/VisitorContactDeatils/",
+		        url: "/Appointment/VerifyReScheduling/",
 		        data: dataString,
 		        dataType: "json",
 		        success: function (response) {
 		            jQuery('body').find('.docdirect-loader-wrap').remove();
-
-		            //Z_Steps.booking_step	= 2;
-		            ////jQuery('.step-two-contents').html(response.data);
-		            //_this.parents(".tg-appointmenttabcontent").find('input[name="username"]').val(response.username);
-		            //_this.parents(".tg-appointmenttabcontent").find('input[name="mobilenumber"]').val(response.mobilenumber);
-		            //_this.parents(".tg-appointmenttabcontent").find('input[name="useremail"]').val(response.useremail);
-		            ////docdirect_booking_calender();
-		            //docdirect_appointment_tabs(2);
-		            //jQuery('.bk-step-2').trigger('click');
-		        }
+		            if (response.result == "success")
+		            {
+		                Z_Steps.booking_step = 1;
+		                jQuery('.bk-step-2').trigger('click');
+		                docdirect_appointment_tabs(2);
+		                // jQuery('.step-one-contents').remove();
+		                jQuery('#nDate').html($('#booking_date').val());
+		                jQuery('#nTime').html(jQuery('.step-one-slots input[name="slottime"]:checked').val());
+                        jQuery('.booking-step-button').find('.bk-step-prev').remove();
+                        jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
+                        jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
+		            } else {
+		                jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
+		                return false;
+		            }
+		        },
+                 error: function () {
+                     alert(scripts_vars.system_error);
+                    }
 		    });
 		}
-		//}  else if (
-	    //    Z_Steps.booking_step == 2
-	    //) {
-	    //    jQuery('.booking-model-contents').append(loder_html);
-	    //    var serialize_data = jQuery('.appointment-form').serialize();
-	    //    var dataString = serialize_data + '&data_id=' + data_id + '&action=docdirect_do_process_booking';
-	    //    jQuery.ajax({
-	    //        type: "POST",
-	    //        url: "/Appointment/FinishBooking/",
-	    //        data: serialize_data,
-	    //        dataType: "json",
-	    //        success: function(response) {
-	    //            jQuery('body').find('.docdirect-loader-wrap').remove();
-	    //            if (response.result == "fail") {
-	    //                jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
-	    //                return false;
-	    //            } else {
-	    //                //jQuery('.step-four-contents').html(response.data);
-	    //                Z_Steps.booking_step = 1;
-	    //                jQuery('.bk-step-4').trigger('click');
-	    //                docdirect_appointment_tabs(4);
-	    //                jQuery('.step-one-contents, .step-two-contents, .step-three-contents').remove();
-	    //                jQuery('.booking-step-button').find('.bk-step-prev').remove();
-	    //                jQuery('.booking-step-button').find('.bk-step-next').html('Finish');
-	    //                jQuery('.booking-step-button').find('.bk-step-next').addClass('finish-booking');
-	    //            }
-	    //        }
-	    //    });
-	    //}
-
 	});
-
 	//Finish Booking
 	jQuery(document).on('click', '.bk-step-next.finish-booking', function (e) {
-	    //var redirectPath = $('#RedirectUrl').val();
-	    window.location.href = '/Home';
+	    ////var redirectPath = $('#RedirectUrl').val();
+	    //window.location.href = '/Home';
+	    jQuery('.booking-model-contents').append(loder_html);
+	        var serialize_data = jQuery('.appointment-form').serialize();
+	        jQuery.ajax({
+	            type: "POST",
+	            url: "/Appointment/FinishReScheduling/",
+	            data: serialize_data,
+	            dataType: "json",
+	            success: function(response) {
+	                jQuery('body').find('.docdirect-loader-wrap').remove();
+	                if (response.result == "success") {
+	                    //var redirectPath = $('#RedirectUrl').val();
+	                    window.location.href = '/Doctor/BookingListings';
+	                } else {
+	                    jQuery.sticky(scripts_vars.system_error, { classList: 'important', speed: 200, autoclose: 5000 });
+	                    return false;
+	                }
+	            }
+	        });
 	});
 
 	//Prev step
 	jQuery(document).on('click','.bk-step-prev',function(){
 
-		if( Z_Steps.booking_step == 4 ){
-			Z_Steps.booking_step = 3;
-			docdirect_appointment_tabs(3);
-		} else if( Z_Steps.booking_step == 3 ){
-			Z_Steps.booking_step = 2;
-			docdirect_appointment_tabs(2);
-		} else if( Z_Steps.booking_step == 2 ){
+	  if( Z_Steps.booking_step == 2 ){
 			Z_Steps.booking_step = 1;
 			docdirect_appointment_tabs(1);
 		}else{
@@ -189,64 +126,7 @@ jQuery(document).ready(function ($) {
 	jQuery(document).on('click','.get-detail',function(){
 	    jQuery(this).parents('tr').next('tr').slideToggle(200);
 	});
-
-	//Change Appointment Status - doc
-	jQuery(document).on('click','.get-process',function(){
-
-		var _this	= jQuery(this);
-
-		var type	= _this.data('type');
-		var id	  = _this.data('id');
-
-		var dataString = 'type='+type+'&id='+id+'&action=docdirect_change_appointment_status';
-
-		if( type == 'approve' ) {
-			var _title	= scripts_vars.approve_appointment;
-			var _message	= scripts_vars.approve_appointment_message;
-		} else{
-			var _title	= scripts_vars.cancel_appointment;
-			var _message	= scripts_vars.cancel_appointment_message;
-		}
-
-		jQuery.confirm({
-			'title': _title,
-			'message': _message,
-			'buttons': {
-				'Yes': {
-					'class': 'blue',
-					'action': function () {
-						jQuery('.booking-model-contents').append(loder_html);
-						jQuery.ajax({
-							type: "POST",
-							url: scripts_vars.ajaxurl,
-							data: dataString,
-							dataType:"json",
-							success: function(response) {
-								jQuery('body').find('.docdirect-loader-wrap').remove();
-
-								if( response.action_type == 'approved' ){
-									var approved = wp.template( 'status-approved' );
-									_this.parents('td').html(approved);
-
-								} else if( response.action_type == 'cancelled' ){
-									_this.parents('tr').remove();
-									_this.parents('tr').next('tr').remove();
-								}
-							}
-						});
-					}
-				},
-				'No': {
-					'class': 'gray',
-					'action': function () {
-						return false;
-					}	// Nothing to do in this case. You can as well omit the action property.
-				}
-			}
-		});
-
-	});
-
+	
 	//Booking Seach - doc
 	jQuery('.booking-search-date').datetimepicker({
 	  format:'Y-m-d',
@@ -258,106 +138,6 @@ jQuery(document).ready(function ($) {
 
 	docdirect_booking_calender(this);
 });
-
-//Input Type Phone
-function docdirect_intl_tel_input(){
-	jQuery("#teluserphone").intlTelInput({
-	  // allowDropdown: false,
-	  // autoHideDialCode: false,
-	  // autoPlaceholder: false,
-	  // dropdownContainer: "body",
-	  // excludeCountries: ["us"],
-	  geoIpLookup: function(callback) {
-	   jQuery.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-		 var countryCode = (resp && resp.country) ? resp.country : "";
-		  callback(countryCode);
-	   });
-	   },
-	  initialCountry: "auto",
-	  // nationalMode: false,
-	  // numberType: "MOBILE",
-	  // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-	  // preferredCountries: ['cn', 'jp'],
-	  separateDialCode: true,
-	  //utilsScript: "build/js/utils.js"
-	});
-}
-//Validate email
-function docdirect_isValidEmailAddress(emailAddress) {
-    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-    return pattern.test(emailAddress);
-};
-//booking doc
-var scripts_doc_vars = {
-
-    "approve_appointment": "Approve Appointment?",
-    "approve_appointment_message": "Are you sure, you want to approve this appointment?",
-    "cancel_appointment": "Cancel Appointment?",
-    "cancel_appointment_message": "Are you sure, you want to cancel this appointment?",
-    "visit_appointment": "Visit Appointment?",
-    "visit_appointment_message": "Are you sure, patient is visited this appointment?",
-    "fail_appointment": "Fail Appointment?",
-    "fail_appointment_message": "Are you sure, patient is failed to Visit?",
-};
-var loder_html_doc = '<div class="docdirect-loader-wrap"><div class="docdirect-loader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
-function approveAppoinment(id, action) {
-    var _this = $(this);
-    if (action == 'approve') {
-        var _title = scripts_doc_vars.approve_appointment;
-        var _message = scripts_doc_vars.approve_appointment_message;
-    } else if (action == 'cancel') {
-        var _title = scripts_doc_vars.cancel_appointment;
-        var _message = scripts_doc_vars.cancel_appointment_message;
-    }
-    else if (action == 'visit') {
-        var _title = scripts_doc_vars.visit_appointment;
-        var _message = scripts_doc_vars.visit_appointment_message;
-    }
-    else if (action == 'failed') {
-        var _title = scripts_doc_vars.fail_appointment;
-        var _message = scripts_doc_vars.fail_appointment_message;
-    }
-    var dataString = 'type=' + action + '&id=' + id + '&action=docdirect_change_appointment_status';
-
-    jQuery.confirm({
-        'title': _title,
-        'message': _message,
-        'buttons': {
-            'Yes': {
-                'class': 'blue',
-                'action': function () {
-                    jQuery('.booking-model-contents').append(loder_html_doc);
-                    jQuery.ajax({
-                        type: "POST",
-                        url: "/Doctor/ChangeBookingStatus/",
-                        data: dataString,
-                        dataType: "json",
-                        success: function (response) {
-                            jQuery('body').find('.docdirect-loader-wrap').remove();
-                            //if (response.action_type == 'approved') {
-                            //    var approved = wp.template('status-approved');
-                            //    _this.parents('td').html(approved);
-                            //} else if (response.action_type == 'cancelled') {
-                            //    _this.parents('tr').remove();
-                            //    _this.parents('tr').next('tr').remove();
-                            //}if (response.action_type == 'visited') {
-                            //    _this.parents('tr').remove();
-                            //    _this.parents('tr').next('tr').remove();
-                            //}
-                            window.location.reload();
-                        }
-                    });
-                }
-            },
-            'No': {
-                'class': 'gray',
-                'action': function () {
-                    return false;
-                }	// Nothing to do in this case. You can as well omit the action property.
-            }
-        }
-    });
-}
 //Booking Calender
 function docdirect_appointment_tabs(current){
 	//Tab Items
@@ -383,7 +163,6 @@ function docdirect_appointment_tabs(current){
 	}
 
 }
-
 //Booking Calender
 function docdirect_booking_calender(val){
 	//Booking Calender
@@ -421,31 +200,10 @@ function docdirect_booking_calender(val){
 	    }
 	});
 }
-
 //Check if empty value
 function docdirect_isEmpty_value(val){
     return (val === undefined || val == null || val.length <= 0) ? true : false;
 }
-//Get Time Slot List
-function docdirect_get_list(data,_this){
-	var json_list	= JSON.stringify(data);
-	var dataString = 'json_list='+json_list+'&action=docdirect_get_time_slots_list';
-
-	jQuery.ajax({
-		type: "POST",
-		url: scripts_vars.ajaxurl,
-		data: dataString,
-		dataType:"json",
-		success: function(response) {
-			jQuery('body').find('.docdirect-site-wrap').remove();
-			_this.parents('.custom-time-periods').find('.custom-timeslots-data-area').html(response.timeslot_list);
-			jQuery('.bk-save-custom-slots').trigger('click');
-
-		}
-	});
-	return false;
-}
-
 //Get Time Slot List
 function docdirect_update_timeslots_data(data,_this){
 	var data = JSON.stringify(jQuery('.custom-slots-main').serializeObject());
