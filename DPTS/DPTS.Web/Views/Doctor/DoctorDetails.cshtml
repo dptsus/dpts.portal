@@ -1,7 +1,9 @@
 ﻿@model DPTS.Web.Models.DoctorViewModel
+    @using DPTS.Domain.Entities;
 @{
     ViewBag.Title = "DoctorDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Address addr = Model.Addresses.FirstOrDefault();
 }
 <main id="main" class="tg-page-wrapper tg-haslayout">
 <div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll">
@@ -21,7 +23,7 @@
                         picturePath = "../../Uploads/" + Model.Id + "_profile.jpg";
                     }
                 }
-                <img src="@picturePath" alt="Dr. Steve">
+                <img src="@picturePath" alt="">
                 @*<figcaption>
                                     <ul class="tg-featureverified">
                                         <li class="tg-featuresicon"><a href="javascript:;"><i class="fa fa-bolt"></i><span>featured</span></a></li>
@@ -33,7 +35,6 @@
             <div class="tg-usercontactinfo">
                 <h3>Contact Details</h3>
                 @{
-                    var addr = Model.Addresses.FirstOrDefault();
                     if (addr != null)
                     {
                         <ul class="tg-doccontactinfo">
@@ -58,6 +59,7 @@
                     }
                 }
                 <ul class="tg-socialicon-v2">
+                    
                     @if (Model.doctor.SocialLinkInformation.Any())
                     {
                         foreach (var item in Model.doctor.SocialLinkInformation)
@@ -74,7 +76,10 @@
                         }
                     }
                 </ul>
+                @if (addr != null)
+                {
                 <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.ZipPostalCode" target="_blank">get directions</a>
+                }
                 <div class="tg-userschedule">
                     <h3>Schedule</h3>
                     <ul>

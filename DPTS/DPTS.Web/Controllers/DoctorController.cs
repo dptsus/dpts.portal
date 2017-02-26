@@ -920,6 +920,7 @@ namespace DPTS.Web.Controllers
                 model.Addresses = _addressService.GetAllAddressByUser(doctor.DoctorId);
                 model.Specialitys = _specialityService.GetDoctorSpecilities(doctor.DoctorId);
                 model.Schedule = _scheduleService.GetScheduleByDoctorId(doctor.DoctorId);
+                //model.SocialLinkInformation = _doctorService.GetAllLinksByDoctor(doctorId);
                 return View(model);
             }
             return View();
