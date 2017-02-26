@@ -9,5 +9,13 @@ namespace DPTS.Domain.Core.ReviewComments
         //decimal GetAverageScoreByUser(string UserId);
         //IList<Entities.RatingDetails> GetRatingDetailsScoreByUser(string UserId);
         bool InsertReviewComment(Entities.ReviewComments ReviewComments);
+
+        IList<Entities.ReviewComments> GetReviewCommentsApprovalList();
+
+        Entities.ReviewComments GetReviewCommentById(int id);
+        
+        bool DeleteReviewComment(Entities.ReviewComments ReviewComment);
+
+        bool ApproveReviewComment(int id);
     }
 }

@@ -70,12 +70,12 @@ namespace DPTS.Web.Controllers
             {
                 new SelectListItem {Text = "Select Gender", Value = "0"}
             };
-            items.AddRange(from object gender in Enum.GetValues(typeof (Gender))
-                select new SelectListItem
-                {
-                    Text = Enum.GetName(typeof (Gender), gender),
-                    Value = Enum.GetName(typeof (Gender), gender)
-                });
+            items.AddRange(from object gender in Enum.GetValues(typeof(Gender))
+                           select new SelectListItem
+                           {
+                               Text = Enum.GetName(typeof(Gender), gender),
+                               Value = Enum.GetName(typeof(Gender), gender)
+                           });
             return items;
         }
 
@@ -123,14 +123,14 @@ namespace DPTS.Web.Controllers
             var country = _countryService.GetCountryById(countryId);
             var states = _stateProvinceService.GetStateProvincesByCountryId(country?.Id ?? 0).ToList();
             var result = (from s in states
-                select new {id = s.Id, name = s.Name})
+                          select new { id = s.Id, name = s.Name })
                 .ToList();
 
 
             if (country == null)
             {
                 //country is not selected ("choose country" item)
-                result.Insert(0, addSelectStateItem ? new {id = 0, name = "select state"} : new {id = 0, name = "None"});
+                result.Insert(0, addSelectStateItem ? new { id = 0, name = "select state" } : new { id = 0, name = "None" });
             }
             else
             {
@@ -138,14 +138,14 @@ namespace DPTS.Web.Controllers
                 if (!result.Any())
                 {
                     //country does not have states
-                    result.Insert(0, new {id = 0, name = "None"});
+                    result.Insert(0, new { id = 0, name = "None" });
                 }
                 else
                 {
                     //country has some states
                     if (addSelectStateItem)
                     {
-                        result.Insert(0, new {id = 0, name = "select state"});
+                        result.Insert(0, new { id = 0, name = "select state" });
                     }
                 }
             }
@@ -279,7 +279,7 @@ namespace DPTS.Web.Controllers
                     {
                         model.DateCreated = doctor.DateCreated;
                         var dateOfBirth = string.IsNullOrWhiteSpace(doctor.DateOfBirth)
-                            ? (DateTime?) null
+                            ? (DateTime?)null
                             : DateTime.Parse(doctor.DateOfBirth);
                         if (dateOfBirth.HasValue)
                         {
@@ -359,7 +359,7 @@ namespace DPTS.Web.Controllers
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
 
-            var model = new AddressViewModel {AvailableCountry = GetCountryList()};
+            var model = new AddressViewModel { AvailableCountry = GetCountryList() };
             return View(model);
         }
 
@@ -533,7 +533,7 @@ namespace DPTS.Web.Controllers
                 .ToList();
             if (states.Any())
             {
-                model.AvailableStateProvince.Add(new SelectListItem {Text = "Select state", Value = "0"});
+                model.AvailableStateProvince.Add(new SelectListItem { Text = "Select state", Value = "0" });
 
                 foreach (var s in states)
                 {
@@ -610,7 +610,7 @@ namespace DPTS.Web.Controllers
                 .ToList();
             if (states.Any())
             {
-                model.AvailableStateProvince.Add(new SelectListItem {Text = "Select state", Value = "0"});
+                model.AvailableStateProvince.Add(new SelectListItem { Text = "Select state", Value = "0" });
 
                 foreach (var s in states)
                 {
@@ -1009,14 +1009,14 @@ namespace DPTS.Web.Controllers
                     {
                         var appoinment = _scheduleService.GetAppointmentScheduleById(int.Parse(id));
                         if (appoinment == null)
-                            return Json(new {action_type = "none"});
+                            return Json(new { action_type = "none" });
 
                         AppointmentStatus status;
                         if (type.Equals("approve"))
                         {
                             status = _scheduleService.GetAppointmentStatusByName("Booked");
                             if (status == null)
-                                return Json(new {action_type = "none"});
+                                return Json(new { action_type = "none" });
 
                             appoinment.StatusId = status.Id;
                             _scheduleService.UpdateAppointmentSchedule(appoinment);
@@ -1029,7 +1029,7 @@ namespace DPTS.Web.Controllers
                         {
                             status = _scheduleService.GetAppointmentStatusByName("Cancelled");
                             if (status == null)
-                                return Json(new {action_type = "none"});
+                                return Json(new { action_type = "none" });
 
                             appoinment.StatusId = status.Id;
                             _scheduleService.UpdateAppointmentSchedule(appoinment);
@@ -1042,7 +1042,7 @@ namespace DPTS.Web.Controllers
                         {
                             status = _scheduleService.GetAppointmentStatusByName("Visited");
                             if (status == null)
-                                return Json(new {action_type = "none"});
+                                return Json(new { action_type = "none" });
 
                             appoinment.StatusId = status.Id;
                             _scheduleService.UpdateAppointmentSchedule(appoinment);
@@ -1055,7 +1055,7 @@ namespace DPTS.Web.Controllers
                         {
                             status = _scheduleService.GetAppointmentStatusByName("Failed");
                             if (status == null)
-                                return Json(new {action_type = "none"});
+                                return Json(new { action_type = "none" });
 
                             appoinment.StatusId = status.Id;
                             _scheduleService.UpdateAppointmentSchedule(appoinment);
@@ -1193,7 +1193,7 @@ namespace DPTS.Web.Controllers
             ReviewComments.CommentOwnerId = User.Identity.GetUserId();
             ReviewComments.CommentOwnerUser = User.Identity.Name;
             ReviewComments.Comment = form["UserComment"];
-            ReviewComments.Rating = Convert.ToDecimal(form["starrating"]) * 20;
+            ReviewComments.Rating = Convert.ToDecimal(form["starrating"]);
             ReviewComments.DateCreated = DateTime.Now;
             ReviewComments.IsApproved = false;
             ReviewComments.IsActive = true;
@@ -1241,7 +1241,7 @@ namespace DPTS.Web.Controllers
 
                 if (!ModelState.IsValid && model.DoctorId == null)
                 {
-                    return Json(new DataSourceResult {Errors = "error"});
+                    return Json(new DataSourceResult { Errors = "error" });
                 }
                 var link =
                     _doctorService.GetAllLinksByDoctor(docterId).FirstOrDefault(c => c.SocialType == model.SocialType);
@@ -1351,7 +1351,7 @@ namespace DPTS.Web.Controllers
 
                 if (!ModelState.IsValid && awards.DoctorId == null)
                 {
-                    return Json(new DataSourceResult {Errors = "error"});
+                    return Json(new DataSourceResult { Errors = "error" });
                 }
 
                 _doctorService.InsertHonorsAwards(awards);
@@ -1362,8 +1362,6 @@ namespace DPTS.Web.Controllers
             {
                 return new NullJsonResult();
             }
-        }
-          
         }
 
         [HttpPost]
@@ -1396,7 +1394,7 @@ namespace DPTS.Web.Controllers
             {
                 return new NullJsonResult();
             }
-           
+
         }
 
         [HttpPost]
@@ -1594,6 +1592,6 @@ namespace DPTS.Web.Controllers
         }
         #endregion
 
-        #endregion
+
     }
 }
