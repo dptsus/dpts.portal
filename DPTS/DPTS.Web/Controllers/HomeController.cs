@@ -150,7 +150,9 @@ namespace DPTS.Web.Controllers
             }
 
             var searchTerms = model.q ?? "";
-            searchTerms = model.q.Trim();
+            if(!string.IsNullOrWhiteSpace(model.q))
+                searchTerms = model.q.Trim();
+
 
             if(!string.IsNullOrWhiteSpace(searchTerms))
             {
