@@ -4,12 +4,24 @@
 @{
         int ind = 0;
 }
+<style>
+    .lst-appmt-btn{
+    font-size: 13px;
+    margin-top: 0;
+    line-height: 30px;
+    height: 37px;
+    }
+    .tg-docprofile-content .tg-description {
+    line-height: 20px;
+    padding: 5px 0 10px;
+}
+</style>
 
 @if (Model.Any())
 {
     <div class="tg-view tg-list-view" style="border-bottom: none">
         <div class="row">
-            <ul>
+            <ul class="shops-list">
                 @foreach (var item in Model)
                 {
                     <li style="list-style: none;" data-ind="@(ind++)">
@@ -37,54 +49,37 @@
                                     </div>
                                     <div class="tg-description">
 
-                                        @if (item.Doctors.Education.Any())
+                                        @if (item.Specialities.Any())
                                         {
-                                            string educationLst = string.Empty;
-                                            foreach (var edu in item.Doctors.Education)
+                                            foreach (var spec in item.Specialities)
                                             {
-                                                educationLst += edu.Title + " ";
-                                            }
-                                            if (!string.IsNullOrWhiteSpace(educationLst))
-                                            {
-                                              <p>
-                                            <i class="fa fa-graduation-cap" aria-hidden="true"></i><span><b>@educationLst</b></span>
-                                            </p>
+                                                <span><b>@spec.Title</b></span>
                                             }
                                         }
 
                                     </div>
                                     <div class="short-description">
                                         <ul class="tg-doccontactinfo">
-                                           
-                                            @*@if (item.Doctors.Experience.Any())
-                                            {
-                                                <li><i class="fa fa-flask" aria-hidden="true"></i><span><b>@item.Doctors.YearsOfExperience</b> years experience</span></li>
-                                            }*@
-                                           
                                             @{
                                                 var addr = item.Address;
                                                 if (addr != null)
                                                 {
-                                                    <li>
-                                                        <input type="hidden" class="shop-coordinates" data-latitude="@addr.Latitude" data-longitude="@addr.Longitude" data-shop-title="Dr @item.Doctors.AspNetUser.FirstName @item.Doctors.AspNetUser.LastName" value="1" />
-
-                                                        <i class="fa fa-map-marker"></i><address>
-                                                            <p>
-                                                                @addr.Address1, @addr.City
-                                                            </p>
-                                                        </address>
-                                                    </li>
-                                                    if (!string.IsNullOrWhiteSpace(addr.FaxNumber))
-                                                    {
-                                                        <li><i class="fa fa-fax"></i><span>@addr.FaxNumber</span></li>
-                                                    }
-                                                    if (!string.IsNullOrWhiteSpace(addr.Website))
-                                                    {
-                                                        <li><i class="fa fa-link"></i><a href="@addr.Website">@addr.Website</a></li>
-                                                    }
+                                                    <input type="hidden" class="shop-coordinates" data-latitude="@addr.Latitude" data-longitude="@addr.Longitude" data-shop-title="Dr @item.Doctors.AspNetUser.FirstName @item.Doctors.AspNetUser.LastName" value="1" />
                                                 }
                                             }
-                                            @if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.PhoneNumber))
+
+                                            @if (!string.IsNullOrWhiteSpace(item.AddressLine))
+                                            {
+                                                <li>
+                                                    <i class="fa fa-map-marker"></i><address>
+                                                        <p>
+                                                            @item.AddressLine
+                                                        </p>
+                                                    </address>
+                                                </li>
+                                            }
+
+                                            @*@if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.PhoneNumber))
                                             {
                                                 <li><i class="fa fa-phone"></i><span>@item.Doctors.AspNetUser.PhoneNumber</span></li>
                                             }
@@ -92,18 +87,17 @@
                                             @if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.Email))
                                             {
                                                 <li><i class="fa fa-envelope-o"></i><a href="#">@item.Doctors.AspNetUser.Email</a></li>
-                                            }
+                                            }*@
 
                                         </ul>
-                                        <a class="tg-btn tg-btn-lg make-appointment-btn" style="font-size: 13px" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = item.Doctors.DoctorId}))">MAKE AN APPOINTMENT!</a>
+                                        <a class="tg-btn tg-btn-lg make-appointment-btn lst-appmt-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = item.Doctors.DoctorId}))">MAKE AN APPOINTMENT!</a>
                                     </div>
 
                                 </div>
                             </div>
                         </article>
                     </li>
-                  }
-                
+                   }
             </ul>
         </div>
     </div>

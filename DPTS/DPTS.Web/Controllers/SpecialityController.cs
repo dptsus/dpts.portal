@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace DPTS.Web.Controllers
 {
-    [Authorize]
     public class SpecialityController : Controller
     {
         #region Field

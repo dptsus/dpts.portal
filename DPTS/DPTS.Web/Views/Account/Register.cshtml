@@ -56,7 +56,7 @@
                                     @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
                                     @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="reg-num-doc">
                                     @Html.PasswordFor(m => m.RegistrationNumber, new { @class = "form-control", @placeholder = "Registration Number" })
                                     @Html.ValidationMessageFor(model => model.RegistrationNumber, "", new { @class = "text-danger" })
                                 </div>
@@ -87,13 +87,16 @@
 <script type='text/javascript'>
     if ($("#professional").is(":checked")) {
         $("#Role").show();
+        $("#RegistrationNumber").show();
     }
     $(function () {
         $("input[name='UserType']").click(function () {
             if ($("#professional").is(":checked")) {
                 $("#Role").show();
+                $("#RegistrationNumber").show();
             } else {
                 $("#Role").hide();
+                $("#RegistrationNumber").hide();
             }
         });
     });

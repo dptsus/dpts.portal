@@ -163,19 +163,6 @@
 <div class="tg-userbanner-content">
     <h1>Dr @Model.FirstName @Model.LastName</h1>
     <span>Doctor</span>
-    @*<ul class="tg-likestars">
-                                <li>
-                                    <div class="feature-rating user-star-rating">
-                                        <span class="tg-stars star-rating">
-                                            <span style="width: 80%"></span>
-                                        </span>
-
-                                        <em>4.0<sub>/5</sub></em>
-                                    </div>
-                                </li>
-                                <li><a class="tg-like add-to-fav" data-wl_id="330" href="javascript:;"><i class="fa fa-heart"></i></a></li>
-                                <li><span>1272&nbsp;view(s)</span></li>
-                            </ul>*@
     @if (Model.Schedule.Any())
     {
         <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = Model.Id}))">MAKE AN APPOINTMENT!</a>

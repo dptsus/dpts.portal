@@ -121,8 +121,6 @@ namespace DPTS.Web.Controllers
             return RedirectToAction("NoSchedule");
         }
 
-        
-
         [HttpGet]
         public ActionResult ReScheduling(string doctorId, int bookingId, string userId, string selectedDate = null)
         {

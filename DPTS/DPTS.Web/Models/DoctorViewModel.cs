@@ -32,6 +32,7 @@ namespace DPTS.Web.Models
 
         public double Distance { get; set; }
 
+        
 
     }
 }
