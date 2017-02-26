@@ -1,4 +1,5 @@
 ﻿using DPTS.Domain.Entities;
+using System.Collections.Generic;
 
 namespace DPTS.Web.Models
 {
@@ -8,10 +9,12 @@ namespace DPTS.Web.Models
         {
             Doctors = new Doctor();
             Address = new Address();
+            Specialities = new List<Speciality>();
         }
-
+        public IList<Speciality> Specialities { get; set; }
         public Doctor Doctors { get; set; }
         public Domain.Entities.Address Address { get; set; }
         public double Distance { get; set; }
+        public string AddressLine { get; set; }
     }
 }

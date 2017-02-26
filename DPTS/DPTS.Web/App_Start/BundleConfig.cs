@@ -35,7 +35,7 @@ namespace DPTS.Web
                 //  "~/Content/wp-content/themes/docdirect/js/bookings1bba.js",
                 "~/Content/wp-content/themes/docdirect/js/parallax1bba.js",
               //"~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js",
-              "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
+            //  "~/Content/wp-content/themes/docdirect/js/user_profile1bba.js",
 
                 "~/Content/wp-content/themes/docdirect/js/appear1bba.js",
               //  "~/Content/wp-content/themes/docdirect/js/countTo1bba.js",

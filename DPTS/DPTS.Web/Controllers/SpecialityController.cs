@@ -2,10 +2,11 @@
 using System.Web.Mvc;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Entities;
+using Kendo.Mvc.UI;
+using System.Linq;
 
 namespace DPTS.Web.Controllers
 {
-    [Authorize]
     public class SpecialityController : Controller
     {
         #region Field
@@ -112,6 +113,18 @@ namespace DPTS.Web.Controllers
 
 
             return Content("Deleted");
+        }
+
+
+        //Search autocomplete call
+        public JsonResult Speciality_Read()
+        {
+            var specialities = _specialityService.GetAllSpeciality(true);
+            var data = specialities.Select(x => new Speciality
+            {
+                Title = x.Title
+            });
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

@@ -116,9 +116,8 @@ namespace DPTS.Web.Controllers
         {
             try
             {
-                // if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
-                //{
-
+               if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
+               {
                 if (!ModelState.IsValid)
                 {
                     ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
@@ -150,13 +149,12 @@ namespace DPTS.Web.Controllers
                         return View(model);
                 }
 
-                //  }
+                }
 
+                ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
 
-                ////ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
-
-                ////ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
-                ////return View(model);
+                ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
+                return View(model);
             }
             catch (Exception)
             {
@@ -245,7 +243,7 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model, string returnUrl)
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
         {
             try
             {
@@ -257,8 +255,36 @@ namespace DPTS.Web.Controllers
                     if (ModelState.IsValid)
                     {
                         //SendOtp(model.PhoneNumber);
-                        TempData["regmodel"] = model;
-                        return RedirectToAction("ConfirmRegistration", "Account");
+                        //  TempData["regmodel"] = model;
+                        //return RedirectToAction("ConfirmRegistration", "Account");
+                        var user = new ApplicationUser
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            LastName = model.LastName,
+                            FirstName = model.FirstName,
+                            LastIpAddress = "192.168.225.1",
+                            IsEmailUnsubscribed = false,
+                            IsPhoneNumberUnsubscribed = true,
+                            LastLoginDateUtc = DateTime.UtcNow,
+                            CreatedOnUtc = DateTime.UtcNow,
+                            PhoneNumber = model.PhoneNumber,
+                            TwoFactorEnabled = true
+                        };
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+                        {
+                            if (model.UserType == "professional")
+                            {
+                                await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+                                var doctor = new Doctor { DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber };
+                                _doctorService.AddDoctor(doctor);
+                            }
+
+                            await SignInManager.SignInAsync(user, false, false);
+
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
 

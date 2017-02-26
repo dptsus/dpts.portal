@@ -98,6 +98,7 @@ namespace DPTS.Web.Controllers
                     model.Id = user.Id;
                     model.PhoneNumber = user.PhoneNumber;
                     model.Email = user.Email;
+                    ViewBag.Alert = "success";
                     return View(model);
                 }
                 catch (Exception)

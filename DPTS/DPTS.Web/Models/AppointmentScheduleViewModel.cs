@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DPTS.Domain.Entities;
+using System.Collections.Generic;
 
 namespace DPTS.Web.Models
 {
@@ -11,8 +12,9 @@ namespace DPTS.Web.Models
 
         public IList<ScheduleSlotModel> ScheduleSlotModel { get; set; }
 
-        public string doctorId { get; set; }
+        public AppointmentSchedule AppointmentSchedule { get; set; }
 
+        public string doctorId { get; set; }
     }
     public class ScheduleSlotModel
     {

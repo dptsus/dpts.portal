@@ -8,6 +8,9 @@ using DPTS.Domain.Core.Address;
 using DPTS.Domain.Core.Doctors;
 using DPTS.Domain.Core.Speciality;
 using PagedList;
+using DPTS.Domain.Entities;
+using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.StateProvince;
 
 namespace DPTS.Web.Controllers
 {
@@ -17,6 +20,8 @@ namespace DPTS.Web.Controllers
 
         private readonly ISpecialityService _specialityService;
         private readonly IDoctorService _doctorService;
+        private readonly ICountryService _countryService;
+        private readonly IStateProvinceService _stateService;
         private readonly IAddressService _addressService;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
@@ -27,18 +32,41 @@ namespace DPTS.Web.Controllers
 
         public HomeController(ISpecialityService specialityService,
             IDoctorService doctorService,
-            IAddressService addressService)
+            IAddressService addressService,
+            ICountryService countryService,
+            IStateProvinceService stateService)
         {
             _specialityService = specialityService;
             _doctorService = doctorService;
             UserManager = _userManager;
             context = new ApplicationDbContext();
             _addressService = addressService;
+            _countryService = countryService;
+            _stateService = stateService;
         }
 
         #endregion
 
         #region Utilities
+
+        [NonAction]
+        public string GetAddressline(Address model)
+        {
+            try
+            {
+                string addrLine = string.Empty;
+                if (model != null)
+                {
+                    addrLine += model.Address1 + ", ";
+                    addrLine += model.City + ", ";
+                    addrLine += _stateService.GetStateProvinceById(model.StateProvinceId.GetValueOrDefault()).Name + ", ";
+                    addrLine += _countryService.GetCountryById(model.CountryId.GetValueOrDefault()).Name + ", ";
+                    addrLine += model.ZipPostalCode;
+                }
+                return addrLine;
+            }
+            catch { return null; }
+        }
 
         public IList<SelectListItem> GetSpecialityList()
         {
@@ -111,6 +139,7 @@ namespace DPTS.Web.Controllers
             var pageNumber = (page ?? 1) - 1;
             var pageSize = 5;
             int totalCount;
+            int specilityId = 0;
 
             if (model == null)
                 model = new SearchModel();
@@ -120,12 +149,17 @@ namespace DPTS.Web.Controllers
                 model = (SearchModel) TempData["SearchModel"];
             }
 
-            var searchTerms = model.keyword ?? "";
-            searchTerms = searchTerms.Trim();
+            var searchTerms = model.q ?? "";
+            searchTerms = model.q.Trim();
+
+            if(!string.IsNullOrWhiteSpace(searchTerms))
+            {
+                specilityId = _specialityService.GetAllSpeciality(true).Where(s => s.Title == searchTerms).FirstOrDefault().Id;
+            }
 
             var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,
                 model.geo_location,
-                model.SpecialityId,
+                specilityId,
                 model.geo_distance);
 
             var searchModel = new SearchModel
@@ -140,7 +174,9 @@ namespace DPTS.Web.Controllers
             var searchViewModel = data.Select(doc => new TempDoctorViewModel
             {
                 Doctors = doc,
-                Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()
+                Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
+                AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
+                Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId)
             }).ToList();
 
             totalCount = searchViewModel.Count;

@@ -1,7 +1,9 @@
 ﻿@model DPTS.Web.Models.DoctorViewModel
+    @using DPTS.Domain.Entities;
 @{
     ViewBag.Title = "DoctorDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Address addr = Model.Addresses.FirstOrDefault();
 }
 
 <main id="main" class="tg-page-wrapper tg-haslayout">
@@ -22,7 +24,7 @@
                                         picturePath = "../../Uploads/" + Model.Id + "_profile.jpg";
                                     }
                                 }
-                                <img src="@picturePath" alt="Dr. Steve">
+                <img src="@picturePath" alt="">
                                 @*<figcaption>
                                         <ul class="tg-featureverified">
                                             <li class="tg-featuresicon"><a href="javascript:;"><i class="fa fa-bolt"></i><span>featured</span></a></li>
@@ -35,31 +37,31 @@
                                 <h3>Contact Details</h3>
                                 @{
 
-                                    var addr = Model.Addresses.FirstOrDefault();
-                                    if (addr != null)
-                                    {
-                                        <ul class="tg-doccontactinfo">
-                                            <li> <i class="fa fa-map-marker"></i> <address>@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.Country.Name</address> </li>
-                                            @if (!string.IsNullOrWhiteSpace(Model.Email))
-                                            {
-                                                <li><i class="fa fa-envelope-o"></i><a href="#">@Model.Email</a></li>
-                                            }
-                                            @if (!string.IsNullOrWhiteSpace(Model.MobileNumber))
-                                            {
-                                                <li> <i class="fa fa-phone"></i> <span>@Model.MobileNumber</span> </li>
-                                            }
-                                            @if (!string.IsNullOrWhiteSpace(addr.FaxNumber))
-                                            {
-                                                <li><i class="fa fa-fax"></i><span>@addr.FaxNumber</span></li>
-                                            }
-                                            @if (!string.IsNullOrWhiteSpace(addr.Website))
-                                            {
-                                                <li><i class="fa fa-link"></i><a href="@addr.Website" target="_blank">@addr.Website</a></li>
-                                            }
-                                        </ul>
-                                    }
-                                }
-                                <ul class="tg-socialicon-v2">
+                    if (addr != null)
+                    {
+                        <ul class="tg-doccontactinfo">
+                            <li> <i class="fa fa-map-marker"></i> <address>@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.Country.Name</address> </li>
+                            @if (!string.IsNullOrWhiteSpace(Model.Email))
+                            {
+                                <li><i class="fa fa-envelope-o"></i><a href="#">@Model.Email</a></li>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.MobileNumber))
+                            {
+                                <li> <i class="fa fa-phone"></i> <span>@Model.MobileNumber</span> </li>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(addr.FaxNumber))
+                            {
+                                <li><i class="fa fa-fax"></i><span>@addr.FaxNumber</span></li>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(addr.Website))
+                            {
+                                <li><i class="fa fa-link"></i><a href="@addr.Website" target="_blank">@addr.Website</a></li>
+                            }
+                        </ul>
+                    }
+                }
+                <ul class="tg-socialicon-v2">
+                    
                                     @if (Model.doctor.SocialLinkInformation.Any())
                                     {
                                         foreach (var item in Model.doctor.SocialLinkInformation)
@@ -76,7 +78,10 @@
                                         }
                                     }
                                 </ul>
+                @if (addr != null)
+                {
                                 <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.ZipPostalCode" target="_blank">get directions</a>
+                }
                                 <div class="tg-userschedule">
                                     <h3>Schedule</h3>
                                     <ul>
@@ -161,24 +166,11 @@
                         <div class="tg-userbanner-content">
                             <h1>Dr @Model.FirstName @Model.LastName</h1>
                             <span>Doctor</span>
-                            @*<ul class="tg-likestars">
-                                    <li>
-                                        <div class="feature-rating user-star-rating">
-                                            <span class="tg-stars star-rating">
-                                                <span style="width: 80%"></span>
-                                            </span>
-
-                                            <em>4.0<sub>/5</sub></em>
-                                        </div>
-                                    </li>
-                                    <li><a class="tg-like add-to-fav" data-wl_id="330" href="javascript:;"><i class="fa fa-heart"></i></a></li>
-                                    <li><span>1272&nbsp;view(s)</span></li>
-                                </ul>*@
-                            @if (Model.Schedule.Any())
-                            {
-                                <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new { doctorId = Model.Id }))">MAKE AN APPOINTMENT!</a>
-                            }
-                        </div>
+    @if (Model.Schedule.Any())
+    {
+        <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = Model.Id}))">MAKE AN APPOINTMENT!</a>
+    }
+</div>
 
                         <div class="tg-section-map">
                             @*<div id="map_canvas" class="tg-location-map tg-haslayout" style="position: relative; overflow: hidden;">

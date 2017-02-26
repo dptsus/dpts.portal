@@ -289,6 +289,12 @@ namespace DPTS.Services.Doctors
            // }
             if (specialityId > 0)
             {
+                //var spec =
+                //        from s in _specialityRepository.Table
+                //        join r in _specialityMappingRepository.Table on s.Id equals r.Speciality_Id
+                //        where s.Title == searchTerm
+                //        select s.Id;
+
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
             }
 

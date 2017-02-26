@@ -56,7 +56,8 @@
                                                 @if (item.AppointmentStatus.Name.Equals("Pending"))
                                                 {
                                                     <a class="tg-btncheck appointment-actioned fa fa-check" style="background: cornflowerblue" onclick="approveAppoinment(@item.Id, 'approve')" href="javascript:;">Approved</a>
-                                                    <a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" href="javascript:;">Reschudle</a>
+                                                    @*<a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" onclick="approveAppoinment(@item.Id, 'approve')" href="javascript:;">ReScheduling</a>*@
+                                                    <a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" href="@Url.Action("ReScheduling", "Appointment", new RouteValueDictionary(new { doctorId = ViewBag.DoctorId, bookingId = item.Id, userId = item.PatientId}))">ReScheduling</a>
                                                     <a class="tg-btncheck appointment-actioned fa fa-times" style="background: crimson" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>
                                                     }
                                                 else if (item.AppointmentStatus.Name.Equals("Booked"))

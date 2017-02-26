@@ -2200,12 +2200,15 @@ body.tg-comming-soon #main{
 		Doc Profile List View & Map
 ============================================= */
 .tg-list-view .tg-doctor-profile {padding: 15px;}
-.tg-list-view .tg-box {padding: 30px;}
+.tg-list-view .tg-box {padding: 10px;}
 .tg-list-view .tg-box figure{
 	float: left;
-	width: 240px;
+	width: 150px;
 	margin: 0 30px 0 0;
 	border: 1px solid #ddd;
+}
+.tg-list-view .tg-box:hover{
+        box-shadow: 0 1px 8px 2px rgba(0, 0, 0, 0.12);
 }
 .tg-list-view .tg-docprofile-content{
 	padding: 0;

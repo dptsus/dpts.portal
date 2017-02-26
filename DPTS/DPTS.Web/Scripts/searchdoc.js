@@ -211,7 +211,7 @@ function searchForShopsMatchingTheSearchCriteria() {
         g && h ? (e.show(), null != markers[f] && markers[f].setMap(map)) : (e.hide(), null != markers[f] && markers[f].setMap(null))
     }), 0 == $(".shops-list > li:visible").length ? $(".no-shops-after-filtering").show() : $(".no-shops-after-filtering").hide(), sortShopsBySelectedMethod())
 }
-var mapWrapperId = "all-shops-map-holder",
+var mapWrapperId = "map_canvas",
     shopCoordinatesElementClass = ".shop-coordinates",
     allShops = [],
     directionsService, directionsDisplay, map, markers = [],

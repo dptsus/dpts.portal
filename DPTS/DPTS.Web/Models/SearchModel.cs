@@ -25,5 +25,8 @@ namespace DPTS.Web.Models
 
         public int geo_distance { get; set; }
 
+        [AllowHtml]
+        public string q { get; set; }
+
     }
 }
