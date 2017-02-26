@@ -941,6 +941,27 @@ namespace DPTS.Web.Controllers
 
         #endregion
 
+        #region Review Comments
+        [HttpPost]
+        public ActionResult SaveReivewComment(FormCollection form)
+        {
+            ReviewComments ReviewComments = new ReviewComments();
+            ReviewComments.CommentForId = TempData["CommentForId"].ToString();
+            ReviewComments.CommentOwnerId = User.Identity.GetUserId();
+            ReviewComments.CommentOwnerUser = User.Identity.Name;
+            ReviewComments.Comment = form["UserComment"];
+            ReviewComments.Rating = Convert.ToDecimal(form["starrating"]) * 20;
+            ReviewComments.DateCreated = DateTime.Now;
+            ReviewComments.IsApproved = false;
+            ReviewComments.IsActive = true;
+
+            if (_reviewCommentsService.InsertReviewComment(ReviewComments))
+                return RedirectToAction("DoctorDetails", new { doctorId = TempData["CommentForId"].ToString() });
+
+            return null;
+        }
+        #endregion
+
         #region Social Links
 
         [HttpPost]
