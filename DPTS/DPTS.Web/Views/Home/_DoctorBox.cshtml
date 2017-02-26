@@ -1,17 +1,18 @@
 ﻿@using PagedList
 @model IPagedList<TempDoctorViewModel>
 @using DPTS.Web.Models
-    @{
+@{
         int ind = 0;
 }
+
 @if (Model.Any())
 {
     <div class="tg-view tg-list-view" style="border-bottom: none">
         <div class="row">
-            <ul class="shops-list">
+            <ul>
                 @foreach (var item in Model)
                 {
-                    <li class="shops-item visible" style="list-style: none;" data-ind="@(ind++)">
+                    <li style="list-style: none;" data-ind="@(ind++)">
                         @{
                             string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
                             string profilePicPath = Server.MapPath("~/Uploads/" + item.Doctors.DoctorId + "_profile.jpg");
@@ -24,15 +25,9 @@
                         <article class="tg-doctor-profile user-330">
                             <div class="tg-box">
                                 <figure class="tg-docprofile-img">
-                                    <a href="@Url.Action("DoctorDetails", "Doctor", new {doctorId = item.Doctors.DoctorId})" class="list-avatar"><img src="@picturePath"></a>
-                                    @*<a class="tg-dislike" href="javascript:;"><i class="fa fa-heart"></i></a>*@
-                                    <div class="feature-rating user-star-rating">
-                                        @*<span class="tg-stars star-rating">
-                                                <span style="width:80%"></span>
-                                            </span>
-                                            <em>4.0<sub>/5</sub></em>*@
-                                        <a class="tg-btn tg-btn-lg make-appointment-btn" style="font-size: 13px" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = item.Doctors.DoctorId}))">MAKE AN APPOINTMENT!</a>
-                                    </div>
+                                    <a href="@Url.Action("DoctorDetails", "Doctor", new {doctorId = item.Doctors.DoctorId})" class="list-avatar">
+                                        <img src="@picturePath">
+                                    </a>
                                 </figure>
                                 <div class="tg-docprofile-content">
                                     <div class="tg-heading-border tg-small" style="margin: 0">
@@ -41,29 +36,26 @@
                                         </h3>
                                     </div>
                                     <div class="tg-description">
-                                        @*<div class="distance-line">
-                                                <label class="distance-label">Distance from your location:</label>
-                                                <span class="distance-value">@item.Distance.ToString("0.0")</span>
-                                            </div>*@
 
-                                        @*<br />
-                                        <a class="show-directions" href="javascript:;"><i class="fa fa-compass" aria-hidden="true"></i> Show Directions</a>*@
+                                        @if (item.Doctors.Education.Any())
+                                        {
+                                            string educationLst = string.Empty;
+                                            foreach (var edu in item.Doctors.Education)
+                                            {
+                                                educationLst += edu.Title + " ";
+                                            }
+                                            if (!string.IsNullOrWhiteSpace(educationLst))
+                                            {
+                                              <p>
+                                            <i class="fa fa-graduation-cap" aria-hidden="true"></i><span><b>@educationLst</b></span>
+                                            </p>
+                                            }
+                                        }
+
                                     </div>
                                     <div class="short-description">
                                         <ul class="tg-doccontactinfo">
-                                            @if (item.Doctors.Education.Any())
-                                            {
-                                                string educationLst = string.Empty;
-                                                foreach (var edu in item.Doctors.Education)
-                                                {
-                                                    educationLst += edu.Title + ",";
-                                                }
-                                                if (!string.IsNullOrWhiteSpace(educationLst))
-                                                {
-                                                    <li><i class="fa fa-graduation-cap" aria-hidden="true"></i><span><b>@educationLst</b></span></li>
-                                                    <li><hr /></li>
-                                                }
-                                            }
+                                           
                                             @*@if (item.Doctors.Experience.Any())
                                             {
                                                 <li><i class="fa fa-flask" aria-hidden="true"></i><span><b>@item.Doctors.YearsOfExperience</b> years experience</span></li>
@@ -103,6 +95,7 @@
                                             }
 
                                         </ul>
+                                        <a class="tg-btn tg-btn-lg make-appointment-btn" style="font-size: 13px" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = item.Doctors.DoctorId}))">MAKE AN APPOINTMENT!</a>
                                     </div>
 
                                 </div>
@@ -110,12 +103,14 @@
                         </article>
                     </li>
                   }
+                
             </ul>
         </div>
     </div>
-    }
-else
-{
+    
+                                                }
+                                                else
+                                                {
    <p>No Record Found !!</p>
 }
 

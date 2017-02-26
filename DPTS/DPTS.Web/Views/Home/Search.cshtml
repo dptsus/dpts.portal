@@ -8,102 +8,30 @@
     var SearchModel = (SearchModel)ViewBag.SearchModel;
 }
 <script src="~/Scripts/searchdoc.js"></script>
-<div id="directions-panel">
-    <a id="backToResults" href="javascript:;"><i class="fa fa-backward" aria-hidden="true"></i> BackToResults</a>
-    <script>
-        $(document).ready(function () {
-            $("#directions-panel").css("display", "none");
-            $("#backToResults").on("click", function () {
-                $("#directions-panel").css("display", "none");
-            });
-        });
-    </script>
-</div>
 
-<style>
-    .map-top{
-      height: 500px;
-    }
-    .map-wrapper
-    {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: rgb(229, 227, 223);
-    }
-    #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
-
-</style>
 <main id="main" class="tg-page-wrapper tg-haslayout">
-    @if (Model.Any())
-    {
-        <div class="map-top">
+    <div class="tg-postionabsulote">
+        <div class="col-md-5 col-sm-12 col-xs-12 tg-divheight pull-left">
             <div class="row tg-divheight">
                 <div class="tg-mapbox">
-                    <div class="map-wrapper">
-                        <div id="all-shops-map-holder" style="height: 500px"></div>
-                        @*<input id="pac-input" style="width: 30%; left: 30px !important; top: 55px !important;" type="text" placeholder="SearchMyLocation" />*@
+                    <div id="map_canvas" class="tg-location-map tg-haslayout"></div>
+                        <input type="hidden" class="shop-resources"
+                               data-youarehere="You are here"
+                               data-accuracy="Accuracy"
+                               data-geolocationnotsupported="Geolocation is not supported by your browser."
+                               data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
                     </div>
-                    <input type="hidden" class="shop-resources"
-                           data-youarehere="You are here"
-                           data-accuracy="Accuracy"
-                           data-geolocationnotsupported="Geolocation is not supported by your browser."
-                           data-pathtoimages="http://demos.nop-templates.com/Plugins/SevenSpikes.Nop.Plugins.StoreLocator/Images"
-                           data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
-                </div>
             </div>
         </div>
-    }
-
+    </div>
     <div class="container">
         <div class="row">
-            <div class="container">
-                <div class="row">
-                    <form>
-                        @Html.Partial("_SearchNavigation", SearchModel)
-                        <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
-                            <div class="tg-doctors-list tg-haslayout">
-                                                                @*<div class="tg-doclisthead">
-            <div class="row">
-                <div class="col-md-4 col-sm-4 col-xs-6">
-                    <div class="form-group">
-                        <span class="select">
-                            <select class="group sort_by" name="sort_by" id="sort_by">
-                                <option value="">Sort By</option>
-                                <option value="recent">Most recent</option>
-                                <option value="featured">Featured</option>
-                                <option value="title">Alphabetical</option>
-                            </select>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-4 col-xs-6">
-                    <div class="form-group">
-                        <span class="select">
-                            <select class="group order_by" name="order" id="order">
-                                <option value="ASC">ASC</option>
-                                <option value="DESC">DESC</option>
-                            </select>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            keyword=&geo_location=Nashik%2C+Maharashtra%2C+India&geo_distance=50&directory_type=&Specialityid=0
-        </div>*@
-                                @Html.Partial("_DoctorBox", Model)
-                                @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page ,model = (SearchModel)ViewBag.SearchModel }))*@
-                                @Html.PagedListPager(Model, Page => Url.Action("Search", new RouteValueDictionary() {
+            <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
+                <div class="tg-doctors-list tg-haslayout left-with-map">
+                    @Html.Partial("_SearchNavigation", SearchModel)
+                    @Html.Partial("_DoctorBox", Model)
+                    @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page ,model = (SearchModel)ViewBag.SearchModel }))*@
+                    @Html.PagedListPager(Model, Page => Url.Action("Search", new RouteValueDictionary() {
                                     { "page", Page },
                                     { "geo_distance", SearchModel.geo_distance },
                                     { "geo_location", SearchModel.geo_location },
@@ -111,11 +39,8 @@
                                     { "directory_type", SearchModel.directory_type },
                                     { "SpecialityId", SearchModel.SpecialityId }
                                 }))
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </main>
