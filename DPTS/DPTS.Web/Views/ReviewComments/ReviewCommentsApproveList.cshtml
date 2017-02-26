@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DPTS.Domain.Entities.ReviewComments>
+﻿@model IEnumerable<DPTS.Domain.Entities.DoctorUserReviewComments>
 @{
     ViewBag.Title = "Review Comments";
     Layout = "~/Views/Shared/Admin_Layout.cshtml";
@@ -92,10 +92,10 @@ int i = 1;
                                         {
                                             <tr class="odd gradeX">
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.CommentForId)
+                                                    @Html.DisplayFor(modelItem => item.DoctorName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.CommentOwnerId)
+                                                    @Html.DisplayFor(modelItem => item.Username)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Comment)
@@ -115,10 +115,10 @@ int i = 1;
                                         {
                                             <tr class="even gradeA">
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.CommentForId)
+                                                    @Html.DisplayFor(modelItem => item.DoctorName)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.CommentOwnerId)
+                                                    @Html.DisplayFor(modelItem => item.Username)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Comment)

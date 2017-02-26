@@ -4,6 +4,7 @@ using DPTS.Domain.Core.ReviewComments;
 using DPTS.Domain.Entities;
 using DPTS.Domain.Core;
 using System.Linq;
+using DPTS.Data.Context;
 
 namespace DPTS.Domain.ReviewComments
 {
@@ -11,24 +12,44 @@ namespace DPTS.Domain.ReviewComments
     {
         #region Fields
         private readonly IRepository<Domain.Entities.ReviewComments> _reviewComments;
+        private readonly DPTSDbContext _context;
         #endregion
 
         #region Constructor
         public ReviewCommentsService(IRepository<Domain.Entities.ReviewComments> reviewComments)
         {
             _reviewComments = reviewComments;
+            _context = new DPTSDbContext();
         }
         #endregion
 
         #region Methods
-        IList<Entities.ReviewComments> IReviewCommentsService.GetAllAprovedReviewCommentsByUser(string UserId)
+        IList<Entities.DoctorUserReviewComments> IReviewCommentsService.GetAllAprovedReviewCommentsByUser(string UserId)
         {
             if (string.IsNullOrWhiteSpace(UserId))
                 return null;
             try
             {
 
-                return _reviewComments.Table.Where(c => c.IsApproved == true && c.IsActive == true && c.CommentForId==UserId).ToList();
+                // return _reviewComments.Table.Where(c => c.IsApproved == true && c.IsActive == true && c.CommentForId==UserId).ToList();
+
+                var query = (from r in _context.ReviewComments
+                             join U1 in _context.AspNetUsers on r.CommentForId equals U1.Id
+                             join U2 in _context.AspNetUsers on r.CommentOwnerId equals U2.Id
+                             where r.IsActive == true && r.IsApproved == true && r.CommentForId == UserId
+                             select
+                              new DoctorUserReviewComments()
+                              {
+                                  Id = r.Id,
+                                  DoctorName = U1.UserName,
+                                  Username = U2.UserName,
+                                  Comment = r.Comment,
+                                  Rating = r.Rating,
+                                  DateCreated = r.DateCreated
+                              });
+
+
+                return query.ToList<DoctorUserReviewComments>();
             }
             catch (Exception)
             {
@@ -69,12 +90,31 @@ namespace DPTS.Domain.ReviewComments
         //    throw new NotImplementedException();
         //}
 
-        IList<Entities.ReviewComments> IReviewCommentsService.GetReviewCommentsApprovalList()
+        IList<DoctorUserReviewComments> IReviewCommentsService.GetReviewCommentsApprovalList()
         {
             try
             {
+                var query = (from r in _context.ReviewComments
+                             join U1 in _context.AspNetUsers on r.CommentForId equals U1.Id
+                             join U2 in _context.AspNetUsers on r.CommentOwnerId equals U2.Id
+                             where r.IsActive == true && r.IsApproved == false
+                             select
+                              new DoctorUserReviewComments()
+                              {
+                                  Id = r.Id
+                             ,
+                                  DoctorName = U1.UserName
+                             ,
+                                  Username = U2.UserName
+                             ,
+                                  Comment = r.Comment
+                             ,
+                                  Rating = r.Rating
+                              });
 
-                return _reviewComments.Table.Where(c => c.IsApproved == false && c.IsActive == true).ToList();
+
+                return query.ToList<DoctorUserReviewComments>();
+                //return _reviewComments.Table.Where(c => c.IsApproved == false && c.IsActive == true).ToList();
             }
             catch (Exception)
             {
