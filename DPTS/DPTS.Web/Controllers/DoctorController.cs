@@ -1193,15 +1193,15 @@ namespace DPTS.Web.Controllers
             ReviewComments.CommentOwnerId = User.Identity.GetUserId();
             ReviewComments.CommentOwnerUser = User.Identity.Name;
             ReviewComments.Comment = form["UserComment"];
-            ReviewComments.Rating = Convert.ToDecimal(form["starrating"]);
+            ReviewComments.Rating = Convert.ToDecimal(form["starrating"]) * 20;
             ReviewComments.DateCreated = DateTime.Now;
             ReviewComments.IsApproved = false;
             ReviewComments.IsActive = true;
 
             if (_reviewCommentsService.InsertReviewComment(ReviewComments))
-                return RedirectToAction("DoctorDetails", new { doctorId = TempData["CommentForId"].ToString() });
+                return Content("Success");
 
-            return null;
+            return Content("Error");
         }
         #endregion
 

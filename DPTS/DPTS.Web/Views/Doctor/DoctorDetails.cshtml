@@ -1,11 +1,17 @@
 ﻿@model DPTS.Web.Models.DoctorViewModel
-    @using DPTS.Domain.Entities;
+@using DPTS.Domain.Entities;
 @{
     ViewBag.Title = "DoctorDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
     Address addr = Model.Addresses.FirstOrDefault();
 }
 
+<link href="~/Content/rating.css" rel="stylesheet" />
+<link href="~/Content/Alertify/css/alertify.core.css" rel="stylesheet" />
+<link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" /> 
+
+<script src="~/Scripts/rating.js"></script>
+<script src="~/Content/Alertify/js/alertify.min.js"></script>
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll" data-image-src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/10/DOCTOR.jpg">
     </div>
@@ -24,7 +30,7 @@
                                         picturePath = "../../Uploads/" + Model.Id + "_profile.jpg";
                                     }
                                 }
-                <img src="@picturePath" alt="">
+                                <img src="@picturePath" alt="">
                                 @*<figcaption>
                                         <ul class="tg-featureverified">
                                             <li class="tg-featuresicon"><a href="javascript:;"><i class="fa fa-bolt"></i><span>featured</span></a></li>
@@ -37,31 +43,31 @@
                                 <h3>Contact Details</h3>
                                 @{
 
-                    if (addr != null)
-                    {
-                        <ul class="tg-doccontactinfo">
-                            <li> <i class="fa fa-map-marker"></i> <address>@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.Country.Name</address> </li>
-                            @if (!string.IsNullOrWhiteSpace(Model.Email))
-                            {
-                                <li><i class="fa fa-envelope-o"></i><a href="#">@Model.Email</a></li>
-                            }
-                            @if (!string.IsNullOrWhiteSpace(Model.MobileNumber))
-                            {
-                                <li> <i class="fa fa-phone"></i> <span>@Model.MobileNumber</span> </li>
-                            }
-                            @if (!string.IsNullOrWhiteSpace(addr.FaxNumber))
-                            {
-                                <li><i class="fa fa-fax"></i><span>@addr.FaxNumber</span></li>
-                            }
-                            @if (!string.IsNullOrWhiteSpace(addr.Website))
-                            {
-                                <li><i class="fa fa-link"></i><a href="@addr.Website" target="_blank">@addr.Website</a></li>
-                            }
-                        </ul>
-                    }
-                }
-                <ul class="tg-socialicon-v2">
-                    
+                                    if (addr != null)
+                                    {
+                                        <ul class="tg-doccontactinfo">
+                                            <li> <i class="fa fa-map-marker"></i> <address>@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.Country.Name</address> </li>
+                                            @if (!string.IsNullOrWhiteSpace(Model.Email))
+                                            {
+                                                <li><i class="fa fa-envelope-o"></i><a href="#">@Model.Email</a></li>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(Model.MobileNumber))
+                                            {
+                                                <li> <i class="fa fa-phone"></i> <span>@Model.MobileNumber</span> </li>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(addr.FaxNumber))
+                                            {
+                                                <li><i class="fa fa-fax"></i><span>@addr.FaxNumber</span></li>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(addr.Website))
+                                            {
+                                                <li><i class="fa fa-link"></i><a href="@addr.Website" target="_blank">@addr.Website</a></li>
+                                            }
+                                        </ul>
+                                    }
+                                }
+                                <ul class="tg-socialicon-v2">
+
                                     @if (Model.doctor.SocialLinkInformation.Any())
                                     {
                                         foreach (var item in Model.doctor.SocialLinkInformation)
@@ -78,10 +84,10 @@
                                         }
                                     }
                                 </ul>
-                @if (addr != null)
-                {
-                                <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.ZipPostalCode" target="_blank">get directions</a>
-                }
+                                @if (addr != null)
+                                {
+                                    <a class="tg-btn tg-btn-lg" href="http://maps.google.com/maps?saddr=&amp;daddr=@addr.Address1, @addr.City, @addr.StateProvince.Name, @addr.ZipPostalCode" target="_blank">get directions</a>
+                                }
                                 <div class="tg-userschedule">
                                     <h3>Schedule</h3>
                                     <ul>
@@ -166,11 +172,11 @@
                         <div class="tg-userbanner-content">
                             <h1>Dr @Model.FirstName @Model.LastName</h1>
                             <span>Doctor</span>
-    @if (Model.Schedule.Any())
-    {
-        <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = Model.Id}))">MAKE AN APPOINTMENT!</a>
-    }
-</div>
+                            @if (Model.Schedule.Any())
+                            {
+                                <a class="tg-btn tg-btn-lg make-appointment-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = Model.Id}))">MAKE AN APPOINTMENT!</a>
+                            }
+                        </div>
 
                         <div class="tg-section-map">
                             @*<div id="map_canvas" class="tg-location-map tg-haslayout" style="position: relative; overflow: hidden;">
@@ -522,26 +528,35 @@
                                             <h2>Leave Your Review</h2>
                                         </div>
 
-                                        @using (Html.BeginForm("SaveReivewComment", "Doctor", FormMethod.Post))
-                                        {
+                                        @*@using (Html.BeginForm("SaveReivewComment", "Doctor", FormMethod.Post))
+                                            {*@
+                                        <form id="ReviewComment" method="post">
                                             <div class="form-group">
 
-                                                <select name="starrating" class="form-control">
-                                                    <option value="20">1 Star</option>
-                                                    <option value="40">2 Star</option>
-                                                    <option value="60">3 Star</option>
-                                                    <option value="80">4 Star</option>
-                                                    <option value="100">5 Star</option>
-                                                </select>
+                                                @*<select name="starrating" class="form-control">
+                                                        <option value="20">1 Star</option>
+                                                        <option value="40">2 Star</option>
+                                                        <option value="60">3 Star</option>
+                                                        <option value="80">4 Star</option>
+                                                        <option value="100">5 Star</option>
+                                                    </select>*@
 
+                                                <div class="form-control ratting-item">
+                                                    <input class="rating" name="starrating" type="radio" value="1" />
+                                                    <input class="rating" name="starrating" type="radio" value="2" />
+                                                    <input class="rating" name="starrating" type="radio" value="3" />
+                                                    <input class="rating" name="starrating" type="radio" value="4" />
+                                                    <input class="rating" name="starrating" type="radio" value="5" />
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <input type='text' name="UserComment" class="form-control" placeholder="Type our comment" required />
+                                                <input type='text' name="UserComment" class="form-control" placeholder="Type your comment" required />
                                             </div>
 
 
-                                            <button type="submit" class="tg-btn process-account-settings">Submit</button>
-                                        }
+                                            <button type="button" onclick="SaveReviewComments()" class="tg-btn process-account-settings">Submit</button>
+                                        </form>
+
 
 
                                         <span>
@@ -557,3 +572,41 @@
         </div>
     </div>
 </main>
+<script>
+    $(function () {
+        $('.ratting-item').rating(function (vote, event) {
+            console.log(vote);
+            var anchor = $(event.currentTarget);
+            anchor.closest(".ratting-item");
+        });
+    });
+
+    //$("#ReviewComment").on('submit', function () {
+    function SaveReviewComments() {
+        var form = $("#ReviewComment").serialize();
+        $.ajax({
+            url: '/Doctor/SaveReivewComment',
+            type: 'POST',
+            data: form,
+            success: function (data) {
+                debugger;
+                if (data == "Success") {
+                    alertify.success("Thank you for rating...");
+                    //window.location.reload();
+                    //window.location.reload();
+                    window.setTimeout(function () { location.reload() }, 1000)
+
+                }
+                else if (data == "Error") {
+                    alertify.success("Error... Please try again.");
+                    //window.location.reload();
+                    //window.location.reload();
+                    window.setTimeout(function () { location.reload() }, 1000)
+
+                }
+            }
+        });
+    };
+
+    //    });
+</script>
