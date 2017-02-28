@@ -71,6 +71,9 @@ namespace DPTS.Web.Controllers
         public IList<SelectListItem> GetSpecialityList()
         {
             var specialitys = _specialityService.GetAllSpeciality(false);
+            if (specialitys == null)
+                return null;
+
             List<SelectListItem> typelst = new List<SelectListItem>();
             typelst.Add(
                 new SelectListItem
