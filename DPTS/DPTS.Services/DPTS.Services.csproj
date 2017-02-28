@@ -114,6 +114,7 @@
     <Compile Include="PagedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="ReviewComments\ReviewCommentsService.cs" />
     <Compile Include="Speciality\SpecialityService.cs" />
     <Compile Include="Notification\DefaultNotificationSettingsService.cs" />
     <Compile Include="StateProvince\StateProvinceService.cs" />

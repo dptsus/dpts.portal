@@ -22,18 +22,16 @@
                             <fieldset>
                                 <div class="form-group">
                                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group">
                                     @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group tg-checkbox">
                                     <label>
                                         @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-control" })
                                         Remember Me
                                     </label>
-                                    <a class="tg-forgot-password" href="#">
+                                    <a class="tg-forgot-password" href="@Url.Action("ForgotPassword","Account")">
                                         <i>Forgot Password</i>
                                         <i class="fa fa-question-circle"></i>
                                     </a>

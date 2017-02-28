@@ -1,7 +1,7 @@
 ﻿@using DPTS.Web.Models
 @model AddressViewModel
 
-@Html.HiddenFor(model => model.id)
+@Html.HiddenFor(model => model.Id)
 <div class="tg-bordertop tg-haslayout">
     <div class="tg-formsection">
         <div class="tg-heading-border tg-small">
@@ -38,16 +38,16 @@
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Countryid)
-                    @Html.DropDownListFor(model => model.Countryid, Model.AvailableCountry, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Countryid)
+                    @Html.LabelFor(model => model.CountryId)
+                    @Html.DropDownListFor(model => model.CountryId, Model.AvailableCountry, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CountryId)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.StateProvinceid)
-                    @Html.DropDownListFor(model => model.StateProvinceid, Model.AvailableStateProvince, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.StateProvinceid)
+                    @Html.LabelFor(model => model.StateProvinceId)
+                    @Html.DropDownListFor(model => model.StateProvinceId, Model.AvailableStateProvince, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.StateProvinceId)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -92,7 +92,7 @@
             $.ajax({
                 cache: false,
                 type: "GET",
-                url: "@(Url.RouteUrl("GetStatesByCountryid"))",
+                url: "@(Url.RouteUrl("GetStatesByCountryId"))",
                 data: { "countryId": selectedItem, "addSelectStateItem": "true" },
             success: function (data) {
                 ddlStates.html('');

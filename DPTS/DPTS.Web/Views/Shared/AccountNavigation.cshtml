@@ -1,5 +1,4 @@
-﻿@using DPTS.Web.Models;
-@using Microsoft.AspNet.Identity
+﻿@using Microsoft.AspNet.Identity
 
 @if (Request.IsAuthenticated && User.IsInRole("Doctor"))
 {
@@ -31,7 +30,7 @@
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                     {
                         @Html.AntiForgeryToken()
-                        <a href="javascript:document.getElementByid('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-in"></i>Logout</a>
                     }
                 </li>
             </ul>

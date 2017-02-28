@@ -1,9 +1,14 @@
 ﻿@model DPTS.Web.Models.DoctorScheduleListingViewModel
+@using DPTS.Web.Helpers
 @{
     ViewBag.Title = "Booking Listings";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Html.Assets().Styles.Add("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.0/jquery-confirm.min.css");
+
+    Html.Assets().Scripts.Add("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.0/jquery-confirm.min.js");
+    Html.Assets().Scripts.Add("/Scripts/bookings.js");
 }
-<script src="~/Scripts/bookings.js"></script>
+
 <style>
     .tg-btncheck.appointment-actioned {
         cursor: pointer;
@@ -43,10 +48,10 @@
                                 </thead>
                                 <tbody>
                                 @if (Model.AppointmentSchedule.Count > 0)
-                                {
-                                    foreach (var item in Model.AppointmentSchedule)
-                                    {
-                                        string fullName = item.AspNetUser.FirstName + " " + item.AspNetUser.LastName;
+    {
+        foreach (var item in Model.AppointmentSchedule)
+        {
+            string fullName = item.AspNetUser.FirstName + " " + item.AspNetUser.LastName;
                                         <tr class="booking-odd booking-1883">
                                             <td data-name="id">@fullName</td>
                                             <td data-name="subject">@item.Subject</td>
@@ -56,7 +61,8 @@
                                                 @if (item.AppointmentStatus.Name.Equals("Pending"))
                                                 {
                                                     <a class="tg-btncheck appointment-actioned fa fa-check" style="background: cornflowerblue" onclick="approveAppoinment(@item.Id, 'approve')" href="javascript:;">Approved</a>
-                                                    <a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" href="javascript:;">Reschudle</a>
+                                                    @*<a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" onclick="approveAppoinment(@item.Id, 'approve')" href="javascript:;">ReScheduling</a>*@
+                                                    <a class="tg-btncheck appointment-actioned fa fa-retweet" style="background: blueviolet" href="@Url.Action("ReScheduling", "Appointment", new RouteValueDictionary(new { doctorId = ViewBag.DoctorId, bookingId = item.Id, userId = item.PatientId}))">ReScheduling</a>
                                                     <a class="tg-btncheck appointment-actioned fa fa-times" style="background: crimson" onclick="approveAppoinment(@item.Id, 'cancel')" href="javascript:;">Cancel</a>
                                                     }
                                                 else if (item.AppointmentStatus.Name.Equals("Booked"))

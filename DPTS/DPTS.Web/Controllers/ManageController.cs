@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -54,36 +55,57 @@ namespace DPTS.Web.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
-
-            var userId = User.Identity.GetUserId();
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var user = manager.FindById(userId);
-            var model = new IndexViewModel
+            var model = new IndexViewModel();
+            if (Request.IsAuthenticated)
             {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                Id = userId,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email
-            };
+                try
+                {
+                    var userId = User.Identity.GetUserId();
+                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var user = manager.FindById(userId);
+
+                    model.HasPassword = HasPassword();
+                    model.PhoneNumber = await UserManager.GetPhoneNumberAsync(userId);
+                    model.TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId);
+                    model.Logins = await UserManager.GetLoginsAsync(userId);
+                    model.BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId);
+                    model.Id = user.Id;
+                    model.FirstName = user.FirstName;
+                    model.LastName = user.LastName;
+                    model.Email = user.Email;
+                    return View(model);
+                }
+                catch (Exception)
+                {
+                    return HttpNotFound();
+                }
+            }
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Index(IndexViewModel model)
         {
+            if (!string.IsNullOrWhiteSpace(model.Id))
+            {
+                try
+                {
+                    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var user = manager.FindById(model.Id);
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    manager.Update(user);
+                    model.Id = user.Id;
+                    model.PhoneNumber = user.PhoneNumber;
+                    model.Email = user.Email;
+                    ViewBag.Alert = "success";
+                    return View(model);
+                }
+                catch (Exception)
+                {
+                    return HttpNotFound();
+                }
+            }
             return View(model);
         }
 

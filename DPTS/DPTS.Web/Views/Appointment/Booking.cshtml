@@ -1,9 +1,13 @@
-﻿@model DPTS.Web.Models.AppointmentScheduleViewModel
+﻿@using DPTS.Web.Helpers
+@model DPTS.Web.Models.AppointmentScheduleViewModel
 @{
     ViewBag.Title = "Booking";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    //js part
+    Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/sticky_message1bba.js");
+    Html.Assets().Scripts.Add("/Scripts/bookings.js");
 }
-<script src="~/Scripts/bookings.js"></script>
+
 <div class="modal-dialog modal-lg tg-modalcontent" role="document">
     <form action="#" method="post" class="appointment-form">
         <fieldset class="booking-model-contents">

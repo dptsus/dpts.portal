@@ -2,31 +2,40 @@
 using System.Web.Mvc;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Entities;
+using Kendo.Mvc.UI;
+using System.Linq;
 
 namespace DPTS.Web.Controllers
 {
     public class SpecialityController : Controller
     {
         #region Field
+
         private readonly ISpecialityService _specialityService;
+
         #endregion
 
         #region Constructor
+
         public SpecialityController(ISpecialityService specialityService)
         {
             _specialityService = specialityService;
         }
+
         #endregion
 
         #region utitlity
+
         [NonAction]
         protected bool IsValidateId(int id)
         {
             return id != 0;
         }
+
         #endregion
 
         #region Methods
+
         public ActionResult List()
         {
             var model = _specialityService.GetAllSpeciality(true);
@@ -95,6 +104,7 @@ namespace DPTS.Web.Controllers
             }
             return View(model);
         }
+
         public ActionResult DeleteConfirmed(int id)
         {
             var speciality = _specialityService.GetSpecialitybyId(id);
@@ -104,7 +114,19 @@ namespace DPTS.Web.Controllers
 
             return Content("Deleted");
         }
-        #endregion
 
+
+        //Search autocomplete call
+        public JsonResult Speciality_Read()
+        {
+            var specialities = _specialityService.GetAllSpeciality(true);
+            var data = specialities.Select(x => new Speciality
+            {
+                Title = x.Title
+            });
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
     }
 }

@@ -7,6 +7,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using DPTS.Web.Models;
+using System.Configuration;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 
 namespace DPTS.Web
 {
@@ -14,9 +18,33 @@ namespace DPTS.Web
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            var smtpServer = ConfigurationManager.AppSettings["SMTPServer"].ToString();
+            var port = ConfigurationManager.AppSettings["Port"].ToString();
+            var userName = ConfigurationManager.AppSettings["Username"].ToString();
+            var password = ConfigurationManager.AppSettings["Password"].ToString();
+            var appName = ConfigurationManager.AppSettings["AppTitle"].ToString();
+            var enableSSL = ConfigurationManager.AppSettings["EnableSSL"].ToString();
+            string text = message.Body;
+            string html = message.Body;
+            var msg = new MailMessage
+            {
+                From = new MailAddress(userName, appName)
+            };
+            msg.To.Add(new MailAddress(message.Destination));
+            msg.Subject = message.Subject;
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+
+            var smtpClient = new SmtpClient(smtpServer, Convert.ToInt32(port));
+            smtpClient.UseDefaultCredentials = false;
+            var credentials = new NetworkCredential(userName, password);
+            smtpClient.Credentials = credentials;
+            smtpClient.EnableSsl = Convert.ToBoolean(enableSSL);
+            smtpClient.Send(msg);
             return Task.FromResult(0);
         }
+
+
     }
 
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.

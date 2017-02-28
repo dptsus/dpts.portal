@@ -107,8 +107,7 @@ namespace DPTS.Services.ExportImport
                         DoctorId = userId,
                         Gender = manager.GetProperty("Gender").StringValue,
                         ShortProfile = manager.GetProperty("ShortProfile").StringValue,
-                        Qualifications = manager.GetProperty("Qualifications").StringValue,
-                        YearsOfExperience = manager.GetProperty("YearsOfExperience").IntValue,
+                        Language = manager.GetProperty("Qualifications").StringValue,
                         RegistrationNumber = manager.GetProperty("RegistrationNumber").StringValue,
                         DateOfBirth = manager.GetProperty("DateOfBirth").StringValue
                     };

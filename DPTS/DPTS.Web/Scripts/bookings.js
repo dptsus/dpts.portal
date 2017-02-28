@@ -433,7 +433,6 @@ function approveAppoinment(id, action) {
                         dataType: "json",
                         success: function (response) {
                             jQuery('body').find('.docdirect-loader-wrap').remove();
-
                             //if (response.action_type == 'approved') {
                             //    var approved = wp.template('status-approved');
                             //    _this.parents('td').html(approved);
