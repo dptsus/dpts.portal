@@ -1214,6 +1214,7 @@
     <Content Include="Content\loader.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\rating.css" />
+    <Content Include="Content\wp-content\themes\docdirect\customdpts.css" />
     <Content Include="Content\wp-content\themes\docdirect\images\mimg.png" />
     <Content Include="Content\wp-content\uploads\2016\12\02.png" />
     <Content Include="Scripts\docdirect_functions.js" />
