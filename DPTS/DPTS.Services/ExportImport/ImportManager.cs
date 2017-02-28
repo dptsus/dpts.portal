@@ -75,8 +75,6 @@ namespace DPTS.Services.ExportImport
 
                         new PropertyByName<Doctor>("Gender"),
                         new PropertyByName<Doctor>("ShortProfile"),
-                        new PropertyByName<Doctor>("Qualifications"),
-                        new PropertyByName<Doctor>("YearsOfExperience"),
                         new PropertyByName<Doctor>("RegistrationNumber"),
                         new PropertyByName<Doctor>("DateOfBirth"),
 
@@ -107,7 +105,7 @@ namespace DPTS.Services.ExportImport
                         DoctorId = userId,
                         Gender = manager.GetProperty("Gender").StringValue,
                         ShortProfile = manager.GetProperty("ShortProfile").StringValue,
-                        Language = manager.GetProperty("Qualifications").StringValue,
+                       // Language = manager.GetProperty("Qualifications").StringValue,
                         RegistrationNumber = manager.GetProperty("RegistrationNumber").StringValue,
                         DateOfBirth = manager.GetProperty("DateOfBirth").StringValue
                     };

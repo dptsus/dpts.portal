@@ -19,4 +19,9 @@
         Friday = 5,
         Saturday = 6,
     }
+    public enum NotifyType
+    {
+        Success,
+        Error
+    }
 }

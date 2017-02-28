@@ -3211,6 +3211,7 @@
     <Content Include="Scripts\kendo\2017.1.118\cultures\kendo.culture.af-ZA.min.js.map" />
     <Content Include="Views\Appointment\ReScheduling.cshtml" />
     <Content Include="Views\ReviewComments\ReviewCommentsApproveList.cshtml" />
+    <Content Include="Views\Shared\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

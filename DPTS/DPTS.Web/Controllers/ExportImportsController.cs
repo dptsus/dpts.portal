@@ -16,7 +16,7 @@ using OfficeOpenXml;
 namespace DPTS.Web.Controllers
 {
     [Authorize]
-    public class ExportImportsController : Controller
+    public class ExportImportsController : BaseController
     {
         #region Feilds
 
@@ -113,7 +113,7 @@ namespace DPTS.Web.Controllers
                             var userEmail = manager.GetProperty("Email").StringValue;
                             var aspNetUser =
                                 _context.AspNetUsers
-                                    .FirstOrDefault(d => d.Email.Equals(userEmail));
+                                    .Where(d => d.Email.Equals(userEmail)).FirstOrDefault();
 
                             var isNew = aspNetUser == null;
 
@@ -148,10 +148,12 @@ namespace DPTS.Web.Controllers
                                 {
                                     await this.UserManager.AddToRoleAsync(user.Id, "Doctor");
                                     _importManager.ImportDoctorsFromXlsx(file.InputStream, user.Id, iRow);
+                                    SuccessNotification("Doctor's records imported successfully !");
                                 }
                             }
                             else
                             {
+                                ErrorNotification("Record already avilable !!");
                                 //update
                             }
 
@@ -161,13 +163,15 @@ namespace DPTS.Web.Controllers
                 }
                 else
                 {
-                    return null;
+                    ErrorNotification("File format not correct or empty !");
                 }
-                return null;
+                return RedirectToAction("ImportDoctor");
+
             }
             catch (Exception exc)
             {
-                return null;
+                ErrorNotification("something went wrong !");
+                return RedirectToAction("ImportDoctor");
             }
         }
 
