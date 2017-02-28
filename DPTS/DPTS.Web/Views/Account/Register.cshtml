@@ -16,6 +16,7 @@
                     <div role="tabpanel" class="tab-pane tg-haslayout active" id="tg-signup-formarea">
                         @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "tg-form-modal tg-form-signup do-registration-form", role = "form" }))
                         {
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                         @Html.AntiForgeryToken()
                             <fieldset>
                                 <div class="form-group">
