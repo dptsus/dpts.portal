@@ -8,7 +8,7 @@
 
 <link href="~/Content/rating.css" rel="stylesheet" />
 <link href="~/Content/Alertify/css/alertify.core.css" rel="stylesheet" />
-<link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" /> 
+<link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" />
 
 <script src="~/Scripts/rating.js"></script>
 <script src="~/Content/Alertify/js/alertify.min.js"></script>
@@ -422,105 +422,121 @@
 
                             <!--Reviews-->
                             <div class="tg-userreviews">
-                                <div class="tg-userheading">
-                                    <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
-                                    @*<h2>1&nbsp;&nbsp;Review(s)</h2>
-                                        <h2>1&nbsp;&nbsp;Review(s)</h2>*@
-                                </div>
-                                <div class="tg-ratingbox">
-                                    <div class="tg-averagerating">
-                                        <h3>Average Rating</h3>
-                                        <em>4.0</em>
-                                        <span class="tg-stars">
-                                            <div class="feature-rating user-star-rating">
-                                                <span class="tg-stars star-rating">
-                                                    <span style="width:80%"></span>
-                                                </span>
-
-                                            </div>
-                                        </span>
+                                @if (Model.listReviewComments.Count > 0)
+                                {
+                                    <div class="tg-userheading">
+                                        <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
+                                        @*<h2>1&nbsp;&nbsp;Review(s)</h2>
+                                            <h2>1&nbsp;&nbsp;Review(s)</h2>*@
                                     </div>
-                                    <div id="tg-userskill" class="tg-userskill">
-                                        <div class="tg-skill">
-                                            <span class="tg-skillname">1 Stars</span>
-                                            <span class="tg-skillpercentage">0%</span>
-                                            <div class="tg-skillbox">
-                                                <div class="tg-skillholder" data-percent="0%">
-                                                    <div class="tg-skillbar"></div>
+                                    <div class="tg-ratingbox">
+                                        <div class="tg-averagerating">
+                                            <h3>Average Rating</h3>
+                                            <em>4.0</em>
+                                            <span class="tg-stars">
+                                                <div class="feature-rating user-star-rating">
+                                                    <span class="tg-stars star-rating">
+                                                        <span style="width:80%"></span>
+                                                    </span>
+
+                                                </div>
+                                            </span>
+                                        </div>
+                                        <div id="tg-userskill" class="tg-userskill">
+                                            <div class="tg-skill">
+                                                <span class="tg-skillname">1 Stars</span>
+                                                <span class="tg-skillpercentage">0%</span>
+                                                <div class="tg-skillbox">
+                                                    <div class="tg-skillholder" data-percent="0%">
+                                                        <div class="tg-skillbar"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tg-skill">
-                                            <span class="tg-skillname">2 Stars</span>
-                                            <span class="tg-skillpercentage">0%</span>
-                                            <div class="tg-skillbox">
-                                                <div class="tg-skillholder" data-percent="0%">
-                                                    <div class="tg-skillbar"></div>
+                                            <div class="tg-skill">
+                                                <span class="tg-skillname">2 Stars</span>
+                                                <span class="tg-skillpercentage">0%</span>
+                                                <div class="tg-skillbox">
+                                                    <div class="tg-skillholder" data-percent="0%">
+                                                        <div class="tg-skillbar"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tg-skill">
-                                            <span class="tg-skillname">3 Stars</span>
-                                            <span class="tg-skillpercentage">0%</span>
-                                            <div class="tg-skillbox">
-                                                <div class="tg-skillholder" data-percent="0%">
-                                                    <div class="tg-skillbar"></div>
+                                            <div class="tg-skill">
+                                                <span class="tg-skillname">3 Stars</span>
+                                                <span class="tg-skillpercentage">0%</span>
+                                                <div class="tg-skillbox">
+                                                    <div class="tg-skillholder" data-percent="0%">
+                                                        <div class="tg-skillbar"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tg-skill">
-                                            <span class="tg-skillname">4 Stars</span>
-                                            <span class="tg-skillpercentage">80%</span>
-                                            <div class="tg-skillbox">
-                                                <div class="tg-skillholder" data-percent="80%">
-                                                    <div class="tg-skillbar" style="width:80%;"></div>
+                                            <div class="tg-skill">
+                                                <span class="tg-skillname">4 Stars</span>
+                                                <span class="tg-skillpercentage">80%</span>
+                                                <div class="tg-skillbox">
+                                                    <div class="tg-skillholder" data-percent="80%">
+                                                        <div class="tg-skillbar" style="width:80%;"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tg-skill">
-                                            <span class="tg-skillname">5 Stars</span>
-                                            <span class="tg-skillpercentage">0%</span>
-                                            <div class="tg-skillbox">
-                                                <div class="tg-skillholder" data-percent="0%">
-                                                    <div class="tg-skillbar"></div>
+                                            <div class="tg-skill">
+                                                <span class="tg-skillname">5 Stars</span>
+                                                <span class="tg-skillpercentage">0%</span>
+                                                <div class="tg-skillbox">
+                                                    <div class="tg-skillholder" data-percent="0%">
+                                                        <div class="tg-skillbar"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <ul class="tg-reviewlisting">
-                                    @foreach (var item in Model.listReviewComments)
-                                    {
-                                        <li>
+                                    <ul class="tg-reviewlisting">
+                                        @foreach (var item in Model.listReviewComments)
+                                        {
+                                            <li>
 
-                                            <div class="tg-review">
-                                                <figure class="tg-reviewimg">
-                                                    <a href="https://themographics.com/wordpress/docdirect/clinic/express-care/"><img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/6-1-150x150.jpg" alt="Reviewer"></a>
-                                                </figure>
+                                                <div class="tg-review">
+                                                    <figure class="tg-reviewimg">
+
+                                                        @{
+                                                            picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
+                                                            profilePicPath = Server.MapPath("~/Uploads/" + Model.Id + "_profile.jpg");
+                                                            if (File.Exists(profilePicPath))
+                                                            {
+                                                                picturePath = "../../Uploads/" + item.CommentOwnerId + "_profile.jpg";
+                                                            }
+                                                        }
+
+                                                        
+                                                        <img src="@picturePath" alt="Reviewer">
+                                                        
+                                                    </figure>
 
 
-                                                <div class="tg-reviewcontet">
+                                                    <div class="tg-reviewcontet">
 
-                                                    <div class="tg-reviewhead">
-                                                        <div class="tg-reviewheadleft">
-                                                            @*<h3><a href="https://themographics.com/wordpress/docdirect/clinic/express-care/">Express Care Clinics</a></h3>*@
-                                                            <h3>@item.Username</h3>
-                                                            <span>@item.DateCreated</span>
+                                                        <div class="tg-reviewhead">
+                                                            <div class="tg-reviewheadleft">
+                                                                @*<h3><a href="https://themographics.com/wordpress/docdirect/clinic/express-care/">Express Care Clinics</a></h3>*@
+                                                                <h3>@item.Username</h3>
+                                                                <span>@item.DateCreated</span>
+                                                            </div>
+                                                            <div class="tg-reviewheadright tg-stars star-rating">
+                                                                <span style="width:@item.Rating%"></span>
+                                                            </div>
                                                         </div>
-                                                        <div class="tg-reviewheadright tg-stars star-rating">
-                                                            <span style="width:@item.Rating%"></span>
+                                                        <div class="tg-description">
+                                                            <p>@item.Comment</p>
                                                         </div>
-                                                    </div>
-                                                    <div class="tg-description">
-                                                        <p>@item.Comment</p>
+
                                                     </div>
 
                                                 </div>
+                                            </li>
+                                        }
+                                    </ul>
 
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+                                }
                                 @if (Model.doctor.DoctorId != ViewBag.User)
                                 {
                                     <div class="tg-leaveyourreview">
