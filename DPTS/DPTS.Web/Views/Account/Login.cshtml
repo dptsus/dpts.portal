@@ -31,7 +31,7 @@
                                         @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-control" })
                                         Remember Me
                                     </label>
-                                    <a class="tg-forgot-password" href="#">
+                                    <a class="tg-forgot-password" href="@Url.Action("ForgotPassword","Account")">
                                         <i>Forgot Password</i>
                                         <i class="fa fa-question-circle"></i>
                                     </a>

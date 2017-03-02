@@ -53,13 +53,18 @@ namespace DPTS.Domain.Speciality
 
         public IList<Domain.Entities.Speciality> GetAllSpeciality(bool showhidden, bool enableTracking = false)
         {
-            var query = _specialityRepository.Table;
-            if (!showhidden)
-                query = query.Where(c => c.IsActive);
-            query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Title);
+            try
+            {
+                var query = _specialityRepository.Table;
+                if (!showhidden)
+                    query = query.Where(c => c.IsActive);
+                query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Title);
 
-            var Specilities = query.ToList();
-            return Specilities;
+                var Specilities = query.ToList();
+                return Specilities;
+            }
+            catch { return null; }
+            
         }
 
         public void UpdateSpeciality(Domain.Entities.Speciality data)
