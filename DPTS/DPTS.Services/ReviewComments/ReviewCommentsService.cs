@@ -42,6 +42,7 @@ namespace DPTS.Domain.ReviewComments
                               {
                                   Id = r.Id,
                                   DoctorName = U1.UserName,
+                                  CommentOwnerId = r.CommentOwnerId,
                                   Username = U2.UserName,
                                   Comment = r.Comment,
                                   Rating = r.Rating,
@@ -87,7 +88,9 @@ namespace DPTS.Domain.ReviewComments
 
         //public IList<RatingDetails> GetRatingDetailsScoreByUser(string UserId)
         //{
-        //    throw new NotImplementedException();
+        //    var query = (from r in _context.ReviewComments
+        //                 where r.Rating==20
+        //                 select new { Key = 1, Value = r.Rating })
         //}
 
         IList<DoctorUserReviewComments> IReviewCommentsService.GetReviewCommentsApprovalList()

@@ -25,6 +25,7 @@ namespace DPTS.Domain.Entities
     {
         public int Id { get; set; }
         public string DoctorName { get; set; }
+        public string CommentOwnerId { get; set; }
         public string Username { get; set; }
         public string Comment { get; set; }
         public decimal Rating { get; set; }
