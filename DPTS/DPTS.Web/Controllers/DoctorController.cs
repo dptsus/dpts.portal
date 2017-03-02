@@ -1592,6 +1592,25 @@ namespace DPTS.Web.Controllers
         }
         #endregion
 
+        #region Picture
+        [ValidateInput(false)]
+        public ActionResult DoctorPictureAdd(int pictureId, int displayOrder,
+            string doctorId)
+        {
+            if (pictureId == 0)
+                throw new ArgumentException();
+
+            var doctor = _doctorService.GetDoctorbyId(doctorId);
+            if (doctor == null)
+                throw new ArgumentException("No doctor found with the specified id");
+
+            //var picture = _pictureService.GetPictureById(pictureId);
+            //if (picture == null)
+            //    throw new ArgumentException("No picture found with the specified id");
+
+            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
     }
 }

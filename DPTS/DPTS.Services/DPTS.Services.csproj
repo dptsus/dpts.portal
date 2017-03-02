@@ -97,6 +97,7 @@
   <ItemGroup>
     <Compile Include="Address\AddressService.cs" />
     <Compile Include="Appointment\AppointmentService.cs" />
+    <Compile Include="Common\PictureService.cs" />
     <Compile Include="DptsException.cs" />
     <Compile Include="ExportImport\Help\PropertyByName.cs" />
     <Compile Include="ExportImport\Help\PropertyManager.cs" />

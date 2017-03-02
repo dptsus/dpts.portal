@@ -13,6 +13,8 @@ namespace DPTS.Web.Models
             Schedule=new List<Schedule>();
             listReviewComments = new List<DoctorUserReviewComments>();
             ReviewComments = new ReviewComments();
+            DoctorPictureModels = new List<DoctorPictureModel>();
+            AddPictureModel = new DoctorPictureModel();
         }
         public string Id { get; set; }
 
@@ -34,9 +36,16 @@ namespace DPTS.Web.Models
 
         public double Distance { get; set; }
 
-        
+        // review
         public virtual IList<DoctorUserReviewComments> listReviewComments { get; set; }
         public virtual ReviewComments ReviewComments { get; set; }
+
+        //picture
+        //pictures
+        public DoctorPictureModel AddPictureModel { get; set; }
+        public IList<DoctorPictureModel> DoctorPictureModels { get; set; }
+
+
 
     }
 }
