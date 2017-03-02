@@ -1,0 +1,20 @@
+﻿/*Responsive with custom style override*/
+
+@media (max-width: 481px) {
+    #auto-search{
+        width:100%;
+    }
+}
+@media (max-width: 1000px) {
+}
+@media (min-width: 1001px) {
+    #auto-search{
+        width:50%;
+    }
+}
+@media (min-width: 769px) {
+}
+@media (min-width:1367px) {
+}
+
+

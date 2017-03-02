@@ -334,10 +334,6 @@
       <HintPath>..\packages\RestSharp.105.2.2\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SendGrid, Version=9.0.12.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sendgrid.9.0.12\lib\net452\SendGrid.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.0.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
@@ -544,6 +540,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\AppointmentScheduleViewModel.cs" />
+    <Compile Include="Models\DoctorPictureModel.cs" />
     <Compile Include="Models\DoctorScheduleListingViewModel.cs" />
     <Compile Include="Models\EmailCategoryViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
@@ -1214,6 +1211,7 @@
     <Content Include="Content\loader.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\rating.css" />
+    <Content Include="Content\wp-content\themes\docdirect\customdpts.css" />
     <Content Include="Content\wp-content\themes\docdirect\images\mimg.png" />
     <Content Include="Content\wp-content\uploads\2016\12\02.png" />
     <Content Include="Scripts\docdirect_functions.js" />
@@ -3211,6 +3209,9 @@
     <Content Include="Scripts\kendo\2017.1.118\cultures\kendo.culture.af-ZA.min.js.map" />
     <Content Include="Views\Appointment\ReScheduling.cshtml" />
     <Content Include="Views\ReviewComments\ReviewCommentsApproveList.cshtml" />
+    <Content Include="Views\Shared\Notifications.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Picture.cshtml" />
+    <Content Include="Views\Doctor\_CreateOrUpdate.Pictures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
