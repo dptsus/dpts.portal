@@ -11,7 +11,7 @@
     var clientId = "picture" + random;
     DPTSDbContext _context = new DPTSDbContext();
     var picture = _context.Picture.Where(s => s.Id.Equals(2)).FirstOrDefault();
-    const int pictureSize = 100;
+    const int pictureSize = 150;
 }
 
 <div id="@(clientId + "value")">

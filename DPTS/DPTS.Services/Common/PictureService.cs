@@ -625,10 +625,14 @@ namespace DPTS.Services.Common
 
 
             var query = from p in _pictureRepository.Table
-                        join pp in _pictureMapRepository.Table on p.Id equals pp.PictureId
-                        orderby pp.DisplayOrder
-                        where pp.UserId == userId
                         select p;
+
+            query = query.SelectMany(d => d.PictureMapping.Where(s => s.UserId.Equals(userId)), (d, s) => d);
+            //var query = from p in _pictureRepository.Table
+            //            join pp in _pictureMapRepository.Table on p.Id equals pp.PictureId
+            //            orderby pp.DisplayOrder
+            //            where pp.UserId == userId
+            //            select p;
 
             if (recordsToReturn > 0)
                 query = query.Take(recordsToReturn);

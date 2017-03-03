@@ -13,8 +13,8 @@ namespace DPTS.Web.Models
             Schedule=new List<Schedule>();
             listReviewComments = new List<DoctorUserReviewComments>();
             ReviewComments = new ReviewComments();
-            DoctorPictureModels = new List<DoctorPictureModel>();
-            AddPictureModel = new DoctorPictureModel();
+            DoctorPictureModels = new List<PictureModel>();
+            AddPictureModel = new PictureModel();
         }
         public string Id { get; set; }
 
@@ -42,8 +42,8 @@ namespace DPTS.Web.Models
 
         //picture
         //pictures
-        public DoctorPictureModel AddPictureModel { get; set; }
-        public IList<DoctorPictureModel> DoctorPictureModels { get; set; }
+        public PictureModel AddPictureModel { get; set; }
+        public IList<PictureModel> DoctorPictureModels { get; set; }
 
 
 

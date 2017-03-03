@@ -97,5 +97,23 @@ namespace DPTS.Web.Controllers
             },
                 MimeTypes.TextPlain);
         }
+
+        [HttpGet]
+        public ActionResult GetUserPictureByUser(string userId)
+        {
+            string pictureUrl = string.Empty;
+            if(!string.IsNullOrWhiteSpace(userId))
+            {
+                var pictures = _pictureService.GetPicturesByUserId(userId);
+                var defaultPicture = pictures.FirstOrDefault();
+                pictureUrl = _pictureService.GetPictureUrl(defaultPicture, 365, false);
+            }
+
+            return Json(new
+            {
+                imageUrl = pictureUrl
+            },
+                MimeTypes.TextPlain);
+        }
     }
 }

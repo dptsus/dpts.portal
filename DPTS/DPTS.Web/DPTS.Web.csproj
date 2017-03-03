@@ -550,6 +550,7 @@
     <Compile Include="Models\DoctorViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Models\ReviewCommentsViewModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SearchViewModel.cs" />

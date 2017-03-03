@@ -1177,8 +1177,34 @@ namespace DPTS.Web.Controllers
                 model.Schedule = _scheduleService.GetScheduleByDoctorId(doctor.DoctorId);
                 model.listReviewComments = _reviewCommentsService.GetAllAprovedReviewCommentsByUser(doctor.DoctorId);
 
-                //model.SocialLinkInformation = _doctorService.GetAllLinksByDoctor(doctorId);
-                //model.AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doctor.DoctorId).FirstOrDefault());
+                #region Picture
+                var pictures = _pictureService.GetPicturesByUserId(doctorId);
+                var defaultPicture = pictures.FirstOrDefault();
+                var defaultPictureModel = new PictureModel
+                {
+                    ImageUrl = _pictureService.GetPictureUrl(defaultPicture, 365, false),
+                    FullSizeImageUrl = _pictureService.GetPictureUrl(defaultPicture, 0, false),
+                    Title = "",
+                    AlternateText = "",
+                };
+
+                //all pictures
+                var pictureModels = new List<PictureModel>();
+                foreach (var picture in pictures)
+                {
+                    var pictureModel = new PictureModel
+                    {
+                        ImageUrl = _pictureService.GetPictureUrl(picture, 150),
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                        Title = "",
+                        AlternateText = "",
+                    };
+                    pictureModels.Add(pictureModel);
+                }
+                model.AddPictureModel = defaultPictureModel;
+                model.DoctorPictureModels = pictureModels;
+                #endregion
+
                 TempData["CommentForId"] = doctorId;
                 ViewBag.User = User.Identity.GetUserId();
                 return View(model);
