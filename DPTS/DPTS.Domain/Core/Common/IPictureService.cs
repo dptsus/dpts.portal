@@ -17,6 +17,13 @@ namespace DPTS.Domain.Common
         byte[] LoadPictureBinary(Picture picture);
 
         /// <summary>
+        /// Get picture SEO friendly name
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <returns>Result</returns>
+       // string GetPictureSeName(string name);
+
+        /// <summary>
         /// Gets the default picture URL
         /// </summary>
         /// <param name="targetSize">The target picture size (longest side)</param>
@@ -33,11 +40,13 @@ namespace DPTS.Domain.Common
         /// <param name="pictureId">Picture identifier</param>
         /// <param name="targetSize">The target picture size (longest side)</param>
         /// <param name="showDefaultPicture">A value indicating whether the default picture is shown</param>
+        /// <param name="storeLocation">Store location URL; null to use determine the current store location automatically</param>
         /// <param name="defaultPictureType">Default picture type</param>
         /// <returns>Picture URL</returns>
         string GetPictureUrl(int pictureId,
             int targetSize = 0,
             bool showDefaultPicture = true,
+            string storeLocation = null,
             PictureType defaultPictureType = PictureType.Entity);
 
         /// <summary>
@@ -46,11 +55,13 @@ namespace DPTS.Domain.Common
         /// <param name="picture">Picture instance</param>
         /// <param name="targetSize">The target picture size (longest side)</param>
         /// <param name="showDefaultPicture">A value indicating whether the default picture is shown</param>
+        /// <param name="storeLocation">Store location URL; null to use determine the current store location automatically</param>
         /// <param name="defaultPictureType">Default picture type</param>
         /// <returns>Picture URL</returns>
         string GetPictureUrl(Picture picture,
             int targetSize = 0,
             bool showDefaultPicture = true,
+            string storeLocation = null,
             PictureType defaultPictureType = PictureType.Entity);
 
         /// <summary>
@@ -89,17 +100,22 @@ namespace DPTS.Domain.Common
         /// <param name="productId">Product identifier</param>
         /// <param name="recordsToReturn">Number of records to return. 0 if you want to get all items</param>
         /// <returns>Pictures</returns>
-        IList<Picture> GetPicturesByProductId(int productId, int recordsToReturn = 0);
+        IList<Picture> GetPicturesByUserId(string userId, int recordsToReturn = 0);
 
         /// <summary>
         /// Inserts a picture
         /// </summary>
         /// <param name="pictureBinary">The picture binary</param>
         /// <param name="mimeType">The picture MIME type</param>
+        /// <param name="seoFilename">The SEO filename</param>
+        /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
+        /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
         /// <param name="isNew">A value indicating whether the picture is new</param>
         /// <param name="validateBinary">A value indicating whether to validated provided picture binary</param>
         /// <returns>Picture</returns>
-        Picture InsertPicture(byte[] pictureBinary, string mimeType, bool isNew = true, bool validateBinary = true);
+        Picture InsertPicture(byte[] pictureBinary, string mimeType, string seoFilename,
+            string altAttribute = null, string titleAttribute = null,
+            bool isNew = true, bool validateBinary = true);
 
         /// <summary>
         /// Updates the picture
@@ -107,11 +123,23 @@ namespace DPTS.Domain.Common
         /// <param name="pictureId">The picture identifier</param>
         /// <param name="pictureBinary">The picture binary</param>
         /// <param name="mimeType">The picture MIME type</param>
+        /// <param name="seoFilename">The SEO filename</param>
+        /// <param name="altAttribute">"alt" attribute for "img" HTML element</param>
+        /// <param name="titleAttribute">"title" attribute for "img" HTML element</param>
         /// <param name="isNew">A value indicating whether the picture is new</param>
         /// <param name="validateBinary">A value indicating whether to validated provided picture binary</param>
         /// <returns>Picture</returns>
         Picture UpdatePicture(int pictureId, byte[] pictureBinary, string mimeType,
+            string seoFilename, string altAttribute = null, string titleAttribute = null,
             bool isNew = true, bool validateBinary = true);
+
+        /// <summary>
+        /// Updates a SEO filename of a picture
+        /// </summary>
+        /// <param name="pictureId">The picture identifier</param>
+        /// <param name="seoFilename">The SEO filename</param>
+        /// <returns>Picture</returns>
+        Picture SetSeoFilename(int pictureId, string seoFilename);
 
         /// <summary>
         /// Validates input picture dimensions
@@ -126,11 +154,5 @@ namespace DPTS.Domain.Common
         /// </summary>
         bool StoreInDb { get; set; }
 
-        /// <summary>
-        /// Get pictures hashes
-        /// </summary>
-        /// <param name="picturesIds">Pictures Ids</param>
-        /// <returns></returns>
-        IDictionary<int, string> GetPicturesHash(int[] picturesIds);
     }
 }

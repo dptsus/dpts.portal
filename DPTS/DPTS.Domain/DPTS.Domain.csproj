@@ -75,6 +75,7 @@
     <Compile Include="Entities\Notification\EmailCategory.cs" />
     <Compile Include="Entities\Notification\SentEmailHistory.cs" />
     <Compile Include="Entities\Picture.cs" />
+    <Compile Include="Entities\PictureMapping.cs" />
     <Compile Include="Entities\PictureType.cs" />
     <Compile Include="Entities\ReviewComments.cs" />
     <Compile Include="Entities\Notification\SentSmsHistory.cs" />

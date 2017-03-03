@@ -6,31 +6,28 @@
     {
         <div class="panel panel-default">
             <div class="panel-body">
-                <div id="productpictures-grid"></div>
+                <div id="doctorpictures-grid"></div>
 
-                @*<script>
+                <script>
                     $(document).ready(function() {
-                        $("#productpictures-grid").kendoGrid({
+                        $("#doctorpictures-grid").kendoGrid({
                             dataSource: {
                                 type: "json",
                                 transport: {
                                     read: {
-                                        url: "@Html.Raw(Url.Action("ProductPictureList", "Product", new {productId = Model.Id}))",
+                                        url: "@Html.Raw(Url.Action("DoctorPictureList", "Doctor", new {doctorId = Model.DoctorId}))",
                                         type: "POST",
-                                        dataType: "json",
-                                        data: addAntiForgeryToken
+                                        dataType: "json"
                                     },
                                     update: {
-                                        url: "@Html.Raw(Url.Action("ProductPictureUpdate", "Product"))",
+                                        url: "@Html.Raw(Url.Action("DoctorPictureUpdate", "Doctor"))",
                                         type: "POST",
-                                        dataType: "json",
-                                        data: addAntiForgeryToken
+                                        dataType: "json"
                                     },
                                     destroy: {
-                                        url: "@Html.Raw(Url.Action("ProductPictureDelete", "Product"))",
+                                        url: "@Html.Raw(Url.Action("DoctorPictureDelete", "Doctor"))",
                                         type: "POST",
-                                        dataType: "json",
-                                        data: addAntiForgeryToken
+                                        dataType: "json"
                                     }
                                 },
                                 schema: {
@@ -68,42 +65,42 @@
                                 info: false
                             },
                             editable: {
-                                confirmation: "@T("Admin.Common.DeleteConfirmation")",
+                                confirmation: "DeleteConfirmation",
                                 mode: "inline"
                             },
                             scrollable: false,
                             columns: [
                             {
                                 field: "PictureUrl",
-                                title: "@T("Admin.Catalog.Products.Pictures.Fields.Picture")",
+                                title: "Picture",
                                 template: '<a href="#=PictureUrl#" target="_blank"><img alt="#=PictureId#" src="#=PictureUrl#" width="150" /></a>',
                                 width: 200
                             }, {
                                 field: "DisplayOrder",
-                                title: "@T("Admin.Catalog.Products.Pictures.Fields.DisplayOrder")",
+                                title: "DisplayOrder",
                                 //integer format
                                 format: "{0:0}",
                                 width: 150
                             }, {
                                 field: "OverrideAltAttribute",
-                                title: "@T("Admin.Catalog.Products.Pictures.Fields.OverrideAltAttribute")",
+                                title: "Alt",
                                 width: 200
                             }, {
                                 field: "OverrideTitleAttribute",
-                                title: "@T("Admin.Catalog.Products.Pictures.Fields.OverrideTitleAttribute")",
+                                title: "Title",
                                 width: 200
                             }, {
                                 command: [
                                 {
                                     name: "edit",
                                     text: {
-                                        edit: "@T("Admin.Common.Edit")",
-                                        update: "@T("Admin.Common.Update")",
-                                        cancel: "@T("Admin.Common.Cancel")"
+                                        edit: "Edit",
+                                        update: "Update",
+                                        cancel: "Cancel"
                                     }
                                 }, {
                                     name: "destroy",
-                                    text: "@T("Admin.Common.Delete")"
+                                    text: "Delete"
                                 }
                                 ],
                                 width: 200
@@ -111,7 +108,7 @@
                             ]
                         });
                     });
-                </script>*@
+                </script>
             </div>
         </div>
 
@@ -124,6 +121,8 @@
                     $(document).ready(function() {
                         $('#addDoctorPicture').click(function() {
                             var pictureId = $("#PictureId").val();
+                            var overrideAltAttribute = $("#OverrideAltAttribute").val();
+                            var overrideTitleAttribute = $("#OverrideTitleAttribute").val();
                             var displayOrder = $("#DisplayOrder").val();
 
                             if (pictureId == 0) {
@@ -136,9 +135,10 @@
                             var postData = {
                                 pictureId: pictureId,
                                 displayOrder: displayOrder,
-                                doctorId: @Model.DoctorId,
+                                overrideAltAttribute: overrideAltAttribute,
+                                overrideTitleAttribute: overrideTitleAttribute,
+                                doctorId: "@Model.DoctorId"
                                 };
-                            addAntiForgeryToken(postData);
 
                             $.ajax({
                                 cache: false,
@@ -151,7 +151,7 @@
                                     $('#addDoctorPicture').attr('disabled', false);
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
-                                    alert('Failed to add product picture.');
+                                    alert('Failed to add doctor picture.');
                                     $('#addDoctorPicture').attr('disabled', false);
                                 }
                             });
@@ -169,6 +169,24 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-3">
+                        @Html.LabelFor(model => model.OverrideAltAttribute)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.OverrideAltAttribute)
+                        @Html.ValidationMessageFor(model => model.OverrideAltAttribute)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.OverrideTitleAttribute)
+                    </div>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.OverrideTitleAttribute)
+                        @Html.ValidationMessageFor(model => model.OverrideTitleAttribute)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
                         @Html.LabelFor(model => model.DisplayOrder)
                     </div>
                     <div class="col-md-9">
@@ -178,7 +196,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-9 col-md-offset-3">
-                        <button type="button" id="addProductPicture" class="btn btn-primary">Add Picture</button>
+                        <button type="button" id="addDoctorPicture" class="btn btn-primary">Add Picture</button>
                     </div>
                 </div>
             </div>

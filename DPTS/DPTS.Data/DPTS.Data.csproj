@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201702280524565_CreateReviewComments.Designer.cs">
       <DependentUpon>201702280524565_CreateReviewComments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703030551207_createPictureAndMapping.cs" />
+    <Compile Include="Migrations\201703030551207_createPictureAndMapping.Designer.cs">
+      <DependentUpon>201703030551207_createPictureAndMapping.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -141,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702280524565_CreateReviewComments.resx">
       <DependentUpon>201702280524565_CreateReviewComments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703030551207_createPictureAndMapping.resx">
+      <DependentUpon>201703030551207_createPictureAndMapping.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

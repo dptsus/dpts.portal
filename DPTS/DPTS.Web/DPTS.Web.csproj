@@ -524,6 +524,7 @@
     <Compile Include="Controllers\ExportImportsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PictureController.cs" />
     <Compile Include="Controllers\ReviewCommentsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SpecialityController.cs" />
@@ -1967,6 +1968,12 @@
     <None Include="Properties\PublishProfiles\tesrt.pubxml" />
     <None Include="Properties\PublishProfiles\testfile.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\fineuploader\fineuploader-4.2.2.min.css" />
+    <Content Include="Scripts\fineuploader\iframe.xss.response-4.2.2.js" />
+    <Content Include="Scripts\fineuploader\jquery.fineuploader-4.2.2.js" />
+    <Content Include="Scripts\fineuploader\jquery.fineuploader-4.2.2.min.js" />
+    <Content Include="Scripts\fineuploader\loading.gif" />
+    <Content Include="Scripts\fineuploader\processing.gif" />
     <Content Include="Scripts\jmelosegui.googlemap.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -3212,6 +3219,7 @@
     <Content Include="Views\Shared\Notifications.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Picture.cshtml" />
     <Content Include="Views\Doctor\_CreateOrUpdate.Pictures.cshtml" />
+    <Content Include="Views\Doctor\DoctorShowcasePictures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3220,6 +3228,7 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\button\static\css\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\Picture\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

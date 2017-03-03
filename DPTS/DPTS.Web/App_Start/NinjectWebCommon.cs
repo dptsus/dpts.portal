@@ -36,7 +36,8 @@ namespace DPTS.Web
     using EmailSmsNotifications.Services;
     using Domain.Core.ReviewComments;
     using Domain.ReviewComments;
-
+    using Domain.Common;
+    using Services.Common;
     public static class NinjectWebCommon
     {
         private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
@@ -101,6 +102,7 @@ namespace DPTS.Web
             kernel.Bind<IEmailNotificationService>().To<EmailNotificationService>();
             kernel.Bind<IImportManager>().To<ImportManager>();
             kernel.Bind<IReviewCommentsService>().To<ReviewCommentsService>();
+            kernel.Bind<IPictureService>().To<PictureService>();
         }
     }
 }

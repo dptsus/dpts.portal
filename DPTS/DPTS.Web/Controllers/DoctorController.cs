@@ -17,6 +17,7 @@ using DPTS.Domain.Core.ReviewComments;
 using Kendo.Mvc.UI;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
 using DPTS.Services;
+using DPTS.Domain.Common;
 
 namespace DPTS.Web.Controllers
 {
@@ -32,6 +33,7 @@ namespace DPTS.Web.Controllers
         private readonly IAppointmentService _scheduleService;
         private readonly ApplicationDbContext _context;
         private readonly IReviewCommentsService _reviewCommentsService;
+        private readonly IPictureService _pictureService;
 
         #endregion
 
@@ -41,7 +43,8 @@ namespace DPTS.Web.Controllers
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
             IAddressService addressService, IAppointmentService scheduleService,
-            IReviewCommentsService reviewCommentsService)
+            IReviewCommentsService reviewCommentsService,
+            IPictureService pictureService)
         {
             _doctorService = doctorService;
             _context = new ApplicationDbContext();
@@ -51,6 +54,7 @@ namespace DPTS.Web.Controllers
             _addressService = addressService;
             _scheduleService = scheduleService;
             _reviewCommentsService = reviewCommentsService;
+            _pictureService = pictureService;
         }
 
         #endregion
@@ -1595,6 +1599,7 @@ namespace DPTS.Web.Controllers
         #region Picture
         [ValidateInput(false)]
         public ActionResult DoctorPictureAdd(int pictureId, int displayOrder,
+            string overrideAltAttribute, string overrideTitleAttribute,
             string doctorId)
         {
             if (pictureId == 0)
@@ -1604,11 +1609,122 @@ namespace DPTS.Web.Controllers
             if (doctor == null)
                 throw new ArgumentException("No doctor found with the specified id");
 
-            //var picture = _pictureService.GetPictureById(pictureId);
-            //if (picture == null)
-            //    throw new ArgumentException("No picture found with the specified id");
+            var picture = _pictureService.GetPictureById(pictureId);
+            if (picture == null)
+                throw new ArgumentException("No picture found with the specified id");
+
+            _doctorService.InsertDoctorPicture(new PictureMapping
+            {
+                PictureId = pictureId,
+                UserId = doctorId,
+                DisplayOrder = displayOrder,
+            });
+
+            _pictureService.UpdatePicture(picture.Id,
+                _pictureService.LoadPictureBinary(picture),
+                picture.MimeType,
+                picture.SeoFilename,
+                overrideAltAttribute,
+                overrideTitleAttribute);
+
+           // _pictureService.SetSeoFilename(pictureId, _pictureService.GetPictureSeName(doctor.AspNetUser.Id));
 
             return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult DoctorShowcasePictures()
+        {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
+            var model = new DoctorPictureModel();
+            model.DoctorId = User.Identity.GetUserId();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult DoctorPictureList(DataSourceRequest command, string doctorId)
+        {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
+            var doctorPictures = _doctorService.GetDoctorPicturesByDoctorId(doctorId);
+            var doctorPicturesModel = doctorPictures
+                .Select(x =>
+                {
+                    var picture = _pictureService.GetPictureById(x.PictureId);
+                    if (picture == null)
+                        throw new Exception("Picture cannot be loaded");
+                    var m = new DoctorPictureModel
+                    {
+                        Id = x.Id,
+                        DoctorId = x.UserId,
+                        PictureId = x.PictureId,
+                        PictureUrl = _pictureService.GetPictureUrl(picture),
+                        OverrideAltAttribute = picture.AltAttribute,
+                        OverrideTitleAttribute = picture.TitleAttribute,
+                        DisplayOrder = x.DisplayOrder
+                    };
+                    return m;
+                })
+                .ToList();
+
+            var gridModel = new DataSourceResult
+            {
+                Data = doctorPicturesModel,
+                Total = doctorPicturesModel.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        public ActionResult DoctorPictureUpdate(DoctorPictureModel model)
+        {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
+            var doctorPicture = _doctorService.GetDoctorPictureById(model.Id);
+            if (doctorPicture == null)
+                throw new ArgumentException("No Doctor picture found with the specified id");
+           
+            doctorPicture.DisplayOrder = model.DisplayOrder;
+            _doctorService.UpdateDoctorPicture(doctorPicture);
+
+            var picture = _pictureService.GetPictureById(doctorPicture.PictureId);
+            if (picture == null)
+                throw new ArgumentException("No picture found with the specified id");
+
+            _pictureService.UpdatePicture(picture.Id,
+                _pictureService.LoadPictureBinary(picture),
+                picture.MimeType,
+                picture.SeoFilename,
+                model.OverrideAltAttribute,
+                model.OverrideTitleAttribute);
+
+            return new NullJsonResult();
+        }
+
+        [HttpPost]
+        public ActionResult DoctorPictureDelete(int id)
+        {
+            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                return new HttpUnauthorizedResult();
+
+            var doctorPicture = _doctorService.GetDoctorPictureById(id);
+            if (doctorPicture == null)
+                throw new ArgumentException("No doctor picture found with the specified id");
+
+            var doctorId = doctorPicture.UserId;
+
+            var pictureId = doctorPicture.PictureId;
+            _doctorService.DeleteDoctorPicture(doctorPicture);
+
+            var picture = _pictureService.GetPictureById(pictureId);
+            if (picture == null)
+                throw new ArgumentException("No picture found with the specified id");
+            _pictureService.DeletePicture(picture);
+
+            return new NullJsonResult();
         }
         #endregion
 

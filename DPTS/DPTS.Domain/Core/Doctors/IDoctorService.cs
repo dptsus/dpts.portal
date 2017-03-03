@@ -103,5 +103,17 @@ namespace DPTS.Domain.Core.Doctors
         IPagedList<Experience> GetAllExperience(string doctorId, int pageIndex = 0,
             int pageSize = Int32.MaxValue, bool showHidden = false);
         #endregion
+
+        #region Picture
+        void InsertDoctorPicture(PictureMapping docPicture);
+
+        IList<PictureMapping> GetDoctorPicturesByDoctorId(string doctorId);
+
+        PictureMapping GetDoctorPictureById(int doctorPictureId);
+
+        void UpdateDoctorPicture(PictureMapping docPicture);
+
+        void DeleteDoctorPicture(PictureMapping docPicture);
+        #endregion
     }
 }

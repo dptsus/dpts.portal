@@ -14,7 +14,7 @@
                                     FormMethod.Post, new { @class = "tg-formeditprofile tg-haslayout do-account-setitngs" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.HiddenFor(model => model.id)
+                    @Html.HiddenFor(model => model.Id)
 
                     @Html.Partial("_CreateUpdateAddress", Model)
 
