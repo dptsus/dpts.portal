@@ -3227,6 +3227,7 @@
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Content\images\thumbs\000\" />
     <Folder Include="Content\wp-content\plugins\unyson\framework\extensions\shortcodes\shortcodes\button\static\css\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\Picture\" />
