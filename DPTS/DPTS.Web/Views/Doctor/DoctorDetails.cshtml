@@ -421,9 +421,13 @@
                                 </div>*@
 
                             <!--Reviews-->
-                            <div class="tg-userreviews">
-                                @if (Model.listReviewComments.Count > 0)
-                                {
+
+
+                            @if (Model.listReviewComments != null)
+                            {
+                                <div class="tg-userreviews">
+                                    if (Model.listReviewComments.Count > 0)
+                                    {
                                     <div class="tg-userheading">
                                         <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
                                         @*<h2>1&nbsp;&nbsp;Review(s)</h2>
@@ -492,7 +496,7 @@
                                     </div>
                                     <ul class="tg-reviewlisting">
                                         @foreach (var item in Model.listReviewComments)
-                                        {
+                {
                                             <li>
 
                                                 <div class="tg-review">
@@ -507,9 +511,9 @@
                                                             }
                                                         }
 
-                                                        
+
                                                         <img src="@picturePath" alt="Reviewer">
-                                                        
+
                                                     </figure>
 
 
@@ -533,54 +537,56 @@
 
                                                 </div>
                                             </li>
-                                        }
+                                                            }
                                     </ul>
 
-                                }
-                                @if (Model.doctor.DoctorId != ViewBag.User)
-                                {
-                                    <div class="tg-leaveyourreview">
-                                        <div class="tg-userheading">
-                                            <h2>Leave Your Review</h2>
+                                    }
+                                </div>
+                                                            }
+                            @if (Model.doctor.DoctorId != ViewBag.User && ViewBag.User != null)
+                            {
+                                <div class="tg-leaveyourreview">
+                                    <div class="tg-userheading">
+                                        <h2>Leave Your Review</h2>
+                                    </div>
+
+                                    @*@using (Html.BeginForm("SaveReivewComment", "Doctor", FormMethod.Post))
+                                        {*@
+                                    <form id="ReviewComment" method="post">
+                                        <div class="form-group">
+
+                                            @*<select name="starrating" class="form-control">
+                                                    <option value="20">1 Star</option>
+                                                    <option value="40">2 Star</option>
+                                                    <option value="60">3 Star</option>
+                                                    <option value="80">4 Star</option>
+                                                    <option value="100">5 Star</option>
+                                                </select>*@
+
+                                            <div class="form-control ratting-item">
+                                                <input class="rating" name="starrating" type="radio" value="1" />
+                                                <input class="rating" name="starrating" type="radio" value="2" />
+                                                <input class="rating" name="starrating" type="radio" value="3" />
+                                                <input class="rating" name="starrating" type="radio" value="4" />
+                                                <input class="rating" name="starrating" type="radio" value="5" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type='text' name="UserComment" class="form-control" placeholder="Type your comment" required />
                                         </div>
 
-                                        @*@using (Html.BeginForm("SaveReivewComment", "Doctor", FormMethod.Post))
-                                            {*@
-                                        <form id="ReviewComment" method="post">
-                                            <div class="form-group">
 
-                                                @*<select name="starrating" class="form-control">
-                                                        <option value="20">1 Star</option>
-                                                        <option value="40">2 Star</option>
-                                                        <option value="60">3 Star</option>
-                                                        <option value="80">4 Star</option>
-                                                        <option value="100">5 Star</option>
-                                                    </select>*@
-
-                                                <div class="form-control ratting-item">
-                                                    <input class="rating" name="starrating" type="radio" value="1" />
-                                                    <input class="rating" name="starrating" type="radio" value="2" />
-                                                    <input class="rating" name="starrating" type="radio" value="3" />
-                                                    <input class="rating" name="starrating" type="radio" value="4" />
-                                                    <input class="rating" name="starrating" type="radio" value="5" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type='text' name="UserComment" class="form-control" placeholder="Type your comment" required />
-                                            </div>
-
-
-                                            <button type="button" onclick="SaveReviewComments()" class="tg-btn process-account-settings">Submit</button>
-                                        </form>
+                                        <button type="button" onclick="SaveReviewComments()" class="tg-btn process-account-settings">Submit</button>
+                                    </form>
 
 
 
-                                        <span>
-                                            @*<a href="javascript:;" class="tg-btn" data-toggle="modal" data-target=".tg-user-modal">Submit</a>*@
-                                        </span>
-                                    </div>
-                                }
-                            </div>
+                                    <span>
+                                        @*<a href="javascript:;" class="tg-btn" data-toggle="modal" data-target=".tg-user-modal">Submit</a>*@
+                                    </span>
+                                </div>
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -623,6 +629,4 @@
             }
         });
     };
-
-    //    });
 </script>
