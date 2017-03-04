@@ -25,6 +25,7 @@ namespace DPTS.Services.Doctors
         private readonly IRepository<Experience> _experienceRepository;
         private readonly IAddressService _addressService;
         private readonly DPTSDbContext _context;
+        private readonly IRepository<PictureMapping> _pictureMapRepository;
 
         #endregion
 
@@ -39,7 +40,8 @@ namespace DPTS.Services.Doctors
             IRepository<SocialLinkInformation> socialLinksRepository,
             IRepository<HonorsAwards> honorsAwardsRepository,
             IRepository<Education> educationRepository,
-            IRepository<Experience> experienceRepository)
+            IRepository<Experience> experienceRepository,
+            IRepository<PictureMapping> pictureMapRepository)
         {
             _doctorRepository = doctorRepository;
             _specialityRepository = specialityRepository;
@@ -53,6 +55,7 @@ namespace DPTS.Services.Doctors
             _educationRepository = educationRepository;
             _experienceRepository = experienceRepository;
             _context = new DPTSDbContext();
+            _pictureMapRepository = pictureMapRepository;
         }
         #endregion
 
@@ -490,6 +493,49 @@ namespace DPTS.Services.Doctors
 
             query = query.OrderBy(c => c.DisplayOrder);
             return new PagedList<Experience>(query, pageIndex, pageSize);
+        }
+        #endregion
+
+        #region Picture
+        public virtual void InsertDoctorPicture(PictureMapping docPicture)
+        {
+            if (docPicture == null)
+                throw new ArgumentNullException("productPicture");
+
+            _pictureMapRepository.Insert(docPicture);
+        }
+
+        public virtual IList<PictureMapping> GetDoctorPicturesByDoctorId(string doctorId)
+        {
+            var query = from pp in _pictureMapRepository.Table
+                        where pp.UserId == doctorId
+                        orderby pp.DisplayOrder
+                        select pp;
+            var docPictures = query.ToList();
+            return docPictures;
+        }
+
+        public virtual PictureMapping GetDoctorPictureById(int doctorPictureId)
+        {
+            if (doctorPictureId == 0)
+                return null;
+
+            return _pictureMapRepository.GetById(doctorPictureId);
+        }
+
+        public virtual void UpdateDoctorPicture(PictureMapping docPicture)
+        {
+            if (docPicture == null)
+                throw new ArgumentNullException("docPicture");
+
+            _pictureMapRepository.Update(docPicture);
+        }
+        public virtual void DeleteDoctorPicture(PictureMapping docPicture)
+        {
+            if (docPicture == null)
+                throw new ArgumentNullException("docPicture");
+
+            _pictureMapRepository.Delete(docPicture);
         }
         #endregion
 

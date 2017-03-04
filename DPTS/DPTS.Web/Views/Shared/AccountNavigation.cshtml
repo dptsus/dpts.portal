@@ -1,6 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-
-@if (Request.IsAuthenticated && User.IsInRole("Doctor"))
+﻿@if (Request.IsAuthenticated && User.IsInRole("Doctor"))
 {
     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 ">
     <aside id="tg-sidebar" class="dashboard-sidebar">
@@ -9,7 +7,7 @@
                 <figcaption>
                     <h4></h4>
                 </figcaption>
-                <a><img id="profile-picture" alt="Avatar"></a>
+                <a><img id="profile-picture" src="~/Content/wp-content/themes/docdirect/images/user365x365.jpg?1488562998634" alt="Avatar"></a>
             </figure>
         </div>
         <div class="tg-widget tg-widget-accordions">
@@ -18,6 +16,7 @@
                 @*<li class="active"><a href="@Url.Action("Info", "Doctor")">My Profile</a></li>*@
                 <li class=""><a href="@Url.Action("ProfileSetting", "Doctor")">Profile Settings</a></li>
                 <li class=""><a href="@Url.Action("Addresses", "Doctor")">Addresses</a></li>
+                <li class=""><a href="@Url.Action("DoctorShowcasePictures", "Doctor")">Pictures</a></li>
                 <li class=""><a href="@Url.Action("Favourites", "Doctor")">Favourites</a></li>
                 <li class=""><a href="@Url.Action("InvoicesPackages", "Doctor")">Invoices &amp; Packages</a></li>
                 <li class=""><a href="@Url.Action("DoctorSchedules", "Doctor")">My Schedules</a></li>
@@ -37,19 +36,5 @@
         </div>
     </aside>
 </div>
+
 }
-
-@Scripts.Render("~/bundles/jquery")
-<script type="text/javascript">
-    $(function () {
-        // profile pic
-        var ProfilePicId = "@User.Identity.GetUserId()" + "_profile";
-        $.get('../../Uploads/' + ProfilePicId + '.jpg')
-            .done(function () {
-                $("#profile-picture").attr("src", '../../Uploads/' + ProfilePicId + '.jpg?' + new Date().getTime());
-            }).fail(function () {
-                $("#profile-picture").attr("src", '/Content/wp-content/themes/docdirect/images/user365x365.jpg?' + new Date().getTime());
-            })
-    });
-
-</script>

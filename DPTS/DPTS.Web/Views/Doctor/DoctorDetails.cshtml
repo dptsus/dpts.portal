@@ -1,11 +1,14 @@
 ﻿@model DPTS.Web.Models.DoctorViewModel
 @using DPTS.Domain.Entities;
+@using DPTS.Web.Helpers
 @{
     ViewBag.Title = "DoctorDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
     Address addr = Model.Addresses.FirstOrDefault();
-}
-
+    Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/prettyPhoto1bba.css");
+    Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/owl.theme1bba.css");
+    <script src="~/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js"></script>
+}                                                    
 <link href="~/Content/rating.css" rel="stylesheet" />
 <link href="~/Content/Alertify/css/alertify.core.css" rel="stylesheet" />
 <link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" />
@@ -13,7 +16,7 @@
 <script src="~/Scripts/rating.js"></script>
 <script src="~/Content/Alertify/js/alertify.min.js"></script>
 <main id="main" class="tg-page-wrapper tg-haslayout">
-    <div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll" data-image-src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/10/DOCTOR.jpg">
+    <div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll" data-image-src="">
     </div>
     <div class="container">
         <div class="row">
@@ -22,15 +25,15 @@
                     <aside id="tg-sidebar" class="tg-sidebar">
                         <div class="tg-widget tg-widgetuserdetail">
                             <figure class="tg-userimg">
-                                @{
-                                    string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
-                                    string profilePicPath = Server.MapPath("~/Uploads/" + Model.Id + "_profile.jpg");
-                                    if (File.Exists(profilePicPath))
-                                    {
-                                        picturePath = "../../Uploads/" + Model.Id + "_profile.jpg";
-                                    }
+                                @if (!string.IsNullOrWhiteSpace(Model.AddPictureModel.ImageUrl))
+                                {
+                                    <img src="@Model.AddPictureModel.ImageUrl" alt="">
                                 }
-                                <img src="@picturePath" alt="">
+                                else
+                                {
+                                    <img src="~/Content/wp-content/themes/docdirect/images/user365x365.jpg?1488562998634" alt="">
+                                }
+
                                 @*<figcaption>
                                         <ul class="tg-featureverified">
                                             <li class="tg-featuresicon"><a href="javascript:;"><i class="fa fa-bolt"></i><span>featured</span></a></li>
@@ -343,7 +346,7 @@
                                     </div>
                                     <ul>
                                         @foreach (var awd in Model.doctor.HonorsAwards)
-                {
+                                         {
                                             <li>
                                                 <div class="tg-dotstyletitle">
                                                     <h3>@awd.Name &nbsp;&nbsp;(@awd.AwardDate.ToString("MMMM, yyyy"))</h3>
@@ -370,55 +373,25 @@
                                 </div>
                             }
 
-
-                            <!--Video URL-->
-                            @*<div class="tg-userphotogallery">
-                                    <div class="tg-userheading">
-                                        <h2>Photo Gallery</h2>
-                                    </div>
-                                    <ul>
+                            <div class="tg-userphotogallery">
+                                <div class="tg-userheading">
+                                    <h2>Photo Gallery</h2>
+                                </div>
+                                <ul>
+                                    @foreach (var pic in Model.DoctorPictureModels)
+                                    {
                                         <li>
                                             <figure>
-                                                <a href="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-10.jpg" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]">
-                                                    <img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-10-150x150.jpg" alt="img-10">
+                                                <a href="@pic.FullSizeImageUrl" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]">
+                                                    <img src="@pic.ImageUrl" alt="img-10" width="150" height="150">
                                                     <figcaption><span class="icon-add"></span></figcaption>
                                                 </a>
                                             </figure>
                                         </li>
-                                        <li>
-                                            <figure>
-                                                <a href="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-09.jpg" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]">
-                                                    <img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-09-150x150.jpg" alt="img-09">
-                                                    <figcaption><span class="icon-add"></span></figcaption>
-                                                </a>
-                                            </figure>
-                                        </li>
-                                        <li>
-                                            <figure>
-                                                <a href="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-08.jpg" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]">
-                                                    <img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-08-150x150.jpg" alt="img-08">
-                                                    <figcaption><span class="icon-add"></span></figcaption>
-                                                </a>
-                                            </figure>
-                                        </li>
-                                        <li>
-                                            <figure>
-                                                <a href="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-07.jpg" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]">
-                                                    <img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-07-150x150.jpg" alt="img-07">
-                                                    <figcaption><span class="icon-add"></span></figcaption>
-                                                </a>
-                                            </figure>
-                                        </li>
-                                        <li>
-                                            <figure>
-                                                <a href="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-06.jpg" data-rel="prettyPhoto[iframe]" rel="prettyPhoto[iframe]">
-                                                    <img src="https://themographics.com/wordpress/docdirect/wp-content/uploads/2016/04/img-06-150x150.jpg" alt="img-06">
-                                                    <figcaption><span class="icon-add"></span></figcaption>
-                                                </a>
-                                            </figure>
-                                        </li>
-                                    </ul>
-                                </div>*@
+                                    }
+                                </ul>
+                            </div>
+                            
 
                             <!--Reviews-->
 
@@ -498,11 +471,10 @@
                                         @foreach (var item in Model.listReviewComments)
                 {
                                             <li>
-
                                                 <div class="tg-review">
                                                     <figure class="tg-reviewimg">
 
-                                                        @{
+                                                        @*@{
                                                             picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
                                                             profilePicPath = Server.MapPath("~/Uploads/" + Model.Id + "_profile.jpg");
                                                             if (File.Exists(profilePicPath))
@@ -510,12 +482,9 @@
                                                                 picturePath = "../../Uploads/" + item.CommentOwnerId + "_profile.jpg";
                                                             }
                                                         }
-
-
-                                                        <img src="@picturePath" alt="Reviewer">
+                                                        <img src="@picturePath" alt="Reviewer">*@
 
                                                     </figure>
-
 
                                                     <div class="tg-reviewcontet">
 
@@ -534,12 +503,11 @@
                                                         </div>
 
                                                     </div>
-
+1
                                                 </div>
                                             </li>
                                                             }
                                     </ul>
-
                                     }
                                 </div>
                                                             }
@@ -594,6 +562,7 @@
         </div>
     </div>
 </main>
+<script src="~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js"></script>
 <script>
     $(function () {
         $('.ratting-item').rating(function (vote, event) {
@@ -603,7 +572,6 @@
         });
     });
 
-    //$("#ReviewComment").on('submit', function () {
     function SaveReviewComments() {
         var form = $("#ReviewComment").serialize();
         $.ajax({
@@ -629,4 +597,36 @@
             }
         });
     };
+    /*--------------------------------------
+			DOCTOR'S GALLERY
+	--------------------------------------*/
+    $("#tg-photosgallery").owlCarousel({
+        autoPlay: true,
+        items: 3,
+        itemsDesktop: [1199, 3],
+        itemsDesktopSmall: [991, 2],
+        itemsTabletSmall: [568, 1],
+        slideSpeed: 300,
+        paginationSpeed: 400,
+        pagination: false,
+        navigation: true,
+        navigationText: [
+			"<i class='tg-prev fa fa-angle-left'></i>",
+			"<i class='tg-next fa fa-angle-right'></i>"
+        ]
+    });
+    /*--------------------------------------
+			PRETTY PHOTO GALLERY
+	--------------------------------------*/
+    $("a[data-rel]").each(function () {
+        $(this).attr("rel", $(this).data("rel"));
+    });
+    $("a[data-rel^='prettyPhoto']").prettyPhoto({
+        animation_speed: 'normal',
+        theme: 'dark_square',
+        slideshow: 3000,
+        autoplay_slideshow: false,
+        social_tools: false,
+        show_title: false  /* true/false */
+    });
 </script>

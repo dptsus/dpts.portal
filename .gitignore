@@ -252,3 +252,4 @@ paket-files/
 *.sln.iml
 /DPTS/DPTS.Web/Uploads
 /DPTS/DPTS.Web/Views/Home/SearchResult.cshtml
+/DPTS/DPTS.Web/Content/images/thumbs/000

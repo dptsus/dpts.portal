@@ -1,0 +1,28 @@
+﻿/*Responsive with custom style override*/
+
+@media (max-width: 481px) {
+    #auto-search{
+        width:100%;
+    }
+}
+@media (max-width: 1000px) {
+}
+@media (min-width: 1001px) {
+    #auto-search{
+        width:50%;
+    }
+    select, .form-control, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input
+    {
+        height:40px;
+        margin-bottom:10px;
+    }
+    .upload-image-button{
+        margin-bottom:10px;
+    }
+}
+@media (min-width: 769px) {
+}
+@media (min-width:1367px) {
+}
+
+

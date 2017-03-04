@@ -8,6 +8,7 @@ namespace DPTS.Data.Context
     {
         public DPTSDbContext() : base("DPTS")
         {
+
         }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AddressMapping> AddressMappings { get; set; }
@@ -35,6 +36,8 @@ namespace DPTS.Data.Context
         public virtual DbSet<HonorsAwards> HonorsAwards { get; set; }
         public virtual DbSet<Education> Education { get; set; }
         public virtual DbSet<Experience> Experience { get; set; }
+        public virtual DbSet<Picture> Picture { get; set; }
+        public virtual DbSet<PictureMapping> PictureMapping { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -108,17 +111,17 @@ namespace DPTS.Data.Context
                .HasForeignKey(e => e.DoctorId)
                .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<Doctor>()
-            //   .HasMany(e => e.Education)
-            //   .WithRequired(e => e.Doctor)
-            //   .HasForeignKey(e => e.DoctorId)
-            //   .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Doctor>()
+                .HasMany(e => e.PictureMapping)
+                .WithRequired(e => e.Doctor)
+                .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<Doctor>()
-            //   .HasMany(e => e.HonorsAwards)
-            //   .WithRequired(e => e.Doctor)
-            //   .HasForeignKey(e => e.DoctorId)
-            //   .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Picture>()
+                .HasMany(e => e.PictureMapping)
+                .WithRequired(e => e.Picture)
+                .HasForeignKey(e => e.PictureId)
+                .WillCascadeOnDelete(false);
 
         }
     }

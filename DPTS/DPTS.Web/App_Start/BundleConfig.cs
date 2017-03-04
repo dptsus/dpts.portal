@@ -76,7 +76,8 @@ namespace DPTS.Web
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/section/static/css/styles1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/button/static/css/styles1c9b.css",
                 "~/Content/wp-content/plugins/unyson/framework/extensions/shortcodes/shortcodes/call-to-action/static/css/styles1c9b.css",
-                "~/Content/loader.css"
+                "~/Content/loader.css",
+                "~/Content/wp-content/themes/docdirect/customdpts.css"
                 ));
 #if DEBUG
             BundleTable.EnableOptimizations = false;

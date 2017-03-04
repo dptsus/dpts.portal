@@ -16,11 +16,12 @@
             if (User.IsInRole("Doctor"))
             {
                 <li class="session-user-info">
-                    <a href="javascript:;"><span class="s-user">@firstName</span><img alt="Welcome" id="welcome"></a>
+                    <a href="javascript:;"><span class="s-user">@firstName</span><img alt="Welcome" src="~/Content/wp-content/themes/docdirect/images/singin_icon.png?1488563881397" id="welcome"></a>
                     <ul>
                         @*<li class="active"><a href="@Url.Action("Info", "Doctor")"><i class="fa fa-line-chart"></i>Profile</a></li>*@
                         <li class="active"><a href="@Url.Action("ProfileSetting", "Doctor")">Profile Settings</a></li>
                         <li class=""><a href="@Url.Action("Addresses", "Doctor")">Addresses</a></li>
+                        <li class=""><a href="@Url.Action("DoctorShowcasePictures", "Doctor")">Pictures</a></li>
                         <li class=""><a href="@Url.Action("Favourites", "Doctor")">Favourites</a></li>
                         <li class=""><a href="@Url.Action("InvoicesPackages", "Doctor")">Invoices &amp; Packages</a></li>
                         <li class=""><a href="@Url.Action("DoctorSchedules", "Doctor")">My Schedules</a></li>
@@ -72,17 +73,3 @@
     </ul>
 
 </div>
-
-@Scripts.Render("~/bundles/jquery")
-<script type="text/javascript">
-    $(function () {
-        var profilePicId = "@User.Identity.GetUserId()" + "_profile";
-        $.get('../../Uploads/' + profilePicId + '.jpg')
-            .done(function () {
-                $("#welcome").attr("src", '../../Uploads/' + profilePicId + '.jpg?' + new Date().getTime());
-            }).fail(function () {
-                $("#welcome").attr("src", '/Content/wp-content/themes/docdirect/images/singin_icon.png?' + new Date().getTime());
-            });
-    });
-
-</script>

@@ -17,6 +17,7 @@ namespace DPTS.Domain.Entities
             HonorsAwards = new HashSet<HonorsAwards>();
             Education =new HashSet<Education>();
             Experience = new HashSet<Experience>();
+            PictureMapping = new HashSet<PictureMapping>();
         }
 
         public Guid DoctorGuid { get; set; }
@@ -67,6 +68,8 @@ namespace DPTS.Domain.Entities
         public virtual ICollection<Education> Education { get; set; }
 
         public virtual ICollection<Experience> Experience { get; set; }
+
+        public virtual ICollection<PictureMapping> PictureMapping { get; set; }
 
     }
 }

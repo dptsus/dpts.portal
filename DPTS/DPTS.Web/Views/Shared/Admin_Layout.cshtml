@@ -43,7 +43,7 @@
         <li>
             <a href="#">
                 <div>
-                    <strong>John Smith</strong>
+                    <strong>DPTS</strong>
                     <span class="pull-right text-muted">
                                         <em>Yesterday</em>
                                     </span>
@@ -288,7 +288,7 @@
                 <a href="#"><i class="fa fa-user-secret"></i> Export/Import<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="@Url.Action("ImportDoctors", "ExportImports")"><i class="fa fa-dot-circle-o"></i>Import Doctors</a>
+                        <a href="@Url.Action("ImportDoctor", "ExportImports")"><i class="fa fa-dot-circle-o"></i>Import Doctors</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -319,6 +319,7 @@
 <!-- /.navbar-static-side -->
 </nav>
 <div id="page-wrapper">
+    @Html.Partial("Notifications")
     @RenderBody()
 </div>
 <!-- /#page-wrapper -->
