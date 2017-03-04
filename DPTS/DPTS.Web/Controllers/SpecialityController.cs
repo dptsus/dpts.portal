@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Entities;
-using Kendo.Mvc.UI;
+using DPTS.Common.Kendoui;
 using System.Linq;
 
 namespace DPTS.Web.Controllers
@@ -114,7 +114,6 @@ namespace DPTS.Web.Controllers
 
             return Content("Deleted");
         }
-
 
         //Search autocomplete call
         public JsonResult Speciality_Read()
