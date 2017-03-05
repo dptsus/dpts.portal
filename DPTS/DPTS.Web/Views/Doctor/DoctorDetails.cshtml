@@ -395,7 +395,7 @@
 
                             <!--Reviews-->
                             <div class="tg-userreviews">
-                                @if (Model.listReviewComments.Count > 0)
+                                @if (Model.listReviewComments !=null && Model.listReviewComments.Any())
                                 {
                                     <div class="tg-userheading">
                                         <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
