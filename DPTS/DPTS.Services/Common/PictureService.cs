@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DPTS.Domain.Core;
 using DPTS.Domain.Entities;
 using DPTS.Data.Context;
@@ -38,18 +36,6 @@ namespace DPTS.Services.Common
 
         #region Ctor
 
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="pictureRepository">Picture repository</param>
-        /// <param name="productPictureRepository">Product picture repository</param>
-        /// <param name="settingService">Setting service</param>
-        /// <param name="webHelper">Web helper</param>
-        /// <param name="logger">Logger</param>
-        /// <param name="dbContext">Database context</param>
-        /// <param name="eventPublisher">Event publisher</param>
-        /// <param name="mediaSettings">Media settings</param>
-        /// <param name="dataProvider">Data provider</param>
         public PictureService(IRepository<Picture> pictureRepository,
             IRepository<PictureMapping> pictureMapRepository)
         {
@@ -62,14 +48,6 @@ namespace DPTS.Services.Common
 
         #region Utilities
 
-        /// <summary>
-        /// Calculates picture dimensions whilst maintaining aspect
-        /// </summary>
-        /// <param name="originalSize">The original picture size</param>
-        /// <param name="targetSize">The target picture size (longest side)</param>
-        /// <param name="resizeType">Resize type</param>
-        /// <param name="ensureSizePositive">A value indicatingh whether we should ensure that size values are positive</param>
-        /// <returns></returns>
         protected virtual Size CalculateDimensions(Size originalSize, int targetSize,
             ResizeType resizeType = ResizeType.LongestSide, bool ensureSizePositive = true)
         {
@@ -114,11 +92,6 @@ namespace DPTS.Services.Common
             return new Size((int)Math.Round(width), (int)Math.Round(height));
         }
 
-        /// <summary>
-        /// Returns the file extension from mime type.
-        /// </summary>
-        /// <param name="mimeType">Mime type</param>
-        /// <returns>File extension</returns>
         protected virtual string GetFileExtensionFromMimeType(string mimeType)
         {
             if (mimeType == null)
@@ -143,12 +116,6 @@ namespace DPTS.Services.Common
             return lastPart;
         }
 
-        /// <summary>
-        /// Loads a picture from file
-        /// </summary>
-        /// <param name="pictureId">Picture identifier</param>
-        /// <param name="mimeType">MIME type</param>
-        /// <returns>Picture binary</returns>
         protected virtual byte[] LoadPictureFromFile(int pictureId, string mimeType)
         {
             string lastPart = GetFileExtensionFromMimeType(mimeType);
@@ -159,12 +126,6 @@ namespace DPTS.Services.Common
             return File.ReadAllBytes(filePath);
         }
 
-        /// <summary>
-        /// Save picture on file system
-        /// </summary>
-        /// <param name="pictureId">Picture identifier</param>
-        /// <param name="pictureBinary">Picture binary</param>
-        /// <param name="mimeType">MIME type</param>
         protected virtual void SavePictureInFile(int pictureId, byte[] pictureBinary, string mimeType)
         {
             string lastPart = GetFileExtensionFromMimeType(mimeType);
@@ -240,9 +201,9 @@ namespace DPTS.Services.Common
         /// <returns>Local picture thumb path</returns>
         protected virtual string GetThumbUrl(string thumbFileName, string storeLocation = null)
         {
-            var url = "/content/images/thumbs/";
+            var url = "../content/images/thumbs/";
 
-            if (true)
+            if (false)
             {
                 //get the first two letters of the file name
                 var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(thumbFileName);
@@ -345,7 +306,7 @@ namespace DPTS.Services.Common
             switch (defaultPictureType)
             {
                 case PictureType.Avatar:
-                    defaultImageFileName ="default-avatar.jpg";
+                    defaultImageFileName = "default-avatar.jpg";
                     break;
                 case PictureType.Entity:
                 default:
@@ -415,15 +376,6 @@ namespace DPTS.Services.Common
             return GetPictureUrl(picture, targetSize, showDefaultPicture, storeLocation, defaultPictureType);
         }
 
-        /// <summary>
-        /// Get a picture URL
-        /// </summary>
-        /// <param name="picture">Picture instance</param>
-        /// <param name="targetSize">The target picture size (longest side)</param>
-        /// <param name="showDefaultPicture">A value indicating whether the default picture is shown</param>
-        /// <param name="storeLocation">Store location URL; null to use determine the current store location automatically</param>
-        /// <param name="defaultPictureType">Default picture type</param>
-        /// <returns>Picture URL</returns>
         public virtual string GetPictureUrl(Picture picture,
             int targetSize = 0,
             bool showDefaultPicture = true,
@@ -541,9 +493,10 @@ namespace DPTS.Services.Common
 
                 }
                 url = GetThumbUrl(thumbFileName, storeLocation);
+
                 return url;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
 
@@ -876,7 +829,7 @@ namespace DPTS.Services.Common
                         foreach (var picture in pictures)
                         {
                             ((IObjectContextAdapter)_dbContext).ObjectContext.Detach(picture);
-                           // _dbContext..AutoDetectChangesEnabled(picture);
+                            // _dbContext..AutoDetectChangesEnabled(picture);
                         }
                     }
                 }
