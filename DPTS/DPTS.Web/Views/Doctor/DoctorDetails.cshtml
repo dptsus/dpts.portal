@@ -348,7 +348,7 @@
 
                             <!--Reviews-->
                             <div class="tg-userreviews">
-                                @if (Model.listReviewComments !=null && Model.listReviewComments.Any())
+                                @if (Model.listReviewComments !=null)
                                 {
                                     <div class="tg-userheading">
                                         <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
@@ -457,7 +457,7 @@
                                         }
                                     </ul>
                                 }
-                                @if (Model.doctor.DoctorId != ViewBag.User)
+                                @if (Model.doctor.DoctorId != ViewBag.User && ViewBag.User !=null)
                                 {
                                     <div class="tg-leaveyourreview">
                                         <div class="tg-userheading">
