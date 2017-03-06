@@ -6,15 +6,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     string addressLine = string.Empty;
     Address addr = Model.Addresses.FirstOrDefault();
+
     Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/prettyPhoto1bba.css");
     Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/owl.theme1bba.css");
-    <script src="~/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js"></script>
+    Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.common-material.min.css");
+    Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.rtl.min.css");
+    Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.material.min.css");
+    Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.material.mobile.min.css");
 
     Html.Assets().Scripts.Add("https://maps.googleapis.com/maps/api/js?key=AIzaSyB-v7mDZ8e1GDluhDZrhF_T44GxlJprqr0&#038;libraries=places&#038;ver=4.7.2");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/map/infobox1bba.js");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/map/map1bba.js");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js");
+
+
+    //Html.Assets().Scripts.Add("/Scripts/kendo/2017.1.118/jquery.min.js");
+    <script src="~/Scripts/kendo/2017.1.118/kendo.all.min.js"></script>
+    <script src="~/Content/wp-content/themes/docdirect/js/owl.carousel1bba.js"></script>
+
     if (addr != null)
     {
         addressLine = addr.Address1 + ", " + addr.City + ", " + addr.StateProvince.Name + ", " + addr.Country.Name;
@@ -123,9 +133,11 @@
                                         }
                                     </ul>
                                 </div>
-                                
-                            </div>
-                        </div>
+                                <div class="tg-userschedule">
+                                    <h3>Profile Url</h3>
+                                    <div id="qrUrl"></div>
+                                    </div>
+                                </div>
                     </aside>
                 </div>
                 <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
@@ -504,6 +516,18 @@
             var anchor = $(event.currentTarget);
             anchor.closest(".ratting-item");
         });
+        var url = window.location.origin + "@Url.Action("DoctorDetails", "Doctor",new { doctorId = Model.Id})";
+        $("#qrUrl").kendoQRCode({
+            value: url,
+            errorCorrection: "M",
+            size: 120,
+            color: "#67a814",   
+            border: {
+                color: "#67a814",
+                width: 5
+            }
+        });
+
     });
 
     function SaveReviewComments() {
