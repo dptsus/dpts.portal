@@ -273,7 +273,7 @@ namespace DPTS.Web.Controllers
                         var result = await UserManager.CreateAsync(user, model.Password);
                         if (result.Succeeded)
                         {
-                            if (model.UserType == "professional")
+                            if (model.UserType.ToLower() == "professional")
                             {
                                 await this.UserManager.AddToRoleAsync(user.Id, model.Role);
                                 var doctor = new Doctor { DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber };
@@ -359,7 +359,7 @@ namespace DPTS.Web.Controllers
                 var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
                 if (result.Succeeded)
                 {
-                    if (model.RegistrationDetails.UserType == "professional")
+                    if (model.RegistrationDetails.UserType.ToLowerInvariant() == "professional")
                     {
                         await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
                         var doctor = new Doctor {DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber};
