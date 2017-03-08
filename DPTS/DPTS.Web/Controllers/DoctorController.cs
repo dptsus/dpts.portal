@@ -14,7 +14,7 @@ using DPTS.Domain.Entities;
 using DPTS.Web.Models;
 using Microsoft.AspNet.Identity;
 using DPTS.Domain.Core.ReviewComments;
-using Kendo.Mvc.UI;
+using DPTS.Common.Kendoui;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
 using DPTS.Services;
 using DPTS.Domain.Common;
