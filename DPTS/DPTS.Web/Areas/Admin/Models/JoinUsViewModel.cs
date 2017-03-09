@@ -1,29 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DPTS.Web.Areas.Admin.Models
 {
-    public class DoctorsRegistrationViewModel
+    public class JoinUsViewModel
     { 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "FirstName")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "LastName")]
-        public string LastName { get; set; }
-
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } 
 
         [Required]
-        [Display(Name = "EmailId")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string EmailId { get; set; }
 
         [Required]
-        [Display(Name = "PhoneNumber")]
+        [Display(Name = "Phone Number")]
         [Phone]
         public string PhoneNumber { get; set; }
 
@@ -33,28 +31,26 @@ namespace DPTS.Web.Areas.Admin.Models
         public string Gender { get; set; }
 
         [Required]
-        [Display(Name = "ShortProfile")]
+        [Display(Name = "Short Profile")]
         [DataType(DataType.Text)]
-        public string ShortProfile { get; set; }
+        public string ProfessionalStatements { get; set; }
 
-
-        [Display(Name = "RegistratioNumber")]
+        [Required]
+        [Display(Name = "Registratio Number")]
         [DataType(DataType.Text)]
         public string RegistrationNumber { get; set; }
 
         [Required]
-        [Display(Name = "DateOfBirth")]
+        [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         [Display(Name = "Specality")]
         [DataType(DataType.Text)]
         public string Specality { get; set; }
-
-        [Required]
-        [Display(Name = "YearsOfExperience")]
-        [DataType(DataType.Text)]
-        public string YearsOfExperience { get; set; } 
+         
+        [Display(Name = "Years Of Experience")] 
+        public double YearsOfExperience { get; set; } 
     }
 }

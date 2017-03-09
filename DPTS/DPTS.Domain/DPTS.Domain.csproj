@@ -44,6 +44,7 @@
     <Compile Include="Core\Address\IAddressService.cs" />
     <Compile Include="Core\Appointment\IAppointmentService.cs" />
     <Compile Include="Core\Common\IPictureService.cs" />
+    <Compile Include="Core\JoinUs\IJoinUsService.cs" />
     <Compile Include="Core\ExportImport\IImportManager.cs" />
     <Compile Include="Core\IPagedList.cs" />
     <Compile Include="Core\Notification\IDoctorNotificationSettingsService.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Entities\AspNetUserLogin.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BaseEntityWithDateTime.cs" />
+    <Compile Include="Entities\JoinUs.cs" />
     <Compile Include="Entities\Education.cs" />
     <Compile Include="Entities\Experience.cs" />
     <Compile Include="Entities\HonorsAwards.cs" />
