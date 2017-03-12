@@ -411,6 +411,7 @@
     <Compile Include="Models\DoctorSpecialityViewModel.cs" />
     <Compile Include="Models\DoctorViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\JoinUsViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Models\ReviewCommentsViewModel.cs" />
@@ -1075,9 +1076,11 @@
     <Content Include="Content\loader.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\rating.css" />
+    <Content Include="Content\wp-content\themes\docdirect\css\freelancer.css" />
     <Content Include="Content\wp-content\themes\docdirect\customdpts.css" />
     <Content Include="Content\wp-content\themes\docdirect\images\mimg.png" />
     <Content Include="Content\wp-content\uploads\2016\12\02.png" />
+    <Content Include="Scripts\contact_me.js" />
     <Content Include="Scripts\docdirect_functions.js" />
     <Content Include="Content\jquery.fileupload.css" />
     <Content Include="Content\tagEditor\jquery.tag-editor.css" />
@@ -1839,7 +1842,9 @@
     <Content Include="Scripts\fineuploader\jquery.fineuploader-4.2.2.min.js" />
     <Content Include="Scripts\fineuploader\loading.gif" />
     <Content Include="Scripts\fineuploader\processing.gif" />
+    <Content Include="Scripts\freelancer.min.js" />
     <Content Include="Scripts\jmelosegui.googlemap.js" />
+    <Content Include="Scripts\jqBootstrapValidation.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
@@ -3085,6 +3090,8 @@
     <Content Include="Views\Shared\EditorTemplates\Picture.cshtml" />
     <Content Include="Views\Doctor\_CreateOrUpdate.Pictures.cshtml" />
     <Content Include="Views\Doctor\DoctorShowcasePictures.cshtml" />
+    <Content Include="Views\Account\JoinUs.cshtml" />
+    <Content Include="Views\Account\ThanksJoinUs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

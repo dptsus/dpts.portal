@@ -19,6 +19,10 @@ namespace DPTS.Web
                 "Doctor/GetStatesByCountryId/",
                 new {controller = "Doctor", action = "GetStatesByCountryId"}
                 );
+            routes.MapRoute("GetSubSpecialityBySpeciality",
+               "SubSpeciality/GetsubSpecialityBySpec/",
+               new { controller = "SubSpeciality", action = "GetsubSpecialityBySpec" }
+               );
             routes.MapRoute("DPTSSearch",
                 "search/",
                 new {controller = "Home", action = "Search"});

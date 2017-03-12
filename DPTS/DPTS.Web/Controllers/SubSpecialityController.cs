@@ -5,10 +5,10 @@ using System.Web.Mvc;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Domain.Core.SubSpeciality;
 using DPTS.Domain.Entities;
+using System;
 
 namespace DPTS.Web.Controllers
 {
-    [Authorize]
     public class SubSpecialityController : BaseController
     {
         #region Field
@@ -144,6 +144,40 @@ namespace DPTS.Web.Controllers
             return Content("Deleted");
         }
 
+        public ActionResult GetsubSpecialityBySpec(int specialityId, bool addSelectSpecItem)
+        {
+            //this action method gets called via an ajax request
+            if (specialityId == 0)
+                throw new ArgumentNullException("specialityId");
+
+            var spec = _specialityService.GetSpecialitybyId(specialityId);
+            var subSpec = _subSpecialityService.GetSubSpecBySpecId(spec?.Id ?? 0).ToList();
+            var result = (from s in subSpec
+                          select new { id = s.Id, name = s.Name })
+                .ToList();
+
+            if (spec == null)
+            {
+                result.Insert(0, addSelectSpecItem ? new { id = 0, name = "select" } : new { id = 0, name = "None" });
+            }
+            else
+            {
+                if (!result.Any())
+                {
+                    result.Insert(0, new { id = 0, name = "None" });
+                }
+                else
+                {
+                    //country has some states
+                    if (addSelectSpecItem)
+                    {
+                        result.Insert(0, new { id = 0, name = "select" });
+                    }
+                }
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         #endregion
     }
 }

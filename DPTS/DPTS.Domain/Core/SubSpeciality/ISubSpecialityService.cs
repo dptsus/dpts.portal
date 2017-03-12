@@ -32,5 +32,7 @@ namespace DPTS.Domain.Core.SubSpeciality
         /// </summary>
         IList<Entities.SubSpeciality> GetAllSubSpeciality(bool showhidden, bool enableTracking = false);
 
+        IList<Domain.Entities.SubSpeciality> GetSubSpecBySpecId(int specId, bool showHidden = false);
+
     }
 }

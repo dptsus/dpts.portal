@@ -1,5 +1,11 @@
 ﻿@using DPTS.Web.Models
+@using DPTS.Web.Helpers
 @model SearchModel
+    @{ 
+        Html.Assets().Scripts.Add("https://maps.googleapis.com/maps/api/js?key=AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U&libraries=places");
+        Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/gmap3.min1c9b.js");
+        Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js");
+    }
 <style>
     .k-autocomplete.k-state-default
     {
@@ -24,11 +30,15 @@
                         <div class="distance-ml">Distance in&nbsp;( Miles )<span>50</span></div>
                         <input type="hidden" name="geo_distance" value="50" class="geo_distance" />
                         <div class="geo_distance" id="geo_distance"></div>
+
                     </div>
-                </div>
+                    </div>
+                <input type="hidden" id="lat" name="lat" value="" />
+                <input type="hidden" id="lng" name="lng" value="" />
+
                 <script>
 			jQuery(document).ready(function(e) {
-				jQuery( "#geo_distance" ).slider({
+				jQuery("#geo_distance").slider({
 				   range: "min",
 				   min:1,
 				   max:300,
@@ -42,109 +52,8 @@
 				});
 			});
                 </script>
-               
-                <script>
-                    function initMap() {
-                        var map;
-                        var input = document.getElementById('location-address');
-                        var searchBox = new google.maps.places.SearchBox(input);
-                      //  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-                        // Bias the SearchBox results towards current map's viewport.
-                        //map.addListener('bounds_changed', function() {
-                        //    searchBox.setBounds(map.getBounds());
-                        //});
-
-                        var markers = [];
-                        // Listen for the event fired when the user selects a prediction and retrieve
-                        // more details for that place.
-                        searchBox.addListener('places_changed', function() {
-                            var places = searchBox.getPlaces();
-
-                            if (places.length == 0) {
-                                return;
-                            }
-
-                            // Clear out the old markers.
-                            markers.forEach(function(marker) {
-                                marker.setMap(null);
-                            });
-                            markers = [];
-
-                            // For each place, get the icon, name and location.
-                            var bounds = new google.maps.LatLngBounds();
-                            places.forEach(function(place) {
-                                if (!place.geometry) {
-                                    console.log("Returned place contains no geometry");
-                                    return;
-                                }
-                                var icon = {
-                                    url: place.icon,
-                                    size: new google.maps.Size(71, 71),
-                                    origin: new google.maps.Point(0, 0),
-                                    anchor: new google.maps.Point(17, 34),
-                                    scaledSize: new google.maps.Size(25, 25)
-                                };
-
-                                // Create a marker for each place.
-                                markers.push(new google.maps.Marker({
-                                    map: map,
-                                    icon: icon,
-                                    title: place.name,
-                                    position: place.geometry.location
-                                }));
-
-                                if (place.geometry.viewport) {
-                                    // Only geocodes have viewport.
-                                    bounds.union(place.geometry.viewport);
-                                } else {
-                                    bounds.extend(place.geometry.location);
-                                }
-                            });
-                            map.fitBounds(bounds);
-                        });
-}
-                       // createMapSearchBox();
-          navigator.geolocation.getCurrentPosition(function (pos) {
-              var geocoder = new google.maps.Geocoder();
-              var lat = pos.coords.latitude;
-              var lng = pos.coords.longitude;
-              var latlng = new google.maps.LatLng(lat, lng);
-
-              //reverse geocode the coordinates, returning location information.
-              geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-                  var result = results[0];
-                  var postalCode = '';
-
-                  for (var i = 0, len = result.address_components.length; i < len; i++) {
-                      var ac = result.address_components[i];
-
-                      if (ac.types.indexOf('postal_code') >= 0) {
-                          postalCode = ac.short_name;
-                      }
-                  }
-                  if(postalCode != '')
-                  {
-                      $('#location-address').val(postalCode);
-                      $('.geo-locate-me').css('visibility', 'visible');
-                  }
-              });
-          });
-                </script>
-                <script async defer
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U&libraries=places&callback=initMap">
-                </script>
             </div>
         </div>
-        @*<div class="form-group">
-            <span class="select">
-                <select class="directory_type" name="directory_type">
-                    <option value="">All</option>
-                    <option id="127" data-dir_name="Doctor" value="doctor">Doctor</option>
-                </select>
-            </span>
-        </div>*@
-        
         <div class="form-group">
             <input type="submit" id="search_banner" class="tg-btn" value="search">
         </div>

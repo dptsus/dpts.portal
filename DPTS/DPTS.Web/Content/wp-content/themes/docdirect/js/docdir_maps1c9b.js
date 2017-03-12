@@ -117,9 +117,10 @@ jQuery.docdirect_map_fallback = function(){
 		}
 
 		var marker = jQuery('#location-pickr-map').gmap3({get:"marker"});
-		marker.setPosition(place.geometry.location);
+	    marker.setPosition(place.geometry.location);
 		jQuery("#location-latitude").val(marker.getPosition().lat());
 		jQuery("#location-longitude").val(marker.getPosition().lng());
+		
 	});
 
 }
@@ -133,7 +134,7 @@ jQuery(document).ready(function(e) {
 			  if (latLng){
 				var geocoder = new google.maps.Geocoder();
 				geocoder.geocode({"latLng":latLng},function(data,status){
-					 if (status == google.maps.GeocoderStatus.OK) {
+				    if (status == google.maps.GeocoderStatus.OK) {
 						if (data[0]) {
 							jQuery('#location-pickr-map').gmap3({
 							  marker:{ 
@@ -148,6 +149,8 @@ jQuery(document).ready(function(e) {
 							jQuery("#location-address").val(data[0].formatted_address);
 							jQuery("#location-latitude").val(latLng.lat());
 							jQuery("#location-longitude").val(latLng.lng());
+							jQuery("#lat").val(latLng.lat());
+							jQuery("#lng").val(latLng.lng());
 						}
 					}
 				});
@@ -156,5 +159,12 @@ jQuery(document).ready(function(e) {
 		  }
 		});
 		return false;
+	});
+
+	jQuery.docdirect_init_map();
+
+    //Toogle Radius Search
+	jQuery(document).on('click', '.geodistance', function () {
+	    jQuery('.geodistance_range').toggle();
 	});
 });

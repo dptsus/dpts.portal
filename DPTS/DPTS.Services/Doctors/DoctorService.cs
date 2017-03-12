@@ -232,12 +232,19 @@ namespace DPTS.Services.Doctors
             //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
             //  return null;
 
-            //decimal myDec;
-            //var result = decimal.TryParse(zipcode, out myDec);
+            if (specialityId > 0)
+            {
+                //var spec =
+                //        from s in _specialityRepository.Table
+                //        join r in _specialityMappingRepository.Table on s.Id equals r.Speciality_Id
+                //        where s.Title == searchTerm
+                //        select s.Id;
 
-           // if (!result)
-            //{
-                // zipcode = GetGeoZip(zipcode);
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
+            }
+
+            if (!string.IsNullOrWhiteSpace(zipcode))
+            {
                 var addrList = new List<TempAddressViewModel>();
                 double lat = 0, lng = 0;
                 #region (with zipcode)
@@ -287,18 +294,17 @@ namespace DPTS.Services.Doctors
                             where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
                             select d;
                 }
+                else if (specialityId == 0)
+                {
+                    totalCount = 0;
+                    return null;
+                }else if(specialityId > 0 && query.ToList() == null)
+                {
+                    totalCount = 0;
+                    return null;
+                }
 
                 #endregion
-           // }
-            if (specialityId > 0)
-            {
-                //var spec =
-                //        from s in _specialityRepository.Table
-                //        join r in _specialityMappingRepository.Table on s.Id equals r.Speciality_Id
-                //        where s.Title == searchTerm
-                //        select s.Id;
-
-                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
             }
 
             var pageQuery =  query.OrderBy(d => d.DateUpdated)

@@ -64,5 +64,15 @@ namespace DPTS.Domain.SubSpeciality
             var subSpecilities = query.ToList();
             return subSpecilities;
         }
+        public IList<Domain.Entities.SubSpeciality> GetSubSpecBySpecId(int specId, bool showHidden = false)
+        {
+            var query = from sp in _subSpecialityRepository.Table
+                        orderby sp.DisplayOrder, sp.Name
+                        where sp.SpecialityId == specId &&
+                        (showHidden || sp.IsActive)
+                        select sp;
+
+            return query.ToList();
+        }
     }
 }

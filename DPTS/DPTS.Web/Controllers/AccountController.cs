@@ -15,6 +15,8 @@ using DPTS.EmailSmsNotifications.IServices;
 using reCaptcha;
 using System.Configuration;
 using System.Net;
+using DPTS.Domain.Core.SubSpeciality;
+using DPTS.Domain.Core.Speciality;
 
 namespace DPTS.Web.Controllers
 {
@@ -26,12 +28,19 @@ namespace DPTS.Web.Controllers
         private ApplicationDbContext context;
         private IDoctorService _doctorService;
         private ISmsNotificationService _smsService;
+        private readonly ISubSpecialityService _subSpecialityService;
+        private readonly ISpecialityService _specialityService;
 
-        public AccountController(IDoctorService doctorService, ISmsNotificationService smsService)
+        public AccountController(IDoctorService doctorService,
+            ISmsNotificationService smsService,
+            ISpecialityService specialityService,
+            ISubSpecialityService subSpecialityService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
             _smsService = smsService;
+            _subSpecialityService = subSpecialityService;
+            _specialityService = specialityService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -631,6 +640,129 @@ namespace DPTS.Web.Controllers
             }
 
             base.Dispose(disposing);
+        }
+        
+        [AllowAnonymous]
+        public ActionResult JoinUs()
+        {
+            var model = new JoinUsViewModel();
+            List<SelectListItem> typelst = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Select",
+                    Value = "0"
+                }
+            };
+            model.SpecialityList = GetSpecialityList();
+            model.SubSpecialityList = typelst;
+            ViewBag.GenderList = GetGender();
+            return View(model);
+        }
+        [AllowAnonymous]
+        public ActionResult ThanksJoinUs()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> JoinUs(JoinUsViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                        var user = new ApplicationUser
+                        {
+                            UserName = model.Email,
+                            Email = model.Email,
+                            LastName = model.LastName,
+                            FirstName = model.FirstName,
+                            LastIpAddress = "192.168.225.1",
+                            IsEmailUnsubscribed = false,
+                            IsPhoneNumberUnsubscribed = false,
+                            LastLoginDateUtc = DateTime.UtcNow,
+                            CreatedOnUtc = DateTime.UtcNow,
+                            PhoneNumber = model.PhoneNumber,
+                            TwoFactorEnabled = false
+                        };
+                        var result = await UserManager.CreateAsync(user, "Test@123");
+                        if (result.Succeeded)
+                        {
+                            var dateOfBirth = model.ParseDateOfBirth();
+                            await this.UserManager.AddToRoleAsync(user.Id, "Doctor");
+                            var doctor = new Doctor
+                            {
+                                DoctorId = user.Id,
+                                RegistrationNumber = model.RegistrationNumber,
+                                Gender=model.Gender,
+                                DateOfBirth = dateOfBirth.ToString()
+                             };
+                            _doctorService.AddDoctor(doctor);
+                        if (!string.IsNullOrWhiteSpace(doctor.DoctorId) && model.Speciality > 0)
+                        {
+                            var specMap = new SpecialityMapping
+                            {
+                                Doctor_Id = doctor.DoctorId,
+                                Speciality_Id = model.Speciality
+                            };
+                            _specialityService.AddSpecialityByDoctor(specMap);
+                        }
+
+                        await UserManager.SendEmailAsync(user.Id, "Thanks for the registration. We'll verify your details.", "For more queries drops us a email on <b>dptsus@outlook.com</b>");
+                        return RedirectToAction("ThanksJoinUs", "Account");
+                      }
+                }
+                List<SelectListItem> typelst = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Select",
+                        Value = "0"
+                    }
+                };
+                model.SpecialityList = GetSpecialityList();
+                model.SubSpecialityList = typelst;
+                ViewBag.GenderList = GetGender();
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+        public IList<SelectListItem> GetSpecialityList()
+        {
+            var specialitys = _specialityService.GetAllSpeciality(false);
+            List<SelectListItem> typelst = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text = "Select",
+                    Value = "0"
+                }
+            };
+            typelst.AddRange(specialitys.ToList().Select(type => new SelectListItem
+            {
+                Text = type.Title,
+                Value = type.Id.ToString()
+            }));
+            return typelst;
+        }
+        [NonAction]
+        private static List<SelectListItem> GetGender()
+        {
+            List<SelectListItem> items = new List<SelectListItem>
+            {
+                new SelectListItem {Text = "Select Gender", Value = "0"}
+            };
+            items.AddRange(from object gender in Enum.GetValues(typeof(Gender))
+                           select new SelectListItem
+                           {
+                               Text = Enum.GetName(typeof(Gender), gender),
+                               Value = Enum.GetName(typeof(Gender), gender)
+                           });
+            return items;
         }
 
         #region Helpers

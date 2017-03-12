@@ -2,7 +2,8 @@
 @model IPagedList<TempDoctorViewModel>
 @using DPTS.Web.Models
 @{
-        int ind = 0;
+    int ind = 0;
+    string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
 }
 <style>
     .lst-appmt-btn{
@@ -24,16 +25,7 @@
             <ul class="shops-list">
                 @foreach (var item in Model)
                 {
-                    <li style="list-style: none;" data-ind="@(ind++)">
-                        @{
-                            string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
-                            string profilePicPath = Server.MapPath("~/Uploads/" + item.Doctors.DoctorId + "_profile.jpg");
-                            if (File.Exists(profilePicPath))
-                            {
-                                picturePath = "../../Uploads/" + item.Doctors.DoctorId + "_profile.jpg";
-                            }
-                        }
-
+                    <li  class="shops-item" style="list-style: none;" data-ind="@(ind++)">
                         <article class="tg-doctor-profile user-330">
                             <div class="tg-box">
                                 <figure class="tg-docprofile-img">
@@ -101,13 +93,8 @@
             </ul>
         </div>
     </div>
-    
                                                 }
                                                 else
-                                                {
+                                                { 
    <p>No Record Found !!</p>
 }
-
-
-
-

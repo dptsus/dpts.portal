@@ -139,6 +139,7 @@ namespace DPTS.Web.Controllers
         [ValidateInput(false)]
         public ActionResult Search(SearchModel model, int? page)
         {
+            var searchViewModel = new List<TempDoctorViewModel>();
             var pageNumber = (page ?? 1) - 1;
             var pageSize = 5;
             int totalCount;
@@ -176,13 +177,17 @@ namespace DPTS.Web.Controllers
                 geo_location = model.geo_location
             };
 
-            var searchViewModel = data.Select(doc => new TempDoctorViewModel
+
+            if (data != null)
             {
-                Doctors = doc,
-                Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
-                AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
-                Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId)
-            }).ToList();
+                searchViewModel = data.Select(doc => new TempDoctorViewModel
+                {
+                    Doctors = doc,
+                    Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
+                    AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
+                    Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId)
+                }).ToList();
+            }
 
             totalCount = searchViewModel.Count;
 
@@ -234,5 +239,7 @@ namespace DPTS.Web.Controllers
 
             return View(pageDoctors);
         }
+
+        
     }
 }

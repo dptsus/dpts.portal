@@ -49,9 +49,10 @@ namespace DPTS.Web
                 // "~/Content/wp-content/themes/docdirect/js/map/infobox1bba.js",
                 // "~/Content/wp-content/themes/docdirect/js/map/map1bba.js",
                 //"~/Content/wp-content/themes/docdirect/js/docdirect_functions1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js",
-                "~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
+                "~/Content/wp-content/themes/docdirect/js/datetimepicker1bba.js"
+                //"~/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js"));
             //      "~/Content/Admin/js/bootstrap-datetimepicker.js"));
+            ));
 
 
             bundles.Add(new StyleBundle("~/Content/wp-content/themes").Include(
