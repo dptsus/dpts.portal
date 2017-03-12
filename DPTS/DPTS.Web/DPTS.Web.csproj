@@ -372,8 +372,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\OnBoardDoctorsController.cs" />
-    <Compile Include="Areas\Admin\Models\DoctorsRegistrationViewModel.cs" />
+    <Compile Include="Areas\Admin\Controllers\JoinUsController.cs" />
+    <Compile Include="Areas\Admin\Models\JoinUsViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
@@ -1831,6 +1831,9 @@
     <Content Include="Content\kendo\2017.1.118-source\mobile\android\all.less" />
     <Content Include="Content\kendo\2017.1.118-source\mobile\android\actionsheet.less" />
     <Content Include="Content\kendo\2017.1.118-source\common\transitions.less" />
+    <Content Include="Areas\Admin\Views\JoinUs\Start.cshtml" />
+    <Content Include="Areas\Admin\Views\JoinUs\Thanks.cshtml" />
+    <Content Include="Areas\Admin\Views\JoinUs\Error.cshtml" />
     <None Include="Properties\PublishProfiles\DPTS.pubxml" />
     <None Include="Properties\PublishProfiles\DPTSWeb.pubxml" />
     <None Include="Properties\PublishProfiles\tesrt.pubxml" />
@@ -3092,6 +3095,7 @@
     <Content Include="Views\Doctor\DoctorShowcasePictures.cshtml" />
     <Content Include="Views\Account\JoinUs.cshtml" />
     <Content Include="Views\Account\ThanksJoinUs.cshtml" />
+    <Content Include="Views\Shared\_PromotionLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

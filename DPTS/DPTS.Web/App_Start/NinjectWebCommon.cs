@@ -103,6 +103,7 @@ namespace DPTS.Web
             kernel.Bind<IImportManager>().To<ImportManager>();
             kernel.Bind<IReviewCommentsService>().To<ReviewCommentsService>();
             kernel.Bind<IPictureService>().To<PictureService>();
+            kernel.Bind<IJoinUsService>().To<JoinUsService>();
         }
     }
 }
