@@ -10,9 +10,10 @@
             @Html.Partial("AccountNavigation")
             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 pull-right">
                 @using (Html.BeginForm("AddressEdit", "Doctor",
-                                    new { },
-                                    FormMethod.Post, new { @class = "tg-formeditprofile tg-haslayout do-account-setitngs" }))
+                                new { },
+                                FormMethod.Post, new { @class = "tg-formeditprofile tg-haslayout do-account-setitngs" }))
                 {
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(model => model.Id)
 

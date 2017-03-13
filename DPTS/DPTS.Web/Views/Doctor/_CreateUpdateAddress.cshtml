@@ -10,72 +10,62 @@
         <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Hospital)
+                    @Html.LabelFor(model => model.Hospital)<span class="astric">*</span>
                     @Html.EditorFor(model => model.Hospital, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Hospital)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Address1)
+                    @Html.LabelFor(model => model.Address1)<span class="astric">*</span>
                     @Html.EditorFor(model => model.Address1, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Address1)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Address2)
                     @Html.EditorFor(model => model.Address2, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Address2)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.City)
+                    @Html.LabelFor(model => model.City)<span class="astric">*</span>
                     @Html.EditorFor(model => model.City, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.City)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.CountryId)
+                    @Html.LabelFor(model => model.CountryId)<span class="astric">*</span>
                     @Html.DropDownListFor(model => model.CountryId, Model.AvailableCountry, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CountryId)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.StateProvinceId)
+                    @Html.LabelFor(model => model.StateProvinceId)<span class="astric">*</span>
                     @Html.DropDownListFor(model => model.StateProvinceId, Model.AvailableStateProvince, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.StateProvinceId)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ZipPostalCode)
+                    @Html.LabelFor(model => model.ZipPostalCode)<span class="astric">*</span>
                     @Html.EditorFor(model => model.ZipPostalCode, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.ZipPostalCode)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.LandlineNumber)
                     @Html.EditorFor(model => model.LandlineNumber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.LandlineNumber)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Website)
                     @Html.EditorFor(model => model.Website, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Website)
                 </div>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">
                     @Html.LabelFor(model => model.FaxNumber)
                     @Html.EditorFor(model => model.FaxNumber, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.FaxNumber)
                 </div>
             </div>
         </div>

@@ -18,9 +18,6 @@ using DPTS.Common.Kendoui;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
 using DPTS.Services;
 using DPTS.Domain.Common;
-using System.Web;
-using Microsoft.AspNet.Identity.Owin;
-using System.Threading.Tasks;
 
 namespace DPTS.Web.Controllers
 {
@@ -317,42 +314,53 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult ProfileSetting(DoctorProfileSettingViewModel model)
         {
-            if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
-                return new HttpUnauthorizedResult();
-
-            // var doctorSpec = GetAllSpecialities(model.id).Select(c => c.Selected == true);
-            if (model.SelectedSpeciality.Count > 0)
+            try
             {
-                var specilities = string.Join(",", model.SelectedSpeciality);
-                foreach (var specilityMap in specilities.Split(',').ToList().Select(item => new SpecialityMapping
+                if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
+                    return new HttpUnauthorizedResult();
+
+                // var doctorSpec = GetAllSpecialities(model.id).Select(c => c.Selected == true);
+                if (model.SelectedSpeciality.Count > 0)
                 {
-                    Speciality_Id = int.Parse(item),
-                    Doctor_Id = model.Id,
-                    DateCreated = DateTime.UtcNow,
-                    DateUpdated = DateTime.UtcNow
-                }).Where(specilityMap => !_specialityService.IsDoctorSpecialityExists(specilityMap)))
-                {
-                    _specialityService.AddSpecialityByDoctor(specilityMap);
+                    var specilities = string.Join(",", model.SelectedSpeciality);
+                    foreach (var specilityMap in specilities.Split(',').ToList().Select(item => new SpecialityMapping
+                    {
+                        Speciality_Id = int.Parse(item),
+                        Doctor_Id = model.Id,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow
+                    }).Where(specilityMap => !_specialityService.IsDoctorSpecialityExists(specilityMap)))
+                    {
+                        _specialityService.AddSpecialityByDoctor(specilityMap);
+                    }
                 }
+
+                var doctor = _doctorService.GetDoctorbyId(model.Id);
+                if (doctor == null)
+                    return null;
+
+                doctor.Gender = model.Gender;
+                doctor.ShortProfile = model.ShortProfile;
+                var dateOfBirth = model.ParseDateOfBirth();
+                doctor.DateOfBirth = dateOfBirth.ToString();
+                doctor.DateUpdated = DateTime.UtcNow;
+                doctor.Language = model.Language;
+                doctor.RegistrationNumber = model.RegistrationNumber;
+                doctor.ProfessionalStatements = model.ProfessionalStatements;
+                doctor.VideoLink = model.VideoLink;
+                doctor.AspNetUser.LastName = model.LastName;
+                doctor.AspNetUser.FirstName = model.FirstName;
+                doctor.AspNetUser.Email = model.Email;
+                doctor.AspNetUser.PhoneNumber = model.PhoneNumber;
+                _doctorService.UpdateDoctor(doctor);
+                SuccessNotification("Profile updated successfully.");
+                return RedirectToAction("ProfileSetting");
             }
-
-            var doctor = _doctorService.GetDoctorbyId(model.Id);
-            if (doctor == null)
-                return null;
-
-            doctor.Gender = model.Gender;
-            doctor.ShortProfile = model.ShortProfile;
-            var dateOfBirth = model.ParseDateOfBirth();
-            doctor.DateOfBirth = dateOfBirth.ToString();
-            doctor.DateUpdated = DateTime.UtcNow;
-            doctor.Language = model.Language;
-            doctor.RegistrationNumber = model.RegistrationNumber;
-            doctor.ProfessionalStatements = model.ProfessionalStatements;
-            doctor.VideoLink = model.VideoLink;
-
-            _doctorService.UpdateDoctor(doctor);
-
-            return RedirectToAction("ProfileSetting");
+            catch(Exception ex)
+            {
+                ErrorNotification("Profile updated successfully.");
+                return RedirectToAction("ProfileSetting");
+            }
         }
 
         #endregion
@@ -375,6 +383,12 @@ namespace DPTS.Web.Controllers
         {
             if (!Request.IsAuthenticated && !User.IsInRole("Doctor"))
                 return new HttpUnauthorizedResult();
+
+            if(model.CountryId == 0 || model.StateProvinceId == 0)
+            {
+                ModelState.AddModelError("Select Country or State !!","");
+                ErrorNotification("Select Country or State");
+            }
 
             if (ModelState.IsValid)
             {
@@ -428,7 +442,7 @@ namespace DPTS.Web.Controllers
                     };
                     _addressService.AddAddressMapping(addrMap);
                 }
-
+                SuccessNotification("Address added successfully.");
                 return RedirectToAction("Addresses");
             }
             model.AvailableCountry = GetCountryList();
@@ -994,6 +1008,7 @@ namespace DPTS.Web.Controllers
                     }
                     ViewBag.DoctorId = userId;
                     model.AppointmentSchedule = doctorSchedule;
+                    SuccessNotification("Schedule updated successfully.");
                 }
             }
             catch (Exception)

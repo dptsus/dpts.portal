@@ -1080,7 +1080,6 @@
     <Content Include="Content\wp-content\uploads\2016\12\02.png" />
     <Content Include="Scripts\contact_me.js" />
     <Content Include="Scripts\docdirect_functions.js" />
-    <Content Include="Content\jquery.fileupload.css" />
     <Content Include="Content\tagEditor\jquery.tag-editor.css" />
     <Content Include="Scripts\AdminHelper.js" />
     <Content Include="Content\Admin\data\flot-data.js" />
@@ -1183,8 +1182,6 @@
     <Content Include="Content\Alertify\js\alertify.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\toastr.css" />
-    <Content Include="Content\toastr.min.css" />
     <Content Include="Content\wp-content\plugins\docdirect_core\js\functionsd5f7.js" />
     <Content Include="Content\wp-content\plugins\unyson\framework\extensions\builder\static\css\frontend-grid578f.css" />
     <Content Include="Content\wp-content\plugins\unyson\framework\extensions\forms\static\css\frontenda23f.css" />
@@ -1328,7 +1325,6 @@
     <Content Include="Content\wp-includes\js\wp-a11y.min1c9b.js" />
     <Content Include="Content\wp-includes\js\wp-embed.min1c9b.js" />
     <Content Include="Content\wp-includes\js\wp-util.min1c9b.js" />
-    <Content Include="Content\wp-includes\wlwmanifest.xml" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1336,8 +1332,6 @@
     <Content Include="Scripts\bookings.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Content\toastr.less" />
-    <Content Include="Content\toastr.scss" />
     <Content Include="Content\wp-content\themes\docdirect\fonts\fontawesome-webfont3295.eot" />
     <Content Include="Content\wp-content\themes\docdirect\fonts\fontawesome-webfont3295.ttf" />
     <Content Include="Content\wp-content\themes\docdirect\fonts\fontawesome-webfont3295.woff" />
@@ -1848,7 +1842,6 @@
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\jquery.fileupload.js" />
     <Content Include="Scripts\jquery.ui.widget.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
