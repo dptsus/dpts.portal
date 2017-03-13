@@ -12,7 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace DPTS.Web.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -98,11 +98,12 @@ namespace DPTS.Web.Controllers
                     model.Id = user.Id;
                     model.PhoneNumber = user.PhoneNumber;
                     model.Email = user.Email;
-                    ViewBag.Alert = "success";
+                    SuccessNotification("Information updated successfully.");
                     return View(model);
                 }
                 catch (Exception)
                 {
+                    ErrorNotification("Something went wrong !!");
                     return HttpNotFound();
                 }
             }
@@ -272,7 +273,8 @@ namespace DPTS.Web.Controllers
                 {
                     await SignInManager.SignInAsync(user, false, false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                SuccessNotification("Password updated successfully.");
+                return RedirectToAction("ChangePassword");
             }
             AddErrors(result);
             return View(model);
@@ -301,6 +303,7 @@ namespace DPTS.Web.Controllers
                     {
                         await SignInManager.SignInAsync(user, false, false);
                     }
+
                     return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
                 }
                 AddErrors(result);
@@ -366,8 +369,44 @@ namespace DPTS.Web.Controllers
 
             base.Dispose(disposing);
         }
+        #region Doctor's Security & Privacy
 
-#region Helpers
+        public ActionResult SecuritySettings()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SecuritySettings(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, false, false);
+                }
+                SuccessNotification("Password updated successfully.");
+                return RedirectToAction("SecuritySettings");
+            }
+            AddErrors(result);
+            return View(model);
+        }
+
+        public ActionResult PrivacySettings()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -418,6 +457,8 @@ namespace DPTS.Web.Controllers
             Error
         }
 
-#endregion
+        #endregion
+
+        
     }
 }

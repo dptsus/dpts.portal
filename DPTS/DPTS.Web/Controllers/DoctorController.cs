@@ -18,10 +18,13 @@ using DPTS.Common.Kendoui;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
 using DPTS.Services;
 using DPTS.Domain.Common;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace DPTS.Web.Controllers
 {
-    public class DoctorController : Controller
+    public class DoctorController : BaseController
     {
         #region Fields
 
@@ -34,11 +37,9 @@ namespace DPTS.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IReviewCommentsService _reviewCommentsService;
         private readonly IPictureService _pictureService;
-
         #endregion
 
         #region Contructor
-
         public DoctorController(IDoctorService doctorService, ISpecialityService specialityService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
@@ -1087,20 +1088,6 @@ namespace DPTS.Web.Controllers
         }
 
         public ActionResult BookingSettings()
-        {
-            return View();
-        }
-
-        #endregion
-
-        #region Security & Privacy
-
-        public ActionResult SecuritySettings()
-        {
-            return View();
-        }
-
-        public ActionResult PrivacySettings()
         {
             return View();
         }

@@ -2483,7 +2483,7 @@
     <Content Include="Views\Doctor\BookingListings.cshtml" />
     <Content Include="Views\Doctor\BookingSchedules.cshtml" />
     <Content Include="Views\Doctor\PrivacySettings.cshtml" />
-    <Content Include="Views\Doctor\SecuritySettings.cshtml" />
+    <Content Include="Views\Manage\SecuritySettings.cshtml" />
     <Content Include="Views\Doctor\BookingSettings.cshtml" />
     <Content Include="Views\Country\List.cshtml" />
     <Content Include="Views\Country\_CreateOrUpdate.cshtml" />
@@ -3155,7 +3155,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57070</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
