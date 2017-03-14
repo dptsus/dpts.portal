@@ -44,8 +44,8 @@ namespace DPTS.Domain.StateProvince
         public IList<Domain.Entities.StateProvince> GetAllStateProvince(bool showHidden = false)
         {
             var query = _stateProvinceRepository.Table;
-            if (!showHidden)
-                query = query.Where(c => c.Published);
+            //if (!showHidden)
+            //    query = query.Where(c => c.Published);
            // query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
 
             var countries = query.ToList();

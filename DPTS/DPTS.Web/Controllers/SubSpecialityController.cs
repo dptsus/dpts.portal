@@ -77,61 +77,79 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult Create(SubSpecialityViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var subSpeciality = new SubSpeciality
+                if (ModelState.IsValid)
                 {
-                    Name = model.Name,
-                    DisplayOrder = model.DisplayOrder,
-                    IsActive = model.IsActive,
-                    SpecialityId = model.SpecialityId
-                };
-                _subSpecialityService.AddSubSpeciality(subSpeciality);
-                return RedirectToAction("List");
+                    var subSpeciality = new SubSpeciality
+                    {
+                        Name = model.Name,
+                        DisplayOrder = model.DisplayOrder,
+                        IsActive = model.IsActive,
+                        SpecialityId = model.SpecialityId
+                    };
+                    _subSpecialityService.AddSubSpeciality(subSpeciality);
+                    SuccessNotification("sub speciality added successfully.");
+                    return RedirectToAction("List");
+                }
+                model.AvailableSpeciality = GetSpecialityList();
+                return View(model);
             }
-            model.AvailableSpeciality = GetSpecialityList();
-            return View(model);
+            catch { throw; }
         }
 
         public ActionResult Edit(int id)
         {
-            if (!IsValidateId(id))
-                return null;
-
-            var subSpeciality = _subSpecialityService.GetSubSpecialitybyId(id);
-            if (subSpeciality == null)
-                return null;
-
-            var model = new SubSpecialityViewModel
+            try
             {
-                Id = subSpeciality.Id,
-                Name = subSpeciality.Name,
-                SpecialityName = _specialityService.GetSpecialitybyId(subSpeciality.SpecialityId).Title,
-                IsActive = subSpeciality.IsActive,
-                DisplayOrder = subSpeciality.DisplayOrder,
-                SpecialityId = subSpeciality.SpecialityId,
-                DateUpdated = subSpeciality.DateCreated,
-                DateCreated = subSpeciality.DateCreated,
-                AvailableSpeciality = GetSpecialityList()
-            };
+                if (!IsValidateId(id))
+                    return null;
 
-            return View(model);
+                var subSpeciality = _subSpecialityService.GetSubSpecialitybyId(id);
+                if (subSpeciality == null)
+                    return null;
+
+                var model = new SubSpecialityViewModel
+                {
+                    Id = subSpeciality.Id,
+                    Name = subSpeciality.Name,
+                    SpecialityName = _specialityService.GetSpecialitybyId(subSpeciality.SpecialityId).Title,
+                    IsActive = subSpeciality.IsActive,
+                    DisplayOrder = subSpeciality.DisplayOrder,
+                    SpecialityId = subSpeciality.SpecialityId,
+                    DateUpdated = subSpeciality.DateCreated,
+                    DateCreated = subSpeciality.DateCreated,
+                    AvailableSpeciality = GetSpecialityList()
+                };
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
 
         [HttpPost]
         public ActionResult Edit(SubSpecialityViewModel model)
         {
-            if (ModelState.IsValid)
+            try 
             {
-                var subSpeciality = _subSpecialityService.GetSubSpecialitybyId(model.Id);
-                subSpeciality.Name = model.Name;
-                subSpeciality.DisplayOrder = model.DisplayOrder;
-                subSpeciality.IsActive = model.IsActive;
-                subSpeciality.SpecialityId = model.SpecialityId;
-                _subSpecialityService.UpdateSubSpeciality(subSpeciality);
-                return RedirectToAction("List");
+                if (ModelState.IsValid)
+                {
+                    var subSpeciality = _subSpecialityService.GetSubSpecialitybyId(model.Id);
+                    subSpeciality.Name = model.Name;
+                    subSpeciality.DisplayOrder = model.DisplayOrder;
+                    subSpeciality.IsActive = model.IsActive;
+                    subSpeciality.SpecialityId = model.SpecialityId;
+                    _subSpecialityService.UpdateSubSpeciality(subSpeciality);
+                    SuccessNotification("sub speciality updated successfully.");
+                    return RedirectToAction("List");
+                }
+                return View(model);
             }
-            return View(model);
+            catch { throw; }
         }
 
         public ActionResult DeleteConfirmed(int id)
@@ -168,7 +186,6 @@ namespace DPTS.Web.Controllers
                 }
                 else
                 {
-                    //country has some states
                     if (addSelectSpecItem)
                     {
                         result.Insert(0, new { id = 0, name = "select" });

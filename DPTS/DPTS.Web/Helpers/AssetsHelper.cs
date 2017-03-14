@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using DPTS.Domain.Entities;
+using DPTS.Web.Models;
+using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace DPTS.Web.Helpers
 {
@@ -10,6 +14,41 @@ namespace DPTS.Web.Helpers
         public static AssetsHelper Assets(this HtmlHelper htmlHelper)
         {
             return AssetsHelper.GetInstance(htmlHelper);
+        }
+        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector) where T : BaseEntity
+        {
+            return DeleteConfirmation(helper, "", buttonsSelector);
+        }
+
+        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string actionName,
+            string buttonsSelector) where T : BaseEntity
+        {
+            if (String.IsNullOrEmpty(actionName))
+                actionName = "Delete";
+
+            var modalId = MvcHtmlString.Create(helper.ViewData.ModelMetadata.ModelType.Name.ToLower() + "-delete-confirmation")
+                .ToHtmlString();
+
+            var deleteConfirmationModel = new DeleteConfirmationModel
+            {
+                Id = helper.ViewData.Model.Id,
+                ControllerName = helper.ViewContext.RouteData.GetRequiredString("controller"),
+                ActionName = actionName,
+                WindowId = modalId
+            };
+
+            var window = new StringBuilder();
+            window.AppendLine(string.Format("<div id='{0}' class=\"modal fade\"  tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"{0}-title\">", modalId));
+            window.AppendLine(helper.Partial("Delete", deleteConfirmationModel).ToHtmlString());
+            window.AppendLine("</div>");
+
+            window.AppendLine("<script>");
+            window.AppendLine("$(document).ready(function() {");
+            window.AppendLine(string.Format("$('#{0}').attr(\"data-toggle\", \"modal\").attr(\"data-target\", \"#{1}\")", buttonsSelector, modalId));
+            window.AppendLine("});");
+            window.AppendLine("</script>");
+
+            return MvcHtmlString.Create(window.ToString());
         }
     }
 

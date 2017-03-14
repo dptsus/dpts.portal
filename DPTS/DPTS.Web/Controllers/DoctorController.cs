@@ -376,7 +376,6 @@ namespace DPTS.Web.Controllers
             return View(model);
         }
 
-        #endregion
 
         [HttpPost]
         public ActionResult AddressAdd(AddressViewModel model)
@@ -652,6 +651,8 @@ namespace DPTS.Web.Controllers
             }
             return View(model);
         }
+        #endregion
+
 
         #endregion
 

@@ -45,64 +45,80 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult Create(CountryViewModel model)
         {
-            if(ModelState.IsValid)
+            try
             {
-                var country = new Country
+                if (ModelState.IsValid)
                 {
-                    Name=model.Name,
-                    TwoLetterIsoCode=model.TwoLetterIsoCode,
-                    ThreeLetterIsoCode=model.ThreeLetterIsoCode,
-                    NumericIsoCode=model.NumericIsoCode,
-                    SubjectToVat=model.SubjectToVat,
-                    Published=model.Published,
-                    DisplayOrder=model.DisplayOrder
-                };
-                _countryService.InsertCountry(country);
-                return RedirectToAction("List");
+                    var country = new Country
+                    {
+                        Name = model.Name,
+                        TwoLetterIsoCode = model.TwoLetterIsoCode,
+                        ThreeLetterIsoCode = model.ThreeLetterIsoCode,
+                        NumericIsoCode = model.NumericIsoCode,
+                        SubjectToVat = model.SubjectToVat,
+                        Published = model.Published,
+                        DisplayOrder = model.DisplayOrder
+                    };
+                    _countryService.InsertCountry(country);
+                    SuccessNotification("country added successfully.");
+                    return RedirectToAction("List");
+                }
+                ErrorNotification("Fill required fields");
+                return View(model);
             }
-            return View(model);
+            catch { throw; }
         }
         public ActionResult Edit(int Id)
         {
-            if (!IsValidateId(Id))
-                return HttpNotFound();
-
-            var country = _countryService.GetCountryById(Id);
-            if (country == null)
-                return HttpNotFound();
-
-            var model = new CountryViewModel
+            try
             {
-                Id = country.Id,
-                Name = country.Name,
-                DisplayOrder = country.DisplayOrder,
-                NumericIsoCode = country.NumericIsoCode,
-                Published = country.Published,
-                SubjectToVat = country.SubjectToVat,
-                ThreeLetterIsoCode = country.ThreeLetterIsoCode,
-                TwoLetterIsoCode = country.TwoLetterIsoCode
-            };
+                if (!IsValidateId(Id))
+                    return HttpNotFound();
 
-            return View(model);
+                var country = _countryService.GetCountryById(Id);
+                if (country == null)
+                    return HttpNotFound();
+
+                var model = new CountryViewModel
+                {
+                    Id = country.Id,
+                    Name = country.Name,
+                    DisplayOrder = country.DisplayOrder,
+                    NumericIsoCode = country.NumericIsoCode,
+                    Published = country.Published,
+                    SubjectToVat = country.SubjectToVat,
+                    ThreeLetterIsoCode = country.ThreeLetterIsoCode,
+                    TwoLetterIsoCode = country.TwoLetterIsoCode
+                };
+
+                return View(model);
+            }
+            catch { throw; }
         }
         [HttpPost]
         public ActionResult Edit(CountryViewModel model)
         {
-            if(ModelState.IsValid)
+            try
             {
-                var country = _countryService.GetCountryById(model.Id);
-                country.Id = model.Id;
-                country.Name = model.Name;
-                country.DisplayOrder = model.DisplayOrder;
-                country.NumericIsoCode = model.NumericIsoCode;
-                country.Published = model.Published;
-                country.SubjectToVat = model.SubjectToVat;
-                country.ThreeLetterIsoCode = model.ThreeLetterIsoCode;
-                country.TwoLetterIsoCode = model.TwoLetterIsoCode;
-                _countryService.UpdateCountry(country);
-                return RedirectToAction("List");
+                if (ModelState.IsValid)
+                {
+                    var country = _countryService.GetCountryById(model.Id);
+                    country.Id = model.Id;
+                    country.Name = model.Name;
+                    country.DisplayOrder = model.DisplayOrder;
+                    country.NumericIsoCode = model.NumericIsoCode;
+                    country.Published = model.Published;
+                    country.SubjectToVat = model.SubjectToVat;
+                    country.ThreeLetterIsoCode = model.ThreeLetterIsoCode;
+                    country.TwoLetterIsoCode = model.TwoLetterIsoCode;
+                    _countryService.UpdateCountry(country);
+                    SuccessNotification("country updated successfully.");
+                    return RedirectToAction("List");
+                }
+                ErrorNotification("Fill required fields");
+                return View(model);
             }
-            return View();
+            catch { throw; }
         }
 
 

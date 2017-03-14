@@ -79,47 +79,60 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public ActionResult Create(StateProvinceViewModel model)
         {
-            if (model.CountryId == 0)
-                ModelState.AddModelError("", "select country");
-
-            if (ModelState.IsValid)
+            try
             {
-                var stateProvince = new StateProvince
+                if (model.CountryId == 0)
+                    ModelState.AddModelError("", "select country");
+
+                if (ModelState.IsValid)
                 {
-                    Name = model.Name,
-                    Published = model.Published,
-                    DisplayOrder = model.DisplayOrder,
-                    Abbreviation = model.Abbreviation,
-                    CountryId = model.CountryId
-                };
-                _stateProvinceService.InsertStateProvince(stateProvince);
-                return RedirectToAction("List");
+                    var stateProvince = new StateProvince
+                    {
+                        Name = model.Name,
+                        Published = model.Published,
+                        DisplayOrder = model.DisplayOrder,
+                        Abbreviation = model.Abbreviation,
+                        CountryId = model.CountryId
+                    };
+                    _stateProvinceService.InsertStateProvince(stateProvince);
+                    SuccessNotification("State added successfully.");
+                    return RedirectToAction("List");
+                }
+                model.AvailableCountry = GetCountryList();
+                ErrorNotification("Fill required fields");
+                return View(model);
             }
-            model.AvailableCountry = GetCountryList();
-            return View(model);
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Edit(int Id)
         {
-            if (!IsValidateId(Id))
-                return HttpNotFound();
-
-            var stateProvince = _stateProvinceService.GetStateProvinceById(Id);
-            if (stateProvince == null)
-                return HttpNotFound();
-
-            var model = new StateProvinceViewModel
+            try
             {
-                Id = stateProvince.Id,
-                Name = stateProvince.Name,
-                CountryName = _countryService.GetCountryById(stateProvince.Id).Name,
-                DisplayOrder = stateProvince.DisplayOrder,
-                Published = stateProvince.Published,
-                CountryId = stateProvince.CountryId,
-                Abbreviation = stateProvince.Abbreviation,
-                AvailableCountry = GetCountryList()
-            };
-            return View(model);
+                if (!IsValidateId(Id))
+                    return HttpNotFound();
+
+                var stateProvince = _stateProvinceService.GetStateProvinceById(Id);
+                if (stateProvince == null)
+                    return HttpNotFound();
+
+                var model = new StateProvinceViewModel
+                {
+                    Id = stateProvince.Id,
+                    Name = stateProvince.Name,
+                    CountryName = _countryService.GetCountryById(stateProvince.Id).Name,
+                    DisplayOrder = stateProvince.DisplayOrder,
+                    Published = stateProvince.Published,
+                    CountryId = stateProvince.CountryId,
+                    Abbreviation = stateProvince.Abbreviation,
+                    AvailableCountry = GetCountryList()
+                };
+                return View(model);
+            }
+            catch { throw; }
         }
 
         [HttpPost]
@@ -134,11 +147,12 @@ namespace DPTS.Web.Controllers
                 stateProvince.Published = model.Published;
                 stateProvince.CountryId = model.CountryId;
                 stateProvince.Abbreviation = model.Abbreviation;
-
                 _stateProvinceService.UpdateStateProvince(stateProvince);
+                SuccessNotification("State updated successfully.");
                 return RedirectToAction("List");
             }
             model.AvailableCountry = GetCountryList();
+            ErrorNotification("Fill required fields");
             return View(model);
         }
 

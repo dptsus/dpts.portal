@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DPTS.Web.Controllers
 {
-    public class SpecialityController : Controller
+    public class SpecialityController : BaseController
     {
         #region Field
 
@@ -62,6 +62,7 @@ namespace DPTS.Web.Controllers
                     DateUpdated = DateTime.UtcNow
                 };
                 _specialityService.AddSpeciality(speciality);
+                SuccessNotification("Speciality added successfully.");
                 return RedirectToAction("List");
             }
             return View(model);
@@ -84,7 +85,6 @@ namespace DPTS.Web.Controllers
                 DisplayOrder = speciality.DisplayOrder,
                 DateUpdated = DateTime.UtcNow
             };
-
             return View(model);
         }
 
@@ -100,6 +100,7 @@ namespace DPTS.Web.Controllers
                 speciality.DateCreated = DateTime.UtcNow;
                 speciality.DateUpdated = DateTime.UtcNow;
                 _specialityService.UpdateSpeciality(speciality);
+                SuccessNotification("Speciality updated successfully.");
                 return RedirectToAction("List");
             }
             return View(model);
@@ -109,7 +110,10 @@ namespace DPTS.Web.Controllers
         {
             var speciality = _specialityService.GetSpecialitybyId(id);
             if (speciality != null)
+            {
                 _specialityService.DeleteSpeciality(speciality);
+                SuccessNotification("Speciality deleted successfully.");
+            }
 
 
             return Content("Deleted");

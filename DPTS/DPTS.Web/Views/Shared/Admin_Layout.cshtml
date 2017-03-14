@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using DPTS.Web.Helpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -17,8 +18,7 @@
     <link href="~/Content/Admin/vendor/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="~/Content/Admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="~/Content/Alertify/css/alertify.core.css" rel="stylesheet" />
-    <link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" /> 
+    @Html.Assets().Styles.Render()
 </head>
 <body>
 <div id="wrapper">
@@ -345,8 +345,8 @@
     <script src="~/Content/Admin/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/Content/Admin/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="~/Content/Admin/vendor/datatables-responsive/dataTables.responsive.js"></script>
-    <script src="~/Content/Alertify/js/alertify.min.js"></script>
     <script src="~/Scripts/AdminHelper.js"></script>
+    @Html.Assets().Scripts.Render()
 </body>
 </html>
 <script>
