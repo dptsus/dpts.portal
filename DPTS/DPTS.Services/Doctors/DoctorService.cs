@@ -236,6 +236,7 @@ namespace DPTS.Services.Doctors
             string searchByName = null,
             double Geo_Distance = 50)
         {
+            IList<int> addressIds = null;
             var query = from d in _doctorRepository.Table
                         select d;
 
@@ -253,6 +254,15 @@ namespace DPTS.Services.Doctors
 
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
             }
+            if(!string.IsNullOrWhiteSpace(searchByName))
+            {
+               // string firstname = searchByName.Split(' ').First();
+                //string lastname = (searchByName.Split(' ').Last() == firstname) ? string.Empty: searchByName.Split(' ').Last();
+                query = from p in query
+                        let fullName = p.AspNetUser.FirstName +" "+p.AspNetUser.LastName
+                        where fullName.Contains(searchByName)
+                        select p;
+            }
 
             if (!string.IsNullOrWhiteSpace(searchByName))
             {
@@ -262,65 +272,87 @@ namespace DPTS.Services.Doctors
 
             if (!string.IsNullOrWhiteSpace(zipcode))
             {
-                var addrList = new List<TempAddressViewModel>();
-                double lat = 0, lng = 0;
-                #region (with zipcode)
-
-                var firstZipCodeLocation = GetByZipCode(zipcode) ?? CalculateLatLngForZipCode(zipcode);
-
-                var data = _addressService.GetAllAddress();
-                foreach (var addr in data)
+                decimal zipCity;
+                bool isDecimal = decimal.TryParse(zipcode, out zipCity);
+                if(isDecimal)
                 {
-
-                    if (addr.Latitude == 0 && addr.Longitude == 0)
-                    {
-                        var geoCoodrinateDealer = GetGeoCoordinate(addr.ZipPostalCode.Trim());
-                        if (geoCoodrinateDealer.Count == 2)
-                        {
-                            lat = addr.Latitude = geoCoodrinateDealer["lat"];
-                            lng = addr.Longitude = geoCoodrinateDealer["lng"];
-
-                            _addressService.UpdateAddress(addr);
-                        }
-                    }
-                    else
-                    {
-                        lat = addr.Latitude;
-                        lng = addr.Longitude;
-                    }
-
-                    if (firstZipCodeLocation != null && lat != 0 && lng != 0)
-                    {
-                        var addrModel = new TempAddressViewModel
-                        {
-                            Address = addr,
-                            Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
-                                lat, lng)
-                        };
-                        addrList.Add(addrModel);
-                    }
+                    //query = from p in query
+                    //        let fullName = p.AddresseMapping..FirstName + " " + p.AspNetUser.LastName
+                    //        where fullName.Contains(searchByName)
+                    //        select p;
+                    addressIds = _addressService.GetAllAddressByZipcode(zipcode).Select(p => p.Id).ToList();
+                    query = from p in query
+                            from pc in p.AddresseMapping.Where(pc => pc.AddressId.Equals(pc.UserId))
+                           // where (!featuredProducts.HasValue || featuredProducts.Value == pc.IsFeaturedProduct)
+                            select p;
+                   // query = query.SelectMany(d => d.AddresseMapping.Where(s => addressIds.Contains(s.AddressId)), (d, s) => d);
                 }
-                addrList = addrList.Where(c => c.Distance <= Convert.ToDouble(Geo_Distance)).OrderBy(c => c.Distance).ToList();
-
-                if (addrList.Any())
+                else
                 {
-                    List<int> addrIds = addrList.Select(_address => _address.Address.Id).ToList();
-
-                    query = from d in _context.Doctors
-                            join a in _context.AddressMappings on d.DoctorId equals a.UserId
-                            where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
-                            select d;
-                }
-                else if (specialityId == 0)
-                {
-                    totalCount = 0;
-                    return null;
-                }else if(specialityId > 0 && query.ToList() == null)
-                {
-                    totalCount = 0;
-                    return null;
+                    query = query.SelectMany(d => d.AddresseMapping.Where(s => s.Address.City.Equals(zipcode)), (d, s) => d);
                 }
 
+                #region Distance refine
+                //var addrList = new List<TempAddressViewModel>();
+                //double lat = 0, lng = 0;
+                //#region (with zipcode)
+
+                //var firstZipCodeLocation = GetByZipCode(zipcode) ?? CalculateLatLngForZipCode(zipcode);
+
+                //var data = _addressService.GetAllAddress();
+                //foreach (var addr in data)
+                //{
+
+                //    if (addr.Latitude == 0 && addr.Longitude == 0)
+                //    {
+                //        var geoCoodrinateDealer = GetGeoCoordinate(addr.ZipPostalCode.Trim());
+                //        if (geoCoodrinateDealer.Count == 2)
+                //        {
+                //            lat = addr.Latitude = geoCoodrinateDealer["lat"];
+                //            lng = addr.Longitude = geoCoodrinateDealer["lng"];
+
+                //            _addressService.UpdateAddress(addr);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        lat = addr.Latitude;
+                //        lng = addr.Longitude;
+                //    }
+
+                //    if (firstZipCodeLocation != null && lat != 0 && lng != 0)
+                //    {
+                //        var addrModel = new TempAddressViewModel
+                //        {
+                //            Address = addr,
+                //            Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
+                //                lat, lng)
+                //        };
+                //        addrList.Add(addrModel);
+                //    }
+                //}
+                //addrList = addrList.Where(c => c.Distance <= Convert.ToDouble(Geo_Distance)).OrderBy(c => c.Distance).ToList();
+
+                //if (addrList.Any())
+                //{
+                //    List<int> addrIds = addrList.Select(_address => _address.Address.Id).ToList();
+
+                //    query = from d in _context.Doctors
+                //            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                //            where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
+                //            select d;
+                //}
+                //else if (specialityId == 0)
+                //{
+                //    totalCount = 0;
+                //    return null;
+                //}else if(specialityId > 0 && query.ToList() == null)
+                //{
+                //    totalCount = 0;
+                //    return null;
+                //}
+
+                //#endregion
                 #endregion
             }
 

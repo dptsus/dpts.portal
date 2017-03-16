@@ -161,7 +161,14 @@ namespace DPTS.Web.Controllers
 
             if(!string.IsNullOrWhiteSpace(searchTerms))
             {
-                specilityId = _specialityService.GetAllSpeciality(true).Where(s => s.Title == searchTerms).FirstOrDefault().Id;
+                try
+                {
+                    specilityId = _specialityService.GetAllSpeciality(true).Where(s => s.Title == searchTerms).FirstOrDefault().Id;
+                }
+                catch
+                {
+                    specilityId = 0;
+                }
                 if(specilityId == 0)
                 {
                     searchByName = searchTerms;
