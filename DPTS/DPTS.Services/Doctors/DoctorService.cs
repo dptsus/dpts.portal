@@ -220,9 +220,20 @@ namespace DPTS.Services.Doctors
             public double Distance { get; set; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <param name="totalCount"></param>
+        /// <param name="zipcode"></param>
+        /// <param name="specialityId"></param>
+        /// <param name="Geo_Distance"></param>
+        /// <returns></returns>
         public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
             string zipcode = null,
             int specialityId = 0,
+            string searchByName = null,
             double Geo_Distance = 50)
         {
             var query = from d in _doctorRepository.Table
@@ -241,6 +252,12 @@ namespace DPTS.Services.Doctors
                 //        select s.Id;
 
                 query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchByName))
+            {
+                //var spec = 
+               // query = query.Select(s => s.AspNetUser.FirstName.Contains(searchByName)).ToList();
             }
 
             if (!string.IsNullOrWhiteSpace(zipcode))

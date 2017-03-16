@@ -94,9 +94,9 @@ namespace DPTS.Web.Models
 
         [Required(ErrorMessage = "Your must provide a PhoneNumber")]
         [Display(Name = "Phone Number")]
-        [DataType(DataType.PhoneNumber)]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
-            ErrorMessage = "Not a valid Phone number")]
+        //[DataType(DataType.PhoneNumber)]
+        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+        //    ErrorMessage = "Not a valid Phone number")]
         public string PhoneNumber { get; set; }
 
         [Required]

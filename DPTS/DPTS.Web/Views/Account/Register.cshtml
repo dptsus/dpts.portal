@@ -1,8 +1,12 @@
 ﻿@using reCaptcha;
+@using DPTS.Web.Helpers
 @model DPTS.Web.Models.RegisterViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Sign Up";
+    Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/intlTelInput.css");
+    Html.Assets().Scripts.Add("https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js");
+    Html.Assets().Scripts.Add("/Scripts/intlTelInput.js");
 }
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div class="container">
@@ -46,7 +50,8 @@
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
+                                    <input id="PhoneNumber" name="PhoneNumber" type="tel">
+                                    @*@Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })*@
                                     @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group">
@@ -61,6 +66,10 @@
                                     @Html.PasswordFor(m => m.RegistrationNumber, new { @class = "form-control", @placeholder = "Registration Number" })
                                     @Html.ValidationMessageFor(model => model.RegistrationNumber, "", new { @class = "text-danger" })
                                 </div>
+                                @*<div class="form-group">
+                                    <input id="phone" type="tel">
+                                    @Html.ValidationMessageFor(model => model.RegistrationNumber, "", new { @class = "text-danger" })
+                                </div>*@
                                 <div class="form-group tg-checkbox">
                                     <input name="terms" type="hidden" value="0">
                                     <label>
@@ -99,6 +108,27 @@
                 $("#Role").hide();
                 $("#RegistrationNumber").hide();
             }
+        });
+        $("#PhoneNumber").intlTelInput({
+            // allowDropdown: false,
+            // autoHideDialCode: false,
+            // autoPlaceholder: "off",
+            // dropdownContainer: "body",
+            // excludeCountries: ["us"],
+            // formatOnDisplay: false,
+             //geoIpLookup: function(callback) {
+             //    $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+             //        var countryCode = (resp && resp.country) ? resp.country : "";
+             //        callback(countryCode);
+             //    });
+             //},
+            // initialCountry: "auto",
+             nationalMode: true,
+            // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+            // placeholderNumberType: "MOBILE",
+             preferredCountries: ['us', 'in'],
+            // separateDialCode: true,
+            utilsScript: "/Scripts/utils.js"
         });
     });
     function AcceptTermAndcondition() {
