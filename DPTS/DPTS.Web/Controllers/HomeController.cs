@@ -144,6 +144,7 @@ namespace DPTS.Web.Controllers
             var pageSize = 5;
             int totalCount;
             int specilityId = 0;
+            string searchByName = string.Empty;
 
             if (model == null)
                 model = new SearchModel();
@@ -160,12 +161,24 @@ namespace DPTS.Web.Controllers
 
             if(!string.IsNullOrWhiteSpace(searchTerms))
             {
-                specilityId = _specialityService.GetAllSpeciality(true).Where(s => s.Title == searchTerms).FirstOrDefault().Id;
+                try
+                {
+                    specilityId = _specialityService.GetAllSpeciality(true).Where(s => s.Title == searchTerms).FirstOrDefault().Id;
+                }
+                catch
+                {
+                    specilityId = 0;
+                }
+                if(specilityId == 0)
+                {
+                    searchByName = searchTerms;
+                }
             }
 
             var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,
                 model.geo_location,
                 specilityId,
+                searchByName,
                 model.geo_distance);
 
             var searchModel = new SearchModel
