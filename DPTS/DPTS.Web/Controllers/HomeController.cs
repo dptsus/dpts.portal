@@ -118,7 +118,7 @@ namespace DPTS.Web.Controllers
                 {
                     foreach (var edu in model)
                     {
-                        eduList += edu.Title + ",";
+                        eduList += edu.Title + " ,";
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace DPTS.Web.Controllers
                 {
                     foreach (var spc in model)
                     {
-                        specList += spc.Title + ", ";
+                        specList += spc.Title + " ,";
                     }
                 }
             }
