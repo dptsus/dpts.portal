@@ -51,6 +51,8 @@ namespace DPTS.Domain.Entities
 
         public string VideoLink { get; set; }
 
+        public decimal ConsultationFee { get; set; }
+
         public virtual AspNetUser AspNetUser { get; set; }
 
         public virtual ICollection<SpecialityMapping> SpecialityMapping { get; set; }

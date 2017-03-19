@@ -233,8 +233,8 @@ namespace DPTS.Services.Doctors
         public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
             string zipcode = null,
             int specialityId = 0,
-            string searchByName = null,
-            double Geo_Distance = 50)
+            string searchByName = null)
+           // double Geo_Distance = 50)
         {
             IList<int> addressIds = null;
             var query = from d in _doctorRepository.Table
@@ -244,52 +244,36 @@ namespace DPTS.Services.Doctors
             //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
             //  return null;
 
-            if (specialityId > 0)
-            {
-                //var spec =
-                //        from s in _specialityRepository.Table
-                //        join r in _specialityMappingRepository.Table on s.Id equals r.Speciality_Id
-                //        where s.Title == searchTerm
-                //        select s.Id;
-
-                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
-            }
-            if(!string.IsNullOrWhiteSpace(searchByName))
-            {
-               // string firstname = searchByName.Split(' ').First();
-                //string lastname = (searchByName.Split(' ').Last() == firstname) ? string.Empty: searchByName.Split(' ').Last();
-                query = from p in query
-                        let fullName = p.AspNetUser.FirstName +" "+p.AspNetUser.LastName
-                        where fullName.Contains(searchByName)
-                        select p;
-            }
-
-            if (!string.IsNullOrWhiteSpace(searchByName))
-            {
-                //var spec = 
-               // query = query.Select(s => s.AspNetUser.FirstName.Contains(searchByName)).ToList();
-            }
-
             if (!string.IsNullOrWhiteSpace(zipcode))
             {
                 decimal zipCity;
                 bool isDecimal = decimal.TryParse(zipcode, out zipCity);
-                if(isDecimal)
+                if (isDecimal)
                 {
-                    //query = from p in query
-                    //        let fullName = p.AddresseMapping..FirstName + " " + p.AspNetUser.LastName
-                    //        where fullName.Contains(searchByName)
-                    //        select p;
                     addressIds = _addressService.GetAllAddressByZipcode(zipcode).Select(p => p.Id).ToList();
-                    query = from p in query
-                            from pc in p.AddresseMapping.Where(pc => pc.AddressId.Equals(pc.UserId))
-                           // where (!featuredProducts.HasValue || featuredProducts.Value == pc.IsFeaturedProduct)
-                            select p;
-                   // query = query.SelectMany(d => d.AddresseMapping.Where(s => addressIds.Contains(s.AddressId)), (d, s) => d);
+
+                    query = from d in _context.Doctors
+                            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                            where addressIds.Contains(a.AddressId)//a.AddressId == zipcode
+                            select d;
                 }
                 else
                 {
-                    query = query.SelectMany(d => d.AddresseMapping.Where(s => s.Address.City.Equals(zipcode)), (d, s) => d);
+                    var addrIds = from d in _context.Addresses
+                                  where zipcode.StartsWith(d.City)||
+                                  zipcode.Contains(d.City) ||
+                                  zipcode.Contains(d.Address1) ||
+                                  zipcode.StartsWith(d.Address1) ||
+                                  zipcode.Contains(d.Address2) ||
+                                  zipcode.StartsWith(d.Address2) ||
+                                  zipcode.StartsWith(d.ZipPostalCode) ||
+                                  zipcode.Contains(d.ZipPostalCode)
+                                  select d.Id;
+
+                    query = from d in _context.Doctors
+                            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                            where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
+                            select d;
                 }
 
                 #region Distance refine
@@ -356,7 +340,177 @@ namespace DPTS.Services.Doctors
                 #endregion
             }
 
+            if (specialityId > 0)
+            {
+                //var spec =
+                //        from s in _specialityRepository.Table
+                //        join r in _specialityMappingRepository.Table on s.Id equals r.Speciality_Id
+                //        where s.Title == searchTerm
+                //        select s.Id;
+
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
+            }
+            if(!string.IsNullOrWhiteSpace(searchByName))
+            {
+               // string firstname = searchByName.Split(' ').First();
+                //string lastname = (searchByName.Split(' ').Last() == firstname) ? string.Empty: searchByName.Split(' ').Last();
+                query = from p in query
+                        let fullName = p.AspNetUser.FirstName +" "+p.AspNetUser.LastName
+                        where fullName.Contains(searchByName)
+                        select p;
+            }
+
+            
+
             var pageQuery =  query.OrderBy(d => d.DateUpdated)
+                .Skip(itemsPerPage * page).Take(itemsPerPage)
+                         .ToList();
+
+
+            totalCount = query.Count();
+            return pageQuery;
+        }
+
+        public IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount,
+            string zipcode = null,
+            int specialityId = 0,
+            string searchByName = null,
+            decimal maxFee = 0,
+            decimal minFee = 0)
+        {
+            IList<int> addressIds = null;
+            var query = from d in _doctorRepository.Table
+                        select d;
+
+            //  query = query.Where(p => !p.Deleted && p.IsActive);
+            //  if (string.IsNullOrWhiteSpace(directoryType) && directoryType != "doctor")
+            //  return null;
+
+            if (!string.IsNullOrWhiteSpace(zipcode))
+            {
+                decimal zipCity;
+                bool isDecimal = decimal.TryParse(zipcode, out zipCity);
+                if (isDecimal)
+                {
+                    addressIds = _addressService.GetAllAddressByZipcode(zipcode).Select(p => p.Id).ToList();
+
+                    query = from d in _context.Doctors
+                            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                            where addressIds.Contains(a.AddressId)//a.AddressId == zipcode
+                            select d;
+                }
+                else
+                {
+                    var addrIds = from d in _context.Addresses
+                                  where zipcode.StartsWith(d.City) ||
+                                  zipcode.Contains(d.City) ||
+                                  zipcode.Contains(d.Address1) ||
+                                  zipcode.StartsWith(d.Address1) ||
+                                  zipcode.Contains(d.Address2) ||
+                                  zipcode.StartsWith(d.Address2) ||
+                                  zipcode.StartsWith(d.ZipPostalCode) ||
+                                  zipcode.Contains(d.ZipPostalCode)
+                                  select d.Id;
+
+                    query = from d in _context.Doctors
+                            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                            where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
+                            select d;
+                }
+
+                #region Distance refine
+                //var addrList = new List<TempAddressViewModel>();
+                //double lat = 0, lng = 0;
+                //#region (with zipcode)
+
+                //var firstZipCodeLocation = GetByZipCode(zipcode) ?? CalculateLatLngForZipCode(zipcode);
+
+                //var data = _addressService.GetAllAddress();
+                //foreach (var addr in data)
+                //{
+
+                //    if (addr.Latitude == 0 && addr.Longitude == 0)
+                //    {
+                //        var geoCoodrinateDealer = GetGeoCoordinate(addr.ZipPostalCode.Trim());
+                //        if (geoCoodrinateDealer.Count == 2)
+                //        {
+                //            lat = addr.Latitude = geoCoodrinateDealer["lat"];
+                //            lng = addr.Longitude = geoCoodrinateDealer["lng"];
+
+                //            _addressService.UpdateAddress(addr);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        lat = addr.Latitude;
+                //        lng = addr.Longitude;
+                //    }
+
+                //    if (firstZipCodeLocation != null && lat != 0 && lng != 0)
+                //    {
+                //        var addrModel = new TempAddressViewModel
+                //        {
+                //            Address = addr,
+                //            Distance = CalculateDistance(firstZipCodeLocation.Latitude, firstZipCodeLocation.Longitude,
+                //                lat, lng)
+                //        };
+                //        addrList.Add(addrModel);
+                //    }
+                //}
+                //addrList = addrList.Where(c => c.Distance <= Convert.ToDouble(Geo_Distance)).OrderBy(c => c.Distance).ToList();
+
+                //if (addrList.Any())
+                //{
+                //    List<int> addrIds = addrList.Select(_address => _address.Address.Id).ToList();
+
+                //    query = from d in _context.Doctors
+                //            join a in _context.AddressMappings on d.DoctorId equals a.UserId
+                //            where addrIds.Contains(a.AddressId)//a.AddressId == zipcode
+                //            select d;
+                //}
+                //else if (specialityId == 0)
+                //{
+                //    totalCount = 0;
+                //    return null;
+                //}else if(specialityId > 0 && query.ToList() == null)
+                //{
+                //    totalCount = 0;
+                //    return null;
+                //}
+
+                //#endregion
+                #endregion
+            }
+
+            if (specialityId > 0)
+            {
+                //var spec =
+                //        from s in _specialityRepository.Table
+                //        join r in _specialityMappingRepository.Table on s.Id equals r.Speciality_Id
+                //        where s.Title == searchTerm
+                //        select s.Id;
+                query = query.SelectMany(d => d.SpecialityMapping.Where(s => s.Speciality_Id.Equals(specialityId)), (d, s) => d);
+            }
+            if (!string.IsNullOrWhiteSpace(searchByName))
+            {
+                // string firstname = searchByName.Split(' ').First();
+                //string lastname = (searchByName.Split(' ').Last() == firstname) ? string.Empty: searchByName.Split(' ').Last();
+                query = from p in query
+                        let fullName = p.AspNetUser.FirstName + " " + p.AspNetUser.LastName
+                        where fullName.Contains(searchByName)
+                        select p;
+            }
+
+            if(maxFee > 0)
+            {
+
+                //(p => p.Age >= r2.Min && p.Age <= r2.Max);
+                query = from p in query
+                        where (p.ConsultationFee >= minFee && p.ConsultationFee <= maxFee)
+                        select p;
+            }
+
+            var pageQuery = query.OrderBy(d => d.DateUpdated)
                 .Skip(itemsPerPage * page).Take(itemsPerPage)
                          .ToList();
 

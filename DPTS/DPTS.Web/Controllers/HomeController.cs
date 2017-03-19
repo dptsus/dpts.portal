@@ -11,6 +11,7 @@ using PagedList;
 using DPTS.Domain.Entities;
 using DPTS.Domain.Core.Country;
 using DPTS.Domain.Core.StateProvince;
+using DPTS.Data.Context;
 
 namespace DPTS.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace DPTS.Web.Controllers
         private readonly IAddressService _addressService;
         private ApplicationUserManager _userManager;
         private ApplicationDbContext context;
+        private readonly DPTSDbContext _context;
 
         #endregion
 
@@ -43,6 +45,7 @@ namespace DPTS.Web.Controllers
             _addressService = addressService;
             _countryService = countryService;
             _stateService = stateService;
+            _context = new DPTSDbContext();
         }
 
         #endregion
@@ -117,7 +120,7 @@ namespace DPTS.Web.Controllers
         {
             var model = new SearchModel
             {
-                AvailableSpeciality = GetSpecialityList()
+               // AvailableSpeciality = GetSpecialityList()
             };
             return PartialView(model);
         }
@@ -135,6 +138,87 @@ namespace DPTS.Web.Controllers
 
             return View();
         }
+        public ActionResult AjaxTest()
+        {
+            return View();
+        }
+
+        public PartialViewResult SearchPeople(string keyword)
+        {
+           // System.Threading.Thread.Sleep(2000);
+            var data = _context.Countries.Where(d => d.Name.StartsWith(keyword)).ToList();
+            return PartialView(data);
+        }
+        public PartialViewResult _DoctorBox(SearchModel model, int? page)
+        {
+            var searchViewModel = new List<TempDoctorViewModel>();
+            var pageNumber = (page ?? 1) - 1;
+            var pageSize = 5;
+            int totalCount;
+            int specilityId = 0;
+            string searchByName = string.Empty;
+
+            if (model == null)
+                model = new SearchModel();
+
+
+            var searchTerms = model.q ?? "";
+            if (!string.IsNullOrWhiteSpace(model.q))
+                searchTerms = model.q.Trim();
+
+
+            if (!string.IsNullOrWhiteSpace(searchTerms))
+            {
+                try
+                {
+                    specilityId = _specialityService.GetAllSpeciality(true).Where(s => s.Title == searchTerms).FirstOrDefault().Id;
+                }
+                catch
+                {
+                    specilityId = 0;
+                }
+                if (specilityId == 0)
+                {
+                    searchByName = searchTerms;
+                }
+            }
+
+            var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,
+                model.geo_location,
+                specialityId: specilityId,
+                searchByName: searchByName,
+                maxFee: model.maxfee,
+                minFee: model.minfee);
+
+            var searchModel = new SearchModel
+            {
+                Specialitie = model.Specialitie,
+                minfee = model.minfee,
+                maxfee = model.maxfee,
+                geo_location = model.geo_location,
+                q = model.q
+            };
+
+            if (data != null)
+            {
+                searchViewModel = data.Select(doc => new TempDoctorViewModel
+                {
+                    Doctors = doc,
+                    Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
+                    AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
+                    Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId)
+                }).ToList();
+            }
+
+            //totalCount = searchViewModel.Count;
+
+            IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel,
+                pageNumber + 1, pageSize, totalCount);
+            ViewBag.SearchModel = searchModel;
+            ViewBag.IsHomePageSearch = false;
+            return PartialView(pageDoctors);
+        }
+
 
         [ValidateInput(false)]
         public ActionResult Search(SearchModel model, int? page)
@@ -149,10 +233,6 @@ namespace DPTS.Web.Controllers
             if (model == null)
                 model = new SearchModel();
 
-            if (TempData["SearchModel"] != null)
-            {
-                model = (SearchModel) TempData["SearchModel"];
-            }
 
             var searchTerms = model.q ?? "";
             if(!string.IsNullOrWhiteSpace(model.q))
@@ -178,18 +258,19 @@ namespace DPTS.Web.Controllers
             var data = _doctorService.SearchDoctor(pageNumber, pageSize, out totalCount,
                 model.geo_location,
                 specilityId,
-                searchByName,
-                model.geo_distance);
+                searchByName);
+               // model.geo_distance);
 
             var searchModel = new SearchModel
             {
-                AvailableSpeciality = GetSpecialityList(),
-                directory_type = model.directory_type,
-                keyword = model.keyword,
-                SpecialityId = model.SpecialityId,
-                geo_location = model.geo_location
+               // AvailableSpeciality = GetSpecialityList(),
+                //directory_type = model.directory_type,
+                Specialitie = model.Specialitie,
+                minfee = model.minfee,
+                maxfee =model.maxfee,
+                geo_location = model.geo_location,
+                q=model.q
             };
-
 
             if (data != null)
             {
@@ -202,11 +283,13 @@ namespace DPTS.Web.Controllers
                 }).ToList();
             }
 
-            totalCount = searchViewModel.Count;
+            //totalCount = searchViewModel.Count;
 
             IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel,
                 pageNumber + 1, pageSize, totalCount);
             ViewBag.SearchModel = searchModel;
+
+            ViewBag.IsHomePageSearch = true;
 
             return View(pageDoctors);
         }
@@ -221,9 +304,9 @@ namespace DPTS.Web.Controllers
         public ActionResult Doctors(SearchModel model, int? page)
         {
             if (Request.QueryString.Count > 0 &&
-                model.SpecialityId > 0 ||
-                !string.IsNullOrWhiteSpace(model.geo_location) ||
-                !string.IsNullOrWhiteSpace(model.keyword))
+                !string.IsNullOrWhiteSpace(model.Specialitie) ||
+                !string.IsNullOrWhiteSpace(model.geo_location))
+              //  !string.IsNullOrWhiteSpace(model.keyword))
             {
                 TempData["SearchModel"] = model;
                 return RedirectToAction("Search");
@@ -246,9 +329,9 @@ namespace DPTS.Web.Controllers
 
             var searchModel = new SearchModel
             {
-                AvailableSpeciality = GetSpecialityList(),
+                //  AvailableSpeciality = GetSpecialityList(),
             };
-            ViewBag.SearchModel = searchModel;
+           ViewBag.SearchModel = searchModel;
 
             return View(pageDoctors);
         }

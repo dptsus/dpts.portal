@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Country>
+    @using DPTS.Domain.Entities
+
+@foreach (var p in Model)
+{
+    <tr>
+        <td>@p.Name</td>
+        <td>@p.NumericIsoCode</td>
+        <td>@p.Published</td>
+        <td>@p.Id</td>
+    </tr>
+}

@@ -1,32 +1,25 @@
 ﻿@using PagedList
 @using PagedList.Mvc
-@model  IPagedList<TempDoctorViewModel>
+@model IPagedList<TempDoctorViewModel>
 @using DPTS.Web.Models
 @{
     int ind = 0;
     string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
     var SearchModel = (SearchModel)ViewBag.SearchModel;
-    AjaxOptions options = new AjaxOptions
-    {
-        UpdateTargetId = "searchResult",
-        Confirm = "Are you sure to start search?",
-        InsertionMode = InsertionMode.Replace,
-        LoadingElementId = "divLoading"
-    };
-
 }
 <script src="~/Scripts/searchdoc.js"></script>
 <style>
-    .lst-appmt-btn{
-    font-size: 13px;
-    margin-top: 0;
-    line-height: 30px;
-    height: 37px;
+    .lst-appmt-btn {
+        font-size: 13px;
+        margin-top: 0;
+        line-height: 30px;
+        height: 37px;
     }
+
     .tg-docprofile-content .tg-description {
-    line-height: 20px;
-    padding: 5px 0 10px;
-}
+        line-height: 20px;
+        padding: 5px 0 10px;
+    }
 </style>
 
 
@@ -59,8 +52,6 @@
         <div class="row">
             <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
                 <div class="tg-doctors-list tg-haslayout left-with-map">
-
-
                     @*@Html.Partial("_SearchNavigation", SearchModel)*@
 
                     @if (Model.Any())
@@ -117,14 +108,14 @@
                                                                 }
 
                                                                 @*@if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.PhoneNumber))
-                                                                    {
-                                                                        <li><i class="fa fa-phone"></i><span>@item.Doctors.AspNetUser.PhoneNumber</span></li>
-                                                                    }
+                                                    {
+                                                        <li><i class="fa fa-phone"></i><span>@item.Doctors.AspNetUser.PhoneNumber</span></li>
+                                                    }
 
-                                                                    @if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.Email))
-                                                                    {
-                                                                        <li><i class="fa fa-envelope-o"></i><a href="#">@item.Doctors.AspNetUser.Email</a></li>
-                                                                    }*@
+                                                    @if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.Email))
+                                                    {
+                                                        <li><i class="fa fa-envelope-o"></i><a href="#">@item.Doctors.AspNetUser.Email</a></li>
+                                                    }*@
 
                                                             </ul>
                                                             <a class="tg-btn tg-btn-lg make-appointment-btn lst-appmt-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = item.Doctors.DoctorId}))">MAKE AN APPOINTMENT!</a>
@@ -138,22 +129,20 @@
                                 </ul>
                             </div>
                         </div>
-                        @Html.PagedListPager(Model, page => Url.Action("_DoctorBox", new
-{
-    page = page,
-    q = SearchModel.q,
-    geo_location = SearchModel.geo_location,
-    maxfee = SearchModel.maxfee,
-    minfee = SearchModel.minfee
-}),
-                           PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(options))
+                        @Html.PagedListPager(Model, Page => Url.Action("Search", new RouteValueDictionary() {
+                                    { "page", Page },
+                                    { "geo_location", SearchModel.geo_location },
+                                    { "q", SearchModel.q }
+                                }))
                                                                     }
                                                                     else
                                                                     {
                                                                         <p>No Record Found !!</p>
                                                                     }
+                    
                 </div>
             </div>
         </div>
     </div>
 </main>
+

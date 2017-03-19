@@ -39,7 +39,21 @@ namespace DPTS.Domain.Core.Doctors
         /// <param name="totalCount"></param>
         /// <param name="zipcode"></param>
         /// <returns></returns>
-        IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount, string zipcode = null,int specialityId = 0,string searchByName=null, double Geo_Distance = 50);
+        IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount, string zipcode = null, int specialityId = 0, string searchByName = null);//, double Geo_Distance = 50);
+
+        /// <summary>
+        /// search doc price range
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="itemsPerPage"></param>
+        /// <param name="totalCount"></param>
+        /// <param name="zipcode"></param>
+        /// <param name="specialityId"></param>
+        /// <param name="searchByName"></param>
+        /// <param name="maxFee"></param>
+        /// <param name="minFee"></param>
+        /// <returns></returns>
+        IList<Doctor> SearchDoctor(int page, int itemsPerPage, out int totalCount, string zipcode = null, int specialityId = 0, string searchByName = null, decimal maxFee = 0, decimal minFee = 0);
 
         /// <summary>
         /// Paging with get all doctors

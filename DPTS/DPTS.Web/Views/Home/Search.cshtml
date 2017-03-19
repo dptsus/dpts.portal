@@ -6,49 +6,30 @@
     ViewBag.Title = "Search | DPTS";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var SearchModel = (SearchModel)ViewBag.SearchModel;
+
+    AjaxOptions options = new AjaxOptions
+    {
+        UpdateTargetId = "searchResult",
+        Confirm = "Are you sure to start search?",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "divLoading"
+    };
 }
-<script src="~/Scripts/searchdoc.js"></script>
-
-<main id="main" class="tg-page-wrapper tg-haslayout">
-    <div class="tg-postionabsulote">
-        <div class="col-md-5 col-sm-12 col-xs-12 tg-divheight pull-left">
-            <div class="row tg-divheight">
-                @if (Model.Any())
-                {
-                    <div class="tg-mapbox">
-                        <div id="map_canvas" class="tg-location-map tg-haslayout"></div>
-                        <input type="hidden" class="shop-resources"
-                               data-youarehere="You are here"
-                               data-accuracy="Accuracy"
-                               data-geolocationnotsupported="Geolocation is not supported by your browser."
-                               data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
-                    </div>
-                }
-                else
-                {
-                    <div id="gmap-noresult">No Record Found.</div>
-                 }
-            </div>
-
-        </div>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+@using (Ajax.BeginForm("_DoctorBox", options))
+{
+    @Html.Partial("_SearchNavigation", SearchModel)
+    <div id="divLoading" style="color: red; width: 200px; background-color: yellow; fontsize: larger; display: none; position: absolute;">
+        Loading ....
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
-                <div class="tg-doctors-list tg-haslayout left-with-map">
-                    @Html.Partial("_SearchNavigation", SearchModel)
-                    @Html.Partial("_DoctorBox", Model)
-                    @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page ,model = (SearchModel)ViewBag.SearchModel }))*@
-                    @Html.PagedListPager(Model, Page => Url.Action("Search", new RouteValueDictionary() {
-                                    { "page", Page },
-                                    { "geo_distance", SearchModel.geo_distance },
-                                    { "geo_location", SearchModel.geo_location },
-                                    { "keyword", SearchModel.keyword },
-                                    { "directory_type", SearchModel.directory_type },
-                                    { "SpecialityId", SearchModel.SpecialityId }
-                                }))
-                    </div>
-                </div>
-            </div>
-        </div>
-</main>
+    @*<div id="searchResult">
+        @if (ViewBag.IsHomePageSearch)
+        {
+            @Html.Partial("_DoctorBoxForHomePage", Model);
+        }
+        else
+        {
+            @Html.Action("_DoctorBox")
+        }
+    </div>*@
+}
