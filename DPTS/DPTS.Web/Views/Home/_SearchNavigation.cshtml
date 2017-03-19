@@ -11,13 +11,15 @@
 <div class="tg-searcharea tg-haslayout">
     <div class="container">
         <div class="row">
-                <div class="col-md-5 col-sm-3 col-xs-12">
-                    <div class="form-group">
+                <div class="col-md-4 col-sm-3 col-xs-12">
+                    <div class="form-group" style="margin-bottom:0">
+                        <label style="color:white">Specialies/Doctor Name</label>
                         <input id="speciality" name="q" value="@Model.q" />
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-12">
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom:0">
+                        <label style="color:white">City/ZipCode</label>
                         <div class="locate-me-wrap">
                             <div id="location-pickr-map" class="elm-display-none"></div>
                             <input type="text" autocomplete="on" id="location-address" value="@Model.geo_location" name="geo_location" placeholder="Geo location" class="form-control">
@@ -31,9 +33,10 @@
 
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-2 col-xs-12">
-                    <div class="form-group">
-                        <span style="color:#f6931f; font-weight:bold;" id="amount"></span>
+                <div class="col-md-3 col-sm-2 col-xs-12">
+                    <div class="form-group" style="margin-bottom:0">
+                        <label style="color:white">Consultation Fee</label><br />
+                        <span style="color:white; font-weight:bold;" id="amount"></span>
                         <div id="docfee"></div>
                         <input id="minfee" name="minfee" type="hidden" value="" />
                         <input id="maxfee" name="maxfee" type="hidden" value="" />
@@ -70,7 +73,7 @@
                     </script>
                 </div>
                 <div class="col-md-2 col-sm-2 col-xs-4">
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom:0">
                         <input type="submit" id="search_banner" class="tg-btn" value="Search">
                     </div>
                 </div>

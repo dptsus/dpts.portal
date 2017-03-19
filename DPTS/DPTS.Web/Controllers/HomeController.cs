@@ -12,6 +12,7 @@ using DPTS.Domain.Entities;
 using DPTS.Domain.Core.Country;
 using DPTS.Domain.Core.StateProvince;
 using DPTS.Data.Context;
+using System;
 
 namespace DPTS.Web.Controllers
 {
@@ -51,6 +52,18 @@ namespace DPTS.Web.Controllers
         #endregion
 
         #region Utilities
+        public SearchModel PrepareSearchModel(SearchModel model)
+        {
+            var searchModel = new SearchModel
+            {
+                Specialitie = model.Specialitie,
+                minfee = model.minfee,
+                maxfee = model.maxfee,
+                geo_location = model.geo_location,
+                q = model.q
+            };
+            return searchModel;
+        }
 
         [NonAction]
         public string GetAddressline(Address model)
@@ -61,14 +74,73 @@ namespace DPTS.Web.Controllers
                 if (model != null)
                 {
                     addrLine += model.Address1 + ", ";
-                    addrLine += model.City + ", ";
-                    addrLine += _stateService.GetStateProvinceById(model.StateProvinceId.GetValueOrDefault()).Name + ", ";
-                    addrLine += _countryService.GetCountryById(model.CountryId.GetValueOrDefault()).Name + ", ";
-                    addrLine += model.ZipPostalCode;
+                    addrLine += model.City;
+                   // addrLine += _stateService.GetStateProvinceById(model.StateProvinceId.GetValueOrDefault()).Name + ", ";
+                   // addrLine += _countryService.GetCountryById(model.CountryId.GetValueOrDefault()).Name + ", ";
+                  //  addrLine += model.ZipPostalCode;
                 }
                 return addrLine;
             }
             catch { return null; }
+        }
+        [NonAction]
+        public string GetTotalExperience(ICollection<Experience> model)
+        {
+            decimal totexpr = 0;
+            try
+            {
+                if (model != null)
+                {
+                    var startDate = model.FirstOrDefault().StartDate;
+                    var endDate = model.LastOrDefault().EndDate;
+                    if (startDate != null && endDate != null)
+                    {
+                        var totday = (endDate - startDate).TotalDays;
+                        if (totday > 0)
+                        {
+                            totexpr = decimal.Parse(totday.ToString()) / 365.25m;
+                            totexpr = Math.Round(totexpr, 0);
+                        }
+                    }
+                }
+
+            }
+            catch { }
+            return totexpr.ToString();
+        }
+        [NonAction]
+        public string GetQualification(ICollection<Education> model)
+        {
+            string eduList = string.Empty;
+            try
+            {
+                if(model != null)
+                {
+                    foreach (var edu in model)
+                    {
+                        eduList += edu.Title + ",";
+                    }
+                }
+            }
+            catch { }
+            return eduList.TrimEnd(',');
+        }
+        [NonAction]
+        public string GetSpecialities(ICollection<Speciality> model)
+        {
+            string specList = string.Empty;
+            try
+            {
+                if (model != null)
+                {
+                    foreach (var spc in model)
+                    {
+                        specList += spc.Title + ", ";
+                    }
+                }
+            }
+            catch { }
+            return specList.TrimEnd(',');
         }
 
         public IList<SelectListItem> GetSpecialityList()
@@ -138,19 +210,12 @@ namespace DPTS.Web.Controllers
 
             return View();
         }
-        public ActionResult AjaxTest()
-        {
-            return View();
-        }
+        
 
-        public PartialViewResult SearchPeople(string keyword)
-        {
-           // System.Threading.Thread.Sleep(2000);
-            var data = _context.Countries.Where(d => d.Name.StartsWith(keyword)).ToList();
-            return PartialView(data);
-        }
         public PartialViewResult _DoctorBox(SearchModel model, int? page)
         {
+            // System.Threading.Thread.Sleep(2000);
+
             var searchViewModel = new List<TempDoctorViewModel>();
             var pageNumber = (page ?? 1) - 1;
             var pageSize = 5;
@@ -190,14 +255,7 @@ namespace DPTS.Web.Controllers
                 maxFee: model.maxfee,
                 minFee: model.minfee);
 
-            var searchModel = new SearchModel
-            {
-                Specialitie = model.Specialitie,
-                minfee = model.minfee,
-                maxfee = model.maxfee,
-                geo_location = model.geo_location,
-                q = model.q
-            };
+            
 
             if (data != null)
             {
@@ -206,19 +264,19 @@ namespace DPTS.Web.Controllers
                     Doctors = doc,
                     Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
                     AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
-                    Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId)
+                   // Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId),
+                    YearOfExperience = GetTotalExperience(doc.Experience),
+                    Qualification = GetQualification(doc.Education),
+                    ListSpecialities = GetSpecialities(_specialityService.GetDoctorSpecilities(doc.DoctorId))
                 }).ToList();
             }
 
-            //totalCount = searchViewModel.Count;
-
             IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel,
                 pageNumber + 1, pageSize, totalCount);
-            ViewBag.SearchModel = searchModel;
+            ViewBag.SearchModel = PrepareSearchModel(model);
             ViewBag.IsHomePageSearch = false;
             return PartialView(pageDoctors);
         }
-
 
         [ValidateInput(false)]
         public ActionResult Search(SearchModel model, int? page)
@@ -259,18 +317,6 @@ namespace DPTS.Web.Controllers
                 model.geo_location,
                 specilityId,
                 searchByName);
-               // model.geo_distance);
-
-            var searchModel = new SearchModel
-            {
-               // AvailableSpeciality = GetSpecialityList(),
-                //directory_type = model.directory_type,
-                Specialitie = model.Specialitie,
-                minfee = model.minfee,
-                maxfee =model.maxfee,
-                geo_location = model.geo_location,
-                q=model.q
-            };
 
             if (data != null)
             {
@@ -279,15 +325,18 @@ namespace DPTS.Web.Controllers
                     Doctors = doc,
                     Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
                     AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
-                    Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId)
+                    //Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId),
+                    YearOfExperience = GetTotalExperience(doc.Experience),
+                    Qualification = GetQualification(doc.Education),
+                    ListSpecialities = GetSpecialities(_specialityService.GetDoctorSpecilities(doc.DoctorId))
                 }).ToList();
             }
 
-            //totalCount = searchViewModel.Count;
 
             IPagedList<TempDoctorViewModel> pageDoctors = new StaticPagedList<TempDoctorViewModel>(searchViewModel,
                 pageNumber + 1, pageSize, totalCount);
-            ViewBag.SearchModel = searchModel;
+
+            ViewBag.SearchModel = PrepareSearchModel(model);
 
             ViewBag.IsHomePageSearch = true;
 

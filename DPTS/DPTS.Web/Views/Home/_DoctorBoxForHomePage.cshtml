@@ -3,132 +3,19 @@
 @model IPagedList<TempDoctorViewModel>
 @using DPTS.Web.Models
 @{
-    int ind = 0;
-    string picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
     var SearchModel = (SearchModel)ViewBag.SearchModel;
 }
-<script src="~/Scripts/searchdoc.js"></script>
-<style>
-    .lst-appmt-btn {
-        font-size: 13px;
-        margin-top: 0;
-        line-height: 30px;
-        height: 37px;
-    }
-
-    .tg-docprofile-content .tg-description {
-        line-height: 20px;
-        padding: 5px 0 10px;
-    }
-</style>
-
-
-
-
+<script src="/Scripts/searchdoc.js" type="text/javascript"></script>
 <main id="main" class="tg-page-wrapper tg-haslayout">
-    <div class="tg-postionabsulote">
-        <div class="col-md-5 col-sm-12 col-xs-12 tg-divheight pull-left">
-            <div class="row tg-divheight">
-                @if (Model.Any())
-                {
-                    <div class="tg-mapbox">
-                        <div id="map_canvas" class="tg-location-map tg-haslayout"></div>
-                        <input type="hidden" class="shop-resources"
-                               data-youarehere="You are here"
-                               data-accuracy="Accuracy"
-                               data-geolocationnotsupported="Geolocation is not supported by your browser."
-                               data-units="Metric" data-googleapikey="AIzaSyDvanm9mpt0gdHXeUTLbmedVCYU8OKNS3U" data-mapstyles="" value="1" />
-                    </div>
-                }
-                else
-                {
-                    <div id="gmap-noresult">No Record Found.</div>
-                }
-            </div>
-
-        </div>
-    </div>
+    @Html.Partial("_MapforResult", Model)
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-12 col-xs-12 pull-right">
                 <div class="tg-doctors-list tg-haslayout left-with-map">
-                    @*@Html.Partial("_SearchNavigation", SearchModel)*@
 
                     @if (Model.Any())
                     {
-                        <div class="tg-view tg-list-view" style="border-bottom: none">
-                            <div class="row">
-                                <ul class="shops-list">
-                                    @foreach (var item in Model)
-                {
-                                        <li class="shops-item" style="list-style: none;" data-ind="@(ind++)">
-                                            <article class="tg-doctor-profile user-330">
-                                                <div class="tg-box">
-                                                    <figure class="tg-docprofile-img">
-                                                        <a href="@Url.Action("DoctorDetails", "Doctor", new {doctorId = item.Doctors.DoctorId})" class="list-avatar">
-                                                            <img src="@picturePath">
-                                                        </a>
-                                                    </figure>
-                                                    <div class="tg-docprofile-content">
-                                                        <div class="tg-heading-border tg-small" style="margin: 0">
-                                                            <h3>
-                                                                <a href="@Url.Action("DoctorDetails", "Doctor", new {doctorId = item.Doctors.DoctorId})">Dr. @item.Doctors.AspNetUser.FirstName @item.Doctors.AspNetUser.LastName</a>
-                                                            </h3>
-                                                        </div>
-                                                        <div class="tg-description">
-
-                                                            @if (item.Specialities.Any())
-                                                            {
-                                                                foreach (var spec in item.Specialities)
-                                                                {
-                                                                    <span><b>@spec.Title</b></span>
-                                                                }
-                                                            }
-
-                                                        </div>
-                                                        <div class="short-description">
-                                                            <ul class="tg-doccontactinfo">
-                                                                @{
-                                                                    var addr = item.Address;
-                                                                    if (addr != null)
-                                                                    {
-                                                                        <input type="hidden" class="shop-coordinates" data-latitude="@addr.Latitude" data-longitude="@addr.Longitude" data-shop-title="Dr @item.Doctors.AspNetUser.FirstName @item.Doctors.AspNetUser.LastName" value="1" />
-                                                                    }
-                                                                }
-
-                                                                @if (!string.IsNullOrWhiteSpace(item.AddressLine))
-                                                                {
-                                                                    <li>
-                                                                        <i class="fa fa-map-marker"></i><address>
-                                                                            <p>
-                                                                                @item.AddressLine
-                                                                            </p>
-                                                                        </address>
-                                                                    </li>
-                                                                }
-
-                                                                @*@if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.PhoneNumber))
-                                                    {
-                                                        <li><i class="fa fa-phone"></i><span>@item.Doctors.AspNetUser.PhoneNumber</span></li>
-                                                    }
-
-                                                    @if (!string.IsNullOrWhiteSpace(item.Doctors.AspNetUser.Email))
-                                                    {
-                                                        <li><i class="fa fa-envelope-o"></i><a href="#">@item.Doctors.AspNetUser.Email</a></li>
-                                                    }*@
-
-                                                            </ul>
-                                                            <a class="tg-btn tg-btn-lg make-appointment-btn lst-appmt-btn" href="@Url.Action("Booking", "Appointment", new RouteValueDictionary(new {doctorId = item.Doctors.DoctorId}))">MAKE AN APPOINTMENT!</a>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </article>
-                                        </li>
-                                                                    }
-                                </ul>
-                            </div>
-                        </div>
+                        @Html.Partial("_BoxforDoctor", Model)
                         @Html.PagedListPager(Model, Page => Url.Action("Search", new RouteValueDictionary() {
                                     { "page", Page },
                                     { "geo_location", SearchModel.geo_location },

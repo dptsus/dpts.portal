@@ -17,6 +17,62 @@
     padding-left:5px;
     color:red;
 }
+.ui-state-default, .ui-widget-content .ui-state-default{
+    border: 1px solid #d3d3d3;
+    background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+    font-weight: normal;
+    color: #555;
+    width: 1.2em;
+    height: 1.2em;
+}
+.ui-slider .ui-slider-range{
+    background-image:none;
+    background-color:#7dbb00;
+}
+.tg-searcharea{
+        padding: 25px 0;
+}
+ .lst-appmt-btn{
+    font-size: 13px;
+    margin-top: 0;
+    line-height: 30px;
+    height: 37px;
+    }
+    .tg-docprofile-content .tg-description {
+    line-height: 20px;
+    padding: 5px 0 10px;
+}
+    .docbox-left{
+    width: 50%;
+    float: left;
+    }
+    .docbox-right{
+      display: inline-block;
+    float: left;
+    width: 25%;
+    }
+    .docbox-right .fees, .doc-phone, .doc-addr {
+    line-height: 20px;
+    margin-bottom: 8px;
+    /*float:none;
+    width:30%;*/
+}
+    .icon-ic_currency:before {
+    content: '\e924';
+}
+    .docbox-right .fees .fees-amount{
+    margin-left: 4px;
+}
+    .fa-money, .fa-map-marker, .fa-phone-square{
+     left: 0;
+     position:relative; 
+     top: 0; 
+    }
+  
+    .doc-edu{
+    background-color: #f7f7f7;
+    }
+
 @media (max-width: 481px) {
     #auto-search{
         width:100%;
