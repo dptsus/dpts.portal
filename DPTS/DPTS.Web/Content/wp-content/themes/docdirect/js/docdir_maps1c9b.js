@@ -149,8 +149,8 @@ jQuery(document).ready(function(e) {
 							jQuery("#location-address").val(data[0].formatted_address);
 							jQuery("#location-latitude").val(latLng.lat());
 							jQuery("#location-longitude").val(latLng.lng());
-							jQuery("#lat").val(latLng.lat());
-							jQuery("#lng").val(latLng.lng());
+							//jQuery("#lat").val(latLng.lat());
+							//jQuery("#lng").val(latLng.lng());
 						}
 					}
 				});

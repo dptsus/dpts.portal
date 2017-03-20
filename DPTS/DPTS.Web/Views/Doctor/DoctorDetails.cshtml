@@ -1,4 +1,5 @@
-﻿@model DPTS.Web.Models.DoctorViewModel
+﻿@model DoctorViewModel
+@using DPTS.Web.Models;
 @using DPTS.Domain.Entities;
 @using DPTS.Web.Helpers
 @{
@@ -7,19 +8,23 @@
     string addressLine = string.Empty;
     Address addr = Model.Addresses.FirstOrDefault();
 
+    ContactUsViewModel ContactModel = new ContactUsViewModel
+    {
+        DocEmail = Model.doctor.AspNetUser.Email
+    };
+
     Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/prettyPhoto1bba.css");
     Html.Assets().Styles.Add("/Content/wp-content/themes/docdirect/css/owl.theme1bba.css");
     Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.common-material.min.css");
-    Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.rtl.min.css");
     Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.material.min.css");
     Html.Assets().Styles.Add("/Content/kendo/2017.1.118/kendo.material.mobile.min.css");
 
     Html.Assets().Scripts.Add("https://maps.googleapis.com/maps/api/js?key=AIzaSyB-v7mDZ8e1GDluhDZrhF_T44GxlJprqr0&#038;libraries=places&#038;ver=4.7.2");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/map/markerclusterer.min1bba.js");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/map/infobox1bba.js");
+    Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/gmap3.min1c9b.js");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/map/map1bba.js");
     Html.Assets().Scripts.Add("/Content/wp-content/themes/docdirect/js/docdir_maps1c9b.js");
-
 
     //Html.Assets().Scripts.Add("/Scripts/kendo/2017.1.118/jquery.min.js");
     <script src="~/Scripts/kendo/2017.1.118/kendo.all.min.js"></script>
@@ -29,13 +34,7 @@
     {
         addressLine = addr.Address1 + ", " + addr.City + ", " + addr.StateProvince.Name + ", " + addr.Country.Name;
     }
-}                                                    
-<link href="~/Content/rating.css" rel="stylesheet" />
-<link href="~/Content/Alertify/css/alertify.core.css" rel="stylesheet" />
-<link href="~/Content/Alertify/css/alertify.default.css" rel="stylesheet" />
-
-<script src="~/Scripts/rating.js"></script>
-<script src="~/Content/Alertify/js/alertify.min.js"></script>
+}  
 <main id="main" class="tg-page-wrapper tg-haslayout">
     <div id="tg-userbanner" class="tg-userbanner tg-haslayout parallax-window" data-appear-top-offset="600" data-parallax="scroll" data-image-src="">
     </div>
@@ -133,6 +132,7 @@
                                         }
                                     </ul>
                                 </div>
+                                @Html.Partial("_DocContactUs",ContactModel)
                                 <div class="tg-userschedule">
                                     <h3>Profile Url</h3>
                                     <div id="qrUrl"></div>
@@ -344,164 +344,6 @@
                                 </ul>
                             </div>
                          }
-
-
-                            <!--Reviews-->
-                            <div class="tg-userreviews">
-                                @if (Model.listReviewComments !=null && Model.listReviewComments.Any())
-                                {
-                                    <div class="tg-userheading">
-                                        <h2>@Model.listReviewComments.Count &nbsp;&nbsp;Review(s)</h2>
-                                        @*<h2>1&nbsp;&nbsp;Review(s)</h2>
-                                            <h2>1&nbsp;&nbsp;Review(s)</h2>*@
-                                    </div>
-                                    <div class="tg-ratingbox">
-                                        <div class="tg-averagerating">
-                                            <h3>Average Rating</h3>
-                                            <em>4.0</em>
-                                            <span class="tg-stars">
-                                                <div class="feature-rating user-star-rating">
-                                                    <span class="tg-stars star-rating">
-                                                        <span style="width:80%"></span>
-                                                    </span>
-
-                                                </div>
-                                            </span>
-                                        </div>
-                                        <div id="tg-userskill" class="tg-userskill">
-                                            <div class="tg-skill">
-                                                <span class="tg-skillname">1 Stars</span>
-                                                <span class="tg-skillpercentage">0%</span>
-                                                <div class="tg-skillbox">
-                                                    <div class="tg-skillholder" data-percent="0%">
-                                                        <div class="tg-skillbar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tg-skill">
-                                                <span class="tg-skillname">2 Stars</span>
-                                                <span class="tg-skillpercentage">0%</span>
-                                                <div class="tg-skillbox">
-                                                    <div class="tg-skillholder" data-percent="0%">
-                                                        <div class="tg-skillbar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tg-skill">
-                                                <span class="tg-skillname">3 Stars</span>
-                                                <span class="tg-skillpercentage">0%</span>
-                                                <div class="tg-skillbox">
-                                                    <div class="tg-skillholder" data-percent="0%">
-                                                        <div class="tg-skillbar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tg-skill">
-                                                <span class="tg-skillname">4 Stars</span>
-                                                <span class="tg-skillpercentage">80%</span>
-                                                <div class="tg-skillbox">
-                                                    <div class="tg-skillholder" data-percent="80%">
-                                                        <div class="tg-skillbar" style="width:80%;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tg-skill">
-                                                <span class="tg-skillname">5 Stars</span>
-                                                <span class="tg-skillpercentage">0%</span>
-                                                <div class="tg-skillbox">
-                                                    <div class="tg-skillholder" data-percent="0%">
-                                                        <div class="tg-skillbar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <ul class="tg-reviewlisting">
-                                        @foreach (var item in Model.listReviewComments)
-                                        {
-                                            <li>
-                                                <div class="tg-review">
-                                                    <figure class="tg-reviewimg">
-
-                                                        @*@{
-                                                            picturePath = "/Content/wp-content/themes/docdirect/images/user365x365.jpg";
-                                                            profilePicPath = Server.MapPath("~/Uploads/" + Model.Id + "_profile.jpg");
-                                                            if (File.Exists(profilePicPath))
-                                                            {
-                                                                picturePath = "../../Uploads/" + item.CommentOwnerId + "_profile.jpg";
-                                                            }
-                                                        }
-                                                        <img src="@picturePath" alt="Reviewer">*@
-                                                        
-                                                    </figure>
-
-                                                    <div class="tg-reviewcontet">
-
-                                                        <div class="tg-reviewhead">
-                                                            <div class="tg-reviewheadleft">
-                                                                @*<h3><a href="https://themographics.com/wordpress/docdirect/clinic/express-care/">Express Care Clinics</a></h3>*@
-                                                                <h3>@item.Username</h3>
-                                                                <span>@item.DateCreated</span>
-                                                            </div>
-                                                            <div class="tg-reviewheadright tg-stars star-rating">
-                                                                <span style="width:@item.Rating%"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="tg-description">
-                                                            <p>@item.Comment</p>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        }
-                                    </ul>
-                                }
-                                @if (Model.doctor.DoctorId != ViewBag.User)
-                                {
-                                    <div class="tg-leaveyourreview">
-                                        <div class="tg-userheading">
-                                            <h2>Leave Your Review</h2>
-                                        </div>
-
-                                        @*@using (Html.BeginForm("SaveReivewComment", "Doctor", FormMethod.Post))
-                                            {*@
-                                        <form id="ReviewComment" method="post">
-                                            <div class="form-group">
-
-                                                @*<select name="starrating" class="form-control">
-                                                        <option value="20">1 Star</option>
-                                                        <option value="40">2 Star</option>
-                                                        <option value="60">3 Star</option>
-                                                        <option value="80">4 Star</option>
-                                                        <option value="100">5 Star</option>
-                                                    </select>*@
-
-                                                <div class="form-control ratting-item">
-                                                    <input class="rating" name="starrating" type="radio" value="1" />
-                                                    <input class="rating" name="starrating" type="radio" value="2" />
-                                                    <input class="rating" name="starrating" type="radio" value="3" />
-                                                    <input class="rating" name="starrating" type="radio" value="4" />
-                                                    <input class="rating" name="starrating" type="radio" value="5" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type='text' name="UserComment" class="form-control" placeholder="Type your comment" required />
-                                            </div>
-
-
-                                            <button type="button" onclick="SaveReviewComments()" class="tg-btn process-account-settings">Submit</button>
-                                        </form>
-
-
-
-                                        <span>
-                                            @*<a href="javascript:;" class="tg-btn" data-toggle="modal" data-target=".tg-user-modal">Submit</a>*@
-                                        </span>
-                                    </div>
-                                }
-                            </div>
-                    
                     </div>
                 </div>
             </div>
@@ -511,11 +353,6 @@
 <script src="~/Content/wp-content/themes/docdirect/js/prettyPhoto1bba.js"></script>
 <script>
     $(function () {
-        $('.ratting-item').rating(function (vote, event) {
-            console.log(vote);
-            var anchor = $(event.currentTarget);
-            anchor.closest(".ratting-item");
-        });
         var url = window.location.origin + "@Url.Action("DoctorDetails", "Doctor",new { doctorId = Model.Id})";
         $("#qrUrl").kendoQRCode({
             value: url,

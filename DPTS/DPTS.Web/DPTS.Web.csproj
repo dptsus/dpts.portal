@@ -401,6 +401,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddressViewModel.cs" />
     <Compile Include="Models\AppointmentScheduleViewModel.cs" />
+    <Compile Include="Models\ContactUsViewModel.cs" />
     <Compile Include="Models\DeleteConfirmationModel.cs" />
     <Compile Include="Models\DoctorPictureModel.cs" />
     <Compile Include="Models\DoctorScheduleListingViewModel.cs" />
@@ -2104,6 +2105,7 @@
     <Content Include="Views\Home\_MapforResult.cshtml" />
     <Content Include="Views\Home\_BoxforDoctor.cshtml" />
     <Content Include="Views\Account\TermsConditions.cshtml" />
+    <Content Include="Views\Shared\_DocContactUs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

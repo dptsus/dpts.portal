@@ -124,6 +124,24 @@ namespace DPTS.Web.Controllers
         {
             return View();
         }
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public async Task<ActionResult> TermsConditions(string Name,string Email,string Message,string Subject,string MailTo)
+        //{
+        //    try
+        //    {
+        //        EmailSmsNotifications.Services.EmailNotificationService objE = new EmailSmsNotifications.Services.EmailNotificationService();
+        //        EmailSmsNotifications.ServiceModels.EmailNotificationModel model = new EmailNotificationModel
+        //        {
+        //            content = Message,
+        //            from = MailTo,
+        //            subject = Subject,
+        //            to = Email
+        //        };
+        //        await objE.SendEmail(model);
+        //    }catch(Exception ex) { }
+        //    return View();
+        //}
 
         //
         // POST: /Account/Login
@@ -191,6 +209,28 @@ namespace DPTS.Web.Controllers
             }
             return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
+
+        #region ContactForm
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> DoctorContact(ContactUsViewModel model)
+        {
+            try
+            {
+                var user = await UserManager.FindByNameAsync(model.DocEmail);
+                if (ModelState.IsValid)
+                {
+                    await UserManager.SendEmailAsync(user.Id, model.Subject, model.Message);
+                    SuccessNotification("Email send successfully. we i'll contact you soon.");
+                }
+                return RedirectToAction("DoctorDetails", "Doctor", new { doctorId = user.Id });
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        #endregion
 
         //
         // POST: /Account/VerifyCode
@@ -469,7 +509,7 @@ namespace DPTS.Web.Controllers
 
         //
         // POST: /Account/ForgotPassword
-        [HttpPost]
+        [HttpPost]  
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)

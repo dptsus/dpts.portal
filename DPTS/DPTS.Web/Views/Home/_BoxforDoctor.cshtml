@@ -66,9 +66,13 @@
                                 </div>
                             </div>
                             <div class="docbox-right">
+                            @if (item.Doctors.IsAvailability)
+                            {
                                 <span>
                                     <img src="~/Content/wp-content/themes/docdirect/images/icon24.png" width="50" />
                                 </span>
+                            }
+                                
                                 @if(item.Doctors.ConsultationFee > 0)
                                 {
                                     <p class="fees">
