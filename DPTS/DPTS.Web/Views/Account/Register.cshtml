@@ -76,15 +76,15 @@
                                     <input name="terms" type="hidden" value="0">
                                     <label>
                                         <input name="terms" id="terms" class="form-control" type="checkbox">
-                                        I agree with the terms and conditions
+                                        I agree with the terms and conditions @Html.ActionLink("read here", "TermsConditions",null,new { target = "_blank" })
                                     </label>
                                 </div>
                                 <div class="domain-captcha">
                                     @ReCaptcha.GetHtml(@ViewBag.publicKey)
-                                    @if (ViewBag.RecaptchaLastErrors != null)
+                                    @*@if (ViewBag.RecaptchaLastErrors != null)
                                     {
                                         <div>Oops! Invalid Captcha</div>
-                                    }
+                                    }*@
                                 </div>
                                 <input type="submit" class="tg-btn tg-btn-lg  do-register-button" onclick="javascript:return AcceptTermAndcondition();" value="Register" />
                             </fieldset>

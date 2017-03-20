@@ -17,11 +17,12 @@ using System.Configuration;
 using System.Net;
 using DPTS.Domain.Core.SubSpeciality;
 using DPTS.Domain.Core.Speciality;
+using DPTS.Data.Context;
 
 namespace DPTS.Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -30,6 +31,7 @@ namespace DPTS.Web.Controllers
         private ISmsNotificationService _smsService;
         private readonly ISubSpecialityService _subSpecialityService;
         private readonly ISpecialityService _specialityService;
+        private readonly DPTSDbContext _context;
 
         public AccountController(IDoctorService doctorService,
             ISmsNotificationService smsService,
@@ -41,6 +43,7 @@ namespace DPTS.Web.Controllers
             _smsService = smsService;
             _subSpecialityService = subSpecialityService;
             _specialityService = specialityService;
+            _context = new DPTSDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -113,6 +116,12 @@ namespace DPTS.Web.Controllers
                 ViewBag.Message = "Subscribe unsuccessfully";
                 throw;
             }
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult TermsConditions()
+        {
             return View();
         }
 
@@ -245,7 +254,30 @@ namespace DPTS.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-
+        [NonAction]
+        protected bool IsPhoneNumbersExits(string phoneNumber)
+        {
+            try
+            {
+                var phoneNum = _context.AspNetUsers.Where(p => p.PhoneNumber == phoneNumber).FirstOrDefault().PhoneNumber;
+                if (phoneNum == null)
+                    return true;
+            }
+            catch { }
+            return false;
+        }
+        [NonAction]
+        protected bool IsEmailExits(string eMail)
+        {
+            try
+            {
+                var email = _context.AspNetUsers.Where(p => p.Email == eMail).FirstOrDefault().Email;
+                if (email == null)
+                    return true;
+            }
+            catch { }
+            return false;
+        }
         //
         // POST: /Account/Register
         [HttpPost]
@@ -257,50 +289,65 @@ namespace DPTS.Web.Controllers
             {
                 if (ModelState.IsValid && ReCaptcha.Validate(ConfigurationManager.AppSettings["ReCaptcha:SecretKey"]))
                 {
-                    if (model.Role == "0" && model.UserType == "professional")
-                        ModelState.AddModelError("", "Select user type");
-
-                    if (ModelState.IsValid)
+                    if (IsPhoneNumbersExits(model.PhoneNumber) && IsEmailExits(model.Email))
                     {
-                        SendOtp(model.PhoneNumber);
-                        TempData["regmodel"] = model;
-                        return RedirectToAction("ConfirmRegistration", "Account");
-                        //var user = new ApplicationUser
-                        //{
-                        //    UserName = model.Email,
-                        //    Email = model.Email,
-                        //    LastName = model.LastName,
-                        //    FirstName = model.FirstName,
-                        //    LastIpAddress = "192.168.225.1",
-                        //    IsEmailUnsubscribed = false,
-                        //    IsPhoneNumberUnsubscribed = true,
-                        //    LastLoginDateUtc = DateTime.UtcNow,
-                        //    CreatedOnUtc = DateTime.UtcNow,
-                        //    PhoneNumber = model.PhoneNumber,
-                        //    TwoFactorEnabled = true
-                        //};
-                        //var result = await UserManager.CreateAsync(user, model.Password);
-                        //if (result.Succeeded)
-                        //{
-                        //    if (model.UserType.ToLower() == "professional")
-                        //    {
-                        //        await this.UserManager.AddToRoleAsync(user.Id, model.Role);
-                        //        var doctor = new Doctor { DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber };
-                        //        _doctorService.AddDoctor(doctor);
-                        //    }
+                        if (model.Role == "0" && model.UserType == "professional")
+                            ModelState.AddModelError("", "Select user type");
 
-                        //    await SignInManager.SignInAsync(user, false, false);
+                        if (ModelState.IsValid)
+                        {
+                            SendOtp(model.PhoneNumber);
+                            TempData["regmodel"] = model;
+                            return RedirectToAction("ConfirmRegistration", "Account");
+                            //var user = new ApplicationUser
+                            //{
+                            //    UserName = model.Email,
+                            //    Email = model.Email,
+                            //    LastName = model.LastName,
+                            //    FirstName = model.FirstName,
+                            //    LastIpAddress = "192.168.225.1",
+                            //    IsEmailUnsubscribed = false,
+                            //    IsPhoneNumberUnsubscribed = true,
+                            //    LastLoginDateUtc = DateTime.UtcNow,
+                            //    CreatedOnUtc = DateTime.UtcNow,
+                            //    PhoneNumber = model.PhoneNumber,
+                            //    TwoFactorEnabled = true
+                            //};
+                            //var result = await UserManager.CreateAsync(user, model.Password);
+                            //if (result.Succeeded)
+                            //{
+                            //    if (model.UserType.ToLower() == "professional")
+                            //    {
+                            //        await this.UserManager.AddToRoleAsync(user.Id, model.Role);
+                            //        var doctor = new Doctor { DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber };
+                            //        _doctorService.AddDoctor(doctor);
+                            //    }
 
-                        //    return RedirectToAction("Index", "Home");
-                        //}
+                            //    await SignInManager.SignInAsync(user, false, false);
+
+                            //    return RedirectToAction("Index", "Home");
+                            //}
+                        }
                     }
-                }
+                    else
+                    {
+                        if(!IsPhoneNumbersExits(model.PhoneNumber))
+                            ErrorNotification("Phone number already exists.");
 
-                ViewBag.RecaptchaLastErrors = ReCaptcha.GetLastErrors(this.HttpContext);
+                        if (!IsEmailExits(model.Email))
+                            ErrorNotification("Email already exists.");
+                    }
+
+                }
+                var capErr = ReCaptcha.GetLastErrors(this.HttpContext);
+                if (capErr != null)
+                    ErrorNotification("Oops!! Invalid Captcha.");
+
+
+
 
                 ViewBag.publicKey = ConfigurationManager.AppSettings["ReCaptcha:SiteKey"];
                 model.UserRoleList = GetUserTypeList();
-
                 return View(model);
             }
             catch (Exception)
@@ -332,7 +379,7 @@ namespace DPTS.Web.Controllers
             ConfirmRegisterViewModel model = new ConfirmRegisterViewModel
             {
                 RegistrationDetails = regModel,
-                ConfirmOtp = Session["otp"].ToString()
+              //  ConfirmOtp = Session["otp"].ToString()
             };
             //if u want to otp then comment follws line
             return View(model);
@@ -343,46 +390,59 @@ namespace DPTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ConfirmRegistration(ConfirmRegisterViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (model.ConfirmOtp != Session["otp"].ToString())
+                if (ModelState.IsValid)
                 {
-                    ViewBag.confirmFail = "Invalid OTP!!";
-                    return View(model);
-                }
-
-                var user = new ApplicationUser
-                {
-                    UserName = model.RegistrationDetails.Email,
-                    Email = model.RegistrationDetails.Email,
-                    LastName = model.RegistrationDetails.LastName,
-                    FirstName = model.RegistrationDetails.FirstName,
-                    LastIpAddress = "192.168.225.1",
-                    IsEmailUnsubscribed = false,
-                    IsPhoneNumberUnsubscribed = true,
-                    LastLoginDateUtc = DateTime.UtcNow,
-                    CreatedOnUtc = DateTime.UtcNow,
-                    PhoneNumber = model.RegistrationDetails.PhoneNumber,
-                    TwoFactorEnabled = true
-                };
-                var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
-                if (result.Succeeded)
-                {
-                    if (model.RegistrationDetails.UserType.ToLowerInvariant() == "professional")
+                    if (model.ConfirmOtp != Session["otp"].ToString())
                     {
-                        await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
-                        var doctor = new Doctor {DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber};
-                        _doctorService.AddDoctor(doctor);
+                        ErrorNotification("Invalid OTP !! Enter correct otp.");
+                        // ViewBag.confirmFail = "Invalid OTP!!";
+                        return View(model);
                     }
-                    //gives content to sending thanks email
-                    await UserManager.SendEmailAsync(user.Id, "Thank you for registering at Doctor 365", "Thank you!!");
-                    await SignInManager.SignInAsync(user, false, false);
 
-                    return RedirectToAction("Index", "Home");
+                    var user = new ApplicationUser
+                    {
+                        UserName = model.RegistrationDetails.Email,
+                        Email = model.RegistrationDetails.Email,
+                        LastName = model.RegistrationDetails.LastName,
+                        FirstName = model.RegistrationDetails.FirstName,
+                        LastIpAddress = "192.168.225.1",
+                        IsEmailUnsubscribed = false,
+                        IsPhoneNumberUnsubscribed = true,
+                        LastLoginDateUtc = DateTime.UtcNow,
+                        CreatedOnUtc = DateTime.UtcNow,
+                        PhoneNumber = model.RegistrationDetails.PhoneNumber,
+                        TwoFactorEnabled = true
+                    };
+                    var result = await UserManager.CreateAsync(user, model.RegistrationDetails.Password);
+                    if (result.Succeeded)
+                    {
+                        if (model.RegistrationDetails.UserType.ToLowerInvariant() == "professional")
+                        {
+                            await this.UserManager.AddToRoleAsync(user.Id, model.RegistrationDetails.Role);
+                            var doctor = new Doctor { DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber };
+                            _doctorService.AddDoctor(doctor);
+                        }
+                        //gives content to sending thanks email
+                        await UserManager.SendEmailAsync(user.Id, "Thank you for registering at Doctor 365", "Thank you!!");
+                        await SignInManager.SignInAsync(user, false, false);
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    string errorNotify = string.Empty;
+                    foreach (var item in result.Errors)
+                    {
+                        errorNotify += item + " ,";
+                    }
+                    if (!string.IsNullOrWhiteSpace(errorNotify))
+                        ErrorNotification(errorNotify.TrimEnd(','));
+
+                    ViewBag.ReturnUrl = returnUrl;
+                    AddErrors(result);
                 }
-                ViewBag.ReturnUrl = returnUrl;
-                AddErrors(result);
             }
+            catch { }
             return View(model);
         }
 

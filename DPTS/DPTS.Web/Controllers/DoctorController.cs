@@ -18,6 +18,9 @@ using DPTS.Common.Kendoui;
 using HttpVerbs = System.Web.Mvc.HttpVerbs;
 using DPTS.Services;
 using DPTS.Domain.Common;
+using DPTS.EmailSmsNotifications.IServices;
+using DPTS.EmailSmsNotifications.ServiceModels;
+using DPTS.Data.Context;
 
 namespace DPTS.Web.Controllers
 {
@@ -34,6 +37,8 @@ namespace DPTS.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IReviewCommentsService _reviewCommentsService;
         private readonly IPictureService _pictureService;
+        private ISmsNotificationService _smsService;
+        private readonly DPTSDbContext context;
         #endregion
 
         #region Contructor
@@ -42,7 +47,8 @@ namespace DPTS.Web.Controllers
             IStateProvinceService stateProvinceService,
             IAddressService addressService, IAppointmentService scheduleService,
             IReviewCommentsService reviewCommentsService,
-            IPictureService pictureService)
+            IPictureService pictureService,
+            ISmsNotificationService smsService)
         {
             _doctorService = doctorService;
             _context = new ApplicationDbContext();
@@ -53,6 +59,8 @@ namespace DPTS.Web.Controllers
             _scheduleService = scheduleService;
             _reviewCommentsService = reviewCommentsService;
             _pictureService = pictureService;
+            _smsService = smsService;
+            context = new DPTSDbContext();
         }
 
         #endregion
@@ -79,6 +87,19 @@ namespace DPTS.Web.Controllers
                                Value = Enum.GetName(typeof(Gender), gender)
                            });
             return items;
+        }
+
+        private void SendOtp(string phoneNumber, string message)
+        {
+            var sms = new SmsNotificationModel
+            {
+                numbers = phoneNumber,
+                route = 4,
+                //route 4 is for transactional sms
+                senderId = "DOCPTS"
+            };
+            sms.message = message;
+            _smsService.SendSms(sms);
         }
 
         public IList<SelectListItem> GetAllSpecialities(string docterId)
@@ -295,6 +316,8 @@ namespace DPTS.Web.Controllers
                         model.RegistrationNumber = doctor.RegistrationNumber;
                         model.ProfessionalStatements = doctor.ProfessionalStatements;
                         model.VideoLink = doctor.VideoLink;
+                        model.ConsultationFee = doctor.ConsultationFee;
+                        model.IsAvailability = doctor.IsAvailability;
                     }
                 }
                 if (user != null)
@@ -352,6 +375,8 @@ namespace DPTS.Web.Controllers
                 doctor.AspNetUser.FirstName = model.FirstName;
                 doctor.AspNetUser.Email = model.Email;
                 doctor.AspNetUser.PhoneNumber = model.PhoneNumber;
+                doctor.IsAvailability = model.IsAvailability;
+                doctor.ConsultationFee = model.ConsultationFee;
                 _doctorService.UpdateDoctor(doctor);
                 SuccessNotification("Profile updated successfully.");
                 return RedirectToAction("ProfileSetting");
@@ -979,7 +1004,7 @@ namespace DPTS.Web.Controllers
                     }
                 }
                 #endregion
-
+                SuccessNotification("Schedules updated successfully.");
                 return RedirectToAction("DoctorSchedules");
             }
             catch { return null; }
@@ -1055,10 +1080,37 @@ namespace DPTS.Web.Controllers
                             appoinment.StatusId = status.Id;
                             _scheduleService.UpdateAppointmentSchedule(appoinment);
 
+                            string userId = User.Identity.GetUserId();
+
+                            var patient = context.AspNetUsers.Where(p => p.Id == appoinment.PatientId).FirstOrDefault();
+                            var doc = context.Doctors.Where(p => p.DoctorId == userId).FirstOrDefault();
+                            //Patient alert
+                            if (!string.IsNullOrWhiteSpace(patient.PhoneNumber))
+                            {
+                                string msg = string.Empty;
+                                msg += "CANCEL Appoinment ID:" + appoinment.Id;
+                                msg += " for " + appoinment.AppointmentDate + " at time " + appoinment.AppointmentTime;
+                                msg += " with Dr." + doc.AspNetUser.FirstName + " " + doc.AspNetUser.LastName;
+                                msg += " Ph:" + doc.AspNetUser.PhoneNumber;
+                                SendOtp(patient.PhoneNumber, msg);
+                            }
+                            //Doctor Alert
+                            if (!string.IsNullOrWhiteSpace(doc.AspNetUser.PhoneNumber))
+                            {
+                                string msg = string.Empty;
+                                msg += "CANCEL Appoinment ID:" + appoinment.Id;
+                                msg += " for " + appoinment.AppointmentDate + " at time " + appoinment.AppointmentTime;
+                                msg += " Patient:" + patient.FirstName + " " + patient.LastName;
+                                msg += " Ph:" + patient.PhoneNumber;
+                                SendOtp(patient.PhoneNumber, msg);
+                            }
+
                             return Json(new
                             {
                                 action_type = "cancelled"
                             });
+
+
                         }
                         else if (type.Equals("visit"))
                         {

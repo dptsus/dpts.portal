@@ -95,6 +95,14 @@ namespace DPTS.Web.Models
         [Display(Name = "It will be shown in user detail page below user short description.")]
         public string ProfessionalStatements { get; set; }
 
+        [Required(ErrorMessage = "Price is required.")]
+        [RegularExpression(@"[0-9]*\.?[0-9]+", ErrorMessage = "Fee must be a Numbers only.")]
+        [Display(Name = "Consultation Fee")]
+        public decimal ConsultationFee { get; set; }
+
+        [Display(Name = "Is Available 24/7")]
+        public bool IsAvailability { get; set; }
+
         public DateTime? ParseDateOfBirth()
         {
             if (!DateOfBirthYear.HasValue || !DateOfBirthMonth.HasValue || !DateOfBirthDay.HasValue)

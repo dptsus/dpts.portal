@@ -2111,6 +2111,7 @@
     <Content Include="Views\Home\_DoctorBoxForHomePage.cshtml" />
     <Content Include="Views\Home\_MapforResult.cshtml" />
     <Content Include="Views\Home\_BoxforDoctor.cshtml" />
+    <Content Include="Views\Account\TermsConditions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
