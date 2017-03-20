@@ -846,12 +846,6 @@
     <None Include="Properties\PublishProfiles\tesrt.pubxml" />
     <None Include="Properties\PublishProfiles\testfile.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\fineuploader\fineuploader-4.2.2.min.css" />
-    <Content Include="Scripts\fineuploader\iframe.xss.response-4.2.2.js" />
-    <Content Include="Scripts\fineuploader\jquery.fineuploader-4.2.2.js" />
-    <Content Include="Scripts\fineuploader\jquery.fineuploader-4.2.2.min.js" />
-    <Content Include="Scripts\fineuploader\loading.gif" />
-    <Content Include="Scripts\fineuploader\processing.gif" />
     <Content Include="Scripts\freelancer.min.js" />
     <Content Include="Scripts\intlTelInput.js" />
     <Content Include="Scripts\jmelosegui.googlemap.js" />
