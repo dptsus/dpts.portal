@@ -1429,8 +1429,6 @@
     <Content Include="Scripts\tagEditor\jquery.tag-editor.min.js" />
     <Content Include="Scripts\utils.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Uploads\5f8ca86b-ab73-4f6d-98b4-07ed82c49318_profile.jpg" />
-    <Content Include="Uploads\85a468e4-7834-48ac-95a5-fddbe85769d8_profile.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
