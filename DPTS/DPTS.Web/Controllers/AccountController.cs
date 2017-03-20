@@ -374,7 +374,8 @@ namespace DPTS.Web.Controllers
                         var doctor = new Doctor {DoctorId = user.Id, RegistrationNumber = model.RegistrationNumber};
                         _doctorService.AddDoctor(doctor);
                     }
-
+                    //gives content to sending thanks email
+                    await UserManager.SendEmailAsync(user.Id, "Thank you for registering at Doctor 365", "Thank you!!");
                     await SignInManager.SignInAsync(user, false, false);
 
                     return RedirectToAction("Index", "Home");

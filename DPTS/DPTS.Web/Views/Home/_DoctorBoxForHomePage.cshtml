@@ -5,7 +5,10 @@
 @{
     var SearchModel = (SearchModel)ViewBag.SearchModel;
 }
+
 <script src="/Scripts/searchdoc.js" type="text/javascript"></script>
+@*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6s4UEHBQtENKCpt2GExEQyLpXcQdfUo&libraries=places&callback=initializeMap"></script>*@
+
 <main id="main" class="tg-page-wrapper tg-haslayout">
     @Html.Partial("_MapforResult", Model)
     <div class="container">
@@ -21,11 +24,11 @@
                                     { "geo_location", SearchModel.geo_location },
                                     { "q", SearchModel.q }
                                 }))
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <p>No Record Found !!</p>
-                                                                    }
+                      }
+                      else
+                      {
+                          <p>No Record Found !!</p>
+                      }
                     
                 </div>
             </div>

@@ -9,6 +9,11 @@ namespace DPTS.Web.Controllers
 {
     public class BaseController : Controller
     {
+        //private ISmsNotificationService _smsService;
+        //public BaseController(ISmsNotificationService smsService)
+        //{
+        //    _smsService = smsService;
+        //}
         public class RolesAttribute : AuthorizeAttribute
         {
             public RolesAttribute(params string[] roles)
@@ -110,6 +115,7 @@ namespace DPTS.Web.Controllers
                 ((List<string>)ViewData[dataKey]).Add(message);
             }
         }
+
     }
     public class CacheFilterAttribute : ActionFilterAttribute
     {

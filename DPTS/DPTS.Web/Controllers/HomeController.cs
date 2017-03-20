@@ -214,8 +214,6 @@ namespace DPTS.Web.Controllers
 
         public PartialViewResult _DoctorBox(SearchModel model, int? page)
         {
-            // System.Threading.Thread.Sleep(2000);
-
             var searchViewModel = new List<TempDoctorViewModel>();
             var pageNumber = (page ?? 1) - 1;
             var pageSize = 5;
@@ -255,8 +253,6 @@ namespace DPTS.Web.Controllers
                 maxFee: model.maxfee,
                 minFee: model.minfee);
 
-            
-
             if (data != null)
             {
                 searchViewModel = data.Select(doc => new TempDoctorViewModel
@@ -264,7 +260,6 @@ namespace DPTS.Web.Controllers
                     Doctors = doc,
                     Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
                     AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
-                   // Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId),
                     YearOfExperience = GetTotalExperience(doc.Experience),
                     Qualification = GetQualification(doc.Education),
                     ListSpecialities = GetSpecialities(_specialityService.GetDoctorSpecilities(doc.DoctorId))
@@ -325,7 +320,6 @@ namespace DPTS.Web.Controllers
                     Doctors = doc,
                     Address = _addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault(),
                     AddressLine = GetAddressline(_addressService.GetAllAddressByUser(doc.DoctorId).FirstOrDefault()),
-                    //Specialities = _specialityService.GetDoctorSpecilities(doc.DoctorId),
                     YearOfExperience = GetTotalExperience(doc.Experience),
                     Qualification = GetQualification(doc.Education),
                     ListSpecialities = GetSpecialities(_specialityService.GetDoctorSpecilities(doc.DoctorId))

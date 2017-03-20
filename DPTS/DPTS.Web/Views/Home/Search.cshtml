@@ -1,5 +1,4 @@
 ﻿@using PagedList
-@using PagedList.Mvc
 @model IPagedList<TempDoctorViewModel>
 @using DPTS.Web.Models
 @{
@@ -10,12 +9,12 @@
     AjaxOptions options = new AjaxOptions
     {
         UpdateTargetId = "searchResult",
-        Confirm = "Are you sure to start search?",
+        // Confirm = "Are you sure to start search?",
         InsertionMode = InsertionMode.Replace,
-       LoadingElementId = "loader"
+        LoadingElementId = "loader"
     };
+    
 }
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 @using (Ajax.BeginForm("_DoctorBox", options))
 {
     @Html.Partial("_SearchNavigation", SearchModel)

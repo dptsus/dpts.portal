@@ -1054,6 +1054,7 @@ namespace DPTS.Web.Controllers
 
                             appoinment.StatusId = status.Id;
                             _scheduleService.UpdateAppointmentSchedule(appoinment);
+
                             return Json(new
                             {
                                 action_type = "cancelled"

@@ -100,6 +100,10 @@
     <Compile Include="Migrations\201703030551207_createPictureAndMapping.Designer.cs">
       <DependentUpon>201703030551207_createPictureAndMapping.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703191510148_UpdateDocTable1.cs" />
+    <Compile Include="Migrations\201703191510148_UpdateDocTable1.Designer.cs">
+      <DependentUpon>201703191510148_UpdateDocTable1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -148,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703030551207_createPictureAndMapping.resx">
       <DependentUpon>201703030551207_createPictureAndMapping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703191510148_UpdateDocTable1.resx">
+      <DependentUpon>201703191510148_UpdateDocTable1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

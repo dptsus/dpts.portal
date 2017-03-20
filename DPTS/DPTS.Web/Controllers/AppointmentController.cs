@@ -10,6 +10,8 @@ using DPTS.Data.Context;
 using DPTS.Domain.Entities;
 using System.Text;
 using DPTS.Services;
+using DPTS.EmailSmsNotifications.ServiceModels;
+using DPTS.EmailSmsNotifications.IServices;
 
 namespace DPTS.Web.Controllers
 {
@@ -20,17 +22,21 @@ namespace DPTS.Web.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IAppointmentService _scheduleService;
         private readonly DPTSDbContext _context;
+        private ISmsNotificationService _smsService;
+
 
         #endregion
 
         #region Contr
 
         public AppointmentController(IDoctorService doctorService,
-            IAppointmentService scheduleService)
+            IAppointmentService scheduleService,
+            ISmsNotificationService smsService)
         {
             _doctorService = doctorService;
             _scheduleService = scheduleService;
             _context = new DPTSDbContext();
+            _smsService = smsService;
         }
 
         #endregion
@@ -96,6 +102,19 @@ namespace DPTS.Web.Controllers
                 return scheduleSlots;
             }
             catch { return null; }
+        }
+
+        private void SendOtp(string phoneNumber,string message)
+        {
+            var sms = new SmsNotificationModel
+            {
+                numbers = phoneNumber,
+                route = 4,
+                //route 4 is for transactional sms
+                senderId = "DOCPTS"
+            };
+            sms.message = message;
+            _smsService.SendSms(sms);
         }
 
         #endregion
@@ -325,6 +344,29 @@ namespace DPTS.Web.Controllers
                 };
 
                 _scheduleService.InsertAppointmentSchedule(booking);
+                var patient = _context.AspNetUsers.Where(p => p.Id == userId).FirstOrDefault();
+                var doc = _context.Doctors.Where(p => p.DoctorId == booking.DoctorId).FirstOrDefault();
+                //Patient alert
+                if (!string.IsNullOrWhiteSpace(patient.PhoneNumber))
+                {
+                    string msg = string.Empty;
+                    msg += "CONFIRMED Appoinment ID:" + booking.Id;
+                    msg += " for " + booking.AppointmentDate + " at time " + booking.AppointmentTime;
+                    msg += " with Dr." + doc.AspNetUser.FirstName + " " + doc.AspNetUser.LastName;
+                    msg += " Ph:" + doc.AspNetUser.PhoneNumber;
+                    msg += "To Cancel login on Doctor 365";
+                    SendOtp(patient.PhoneNumber, msg);
+                }
+                //Doctor Alert
+                if(!string.IsNullOrWhiteSpace(doc.AspNetUser.PhoneNumber))
+                {
+                    string msg = string.Empty;
+                    msg += "CONFIRMED Appoinment ID:" + booking.Id;
+                    msg += " for " + booking.AppointmentDate + " at time " + booking.AppointmentTime;
+                    msg += " Patient:" + patient.FirstName + " " + patient.LastName;
+                    msg += " Ph:" + patient.PhoneNumber;
+                    SendOtp(patient.PhoneNumber, msg);
+                }
                 return Json(new
                 {
                     result = "success"

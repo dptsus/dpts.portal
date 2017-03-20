@@ -43,25 +43,12 @@
                     </div>
                     <script>
                         jQuery(document).ready(function(e) {
-                                            //jQuery("#geo_distance").slider({
-                                            //    range: "min",
-                                            //    min: 1,
-                                            //    max: 300,
-                                            //    value: 50,
-                                            //    animate: "slow",
-                                            //    orientation: "horizontal",
-                                            //    slide: function(event, ui) {
-                                            //        jQuery(".distance-ml span").html(ui.value);
-                                            //        jQuery(".geo_distance").val(ui.value);
-                                            //    }
-                            //});
-
-                            jQuery("#amount").html("0 - 1000");
+                            jQuery("#amount").html("0 - 2000");
                                             jQuery("#docfee").slider({
                                                 range: true,
                                                 min: 0,
                                                 max: 2000,
-                                                values: [0,1000],
+                                                values: [0,2000],
                                                 slide: function (event, ui) {
                                                     jQuery("#amount").html(ui.values[0] + " - " + ui.values[1]);
                                                     jQuery("#minfee").val(ui.values[0]);

@@ -53,6 +53,8 @@ namespace DPTS.Domain.Entities
 
         public decimal ConsultationFee { get; set; }
 
+        public bool IsAvailability { get; set; }
+
         public virtual AspNetUser AspNetUser { get; set; }
 
         public virtual ICollection<SpecialityMapping> SpecialityMapping { get; set; }
