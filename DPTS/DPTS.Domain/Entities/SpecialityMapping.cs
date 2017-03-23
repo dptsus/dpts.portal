@@ -11,6 +11,8 @@ namespace DPTS.Domain.Entities
         [Required]
         public int Speciality_Id { get; set; }
 
+        public int SubSpeciality_Id { get; set; }
+
         public virtual Doctor Doctor { get; set; }
 
         public virtual Speciality Speciality { get; set; }

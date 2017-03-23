@@ -63,7 +63,7 @@ namespace DPTS.Domain.Speciality
                 var Specilities = query.ToList();
                 return Specilities;
             }
-            catch { return null; }
+            catch(Exception ex) { return null; }
             
         }
 

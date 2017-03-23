@@ -13,6 +13,8 @@ namespace DPTS.Web.Models
         {
             SpecialityList = new List<SelectListItem>();
             SubSpecialityList = new List<SelectListItem>();
+            AddressModel = new AddressViewModel();
+
         }
 
         [Required]
@@ -78,6 +80,8 @@ namespace DPTS.Web.Models
             }
             return dateOfBirth;
         }
+
+        public AddressViewModel AddressModel { get; set; }
 
     }
 }

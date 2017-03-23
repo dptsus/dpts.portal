@@ -39,20 +39,19 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#contact">Join Us</a>
+                        <a href="@Url.Action("Login","Account")">Sign In/Join</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
     <header>
         <div class="container" id="maincontent" tabindex="-1">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-text">
-                        <h1 class="name">FIND YOUR NEAREST DOCTOR</h1>
-                        <hr class="star-light">
-                        <span class="skills">WHAT TO EXPECT</span>
+                        <h1 class="name">Get started with Doctor 365!</h1>
                     </div>
                 </div>
             </div>
@@ -61,6 +60,7 @@
     
     <!-- Contact Section -->
     <section id="contact">
+        @Html.Partial("Notifications")
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -69,31 +69,35 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">First Name</label>
-                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
-                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Last Name</label>
-                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
-                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label for="exampleSelect1">Select Gender</label>
-                            @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as IEnumerable<SelectListItem>, new { @class = "form-control", @placeholder = "Gender" })
-                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleSelect2">Date Of Birth</label>
-                            <div class="form-group">
-                                @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
+                @using (Html.BeginForm("join-us"))
+                {
+                    @Html.AntiForgeryToken()
+                <div class="col-md-7">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                General information
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">First Name</label>
+                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Last Name</label>
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleSelect1">Select Gender</label>
+                                    @Html.DropDownListFor(model => model.Gender, ViewBag.GenderList as IEnumerable<SelectListItem>, new { @class = "form-control", @placeholder = "Gender" })
+                                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleSelect2">Date Of Birth</label>
+                                    <div class="form-group">
+                                        @Html.DatePickerDropDowns(Html.FieldNameFor(x => x.DateOfBirthDay),
                          Html.FieldNameFor(x => x.DateOfBirthMonth),
                          Html.FieldNameFor(x => x.DateOfBirthYear),
                          DateTime.Now.Year - 110,
@@ -102,42 +106,110 @@
                          Model.DateOfBirthMonth,
                          Model.DateOfBirthYear)
 
-                                @Html.ValidationMessageFor(model => model.DateOfBirthDay)
-                                @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
-                                @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                                        @Html.ValidationMessageFor(model => model.DateOfBirthDay)
+                                        @Html.ValidationMessageFor(model => model.DateOfBirthMonth)
+                                        @Html.ValidationMessageFor(model => model.DateOfBirthYear)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea">Phone Number</label>
+                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleTextarea">Email</label>
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleTextarea">Phone Number</label>
-                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number" })
-                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Practice with
                             </div>
-                            <div class="form-group">
-                                <label for="exampleTextarea">Email</label>
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Select Speciality</label>
+                                    @Html.DropDownListFor(model => model.Speciality, Model.SpecialityList, new { @class = "form-control", @placeholder = "Speciality" })
+                                    @Html.ValidationMessageFor(model => model.Speciality, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Select Sub-Speciality</label>
+                                    <span id="speciality-loading-progress" style="display: none;" class="please-wait">Common.Wait...</span>
+                                    @Html.DropDownListFor(model => model.SubSpeciality, Model.SubSpecialityList, new { @class = "form-control", @placeholder = "Speciality" })
+                                    @Html.ValidationMessageFor(model => model.SubSpeciality, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Registration Number</label>
+                                    @Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control", @placeholder = "Registration Number" })
+                                    @Html.ValidationMessageFor(model => model.RegistrationNumber, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Select Speciality</label>
-                               @Html.DropDownListFor(model => model.Speciality, Model.SpecialityList, new { @class = "form-control", @placeholder = "Speciality" })
-                               @Html.ValidationMessageFor(model => model.Speciality, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Address
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Select Sub-Speciality</label>
-                                @Html.DropDownListFor(model => model.SubSpeciality, Model.SubSpecialityList, new { @class = "form-control", @placeholder = "Speciality" })
-                                @Html.ValidationMessageFor(model => model.SubSpeciality, "", new { @class = "text-danger" })
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Hospital</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.Hospital, new { @class = "form-control", @placeholder = "Clinic name" })
+                                    @Html.ValidationMessageFor(model => model.AddressModel.Hospital, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Address1</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.Address1, new { @class = "form-control", @placeholder = "Address line 1" })
+                                    @Html.ValidationMessageFor(model => model.AddressModel.Address1, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Address2</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.Address2, new { @class = "form-control", @placeholder = "Address line 2" })
+                                    @Html.ValidationMessageFor(model => model.AddressModel.Address2, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">City</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.City, new { @class = "form-control", @placeholder = "City" })
+                                    @Html.ValidationMessageFor(model => model.AddressModel.City, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Country</label>
+                                    @Html.DropDownListFor(model => model.AddressModel.CountryId, Model.AddressModel.AvailableCountry, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">State</label>
+                                    <span id="states-loading-progress" style="display: none;" class="please-wait">Common.Wait...</span>
+                                    @Html.DropDownListFor(model => model.AddressModel.StateProvinceId, Model.AddressModel.AvailableStateProvince, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Zip/Postal Code</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.ZipPostalCode, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Landline Number</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.LandlineNumber, new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Fax Number</label>
+                                    @Html.TextBoxFor(model => model.AddressModel.FaxNumber, new { @class = "form-control" })
+                                </div>
                             </div>
-                            <div>
-                                <label for="exampleInputFile">Registration Number</label>
-                                @Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control", @placeholder = "Registration Number" })
-                                @Html.ValidationMessageFor(model => model.RegistrationNumber, "", new { @class = "text-danger" })
-                            </div>
-                            <br />
-                           <button type="submit" class="btn btn-success btn-lg">Join</button>
-                    }
-                   </div>
-            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-lg-8">
+                    <button type="submit" class="btn btn-success btn-lg">Join</button>
+                    <input id="Reset" class="btn btn-success btn-lg" type="reset" value="Reset" />
+                    </div>
+                 }
+                </div>
         </div>
     </section>
     <footer class="text-center">
@@ -145,7 +217,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        Copyright &copy; DPTS 2016
+                        Copyright &copy; DPTS 2017
                     </div>
                 </div>
             </div>
@@ -164,12 +236,15 @@
 </html>
 <script type="text/javascript">
     $(function () {
+        
+       // $('#join-us').clearForm();
+
         $("#Speciality").change(function () {
 
             var selectedItem = $(this).val();
             var ddlSubSpec = $("#SubSpeciality");
-            //  var statesProgress = $("#states-loading-progress");
-            // statesProgress.show();
+            var specProgress = $("#speciality-loading-progress");
+            specProgress.show();
             $.ajax({
                 cache: false,
                 type: "GET",
@@ -180,17 +255,40 @@
                 $.each(data, function (id, option) {
                     ddlSubSpec.append($('<option></option>').val(option.id).html(option.name));
                 });
-               // statesProgress.hide();
+                specProgress.hide();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('Failed to retrieve sub spec.');
+                specProgress.hide();
+            }
+        });
+        });
+
+        $("#AddressModel_CountryId").change(function () {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#AddressModel_StateProvinceId");
+              var statesProgress = $("#states-loading-progress");
+             statesProgress.show();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                data: { "countryId": selectedItem, "addSelectStateItem": "true" },
+              success: function (data) {
+                ddlStates.html('');
+                $.each(data, function (id, option) {
+                    ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                });
+                statesProgress.hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('Failed to retrieve states.');
+                 statesProgress.hide();
             }
         });
     });
+
     });
 
 </script>
-
-
-
 

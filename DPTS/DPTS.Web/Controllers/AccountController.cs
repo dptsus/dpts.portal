@@ -18,6 +18,10 @@ using System.Net;
 using DPTS.Domain.Core.SubSpeciality;
 using DPTS.Domain.Core.Speciality;
 using DPTS.Data.Context;
+using DPTS.Domain.Core.Country;
+using DPTS.Domain.Core.StateProvince;
+using System.Xml.Linq;
+using DPTS.Domain.Core.Address;
 
 namespace DPTS.Web.Controllers
 {
@@ -32,11 +36,17 @@ namespace DPTS.Web.Controllers
         private readonly ISubSpecialityService _subSpecialityService;
         private readonly ISpecialityService _specialityService;
         private readonly DPTSDbContext _context;
+        private readonly ICountryService _countryService;
+        private readonly IStateProvinceService _stateProvinceService;
+        private readonly IAddressService _addressService;
 
         public AccountController(IDoctorService doctorService,
             ISmsNotificationService smsService,
             ISpecialityService specialityService,
-            ISubSpecialityService subSpecialityService)
+            ISubSpecialityService subSpecialityService,
+            ICountryService countryService,
+            IStateProvinceService stateProvinceService,
+            IAddressService addressService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
@@ -44,6 +54,9 @@ namespace DPTS.Web.Controllers
             _subSpecialityService = subSpecialityService;
             _specialityService = specialityService;
             _context = new DPTSDbContext();
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _addressService = addressService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -746,8 +759,32 @@ namespace DPTS.Web.Controllers
         [AllowAnonymous]
         public ActionResult JoinUs()
         {
-            var model = new JoinUsViewModel();
-            List<SelectListItem> typelst = new List<SelectListItem>
+            try
+            {
+                var model = new JoinUsViewModel();
+                List<SelectListItem> typelst = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Select",
+                        Value = "0"
+                    }
+                };
+                model.SpecialityList = GetSpecialityList();
+                model.SubSpecialityList = typelst;
+                model.AddressModel.AvailableCountry = GetCountryList();
+                model.AddressModel.AvailableStateProvince = typelst;
+                ViewBag.GenderList = GetGender();
+                return View(model);
+            }
+            catch { throw; }
+        }
+        public IList<SelectListItem> GetCountryList()
+        {
+            try
+            {
+                var countries = _countryService.GetAllCountries(true);
+                var typelst = new List<SelectListItem>
             {
                 new SelectListItem
                 {
@@ -755,15 +792,50 @@ namespace DPTS.Web.Controllers
                     Value = "0"
                 }
             };
-            model.SpecialityList = GetSpecialityList();
-            model.SubSpecialityList = typelst;
-            ViewBag.GenderList = GetGender();
-            return View(model);
+                typelst.AddRange(countries.ToList().Select(type => new SelectListItem
+                {
+                    Text = type.Name,
+                    Value = type.Id.ToString()
+                }));
+                return typelst;
+            }catch { throw; }
         }
         [AllowAnonymous]
         public ActionResult ThanksJoinUs()
         {
             return View();
+        }
+        private static void ParseLatLong(Dictionary<string, double> dictionary, XElement locationElement)
+        {
+            if (locationElement != null)
+            {
+                var lat = locationElement.Element(AppInfra.Constants.Lat);
+                if (lat != null)
+                    dictionary.Add(AppInfra.Constants.Lat, Double.Parse(lat.Value));
+                var _long = locationElement.Element(AppInfra.Constants.Lng);
+                if (_long != null)
+                    dictionary.Add(AppInfra.Constants.Lng, Double.Parse(_long.Value));
+            }
+        }
+        [NonAction]
+        private static Dictionary<string, double> GetGeoCoordinate(string address)
+        {
+            Dictionary<string, double> dictionary = new Dictionary<string, double>();
+            try
+            {
+                string requestUri = $"http://maps.google.com/maps/api/geocode/xml?address={address}&sensor=false";
+                var request = System.Net.WebRequest.Create(requestUri);
+                var response = request.GetResponse();
+                var xdoc = XDocument.Load(response.GetResponseStream());
+                var xElement = xdoc.Element(AppInfra.Constants.GeocodeResponse);
+                var result = xElement?.Element(AppInfra.Constants.Result);
+                var locationElement = result?.Element(AppInfra.Constants.Geometry)?.Element(AppInfra.Constants.Location);
+                ParseLatLong(dictionary, locationElement);
+            }
+            catch (Exception ex)
+            {
+            }
+            return dictionary;
         }
         [AllowAnonymous]
         [HttpPost]
@@ -771,6 +843,11 @@ namespace DPTS.Web.Controllers
         {
             try
             {
+                if (model.AddressModel.CountryId == 0 || model.AddressModel.StateProvinceId == 0)
+                {
+                    ModelState.AddModelError("Select Country or State !!", "");
+                    ErrorNotification("Select Country or State");
+                }
                 if (ModelState.IsValid)
                 {
                         var user = new ApplicationUser
@@ -800,19 +877,61 @@ namespace DPTS.Web.Controllers
                                 DateOfBirth = dateOfBirth.ToString()
                              };
                             _doctorService.AddDoctor(doctor);
-                        if (!string.IsNullOrWhiteSpace(doctor.DoctorId) && model.Speciality > 0)
+                        if (!string.IsNullOrWhiteSpace(doctor.DoctorId) && model.Speciality > 0 && model.SubSpeciality > 0)
                         {
                             var specMap = new SpecialityMapping
                             {
                                 Doctor_Id = doctor.DoctorId,
-                                Speciality_Id = model.Speciality
+                                Speciality_Id = model.Speciality,
+                                SubSpeciality_Id = model.SubSpeciality
                             };
                             _specialityService.AddSpecialityByDoctor(specMap);
                         }
+                        var address = new Address
+                        {
+                            StateProvinceId = model.AddressModel.StateProvinceId,
+                            CountryId = model.AddressModel.CountryId,
+                            Address1 = model.AddressModel.Address1,
+                            Address2 = model.AddressModel.Address2,
+                            Hospital = model.AddressModel.Hospital,
+                            FaxNumber = model.AddressModel.FaxNumber,
+                            PhoneNumber = model.AddressModel.LandlineNumber,
+                            Website = model.AddressModel.Website,
+                            ZipPostalCode = model.AddressModel.ZipPostalCode,
+                            City = model.AddressModel.City
+                        };
+
+                        if (address.CountryId == 0)
+                            address.CountryId = null;
+                        if (address.StateProvinceId == 0)
+                            address.StateProvinceId = null;
+
+                        string state = address.StateProvinceId == 0
+                            ? string.Empty
+                            : _stateProvinceService.GetStateProvinceById(model.AddressModel.StateProvinceId).Name;
+                        string docAddress = model.AddressModel.Address1 + ", " + model.AddressModel.City + ", " + state + ", " + model.AddressModel.ZipPostalCode;
+                        var geoCoodrinate = GetGeoCoordinate(docAddress);
+                        if (geoCoodrinate.Count == 2)
+                        {
+                            address.Latitude = geoCoodrinate[AppInfra.Constants.Lat];
+                            address.Longitude = geoCoodrinate[AppInfra.Constants.Lng];
+                        }
+                        else
+                        {
+                            var geoCoodrinates = GetGeoCoordinate(model.AddressModel.ZipPostalCode);
+                            if (geoCoodrinates.Count == 2)
+                            {
+                                address.Latitude = geoCoodrinates[AppInfra.Constants.Lat];
+                                address.Longitude = geoCoodrinates[AppInfra.Constants.Lng];
+                            }
+                        }
+                        _addressService.AddAddress(address);
 
                         await UserManager.SendEmailAsync(user.Id, "Thanks for the registration. We'll verify your details.", "For more queries drops us a email on <b>dptsus@outlook.com</b>");
                         return RedirectToAction("ThanksJoinUs", "Account");
                       }
+                    if (!string.IsNullOrWhiteSpace(result.Errors.LastOrDefault()))
+                        ErrorNotification(result.Errors.LastOrDefault());
                 }
                 List<SelectListItem> typelst = new List<SelectListItem>
                 {
@@ -822,8 +941,10 @@ namespace DPTS.Web.Controllers
                         Value = "0"
                     }
                 };
+                model.AddressModel.AvailableCountry = GetCountryList();
                 model.SpecialityList = GetSpecialityList();
                 model.SubSpecialityList = typelst;
+                model.AddressModel.AvailableStateProvince = typelst;
                 ViewBag.GenderList = GetGender();
                 return View(model);
             }
@@ -835,6 +956,7 @@ namespace DPTS.Web.Controllers
         public IList<SelectListItem> GetSpecialityList()
         {
             var specialitys = _specialityService.GetAllSpeciality(false);
+
             List<SelectListItem> typelst = new List<SelectListItem>
             {
                 new SelectListItem
@@ -843,6 +965,9 @@ namespace DPTS.Web.Controllers
                     Value = "0"
                 }
             };
+            if (specialitys == null)
+                return typelst;
+
             typelst.AddRange(specialitys.ToList().Select(type => new SelectListItem
             {
                 Text = type.Title,

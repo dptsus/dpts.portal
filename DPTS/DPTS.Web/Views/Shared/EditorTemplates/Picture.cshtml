@@ -3,9 +3,9 @@
 @using DPTS.Services
 @model int
 @{
-    //register CSS and JS
-    Html.Assets().Styles.Add("/Scripts/fineuploader/fineuploader-4.2.2.min.css");
-    Html.Assets().Scripts.Add("/Scripts/fineuploader/jquery.fineuploader-4.2.2.min.js");
+       //register CSS and JS
+       Html.Assets().Styles.Add("/Content/Admin/fineuploader-4.2.2.min.css");
+    Html.Assets().Scripts.Add("/Content/Admin/jquery.fineuploader-4.2.2.min.js");
     //other variables
     var random = CommonHelper.GenerateRandomInteger();
     var clientId = "picture" + random;

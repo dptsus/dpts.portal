@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Hosting;
 
 namespace DPTS.Services
 {
@@ -338,16 +333,17 @@ namespace DPTS.Services
         /// <returns>The physical path. E.g. "c:\inetpub\wwwroot\bin"</returns>
         public static string MapPath(string path)
         {
-            if (HostingEnvironment.IsHosted)
-            {
-                //hosted
-                return HostingEnvironment.MapPath(path);
-            }
+            //if (HostingEnvironment.IsHosted)
+            //{
+            //    //hosted
+            //    return HostingEnvironment.MapPath(path);
+            //}
+            return HttpContext.Current.Server.MapPath(path);
 
             //not hosted. For example, run in unit tests
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
-            return Path.Combine(baseDirectory, path);
+            //string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            //path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+            //return Path.Combine(baseDirectory, path);
         }
     }
 }

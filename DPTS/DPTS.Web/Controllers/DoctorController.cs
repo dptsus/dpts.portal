@@ -468,6 +468,7 @@ namespace DPTS.Web.Controllers
                     _addressService.AddAddressMapping(addrMap);
                 }
                 SuccessNotification("Address added successfully.");
+
                 return RedirectToAction("Addresses");
             }
             model.AvailableCountry = GetCountryList();
