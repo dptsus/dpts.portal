@@ -123,7 +123,7 @@ namespace DPTS.Web.Controllers
                 {
                     Id = stateProvince.Id,
                     Name = stateProvince.Name,
-                    CountryName = _countryService.GetCountryById(stateProvince.Id).Name,
+                    CountryName = _countryService.GetCountryById(stateProvince.CountryId).Name,
                     DisplayOrder = stateProvince.DisplayOrder,
                     Published = stateProvince.Published,
                     CountryId = stateProvince.CountryId,
