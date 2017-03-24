@@ -204,9 +204,19 @@
                     </div>
                 </div>
                 <br />
+
                 <div class="col-lg-8">
-                    <button type="submit" class="btn btn-success btn-lg">Join</button>
-                    <input id="Reset" class="btn btn-success btn-lg" type="reset" value="Reset" />
+                    <div class="form-group tg-checkbox">
+                        <input name="terms" type="hidden" value="0">
+                        <label>
+                            <input name="terms" id="terms" class="form-control" type="checkbox">
+                            I agree with the terms and conditions @Html.ActionLink("read here", "TermsConditions", null, new { target = "_blank" })
+                        </label>
+                    </div>
+                    <br />
+                    <button type="submit" onclick="javascript:return AcceptTermAndcondition();" class="btn btn-success btn-lg">Join</button>
+                    <input id="Reset" class="btn btn-success btn-lg" style="margin-left: 10px; background-color: #2c3e50;
+                             border-color: #2c3e50;" type="reset" value="Reset" />
                     </div>
                  }
                 </div>
@@ -289,6 +299,16 @@
     });
 
     });
+
+    function AcceptTermAndcondition() {
+        if ($("#terms").is(':checked')) {
+            return true;
+        }
+        else {
+            alert("Please accept term and condition");
+            return false;
+        }
+    }
 
 </script>
 
