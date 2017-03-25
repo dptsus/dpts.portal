@@ -27,6 +27,10 @@ namespace DPTS.Web.Models
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Middle Name")]
+        public string MiddleName { get; set; }
+
+        [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -50,6 +54,8 @@ namespace DPTS.Web.Models
 
         public string Gender { get; set; }
 
+        [Required(ErrorMessage = "select at least one qualification")]
+        public string[] Expertise { get; set; }
         // DOB
 
         [Display(Name = "Day")]

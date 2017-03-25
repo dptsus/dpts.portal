@@ -108,6 +108,10 @@
     <Compile Include="Migrations\201703232040469_UpdateSpecailtyMapTable.Designer.cs">
       <DependentUpon>201703232040469_UpdateSpecailtyMapTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703250510541_updatedoctortablemiddlename.cs" />
+    <Compile Include="Migrations\201703250510541_updatedoctortablemiddlename.Designer.cs">
+      <DependentUpon>201703250510541_updatedoctortablemiddlename.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -162,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703232040469_UpdateSpecailtyMapTable.resx">
       <DependentUpon>201703232040469_UpdateSpecailtyMapTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703250510541_updatedoctortablemiddlename.resx">
+      <DependentUpon>201703250510541_updatedoctortablemiddlename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

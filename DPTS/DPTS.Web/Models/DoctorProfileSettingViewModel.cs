@@ -103,6 +103,8 @@ namespace DPTS.Web.Models
         [Display(Name = "Is Available 24/7")]
         public bool IsAvailability { get; set; }
 
+       
+
         public DateTime? ParseDateOfBirth()
         {
             if (!DateOfBirthYear.HasValue || !DateOfBirthMonth.HasValue || !DateOfBirthDay.HasValue)

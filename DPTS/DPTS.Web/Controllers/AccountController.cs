@@ -316,7 +316,7 @@ namespace DPTS.Web.Controllers
                 if (phoneNum == null)
                     return true;
             }
-            catch { }
+            catch { return true; }
             return false;
         }
         [NonAction]
@@ -328,7 +328,7 @@ namespace DPTS.Web.Controllers
                 if (email == null)
                     return true;
             }
-            catch { }
+            catch { return true; }
             return false;
         }
         //
@@ -841,12 +841,18 @@ namespace DPTS.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> JoinUs(JoinUsViewModel model)
         {
+           // string joined = string.Join(",", model.Expertise);
             try
             {
                 if (model.AddressModel.CountryId == 0 || model.AddressModel.StateProvinceId == 0)
                 {
                     ModelState.AddModelError("Select Country or State !!", "");
                     ErrorNotification("Select Country or State");
+                }
+                if(!model.Expertise.Any())
+                {
+                    ModelState.AddModelError("select at least one qualification !!", "");
+                    ErrorNotification("select at least one qualification !!");
                 }
                 if (ModelState.IsValid)
                 {
@@ -869,13 +875,15 @@ namespace DPTS.Web.Controllers
                         {
                             var dateOfBirth = model.ParseDateOfBirth();
                             await this.UserManager.AddToRoleAsync(user.Id, "Doctor");
-                            var doctor = new Doctor
-                            {
-                                DoctorId = user.Id,
-                                RegistrationNumber = model.RegistrationNumber,
-                                Gender=model.Gender,
-                                DateOfBirth = dateOfBirth.ToString()
-                             };
+                        var doctor = new Doctor
+                        {
+                            DoctorId = user.Id,
+                            RegistrationNumber = model.RegistrationNumber,
+                            Gender = model.Gender,
+                            DateOfBirth = dateOfBirth.ToString(),
+                            Expertise = (model.Expertise.Any()) ? string.Join(",", model.Expertise) : string.Empty,
+                            MiddleName =model.MiddleName
+                         };
                             _doctorService.AddDoctor(doctor);
                         if (!string.IsNullOrWhiteSpace(doctor.DoctorId) && model.Speciality > 0 && model.SubSpeciality > 0)
                         {
