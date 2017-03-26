@@ -22,6 +22,8 @@ using DPTS.Domain.Core.Country;
 using DPTS.Domain.Core.StateProvince;
 using System.Xml.Linq;
 using DPTS.Domain.Core.Address;
+using DPTS.Domain.Core.Common;
+using DPTS.Domain.Common;
 
 namespace DPTS.Web.Controllers
 {
@@ -39,6 +41,8 @@ namespace DPTS.Web.Controllers
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
         private readonly IAddressService _addressService;
+        private readonly IQualifiactionService _qualifiactionService;
+        private readonly IPictureService _pictureService;
 
         public AccountController(IDoctorService doctorService,
             ISmsNotificationService smsService,
@@ -46,7 +50,9 @@ namespace DPTS.Web.Controllers
             ISubSpecialityService subSpecialityService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
-            IAddressService addressService)
+            IAddressService addressService,
+            IQualifiactionService qualifiactionService,
+            IPictureService pictureService)
         {
             context = new ApplicationDbContext();
             _doctorService = doctorService;
@@ -57,6 +63,8 @@ namespace DPTS.Web.Controllers
             _countryService = countryService;
             _stateProvinceService = stateProvinceService;
             _addressService = addressService;
+            _qualifiactionService = qualifiactionService;
+            _pictureService = pictureService;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -755,7 +763,41 @@ namespace DPTS.Web.Controllers
 
             base.Dispose(disposing);
         }
-        
+
+        public void AddPicture(int pictureId, int displayOrder,
+            string overrideAltAttribute, string overrideTitleAttribute,
+            string doctorId)
+        {
+            try
+            {
+                if (pictureId == 0)
+                    throw new ArgumentException();
+
+                var doctor = _doctorService.GetDoctorbyId(doctorId);
+                if (doctor == null)
+                    throw new ArgumentException("No doctor found with the specified id");
+
+                var picture = _pictureService.GetPictureById(pictureId);
+                if (picture == null)
+                    throw new ArgumentException("No picture found with the specified id");
+
+                _doctorService.InsertDoctorPicture(new PictureMapping
+                {
+                    PictureId = pictureId,
+                    UserId = doctorId,
+                    DisplayOrder = displayOrder,
+                });
+
+                _pictureService.UpdatePicture(picture.Id,
+                    _pictureService.LoadPictureBinary(picture),
+                    picture.MimeType,
+                    picture.SeoFilename,
+                    overrideAltAttribute,
+                    overrideTitleAttribute);
+            }
+            catch { }
+        }
+
         [AllowAnonymous]
         public ActionResult JoinUs()
         {
@@ -774,10 +816,160 @@ namespace DPTS.Web.Controllers
                 model.SubSpecialityList = typelst;
                 model.AddressModel.AvailableCountry = GetCountryList();
                 model.AddressModel.AvailableStateProvince = typelst;
+                model.AvilableQualification = GetAvilableQualifications();
                 ViewBag.GenderList = GetGender();
                 return View(model);
             }
             catch { throw; }
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> JoinUs(JoinUsViewModel model)
+        {
+            // string joined = string.Join(",", model.Expertise);
+            try
+            {
+                if (model.AddressModel.CountryId == 0 || model.AddressModel.StateProvinceId == 0)
+                {
+                    ModelState.AddModelError("Select Country or State !!", "");
+                    ErrorNotification("Select Country or State");
+                }
+                if (!model.Expertise.Any())
+                {
+                    ModelState.AddModelError("select at least one qualification !!", "");
+                    ErrorNotification("select at least one qualification !!");
+                }
+                if(model.PictureId == 0)
+                {
+                    ModelState.AddModelError("upload picture !!", "");
+                    ErrorNotification("upload picture !!");
+                }
+                if (ModelState.IsValid)
+                {
+                    var user = new ApplicationUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email,
+                        LastName = model.LastName,
+                        FirstName = model.FirstName,
+                        LastIpAddress = "192.168.225.1",
+                        IsEmailUnsubscribed = false,
+                        IsPhoneNumberUnsubscribed = false,
+                        LastLoginDateUtc = DateTime.UtcNow,
+                        CreatedOnUtc = DateTime.UtcNow,
+                        PhoneNumber = model.PhoneNumber,
+                        TwoFactorEnabled = false
+                    };
+                    var result = await UserManager.CreateAsync(user, "Test@123");
+                    if (result.Succeeded)
+                    {
+                        var dateOfBirth = model.ParseDateOfBirth();
+                        await this.UserManager.AddToRoleAsync(user.Id, "Doctor");
+                        var doctor = new Doctor
+                        {
+                            DoctorId = user.Id,
+                            RegistrationNumber = model.RegistrationNumber,
+                            Gender = model.Gender,
+                            DateOfBirth = dateOfBirth.ToString(),
+                            Expertise = (model.Expertise.Any()) ? string.Join(",", model.Expertise) : string.Empty,
+                            MiddleName = model.MiddleName
+                        };
+                        _doctorService.AddDoctor(doctor);
+                        if (!string.IsNullOrWhiteSpace(doctor.DoctorId) && model.Speciality > 0 && model.SubSpeciality > 0)
+                        {
+                            var specMap = new SpecialityMapping
+                            {
+                                Doctor_Id = doctor.DoctorId,
+                                Speciality_Id = model.Speciality,
+                                SubSpeciality_Id = model.SubSpeciality
+                            };
+                            _specialityService.AddSpecialityByDoctor(specMap);
+                        }
+                        var address = new Address
+                        {
+                            StateProvinceId = model.AddressModel.StateProvinceId,
+                            CountryId = model.AddressModel.CountryId,
+                            Address1 = model.AddressModel.Address1,
+                            Address2 = model.AddressModel.Address2,
+                            Hospital = model.AddressModel.Hospital,
+                            FaxNumber = model.AddressModel.FaxNumber,
+                            PhoneNumber = model.AddressModel.LandlineNumber,
+                            Website = model.AddressModel.Website,
+                            ZipPostalCode = model.AddressModel.ZipPostalCode,
+                            City = model.AddressModel.City
+                        };
+
+                        if (address.CountryId == 0)
+                            address.CountryId = null;
+                        if (address.StateProvinceId == 0)
+                            address.StateProvinceId = null;
+
+                        string state = address.StateProvinceId == 0
+                            ? string.Empty
+                            : _stateProvinceService.GetStateProvinceById(model.AddressModel.StateProvinceId).Name;
+                        string docAddress = model.AddressModel.Address1 + ", " + model.AddressModel.City + ", " + state + ", " + model.AddressModel.ZipPostalCode;
+                        var geoCoodrinate = GetGeoCoordinate(docAddress);
+                        if (geoCoodrinate.Count == 2)
+                        {
+                            address.Latitude = geoCoodrinate[AppInfra.Constants.Lat];
+                            address.Longitude = geoCoodrinate[AppInfra.Constants.Lng];
+                        }
+                        else
+                        {
+                            var geoCoodrinates = GetGeoCoordinate(model.AddressModel.ZipPostalCode);
+                            if (geoCoodrinates.Count == 2)
+                            {
+                                address.Latitude = geoCoodrinates[AppInfra.Constants.Lat];
+                                address.Longitude = geoCoodrinates[AppInfra.Constants.Lng];
+                            }
+                        }
+                        _addressService.AddAddress(address);
+
+                        if(model.PictureId > 0 && !string.IsNullOrWhiteSpace(doctor.DoctorId))
+                        {
+                            AddPicture(model.PictureId, 0, null, null, doctor.DoctorId);
+                        }
+
+                        await UserManager.SendEmailAsync(user.Id, "Thanks for the registration. We'll verify your details.", "For more queries drops us a email on <b>dptsus@outlook.com</b>");
+                        return RedirectToAction("ThanksJoinUs", "Account");
+                    }
+                    if (!string.IsNullOrWhiteSpace(result.Errors.LastOrDefault()))
+                        ErrorNotification(result.Errors.LastOrDefault());
+                }
+                List<SelectListItem> typelst = new List<SelectListItem>
+                {
+                    new SelectListItem
+                    {
+                        Text = "Select",
+                        Value = "0"
+                    }
+                };
+                model.AddressModel.AvailableCountry = GetCountryList();
+                model.SpecialityList = GetSpecialityList();
+                model.SubSpecialityList = typelst;
+                model.AddressModel.AvailableStateProvince = typelst;
+                ViewBag.GenderList = GetGender();
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+        public IList<string> GetAvilableQualifications()
+        {
+            List<string> lst = new List<string>();
+            try
+            {
+                var qul = _qualifiactionService.GetAllQualifiaction().Where(m =>m.IsActive);
+                foreach (var item in qul)
+                {
+                    lst.Add(item.Name);
+                }
+                return lst;
+            }
+            catch { return lst; }
+
         }
         public IList<SelectListItem> GetCountryList()
         {
@@ -837,130 +1029,7 @@ namespace DPTS.Web.Controllers
             }
             return dictionary;
         }
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult> JoinUs(JoinUsViewModel model)
-        {
-           // string joined = string.Join(",", model.Expertise);
-            try
-            {
-                if (model.AddressModel.CountryId == 0 || model.AddressModel.StateProvinceId == 0)
-                {
-                    ModelState.AddModelError("Select Country or State !!", "");
-                    ErrorNotification("Select Country or State");
-                }
-                if(!model.Expertise.Any())
-                {
-                    ModelState.AddModelError("select at least one qualification !!", "");
-                    ErrorNotification("select at least one qualification !!");
-                }
-                if (ModelState.IsValid)
-                {
-                        var user = new ApplicationUser
-                        {
-                            UserName = model.Email,
-                            Email = model.Email,
-                            LastName = model.LastName,
-                            FirstName = model.FirstName,
-                            LastIpAddress = "192.168.225.1",
-                            IsEmailUnsubscribed = false,
-                            IsPhoneNumberUnsubscribed = false,
-                            LastLoginDateUtc = DateTime.UtcNow,
-                            CreatedOnUtc = DateTime.UtcNow,
-                            PhoneNumber = model.PhoneNumber,
-                            TwoFactorEnabled = false
-                        };
-                        var result = await UserManager.CreateAsync(user, "Test@123");
-                        if (result.Succeeded)
-                        {
-                            var dateOfBirth = model.ParseDateOfBirth();
-                            await this.UserManager.AddToRoleAsync(user.Id, "Doctor");
-                        var doctor = new Doctor
-                        {
-                            DoctorId = user.Id,
-                            RegistrationNumber = model.RegistrationNumber,
-                            Gender = model.Gender,
-                            DateOfBirth = dateOfBirth.ToString(),
-                            Expertise = (model.Expertise.Any()) ? string.Join(",", model.Expertise) : string.Empty,
-                            MiddleName =model.MiddleName
-                         };
-                            _doctorService.AddDoctor(doctor);
-                        if (!string.IsNullOrWhiteSpace(doctor.DoctorId) && model.Speciality > 0 && model.SubSpeciality > 0)
-                        {
-                            var specMap = new SpecialityMapping
-                            {
-                                Doctor_Id = doctor.DoctorId,
-                                Speciality_Id = model.Speciality,
-                                SubSpeciality_Id = model.SubSpeciality
-                            };
-                            _specialityService.AddSpecialityByDoctor(specMap);
-                        }
-                        var address = new Address
-                        {
-                            StateProvinceId = model.AddressModel.StateProvinceId,
-                            CountryId = model.AddressModel.CountryId,
-                            Address1 = model.AddressModel.Address1,
-                            Address2 = model.AddressModel.Address2,
-                            Hospital = model.AddressModel.Hospital,
-                            FaxNumber = model.AddressModel.FaxNumber,
-                            PhoneNumber = model.AddressModel.LandlineNumber,
-                            Website = model.AddressModel.Website,
-                            ZipPostalCode = model.AddressModel.ZipPostalCode,
-                            City = model.AddressModel.City
-                        };
-
-                        if (address.CountryId == 0)
-                            address.CountryId = null;
-                        if (address.StateProvinceId == 0)
-                            address.StateProvinceId = null;
-
-                        string state = address.StateProvinceId == 0
-                            ? string.Empty
-                            : _stateProvinceService.GetStateProvinceById(model.AddressModel.StateProvinceId).Name;
-                        string docAddress = model.AddressModel.Address1 + ", " + model.AddressModel.City + ", " + state + ", " + model.AddressModel.ZipPostalCode;
-                        var geoCoodrinate = GetGeoCoordinate(docAddress);
-                        if (geoCoodrinate.Count == 2)
-                        {
-                            address.Latitude = geoCoodrinate[AppInfra.Constants.Lat];
-                            address.Longitude = geoCoodrinate[AppInfra.Constants.Lng];
-                        }
-                        else
-                        {
-                            var geoCoodrinates = GetGeoCoordinate(model.AddressModel.ZipPostalCode);
-                            if (geoCoodrinates.Count == 2)
-                            {
-                                address.Latitude = geoCoodrinates[AppInfra.Constants.Lat];
-                                address.Longitude = geoCoodrinates[AppInfra.Constants.Lng];
-                            }
-                        }
-                        _addressService.AddAddress(address);
-
-                        await UserManager.SendEmailAsync(user.Id, "Thanks for the registration. We'll verify your details.", "For more queries drops us a email on <b>dptsus@outlook.com</b>");
-                        return RedirectToAction("ThanksJoinUs", "Account");
-                      }
-                    if (!string.IsNullOrWhiteSpace(result.Errors.LastOrDefault()))
-                        ErrorNotification(result.Errors.LastOrDefault());
-                }
-                List<SelectListItem> typelst = new List<SelectListItem>
-                {
-                    new SelectListItem
-                    {
-                        Text = "Select",
-                        Value = "0"
-                    }
-                };
-                model.AddressModel.AvailableCountry = GetCountryList();
-                model.SpecialityList = GetSpecialityList();
-                model.SubSpecialityList = typelst;
-                model.AddressModel.AvailableStateProvince = typelst;
-                ViewBag.GenderList = GetGender();
-                return View(model);
-            }
-            catch (Exception)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-            }
-        }
+        
         public IList<SelectListItem> GetSpecialityList()
         {
             var specialitys = _specialityService.GetAllSpeciality(false);

@@ -14,7 +14,7 @@ namespace DPTS.Web.Models
             SpecialityList = new List<SelectListItem>();
             SubSpecialityList = new List<SelectListItem>();
             AddressModel = new AddressViewModel();
-
+            AvilableQualification = new List<string>();
         }
 
         [Required]
@@ -44,9 +44,15 @@ namespace DPTS.Web.Models
         [Display(Name = "Registration Number")]
         public string RegistrationNumber { get; set; }
 
+        [Display(Name = "Picture")]
+        [UIHint("Picture")]
+        public int PictureId { get; set; }
+
         public IList<SelectListItem> SpecialityList { get; set; }
 
         public IList<SelectListItem> SubSpecialityList { get; set; }
+
+        public IList<string> AvilableQualification { get; set; }
 
         public int Speciality { get; set; }
 

@@ -44,6 +44,7 @@
     <Compile Include="Core\Address\IAddressService.cs" />
     <Compile Include="Core\Appointment\IAppointmentService.cs" />
     <Compile Include="Core\Common\IPictureService.cs" />
+    <Compile Include="Core\Common\IQualifiactionService.cs" />
     <Compile Include="Core\ExportImport\IImportManager.cs" />
     <Compile Include="Core\IPagedList.cs" />
     <Compile Include="Core\Notification\IDoctorNotificationSettingsService.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Entities\Picture.cs" />
     <Compile Include="Entities\PictureMapping.cs" />
     <Compile Include="Entities\PictureType.cs" />
+    <Compile Include="Entities\Qualifiaction.cs" />
     <Compile Include="Entities\ReviewComments.cs" />
     <Compile Include="Entities\Notification\SentSmsHistory.cs" />
     <Compile Include="Entities\Country.cs" />

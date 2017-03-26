@@ -104,6 +104,7 @@
     <Compile Include="Appointment\AppointmentService.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="Common\PictureService.cs" />
+    <Compile Include="Common\QualifiactionService.cs" />
     <Compile Include="Common\ResizeType.cs" />
     <Compile Include="DptsException.cs" />
     <Compile Include="ExportImport\Help\PropertyByName.cs" />

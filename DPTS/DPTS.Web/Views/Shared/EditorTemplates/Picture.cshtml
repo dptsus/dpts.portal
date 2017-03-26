@@ -4,8 +4,9 @@
 @model int
 @{
        //register CSS and JS
-       Html.Assets().Styles.Add("/Content/Admin/fineuploader-4.2.2.min.css");
+    Html.Assets().Styles.Add("/Content/Admin/fineuploader-4.2.2.min.css");
     Html.Assets().Scripts.Add("/Content/Admin/jquery.fineuploader-4.2.2.min.js");
+
     //other variables
     var random = CommonHelper.GenerateRandomInteger();
     var clientId = "picture" + random;
@@ -34,7 +35,7 @@
         <div class="remove-image-button pull-left margin-t-5">
             @if (picture != null)
             {
-                <span id="@(clientId + "remove")" class="btn bg-red">RemovePicture</span>
+                <span id="@(clientId + "remove")" class="btn bg-red" style="background-color: bisque">RemovePicture</span>
             }
             else
             {
@@ -76,7 +77,7 @@
     </div>
 </script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(function () {
         $("#@(clientId)").fineUploader({
             request: {
                 endpoint: '@(Url.Content("~/Picture/AsyncUpload"))'

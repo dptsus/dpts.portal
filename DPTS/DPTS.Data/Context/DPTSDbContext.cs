@@ -38,6 +38,7 @@ namespace DPTS.Data.Context
         public virtual DbSet<Experience> Experience { get; set; }
         public virtual DbSet<Picture> Picture { get; set; }
         public virtual DbSet<PictureMapping> PictureMapping { get; set; }
+        public virtual DbSet<Qualifiaction> Qualifiaction { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

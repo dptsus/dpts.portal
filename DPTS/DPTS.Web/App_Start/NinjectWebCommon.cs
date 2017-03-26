@@ -42,7 +42,7 @@ namespace DPTS.Web
     using Models;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
-
+    using Domain.Core.Common;
     public static class NinjectWebCommon
     {
         private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
@@ -108,6 +108,7 @@ namespace DPTS.Web
             kernel.Bind<IImportManager>().To<ImportManager>();
             kernel.Bind<IReviewCommentsService>().To<ReviewCommentsService>();
             kernel.Bind<IPictureService>().To<PictureService>();
+            kernel.Bind<IQualifiactionService>().To<QualifiactionService>();
             //kernel.Bind<ApplicationSignInManager>().To<ApplicationSignInManager>();
             //kernel.Bind<IUserStore<ApplicationUser>>().To<UserStore<ApplicationUser>>();
             //kernel.Bind<UserManager<ApplicationUser>>().ToSelf();
